@@ -1,0 +1,14 @@
+﻿{
+  "openAI": {
+    "key": "",
+    "defaultModelId": "gpt-4-turbo",
+    "proxyUrl": "",
+    "customModels": []
+  },
+  "azureOpenAI": {
+    "key": "",
+    "defaultModelId": "gpt-4-turbo",
+    "customModels": [],
+    "endpoint": ""
+  }
+}

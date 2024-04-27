@@ -1,0 +1,77 @@
+﻿// Copyright (c) Rodel. All rights reserved.
+
+using RodelChat.Core.Models.Chat;
+
+/// <summary>
+/// 控制台配置.
+/// </summary>
+public sealed class ConsoleConfig
+{
+    /// <summary>
+    /// Open AI 服务配置.
+    /// </summary>
+    public OpenAIServiceConfig OpenAI { get; set; }
+
+    /// <summary>
+    /// Azure Open AI 服务配置.
+    /// </summary>
+    public AzureOpenAIServiceConfig AzureOpenAI { get; set; }
+
+    /// <summary>
+    /// 智谱服务配置.
+    /// </summary>
+    public ServiceConfigBase Zhipu { get; set; }
+
+    /// <summary>
+    /// 零一万物服务配置.
+    /// </summary>
+    public ServiceConfigBase LingYi { get; set; }
+
+    /// <summary>
+    /// 月之暗面服务配置.
+    /// </summary>
+    public ServiceConfigBase Moonshot { get; set; }
+}
+
+/// <summary>
+/// Open AI 服务配置.
+/// </summary>
+public sealed class OpenAIServiceConfig : ServiceConfigBase
+{
+    /// <summary>
+    /// 代理地址.
+    /// </summary>
+    public string ProxyUrl { get; set; }
+}
+
+/// <summary>
+/// Azure Open AI 服务配置.
+/// </summary>
+public sealed class AzureOpenAIServiceConfig : ServiceConfigBase
+{
+    /// <summary>
+    /// 终结点.
+    /// </summary>
+    public string Endpoint { get; set; }
+}
+
+/// <summary>
+/// 服务配置基类.
+/// </summary>
+public class ServiceConfigBase
+{
+    /// <summary>
+    /// 访问密钥.
+    /// </summary>
+    public string Key { get; set; }
+
+    /// <summary>
+    /// 默认模型标识符.
+    /// </summary>
+    public string DefaultModelId { get; set; }
+
+    /// <summary>
+    /// 自定义模型列表.
+    /// </summary>
+    public List<ChatModel> CustomModels { get; set; }
+}
