@@ -120,6 +120,9 @@
   <data name="AssistantOutput" xml:space="preserve">
     <value>助理</value>
   </data>
+  <data name="ImageNotFound" xml:space="preserve">
+    <value>图片不存在</value>
+  </data>
   <data name="LingYi" xml:space="preserve">
     <value>零一万物</value>
   </data>

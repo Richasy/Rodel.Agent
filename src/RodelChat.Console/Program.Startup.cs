@@ -23,7 +23,7 @@ public partial class Program
 
         _chatClient.SetDefaultProvider(ProviderType.AzureOpenAI);
 
-        var session = _chatClient.CreateSession(ChatParameters.Create(), ProviderType.AzureOpenAI, "gpt-4-32k");
+        var session = _chatClient.CreateSession(ChatParameters.Create(), ProviderType.AzureOpenAI, "gpt-4-vision");
         await LoopMessageAsync(session);
     }
 }

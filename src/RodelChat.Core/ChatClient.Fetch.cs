@@ -11,7 +11,7 @@ namespace RodelChat.Core;
 /// </summary>
 public sealed partial class ChatClient
 {
-    private async Task<ChatResponse> OpenAISendMessageAsync(OpenAIClient client, ChatSession session, string message, string toolChoice = null, Action<string> streamingAction = null, CancellationToken cancellationToken = default)
+    private async Task<ChatResponse> OpenAISendMessageAsync(OpenAIClient client, ChatSession session, ChatMessage message, string toolChoice = null, Action<string> streamingAction = null, CancellationToken cancellationToken = default)
     {
         var chatRequest = GetOpenAIChatRequest(session, message, toolChoice);
 

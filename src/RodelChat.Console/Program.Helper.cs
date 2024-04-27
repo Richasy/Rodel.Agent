@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
+using System.Drawing;
 using System.Globalization;
 using System.Resources;
 using System.Text;
@@ -76,17 +77,47 @@ public partial class Program
         while (true)
         {
             var message = AnsiConsole.Ask<string>(GetString("UserInput") + ": ");
-
             if (string.IsNullOrWhiteSpace(message) || message.Equals("/exit", StringComparison.InvariantCultureIgnoreCase))
             {
                 break;
+            }
+
+            ChatMessage? chatMsg = default;
+            List<string>? images = default;
+
+            while (true)
+            {
+                if (message.StartsWith("/img", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var imgPath = message[4..].Trim();
+                    images ??= new List<string>();
+                    if (!imgPath.StartsWith("http"))
+                    {
+                        var base64 = ConvertToBase64(imgPath);
+                        if (string.IsNullOrEmpty(base64))
+                        {
+                            AnsiConsole.MarkupLine($"[bold red]{GetString("ImageNotFound")}[/]");
+                        }
+
+                        images.Add(base64);
+                    }
+                }
+                else
+                {
+                    chatMsg = images != null
+                        ? ChatMessage.CreateUserMessage(message, images.ToArray())
+                        : ChatMessage.CreateUserMessage(message);
+                    break;
+                }
+
+                message = AnsiConsole.Ask<string>(GetString("UserInput") + ": ");
             }
 
             ChatResponse? response = default;
             await AnsiConsole.Status()
                 .StartAsync(GetString("Processing"), async ctx =>
                 {
-                    response = await _chatClient.SendMessageAsync(session.Id, message);
+                    response = await _chatClient.SendMessageAsync(session.Id, chatMsg);
                 });
 
             var result = await HandleMessageResponseAsync(session, response);
@@ -125,17 +156,32 @@ public partial class Program
         else if (response.Message.Role == MessageRole.Assistant)
         {
             var msg = response.Message;
-            AnsiConsole.MarkupLine($"[bold green]{GetString("AssistantOutput")}[/]: {msg.Content}");
+            AnsiConsole.MarkupLine($"[bold green]{GetString("AssistantOutput")}[/]: {msg.GetFirstTextContent()}");
             return true;
         }
         else if (response.Message.Role == MessageRole.Client)
         {
             var oldFore = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine($"Client: {response.Message.Content}");
+            Console.WriteLine($"Client: {response.Message.GetFirstTextContent()}");
             Console.ForegroundColor = oldFore;
         }
 
         return false;
+    }
+
+    private static string ConvertToBase64(string path)
+    {
+        if (!File.Exists(path))
+        {
+            return string.Empty;
+        }
+
+        using var img = Image.FromFile(path);
+        using var ms = new MemoryStream();
+        img.Save(ms, img.RawFormat);
+        var imageBytes = ms.ToArray();
+        var base64String = Convert.ToBase64String(imageBytes);
+        return $"data:image/jpeg;base64,{base64String}";
     }
 }

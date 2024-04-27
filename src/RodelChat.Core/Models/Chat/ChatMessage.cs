@@ -19,7 +19,7 @@ public sealed class ChatMessage
     /// <summary>
     /// 消息内容.
     /// </summary>
-    public string Content { get; set; }
+    public List<ChatMessageContent> Content { get; set; }
 
     /// <summary>
     /// 获取或设置消息名称.
@@ -56,7 +56,7 @@ public sealed class ChatMessage
         return new ChatMessage
         {
             Role = MessageRole.System,
-            Content = content,
+            Content = new List<ChatMessageContent> { ChatMessageContent.CreateTextContent(content) },
         };
     }
 
@@ -70,8 +70,30 @@ public sealed class ChatMessage
         return new ChatMessage
         {
             Role = MessageRole.User,
-            Content = content,
+            Content = new List<ChatMessageContent> { ChatMessageContent.CreateTextContent(content) },
         };
+    }
+
+    /// <summary>
+    /// 创建用户消息.
+    /// </summary>
+    /// <param name="content">文本内容.</param>
+    /// <param name="imageDatas">图像数据.</param>
+    /// <returns><see cref="ChatMessage"/>.</returns>
+    public static ChatMessage CreateUserMessage(string content, params string[] imageDatas)
+    {
+        var message = new ChatMessage
+        {
+            Role = MessageRole.User,
+            Content = new List<ChatMessageContent> { ChatMessageContent.CreateTextContent(content) },
+        };
+
+        foreach (var imageData in imageDatas)
+        {
+            message.Content.Add(ChatMessageContent.CreateImageContent(imageData));
+        }
+
+        return message;
     }
 
     /// <summary>
@@ -84,7 +106,7 @@ public sealed class ChatMessage
         var msg = new ChatMessage
         {
             Role = MessageRole.Assistant,
-            Content = content,
+            Content = new List<ChatMessageContent> { ChatMessageContent.CreateTextContent(content) },
         };
 
         if (toolCalls != null && toolCalls.Count > 0)
@@ -111,7 +133,7 @@ public sealed class ChatMessage
         {
             Role = MessageRole.Tool,
             Name = name,
-            Content = content,
+            Content = new List<ChatMessageContent> { ChatMessageContent.CreateTextContent(content) },
             ToolId = toolId,
         };
     }
@@ -125,8 +147,15 @@ public sealed class ChatMessage
         return new ChatMessage
         {
             Role = MessageRole.Client,
-            Content = content,
+            Content = new List<ChatMessageContent> { ChatMessageContent.CreateTextContent(content) },
             ClientMessageType = type,
         };
     }
+
+    /// <summary>
+    /// 获取第一个文本内容.
+    /// </summary>
+    /// <returns>内容.</returns>
+    public string GetFirstTextContent()
+        => Content.FirstOrDefault()?.Text ?? string.Empty;
 }

@@ -85,7 +85,7 @@ public sealed partial class ChatClient : IDisposable
     /// <exception cref="ArgumentException">会话不存在.</exception>
     public async Task<ChatResponse> SendMessageAsync(
         string sessionId,
-        string message = "",
+        ChatMessage? message = null,
         string toolChoice = "auto",
         IList<ChatMessage>? toolCallbacks = null,
         Action<string> streamingAction = default,

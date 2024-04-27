@@ -63,20 +63,36 @@ public sealed partial class ChatClient
         if (role == Role.Assistant && !string.IsNullOrEmpty(message.ToolCalls))
         {
             var tools = JsonSerializer.Deserialize<List<Tool>>(message.ToolCalls);
-            msg = new OpenAI.Chat.Message(Role.Assistant, message.Content);
+            msg = new OpenAI.Chat.Message(Role.Assistant, message.Content.Select(ConvertToContent));
             msg.ToolCalls = tools;
         }
         else if (role == Role.Tool && !string.IsNullOrEmpty(message.ToolId))
         {
-            msg = new OpenAI.Chat.Message(Role.Tool, message.Content);
+            msg = new OpenAI.Chat.Message(Role.Tool, message.Content.Select(ConvertToContent));
             msg.ToolCallId = message.ToolId;
         }
         else
         {
-            msg = new OpenAI.Chat.Message(role, message.Content, message.Name);
+            msg = new OpenAI.Chat.Message(role, message.Content.Select(ConvertToContent), message.Name);
         }
 
         return msg;
+    }
+
+    private static OpenAI.Chat.Content ConvertToContent(ChatMessageContent content)
+    {
+        return content.Type switch
+        {
+            ChatContentType.Text => new OpenAI.Chat.Content(content.Text),
+            ChatContentType.ImageUrl => ConvertToImageUrl(content),
+            _ => throw new NotSupportedException("Content type not supported."),
+        };
+    }
+
+    private static ImageUrl ConvertToImageUrl(ChatMessageContent content)
+    {
+        Enum.TryParse<ImageDetail>(content.Detail, true, out var detail);
+        return new ImageUrl(content.Text, detail);
     }
 
     private static Role ConvertToRole(MessageRole role)
@@ -103,21 +119,21 @@ public sealed partial class ChatClient
         };
     }
 
-    private OpenAI.Chat.ChatRequest GetOpenAIChatRequest(ChatSession session, string message, string toolChoice = null)
+    private OpenAI.Chat.ChatRequest GetOpenAIChatRequest(ChatSession session, ChatMessage? message = null, string toolChoice = null)
     {
         var model = FindModelInProvider(session.Provider ?? ProviderType.OpenAI, session.Model);
+        if (message != null)
+        {
+            session.History.Add(message);
+        }
+
+        var history = JsonSerializer.Deserialize<List<ChatMessage>>(JsonSerializer.Serialize(session.History));
+        if(!string.IsNullOrEmpty(session.SystemInstruction))
+        {
+            history.Insert(0, ChatMessage.CreateSystemMessage(session.SystemInstruction));
+        }
+
         var messages = CovnertToMessages(session.History);
-        if (!string.IsNullOrEmpty(session.SystemInstruction))
-        {
-            messages.Insert(0, new OpenAI.Chat.Message(role: Role.System, content: session.SystemInstruction));
-        }
-
-        if (!string.IsNullOrEmpty(message))
-        {
-            session.History.Add(ChatMessage.CreateUserMessage(message));
-            messages.Add(new OpenAI.Chat.Message(role: Role.User, content: message));
-        }
-
         return model?.IsSupportTool ?? false
             ? new OpenAI.Chat.ChatRequest(
                 messages,
