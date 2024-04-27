@@ -57,4 +57,7 @@ public sealed class ChatModel
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Id);
+
+    /// <inheritdoc/>
+    public override string ToString() => DisplayName ?? Id;
 }

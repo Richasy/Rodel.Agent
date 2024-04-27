@@ -15,7 +15,7 @@ public sealed class OpenAIProvider : ProviderBase
     public OpenAIProvider()
     {
         Id = ProviderType.OpenAI.ToString();
-        ServerModels = ProviderConstants.OpenAIModels;
+        ServerModels = PredefinedModels.OpenAIModels;
     }
 
     /// <summary>

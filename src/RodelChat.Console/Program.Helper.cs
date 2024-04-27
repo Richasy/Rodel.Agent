@@ -87,13 +87,14 @@ public partial class Program
 
             while (true)
             {
-                if (message.StartsWith("/img", StringComparison.InvariantCultureIgnoreCase))
+                if (message.StartsWith("/img ", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    var imgPath = message[4..].Trim();
+                    var imgPath = message.Replace("/img ", string.Empty).Trim('"').Trim();
                     images ??= new List<string>();
                     if (!imgPath.StartsWith("http"))
                     {
-                        var base64 = ConvertToBase64(imgPath);
+                        var containPrefix = session.Provider == ProviderType.AzureOpenAI || session.Provider == ProviderType.OpenAI;
+                        var base64 = ConvertToBase64(imgPath, containPrefix);
                         if (string.IsNullOrEmpty(base64))
                         {
                             AnsiConsole.MarkupLine($"[bold red]{GetString("ImageNotFound")}[/]");
@@ -170,7 +171,7 @@ public partial class Program
         return false;
     }
 
-    private static string ConvertToBase64(string path)
+    private static string ConvertToBase64(string path, bool containPrefix = true)
     {
         if (!File.Exists(path))
         {
@@ -182,6 +183,34 @@ public partial class Program
         img.Save(ms, img.RawFormat);
         var imageBytes = ms.ToArray();
         var base64String = Convert.ToBase64String(imageBytes);
-        return $"data:image/jpeg;base64,{base64String}";
+        return containPrefix
+            ? $"data:image/jpeg;base64,{base64String}"
+            : base64String;
+    }
+
+    private static ChatModel AskModel(List<ChatModel> serverModels, List<ChatModel>? customModels = default, string? defaultModelId = "")
+    {
+        var totalModels = new List<ChatModel>();
+        totalModels.AddRange(serverModels);
+        if (customModels != null)
+        {
+            totalModels.AddRange(customModels);
+        }
+
+        totalModels = totalModels.Distinct().ToList();
+
+        ChatModel? selectedModel = default;
+        if (!string.IsNullOrEmpty(defaultModelId))
+        {
+            selectedModel = totalModels.FirstOrDefault(m => m.Id == defaultModelId);
+        }
+
+        selectedModel ??= AnsiConsole.Prompt(
+                new SelectionPrompt<ChatModel>()
+                .Title(GetString("SelectModel"))
+                .PageSize(10)
+                .AddChoices(totalModels));
+
+        return selectedModel;
     }
 }

@@ -13,5 +13,8 @@ public sealed class LingYiProvider : ProviderBase
     /// Initializes a new instance of the <see cref="LingYiProvider"/> class.
     /// </summary>
     public LingYiProvider()
-        => Id = ProviderType.LingYi.ToString();
+    {
+        Id = ProviderType.LingYi.ToString();
+        ServerModels = PredefinedModels.LingYiModels;
+    }
 }

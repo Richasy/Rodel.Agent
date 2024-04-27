@@ -30,6 +30,9 @@ public sealed class ChatParameters
     /// <summary>
     /// 用于控制生成文本的顶部概率.
     /// </summary>
+    /// <remarks>
+    /// 理论上为 0 到 1 之间的值，不可取 0 或 1.
+    /// </remarks>
     public double TopP { get; set; }
 
     /// <summary>
@@ -41,7 +44,7 @@ public sealed class ChatParameters
         double presencePenalty = 0d,
         int maxTokens = 250,
         double temperature = 0.6,
-        double topP = 1d)
+        double topP = 0.9d)
     {
         return new ChatParameters
         {

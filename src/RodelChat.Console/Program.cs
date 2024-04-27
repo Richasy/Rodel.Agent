@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
 using System.Text.Json;
-using RodelChat.Console;
 using RodelChat.Core.Models.Constants;
 using Spectre.Console;
 
@@ -26,9 +25,6 @@ var provider = AnsiConsole.Prompt(
 
 try
 {
-    _chatClient.Tools.Add(OpenAI.Tool.GetOrCreateTool(typeof(TestTools), nameof(TestTools.GetWeather), "Get weather of the city"));
-    _chatClient.Tools.Add(OpenAI.Tool.GetOrCreateTool(typeof(TestTools), nameof(TestTools.GetBiliBiliHotSearch), "Get BiliBili hot search"));
-
     if (provider == ProviderType.OpenAI)
     {
     }
@@ -38,12 +34,15 @@ try
     }
     else if (provider == ProviderType.Zhipu)
     {
+        await RunZhipuAsync(config.Zhipu);
     }
     else if (provider == ProviderType.LingYi)
     {
+        await RunLingYiAsync(config.LingYi);
     }
     else if (provider == ProviderType.Moonshot)
     {
+        await RunMoonshotAsync(config.Moonshot);
     }
 }
 catch (Exception ex)

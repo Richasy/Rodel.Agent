@@ -12,5 +12,9 @@ public sealed class ZhipuProvider : ProviderBase
     /// <summary>
     /// Initializes a new instance of the <see cref="ZhipuProvider"/> class.
     /// </summary>
-    public ZhipuProvider() => Id = ProviderType.Zhipu.ToString();
+    public ZhipuProvider()
+    {
+        Id = ProviderType.Zhipu.ToString();
+        ServerModels = PredefinedModels.ZhipuModels;
+    }
 }

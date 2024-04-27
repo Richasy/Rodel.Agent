@@ -26,4 +26,9 @@ public enum ClientMessageType
     /// 常规错误.
     /// </summary>
     GeneralFailed,
+
+    /// <summary>
+    /// 模型不支持图片.
+    /// </summary>
+    ModelNotSupportImage,
 }

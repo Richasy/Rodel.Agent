@@ -34,7 +34,7 @@ public sealed partial class ChatClient
         if (!string.IsNullOrEmpty(proxyUrl))
         {
             var version = Uri.TryCreate(proxyUrl, UriKind.Absolute, out var uri) ? uri.Segments.LastOrDefault() ?? string.Empty : string.Empty;
-            settings = new OpenAIClientSettings(proxyUrl.Replace(version, string.Empty).Trim('/'), version.Trim('/'));
+            settings = new OpenAIClientSettings(proxyUrl.Replace(version, string.Empty).Replace($"{uri.Scheme}://", string.Empty).Trim('/'), version.Trim('/'));
         }
 
         return new OpenAIClient(auth, settings);

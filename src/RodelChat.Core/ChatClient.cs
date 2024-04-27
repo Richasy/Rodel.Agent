@@ -73,6 +73,17 @@ public sealed partial class ChatClient : IDisposable
     }
 
     /// <summary>
+    /// 获取服务端模型列表.
+    /// </summary>
+    /// <param name="type">供应商类型.</param>
+    /// <returns>模型列表.</returns>
+    public List<ChatModel> GetServerModels(ProviderType type)
+    {
+        var provider = GetProvider(type);
+        return provider?.ServerModels ?? new List<ChatModel>();
+    }
+
+    /// <summary>
     /// 发送消息.
     /// </summary>
     /// <param name="sessionId">会话标识符.</param>
@@ -108,6 +119,12 @@ public sealed partial class ChatClient : IDisposable
                 }
             }
 
+            var model = FindModelInProvider(session.Provider!.Value, session.Model);
+            if (message.Content.Any(p => p.Type == ChatContentType.ImageUrl) && !model.IsSupportVision)
+            {
+                return new ChatResponse { Message = ChatMessage.CreateClientMessage(ClientMessageType.ModelNotSupportImage, string.Empty) };
+            }
+
             response = await OpenAISendMessageAsync(client, session, message, toolChoice, streamingAction, cancellationToken);
             response.Message.Time = DateTimeOffset.Now;
             session.History.Add(response.Message);
@@ -116,7 +133,7 @@ public sealed partial class ChatClient : IDisposable
         }
         catch (TaskCanceledException)
         {
-            return new ChatResponse { Message = ChatMessage.CreateClientMessage(ClientMessageType.GenerateCancelled, "Cancelled") };
+            return new ChatResponse { Message = ChatMessage.CreateClientMessage(ClientMessageType.GenerateCancelled, string.Empty) };
         }
         catch (Exception ex)
         {
