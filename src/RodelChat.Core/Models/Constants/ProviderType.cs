@@ -71,4 +71,9 @@ public enum ProviderType
     /// 零一万物.
     /// </summary>
     LingYi,
+
+    /// <summary>
+    /// 阿里灵积.
+    /// </summary>
+    DashScope,
 }

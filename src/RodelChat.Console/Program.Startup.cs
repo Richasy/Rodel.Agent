@@ -75,4 +75,20 @@ public partial class Program
         var session = _chatClient.CreateSession(ChatParameters.Create(), ProviderType.Moonshot, model.Id);
         await LoopMessageAsync(session);
     }
+
+    private static async Task RunDashScopeAsync(ServiceConfigBase? config)
+    {
+        if (config == null)
+        {
+            // TODO: 询问用户是否要创建一个新的配置.
+            return;
+        }
+
+        _chatClient.InitializeDashScope(config.Key, config.CustomModels);
+        _chatClient.SetDefaultProvider(ProviderType.DashScope);
+
+        var model = AskModel(_chatClient.GetServerModels(ProviderType.DashScope), config.CustomModels, config.DefaultModelId);
+        var session = _chatClient.CreateSession(ChatParameters.Create(), ProviderType.DashScope, model.Id);
+        await LoopMessageAsync(session);
+    }
 }

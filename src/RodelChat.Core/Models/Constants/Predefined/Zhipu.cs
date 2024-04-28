@@ -18,6 +18,7 @@ internal static partial class PredefinedModels
             DisplayName = "GLM-4 Vision",
             Id = "glm-4v",
             IsSupportVision = true,
+            IsSupportBase64Image = true,
             Tokens = 128_000,
         },
         new ChatModel

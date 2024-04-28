@@ -73,6 +73,7 @@ internal static partial class PredefinedModels
             Id = "gpt-4-vision-preview",
             Tokens = 128_000,
             IsSupportVision = true,
+            IsSupportBase64Image = true,
         },
         new ChatModel
         {
@@ -80,6 +81,7 @@ internal static partial class PredefinedModels
             Id = "gpt-4-1106-vision-preview",
             Tokens = 128_000,
             IsSupportVision = true,
+            IsSupportBase64Image = true,
         },
         new ChatModel
         {
@@ -123,6 +125,7 @@ internal static partial class PredefinedModels
             Tokens = 128_000,
             IsSupportTool = true,
             IsSupportVision = true,
+            IsSupportBase64Image = true,
         },
         new ChatModel
         {
@@ -131,6 +134,7 @@ internal static partial class PredefinedModels
             Tokens = 128_000,
             IsSupportTool = true,
             IsSupportVision = true,
+            IsSupportBase64Image = true,
         },
     };
 }

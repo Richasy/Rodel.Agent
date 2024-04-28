@@ -21,7 +21,7 @@ var provider = AnsiConsole.Prompt(
     .Title(GetString("SelectProvider"))
     .PageSize(10)
     .UseConverter(ConvertProviderTypeToString)
-    .AddChoices(ProviderType.OpenAI, ProviderType.AzureOpenAI, ProviderType.Zhipu, ProviderType.LingYi, ProviderType.Moonshot));
+    .AddChoices(ProviderType.OpenAI, ProviderType.AzureOpenAI, ProviderType.Zhipu, ProviderType.LingYi, ProviderType.Moonshot, ProviderType.DashScope));
 
 try
 {
@@ -44,6 +44,10 @@ try
     {
         await RunMoonshotAsync(config.Moonshot);
     }
+    else if (provider == ProviderType.DashScope)
+    {
+        await RunDashScopeAsync(config.DashScope);
+    }
 }
 catch (Exception ex)
 {
@@ -59,6 +63,7 @@ string ConvertProviderTypeToString(ProviderType provider)
         ProviderType.Zhipu => GetString("Zhipu"),
         ProviderType.LingYi => GetString("LingYi"),
         ProviderType.Moonshot => GetString("Moonshot"),
+        ProviderType.DashScope => GetString("DashScope"),
         _ => "Unknown"
     };
 }

@@ -61,4 +61,57 @@ public sealed partial class ChatClient
             Tools = tools,
         };
     }
+
+    private async Task<ChatResponse> DashScopeSendMessageAsync(ChatSession session, ChatMessage message, string toolChoice = null, Action<string> streamingAction = null, CancellationToken cancellationToken = default)
+    {
+        var data = GetDashScopeRequest(session, message);
+        var model = FindModelInProvider(session.Provider!.Value, session.Model);
+
+        var responseContent = string.Empty;
+        if (model.IsSupportVision)
+        {
+            var msgs = data.Item1.OfType<Sdcb.DashScope.TextGeneration.ChatVLMessage>().ToList();
+            await foreach (var partialResponse in _dashScopeClient.TextGeneration.ChatVLStreamed(session.Model, msgs, data.Item2, cancellationToken))
+            {
+                var content = partialResponse.Output;
+                if (!string.IsNullOrEmpty(content))
+                {
+                    streamingAction?.Invoke(content);
+                }
+
+                responseContent += content;
+            }
+        }
+        else
+        {
+            var msgs = data.Item1.OfType<Sdcb.DashScope.TextGeneration.ChatMessage>().ToList();
+            if (session.UseStreamOutput)
+            {
+                await foreach (var partialResponse in _dashScopeClient.TextGeneration.ChatStreamed(session.Model, msgs, data.Item2, cancellationToken))
+                {
+                    var content = partialResponse.Output.Text;
+                    if (!string.IsNullOrEmpty(content))
+                    {
+                        streamingAction?.Invoke(content);
+                    }
+
+                    responseContent += content;
+                }
+            }
+            else
+            {
+                var response = await _dashScopeClient.TextGeneration.Chat(session.Model, msgs, data.Item2, cancellationToken);
+                responseContent = response.Output.Text;
+            }
+        }
+
+        var msg = !string.IsNullOrEmpty(responseContent)
+            ? ChatMessage.CreateAssistantMessage(responseContent)
+            : ChatMessage.CreateClientMessage(ClientMessageType.EmptyResponseContent, string.Empty);
+
+        return new ChatResponse
+        {
+            Message = msg,
+        };
+    }
 }

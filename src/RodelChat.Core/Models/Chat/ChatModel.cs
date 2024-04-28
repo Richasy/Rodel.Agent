@@ -33,6 +33,11 @@ public sealed class ChatModel
     public bool IsSupportVision { get; set; }
 
     /// <summary>
+    /// 获取或设置模型是否支持 Base64 图片.
+    /// </summary>
+    public bool? IsSupportBase64Image { get; set; }
+
+    /// <summary>
     /// 获取或设置该模型是否为自定义模型.
     /// </summary>
     public bool IsCustomModel { get; set; }

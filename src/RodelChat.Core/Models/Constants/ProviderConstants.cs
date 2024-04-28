@@ -8,4 +8,5 @@ internal static class ProviderConstants
     internal const string ZhipuApi = "https://open.bigmodel.cn/api/paas/v4";
     internal const string LingYiApi = "https://api.lingyiwanwu.com/v1";
     internal const string MoonshotApi = "https://api.moonshot.cn/v1";
+    internal const string DashScopeApi = "https://dashscope.aliyuncs.com/api/v1";
 }

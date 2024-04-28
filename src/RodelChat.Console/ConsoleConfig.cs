@@ -31,6 +31,11 @@ public sealed class ConsoleConfig
     /// 月之暗面服务配置.
     /// </summary>
     public ServiceConfigBase Moonshot { get; set; }
+
+    /// <summary>
+    /// 阿里灵积服务配置.
+    /// </summary>
+    public ServiceConfigBase DashScope { get; set; }
 }
 
 /// <summary>

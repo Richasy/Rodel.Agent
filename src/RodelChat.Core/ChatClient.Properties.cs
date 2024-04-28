@@ -4,6 +4,7 @@ using OpenAI;
 using RodelChat.Core.Models.Chat;
 using RodelChat.Core.Models.Constants;
 using RodelChat.Core.Models.Providers;
+using Sdcb.DashScope;
 
 namespace RodelChat.Core;
 
@@ -20,12 +21,14 @@ public sealed partial class ChatClient
     private ZhipuProvider? _zhipuProvider;
     private LingYiProvider? _lingYiProvider;
     private MoonshotProvider? _moonshotProvider;
+    private DashScopeProvider? _dashScopeProvider;
 
     private OpenAIClient? _openAIClient;
     private OpenAIClient? _azureOpenAIClient;
     private OpenAIClient? _zhipuAIClient;
     private OpenAIClient? _lingYiAIClient;
     private OpenAIClient? _moonshotAIClient;
+    private DashScopeClient? _dashScopeClient;
 
     /// <summary>
     /// 会话列表.

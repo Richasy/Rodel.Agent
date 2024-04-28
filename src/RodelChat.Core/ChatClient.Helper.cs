@@ -50,13 +50,13 @@ public sealed partial class ChatClient
                 continue;
             }
 
-            result.Add(ConvertToMessage(item));
+            result.Add(ConvertToOpenAIMessage(item));
         }
 
         return result;
     }
 
-    private static OpenAI.Chat.Message ConvertToMessage(ChatMessage message)
+    private static OpenAI.Chat.Message ConvertToOpenAIMessage(ChatMessage message)
     {
         var role = ConvertToRole(message.Role);
         OpenAI.Chat.Message msg;
@@ -77,6 +77,32 @@ public sealed partial class ChatClient
         }
 
         return msg;
+    }
+
+    private static dynamic ConvertToDashScopeMessage(ChatMessage message, bool isVisionMessage)
+    {
+        var role = message.Role.ToString().ToLower();
+        if (isVisionMessage)
+        {
+            var contentList = new List<Sdcb.DashScope.TextGeneration.ContentItem>();
+            message.Content.ForEach(c =>
+            {
+                if (c.Type == ChatContentType.Text)
+                {
+                    contentList.Add(Sdcb.DashScope.TextGeneration.ContentItem.FromText(c.Text));
+                }
+                else if (c.Type == ChatContentType.ImageUrl)
+                {
+                    contentList.Add(Sdcb.DashScope.TextGeneration.ContentItem.FromImage(c.Text));
+                }
+            });
+
+            return new Sdcb.DashScope.TextGeneration.ChatVLMessage(role, contentList.ToArray());
+        }
+        else
+        {
+            return new Sdcb.DashScope.TextGeneration.ChatMessage(role, message.Content[0].Text);
+        }
     }
 
     private static OpenAI.Chat.Content ConvertToContent(ChatMessageContent content)
@@ -119,21 +145,66 @@ public sealed partial class ChatClient
         };
     }
 
-    private OpenAI.Chat.ChatRequest GetOpenAIChatRequest(ChatSession session, ChatMessage? message = null, string toolChoice = null)
+    private (List<dynamic>, Sdcb.DashScope.TextGeneration.ChatParameters) GetDashScopeRequest(ChatSession session, ChatMessage? message = null)
     {
-        var model = FindModelInProvider(session.Provider ?? ProviderType.OpenAI, session.Model);
         if (message != null)
         {
             session.History.Add(message);
         }
 
         var history = JsonSerializer.Deserialize<List<ChatMessage>>(JsonSerializer.Serialize(session.History));
-        if(!string.IsNullOrEmpty(session.SystemInstruction))
+        if (!string.IsNullOrEmpty(session.SystemInstruction))
+        {
+            history.Insert(0, ChatMessage.CreateSystemMessage(session.SystemInstruction));
+        }
+
+        var msgs = new List<dynamic>();
+        var model = FindModelInProvider(ProviderType.DashScope, session.Model);
+        foreach (var item in history)
+        {
+            if (item.Role == MessageRole.Client)
+            {
+                continue;
+            }
+
+            var m = ConvertToDashScopeMessage(item, model.IsSupportVision);
+            if (m is Sdcb.DashScope.TextGeneration.ChatMessage cm)
+            {
+                msgs.Add(cm);
+            }
+            else if (m is Sdcb.DashScope.TextGeneration.ChatVLMessage cvlm)
+            {
+                msgs.Add(cvlm);
+            }
+        }
+
+        var parameters = new Sdcb.DashScope.TextGeneration.ChatParameters
+        {
+            ResultFormat = "text",
+            MaxTokens = session.Parameters.MaxTokens,
+            Temperature = (float)session.Parameters.Temperature,
+            TopP = (float)session.Parameters.TopP,
+            RepetitionPenalty = (float)session.Parameters.FrequencyPenalty + 1,
+        };
+
+        return (msgs, parameters);
+    }
+
+    private OpenAI.Chat.ChatRequest GetOpenAIChatRequest(ChatSession session, ChatMessage? message = null, string toolChoice = null)
+    {
+        if (message != null)
+        {
+            session.History.Add(message);
+        }
+
+        var history = JsonSerializer.Deserialize<List<ChatMessage>>(JsonSerializer.Serialize(session.History));
+        if (!string.IsNullOrEmpty(session.SystemInstruction))
         {
             history.Insert(0, ChatMessage.CreateSystemMessage(session.SystemInstruction));
         }
 
         var messages = CovnertToMessages(session.History);
+        var model = FindModelInProvider(session.Provider ?? ProviderType.OpenAI, session.Model);
         return model?.IsSupportTool ?? false
             ? new OpenAI.Chat.ChatRequest(
                 messages,
@@ -182,6 +253,7 @@ public sealed partial class ChatClient
             ProviderType.Zhipu => _zhipuProvider,
             ProviderType.LingYi => _lingYiProvider,
             ProviderType.Moonshot => _moonshotProvider,
+            ProviderType.DashScope => _dashScopeProvider,
             _ => throw new NotSupportedException("Provider not supported."),
         };
     }
@@ -205,6 +277,7 @@ public sealed partial class ChatClient
                 _lingYiAIClient?.Dispose();
                 _moonshotAIClient?.Dispose();
                 _azureOpenAIClient?.Dispose();
+                _dashScopeClient?.Dispose();
             }
 
             _openAIClient = null;
@@ -212,6 +285,7 @@ public sealed partial class ChatClient
             _lingYiAIClient = null;
             _moonshotAIClient = null;
             _azureOpenAIClient = null;
+            _dashScopeClient = null;
             _disposedValue = true;
         }
     }

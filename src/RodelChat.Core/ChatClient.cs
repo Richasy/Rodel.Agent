@@ -105,12 +105,10 @@ public sealed partial class ChatClient : IDisposable
         var session = Sessions.FirstOrDefault(s => s.Id == sessionId)
             ?? throw new ArgumentException("Session not found.");
 
-        ChatResponse response;
+        ChatResponse response = default;
 
         try
         {
-            var client = GetOpenAIClient(session.Provider ?? _defaultProvider, session.Model);
-
             if (toolCallbacks != null)
             {
                 foreach (var c in toolCallbacks)
@@ -125,7 +123,16 @@ public sealed partial class ChatClient : IDisposable
                 return new ChatResponse { Message = ChatMessage.CreateClientMessage(ClientMessageType.ModelNotSupportImage, string.Empty) };
             }
 
-            response = await OpenAISendMessageAsync(client, session, message, toolChoice, streamingAction, cancellationToken);
+            if (session.Provider == ProviderType.DashScope)
+            {
+                response = await DashScopeSendMessageAsync(session, message, toolChoice, streamingAction, cancellationToken);
+            }
+            else
+            {
+                var client = GetOpenAIClient(session.Provider ?? _defaultProvider, session.Model);
+                response = await OpenAISendMessageAsync(client, session, message, toolChoice, streamingAction, cancellationToken);
+            }
+
             response.Message.Time = DateTimeOffset.Now;
             session.History.Add(response.Message);
 
