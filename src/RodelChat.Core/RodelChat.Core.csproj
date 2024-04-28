@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google_GenerativeAI" Version="0.1.19" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Libs\OpenAI-DotNet\OpenAI-DotNet\OpenAI-DotNet.csproj" />
     <ProjectReference Include="..\Libs\Sdcb.DashScope\Sdcb.DashScope\Sdcb.DashScope.csproj" />
     <ProjectReference Include="..\Libs\Sdcb.SparkDesk\Sdcb.SparkDesk\Sdcb.SparkDesk.csproj" />
