@@ -71,7 +71,7 @@ public sealed partial class ChatClient
         if (model.IsSupportVision)
         {
             var msgs = data.Item1.OfType<Sdcb.DashScope.TextGeneration.ChatVLMessage>().ToList();
-            await foreach (var partialResponse in _dashScopeClient.TextGeneration.ChatVLStreamed(session.Model, msgs, data.Item2, cancellationToken))
+            await foreach (var partialResponse in _dashScopeClient.TextGeneration.ChatVLStreamedAsync(session.Model, msgs, data.Item2, cancellationToken))
             {
                 var content = partialResponse.Output;
                 if (!string.IsNullOrEmpty(content))
@@ -87,7 +87,7 @@ public sealed partial class ChatClient
             var msgs = data.Item1.OfType<Sdcb.DashScope.TextGeneration.ChatMessage>().ToList();
             if (session.UseStreamOutput)
             {
-                await foreach (var partialResponse in _dashScopeClient.TextGeneration.ChatStreamed(session.Model, msgs, data.Item2, cancellationToken))
+                await foreach (var partialResponse in _dashScopeClient.TextGeneration.ChatStreamedAsync(session.Model, msgs, data.Item2, cancellationToken))
                 {
                     var content = partialResponse.Output.Text;
                     if (!string.IsNullOrEmpty(content))
@@ -100,7 +100,7 @@ public sealed partial class ChatClient
             }
             else
             {
-                var response = await _dashScopeClient.TextGeneration.Chat(session.Model, msgs, data.Item2, cancellationToken);
+                var response = await _dashScopeClient.TextGeneration.ChatAsync(session.Model, msgs, data.Item2, cancellationToken);
                 responseContent = response.Output.Text;
             }
         }

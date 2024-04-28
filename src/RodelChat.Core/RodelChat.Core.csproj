@@ -7,11 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Sdcb.DashScope" Version="1.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Libs\OpenAI-DotNet\OpenAI-DotNet\OpenAI-DotNet.csproj" />
+    <ProjectReference Include="..\Libs\Sdcb.DashScope\Sdcb.DashScope\Sdcb.DashScope.csproj" />
+    <ProjectReference Include="..\Libs\Sdcb.SparkDesk\Sdcb.SparkDesk\Sdcb.SparkDesk.csproj" />
+    <ProjectReference Include="..\Libs\Sdcb.WenXinQianFan\Sdcb.WenXinQianFan\Sdcb.WenXinQianFan.csproj" />
   </ItemGroup>
 
 </Project>
