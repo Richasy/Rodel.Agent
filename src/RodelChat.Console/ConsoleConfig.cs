@@ -36,6 +36,11 @@ public sealed class ConsoleConfig
     /// 阿里灵积服务配置.
     /// </summary>
     public ServiceConfigBase DashScope { get; set; }
+
+    /// <summary>
+    /// 千帆服务配置.
+    /// </summary>
+    public QianFanServiceConfig QianFan { get; set; }
 }
 
 /// <summary>
@@ -58,6 +63,17 @@ public sealed class AzureOpenAIServiceConfig : ServiceConfigBase
     /// 终结点.
     /// </summary>
     public string Endpoint { get; set; }
+}
+
+/// <summary>
+/// 千帆服务配置.
+/// </summary>
+public sealed class QianFanServiceConfig : ServiceConfigBase
+{
+    /// <summary>
+    /// 密匙.
+    /// </summary>
+    public string Secret { get; set; }
 }
 
 /// <summary>

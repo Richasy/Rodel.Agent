@@ -144,4 +144,24 @@ public sealed partial class ChatClient
 
         _dashScopeClient = new Sdcb.DashScope.DashScopeClient(apiKey);
     }
+
+    /// <summary>
+    /// 初始化百度千帆服务.
+    /// </summary>
+    /// <param name="apiKey">密钥.</param>
+    /// <param name="secret">密匙.</param>
+    /// <param name="customModels">自定义模型列表.</param>
+    public void InitializeQianFan(string apiKey, string secret, List<ChatModel> customModels = null)
+    {
+        _qianFanProvider ??= new QianFanProvider();
+        _qianFanProvider.AccessKey = apiKey;
+        _qianFanProvider.Secret = secret;
+
+        if (customModels != null)
+        {
+            _qianFanProvider.CustomModels = customModels;
+        }
+
+        _qianFanClient ??= new Sdcb.WenXinQianFan.QianFanClient(apiKey, secret);
+    }
 }

@@ -127,6 +127,10 @@ public sealed partial class ChatClient : IDisposable
             {
                 response = await DashScopeSendMessageAsync(session, message, toolChoice, streamingAction, cancellationToken);
             }
+            else if (session.Provider == ProviderType.QianFan)
+            {
+                response = await QianFanSendMessageAsync(session, message, toolChoice, streamingAction, cancellationToken);
+            }
             else
             {
                 var client = GetOpenAIClient(session.Provider ?? _defaultProvider, session.Model);

@@ -16,12 +16,22 @@ if (IsConfigExist())
 config ??= new ConsoleConfig();
 _chatClient = new RodelChat.Core.ChatClient();
 
+_testTools.Add(new OpenAI.Tool(new OpenAI.Function("get_bilibili_hot_search", "Get BiliBili（B站）Hot search list.")));
+_chatClient.Tools.AddRange(_testTools);
+
 var provider = AnsiConsole.Prompt(
     new SelectionPrompt<ProviderType>()
     .Title(GetString("SelectProvider"))
     .PageSize(10)
     .UseConverter(ConvertProviderTypeToString)
-    .AddChoices(ProviderType.OpenAI, ProviderType.AzureOpenAI, ProviderType.Zhipu, ProviderType.LingYi, ProviderType.Moonshot, ProviderType.DashScope));
+    .AddChoices(
+        ProviderType.OpenAI,
+        ProviderType.AzureOpenAI,
+        ProviderType.Zhipu,
+        ProviderType.LingYi,
+        ProviderType.Moonshot,
+        ProviderType.DashScope,
+        ProviderType.QianFan));
 
 try
 {
@@ -48,6 +58,14 @@ try
     {
         await RunDashScopeAsync(config.DashScope);
     }
+    else if (provider == ProviderType.QianFan)
+    {
+        await RunQianFanAsync(config.QianFan);
+    }
+    else
+    {
+        AnsiConsole.MarkupLine(GetString("UnknownProvider"));
+    }
 }
 catch (Exception ex)
 {
@@ -64,6 +82,7 @@ string ConvertProviderTypeToString(ProviderType provider)
         ProviderType.LingYi => GetString("LingYi"),
         ProviderType.Moonshot => GetString("Moonshot"),
         ProviderType.DashScope => GetString("DashScope"),
+        ProviderType.QianFan => GetString("QianFan"),
         _ => "Unknown"
     };
 }

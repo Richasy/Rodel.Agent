@@ -76,4 +76,14 @@ public enum ProviderType
     /// 阿里灵积.
     /// </summary>
     DashScope,
+
+    /// <summary>
+    /// 百度千帆.
+    /// </summary>
+    QianFan,
+
+    /// <summary>
+    /// 讯飞星火.
+    /// </summary>
+    Spark,
 }

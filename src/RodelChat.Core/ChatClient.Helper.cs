@@ -105,6 +105,13 @@ public sealed partial class ChatClient
         }
     }
 
+    private static Sdcb.WenXinQianFan.ChatMessage ConvertToQianFanMessage(ChatMessage message)
+    {
+        var role = message.Role.ToString().ToLower();
+        var content = message.Content[0].Text;
+        return new Sdcb.WenXinQianFan.ChatMessage(role, content);
+    }
+
     private static OpenAI.Chat.Content ConvertToContent(ChatMessageContent content)
     {
         return content.Type switch
@@ -145,7 +152,7 @@ public sealed partial class ChatClient
         };
     }
 
-    private (List<dynamic>, Sdcb.DashScope.TextGeneration.ChatParameters) GetDashScopeRequest(ChatSession session, ChatMessage? message = null)
+    private static List<ChatMessage> CreateHistoryCopyAndAddUserInput(ChatSession session, ChatMessage? message = default)
     {
         if (message != null)
         {
@@ -158,6 +165,12 @@ public sealed partial class ChatClient
             history.Insert(0, ChatMessage.CreateSystemMessage(session.SystemInstruction));
         }
 
+        return history;
+    }
+
+    private (List<dynamic>, Sdcb.DashScope.TextGeneration.ChatParameters) GetDashScopeRequest(ChatSession session, ChatMessage? message = null)
+    {
+        var history = CreateHistoryCopyAndAddUserInput(session, message);
         var msgs = new List<dynamic>();
         var model = FindModelInProvider(ProviderType.DashScope, session.Model);
         foreach (var item in history)
@@ -190,20 +203,25 @@ public sealed partial class ChatClient
         return (msgs, parameters);
     }
 
+    private (List<Sdcb.WenXinQianFan.ChatMessage>, Sdcb.WenXinQianFan.ChatRequestParameters) GetQianFanRequest(ChatSession session, ChatMessage? message = null)
+    {
+        var history = CreateHistoryCopyAndAddUserInput(session, message);
+        var model = FindModelInProvider(ProviderType.DashScope, session.Model);
+        var messages = history.Where(p => p.Role != MessageRole.Client).Select(ConvertToQianFanMessage).ToList();
+        var parameters = new Sdcb.WenXinQianFan.ChatRequestParameters
+        {
+            Temperature = (float)session.Parameters.Temperature,
+            TopP = (float)session.Parameters.TopP,
+            PenaltyScore = (float)session.Parameters.FrequencyPenalty + 1,
+        };
+
+        return (messages, parameters);
+    }
+
     private OpenAI.Chat.ChatRequest GetOpenAIChatRequest(ChatSession session, ChatMessage? message = null, string toolChoice = null)
     {
-        if (message != null)
-        {
-            session.History.Add(message);
-        }
-
-        var history = JsonSerializer.Deserialize<List<ChatMessage>>(JsonSerializer.Serialize(session.History));
-        if (!string.IsNullOrEmpty(session.SystemInstruction))
-        {
-            history.Insert(0, ChatMessage.CreateSystemMessage(session.SystemInstruction));
-        }
-
-        var messages = CovnertToMessages(session.History);
+        var history = CreateHistoryCopyAndAddUserInput(session, message);
+        var messages = CovnertToMessages(history);
         var model = FindModelInProvider(session.Provider ?? ProviderType.OpenAI, session.Model);
         return model?.IsSupportTool ?? false
             ? new OpenAI.Chat.ChatRequest(
@@ -254,6 +272,7 @@ public sealed partial class ChatClient
             ProviderType.LingYi => _lingYiProvider,
             ProviderType.Moonshot => _moonshotProvider,
             ProviderType.DashScope => _dashScopeProvider,
+            ProviderType.QianFan => _qianFanProvider,
             _ => throw new NotSupportedException("Provider not supported."),
         };
     }
@@ -278,6 +297,7 @@ public sealed partial class ChatClient
                 _moonshotAIClient?.Dispose();
                 _azureOpenAIClient?.Dispose();
                 _dashScopeClient?.Dispose();
+                _qianFanClient?.Dispose();
             }
 
             _openAIClient = null;
@@ -286,6 +306,7 @@ public sealed partial class ChatClient
             _moonshotAIClient = null;
             _azureOpenAIClient = null;
             _dashScopeClient = null;
+            _qianFanClient = null;
             _disposedValue = true;
         }
     }

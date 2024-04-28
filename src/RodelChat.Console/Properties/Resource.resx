@@ -138,11 +138,17 @@
   <data name="Processing" xml:space="preserve">
     <value>处理中，请稍候...</value>
   </data>
+  <data name="QianFan" xml:space="preserve">
+    <value>百度千帆</value>
+  </data>
   <data name="SelectModel" xml:space="preserve">
     <value>请选择一个合适的模型</value>
   </data>
   <data name="SelectProvider" xml:space="preserve">
     <value>请选择一个 AI 服务</value>
+  </data>
+  <data name="Spark" xml:space="preserve">
+    <value>讯飞星火</value>
   </data>
   <data name="SystemInstruction" xml:space="preserve">
     <value>系统指令：</value>

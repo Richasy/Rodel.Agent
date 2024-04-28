@@ -91,4 +91,20 @@ public partial class Program
         var session = _chatClient.CreateSession(ChatParameters.Create(), ProviderType.DashScope, model.Id);
         await LoopMessageAsync(session);
     }
+
+    private static async Task RunQianFanAsync(QianFanServiceConfig? config)
+    {
+        if (config == null)
+        {
+            // TODO: 询问用户是否要创建一个新的配置.
+            return;
+        }
+
+        _chatClient.InitializeQianFan(config.Key, config.Secret, config.CustomModels);
+        _chatClient.SetDefaultProvider(ProviderType.QianFan);
+
+        var model = AskModel(_chatClient.GetServerModels(ProviderType.QianFan), config.CustomModels, config.DefaultModelId);
+        var session = _chatClient.CreateSession(ChatParameters.Create(), ProviderType.QianFan, model.Id);
+        await LoopMessageAsync(session);
+    }
 }

@@ -23,8 +23,25 @@ public sealed partial class ChatClient
         {
             await foreach (var partialResponse in client.ChatEndpoint.StreamCompletionEnumerableAsync(chatRequest, cancellationToken))
             {
-                var partialChoice = partialResponse.Choices.FirstOrDefault(p => !string.IsNullOrEmpty(p.Delta?.Content));
+                var partialChoice = partialResponse.Choices.FirstOrDefault(p => !string.IsNullOrEmpty(p.Delta?.Content) || p.Delta?.ToolCalls != null);
+                if (partialChoice == null)
+                {
+                    continue;
+                }
+
                 var content = partialChoice?.Delta?.Content;
+                if (partialChoice.Delta.ToolCalls != null && partialChoice.Delta.ToolCalls.Count > 0 && partialChoice.FinishReason == "tool_calls")
+                {
+                    tools ??= new List<Tool>();
+                    foreach (var t in partialChoice.Delta.ToolCalls)
+                    {
+                        if (!string.IsNullOrEmpty(t.Function?.Name))
+                        {
+                            tools.Add(t);
+                        }
+                    }
+                }
+
                 if (!string.IsNullOrEmpty(content))
                 {
                     streamingAction?.Invoke(content);
@@ -103,6 +120,40 @@ public sealed partial class ChatClient
                 var response = await _dashScopeClient.TextGeneration.ChatAsync(session.Model, msgs, data.Item2, cancellationToken);
                 responseContent = response.Output.Text;
             }
+        }
+
+        var msg = !string.IsNullOrEmpty(responseContent)
+            ? ChatMessage.CreateAssistantMessage(responseContent)
+            : ChatMessage.CreateClientMessage(ClientMessageType.EmptyResponseContent, string.Empty);
+
+        return new ChatResponse
+        {
+            Message = msg,
+        };
+    }
+
+    private async Task<ChatResponse> QianFanSendMessageAsync(ChatSession session, ChatMessage message, string toolChoice = null, Action<string> streamingAction = null, CancellationToken cancellationToken = default)
+    {
+        var (messages, parameters) = GetQianFanRequest(session, message);
+        var model = FindModelInProvider(session.Provider!.Value, session.Model);
+        var responseContent = string.Empty;
+        if (session.UseStreamOutput)
+        {
+            await foreach (var partialResponse in _qianFanClient.ChatAsStreamAsync(session.Model, messages, parameters, cancellationToken))
+            {
+                var content = partialResponse.Result;
+                if (!string.IsNullOrEmpty(content))
+                {
+                    streamingAction?.Invoke(content);
+                }
+
+                responseContent += content;
+            }
+        }
+        else
+        {
+            var response = await _qianFanClient.ChatAsync(session.Model, messages, parameters, cancellationToken);
+            responseContent = response.Result;
         }
 
         var msg = !string.IsNullOrEmpty(responseContent)
