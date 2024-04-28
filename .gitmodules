@@ -1,3 +1,12 @@
 [submodule "src/Libs/OpenAI-DotNet"]
 	path = src/Libs/OpenAI-DotNet
 	url = https://github.com/Richasy/OpenAI-DotNet
+[submodule "src/Libs/Sdcb.WenXinQianFan"]
+	path = src/Libs/Sdcb.WenXinQianFan
+	url = https://github.com/Richasy/Sdcb.WenXinQianFan.git
+[submodule "src/Libs/Sdcb.SparkDesk"]
+	path = src/Libs/Sdcb.SparkDesk
+	url = https://github.com/Richasy/Sdcb.SparkDesk.git
+[submodule "src/Libs/Sdcb.DashScope"]
+	path = src/Libs/Sdcb.DashScope
+	url = https://github.com/Richasy/Sdcb.DashScope.git
