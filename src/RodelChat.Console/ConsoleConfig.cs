@@ -41,6 +41,11 @@ public sealed class ConsoleConfig
     /// 千帆服务配置.
     /// </summary>
     public QianFanServiceConfig QianFan { get; set; }
+
+    /// <summary>
+    /// 讯飞星火服务配置.
+    /// </summary>
+    public SparkDeskServiceConfig SparkDesk { get; set; }
 }
 
 /// <summary>
@@ -72,6 +77,22 @@ public sealed class QianFanServiceConfig : ServiceConfigBase
 {
     /// <summary>
     /// 密匙.
+    /// </summary>
+    public string Secret { get; set; }
+}
+
+/// <summary>
+/// 讯飞星火服务配置.
+/// </summary>
+public sealed class SparkDeskServiceConfig : ServiceConfigBase
+{
+    /// <summary>
+    /// 应用程序 ID.
+    /// </summary>
+    public string AppId { get; set; }
+
+    /// <summary>
+    /// 密钥.
     /// </summary>
     public string Secret { get; set; }
 }

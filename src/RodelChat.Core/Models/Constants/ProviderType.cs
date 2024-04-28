@@ -85,5 +85,5 @@ public enum ProviderType
     /// <summary>
     /// 讯飞星火.
     /// </summary>
-    Spark,
+    SparkDesk,
 }

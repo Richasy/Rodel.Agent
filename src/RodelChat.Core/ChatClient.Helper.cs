@@ -112,6 +112,13 @@ public sealed partial class ChatClient
         return new Sdcb.WenXinQianFan.ChatMessage(role, content);
     }
 
+    private static Sdcb.SparkDesk.ChatMessage ConvertToSparkDeskMessage(ChatMessage message)
+    {
+        var role = message.Role.ToString().ToLower();
+        var content = message.Content[0].Text;
+        return new Sdcb.SparkDesk.ChatMessage(role, content);
+    }
+
     private static OpenAI.Chat.Content ConvertToContent(ChatMessageContent content)
     {
         return content.Type switch
@@ -218,6 +225,20 @@ public sealed partial class ChatClient
         return (messages, parameters);
     }
 
+    private (List<Sdcb.SparkDesk.ChatMessage>, Sdcb.SparkDesk.ChatRequestParameters) GetSparkDeskRequest(ChatSession session, ChatMessage? message = null)
+    {
+        var history = CreateHistoryCopyAndAddUserInput(session, message);
+        var model = FindModelInProvider(ProviderType.DashScope, session.Model);
+        var messages = history.Where(p => p.Role != MessageRole.Client).Select(ConvertToSparkDeskMessage).ToList();
+        var parameters = new Sdcb.SparkDesk.ChatRequestParameters
+        {
+            Temperature = (float)session.Parameters.Temperature,
+            MaxTokens = session.Parameters.MaxTokens,
+        };
+
+        return (messages, parameters);
+    }
+
     private OpenAI.Chat.ChatRequest GetOpenAIChatRequest(ChatSession session, ChatMessage? message = null, string toolChoice = null)
     {
         var history = CreateHistoryCopyAndAddUserInput(session, message);
@@ -273,6 +294,7 @@ public sealed partial class ChatClient
             ProviderType.Moonshot => _moonshotProvider,
             ProviderType.DashScope => _dashScopeProvider,
             ProviderType.QianFan => _qianFanProvider,
+            ProviderType.SparkDesk => _sparkDeskProvider,
             _ => throw new NotSupportedException("Provider not supported."),
         };
     }
@@ -307,6 +329,7 @@ public sealed partial class ChatClient
             _azureOpenAIClient = null;
             _dashScopeClient = null;
             _qianFanClient = null;
+            _sparkDeskClient = null;
             _disposedValue = true;
         }
     }

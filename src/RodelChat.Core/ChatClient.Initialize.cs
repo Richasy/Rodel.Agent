@@ -164,4 +164,22 @@ public sealed partial class ChatClient
 
         _qianFanClient ??= new Sdcb.WenXinQianFan.QianFanClient(apiKey, secret);
     }
+
+    /// <summary>
+    /// 初始化Spark服务.
+    /// </summary>
+    public void InitializeSparkDesk(string apiKey, string secret, string appId, List<ChatModel> customModels = null)
+    {
+        _sparkDeskProvider ??= new SparkDeskProvider();
+        _sparkDeskProvider.AccessKey = apiKey;
+        _sparkDeskProvider.Secret = secret;
+        _sparkDeskProvider.AppId = appId;
+
+        if (customModels != null)
+        {
+            _sparkDeskProvider.CustomModels = customModels;
+        }
+
+        _sparkDeskClient ??= new Sdcb.SparkDesk.SparkDeskClient(appId, apiKey, secret);
+    }
 }

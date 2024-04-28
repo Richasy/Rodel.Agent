@@ -165,4 +165,39 @@ public sealed partial class ChatClient
             Message = msg,
         };
     }
+
+    private async Task<ChatResponse> SparkDeskSendMessageAsync(ChatSession session, ChatMessage message, string toolChoice = null, Action<string> streamingAction = null, CancellationToken cancellationToken = default)
+    {
+        var (messages, parameters) = GetSparkDeskRequest(session, message);
+        var model = FindModelInProvider(session.Provider!.Value, session.Model);
+        var responseContent = string.Empty;
+        if (session.UseStreamOutput)
+        {
+            await _sparkDeskClient.ChatAsStreamAsync(session.Model, messages.ToArray(), StreamCallback, parameters, cancellationToken: cancellationToken);
+        }
+        else
+        {
+            var response = await _sparkDeskClient.ChatAsync(session.Model, messages.ToArray(), parameters, cancellationToken: cancellationToken);
+            responseContent = response.Text;
+        }
+
+        var msg = !string.IsNullOrEmpty(responseContent)
+            ? ChatMessage.CreateAssistantMessage(responseContent)
+            : ChatMessage.CreateClientMessage(ClientMessageType.EmptyResponseContent, string.Empty);
+
+        return new ChatResponse
+        {
+            Message = msg,
+        };
+
+        void StreamCallback(string content)
+        {
+            if (!string.IsNullOrEmpty(content))
+            {
+                streamingAction?.Invoke(content);
+            }
+
+            responseContent += content;
+        }
+    }
 }

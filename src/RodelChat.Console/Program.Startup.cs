@@ -107,4 +107,20 @@ public partial class Program
         var session = _chatClient.CreateSession(ChatParameters.Create(), ProviderType.QianFan, model.Id);
         await LoopMessageAsync(session);
     }
+
+    private static async Task RunSparkDeskAsync(SparkDeskServiceConfig? config)
+    {
+        if (config == null)
+        {
+            // TODO: 询问用户是否要创建一个新的配置.
+            return;
+        }
+
+        _chatClient.InitializeSparkDesk(config.Key, config.Secret, config.AppId, config.CustomModels);
+        _chatClient.SetDefaultProvider(ProviderType.SparkDesk);
+
+        var model = AskModel(_chatClient.GetServerModels(ProviderType.SparkDesk), config.CustomModels, config.DefaultModelId);
+        var session = _chatClient.CreateSession(ChatParameters.Create(), ProviderType.SparkDesk, model.Id);
+        await LoopMessageAsync(session);
+    }
 }

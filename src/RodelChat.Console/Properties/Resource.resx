@@ -147,7 +147,7 @@
   <data name="SelectProvider" xml:space="preserve">
     <value>请选择一个 AI 服务</value>
   </data>
-  <data name="Spark" xml:space="preserve">
+  <data name="SparkDesk" xml:space="preserve">
     <value>讯飞星火</value>
   </data>
   <data name="SystemInstruction" xml:space="preserve">
