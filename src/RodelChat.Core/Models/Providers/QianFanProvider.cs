@@ -15,6 +15,7 @@ public sealed class QianFanProvider : ProviderBase
     public QianFanProvider()
     {
         Id = ProviderType.QianFan.ToString();
+        BaseUrl = ProviderConstants.QianFanApi;
         ServerModels = PredefinedModels.QianFanModels;
     }
 

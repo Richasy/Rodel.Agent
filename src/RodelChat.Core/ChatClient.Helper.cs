@@ -4,6 +4,7 @@ using System.Text.Json;
 using Azure.AI.OpenAI;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
+using Microsoft.SemanticKernel.Connectors.Google;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Microsoft.SemanticKernel.Services;
 using RodelChat.Core.Models.Chat;
@@ -83,17 +84,7 @@ public sealed partial class ChatClient
             }
             else if (item.Type == ChatContentType.ImageUrl)
             {
-                if (item.Text.StartsWith("http"))
-                {
-                    items.Add(new ImageContent(new Uri(item.Text)));
-                }
-                else
-                {
-                    // convert to bytes from base64.
-                    var base64 = item.Text.Split(',')[1];
-                    var bytes = Convert.FromBase64String(base64);
-                    items.Add(new ImageContent(bytes));
-                }
+                items.Add(new ImageContent(new Uri(item.Text)));
             }
         }
 
@@ -140,12 +131,10 @@ public sealed partial class ChatClient
 
         foreach (var item in session.History)
         {
-            history.Add(ConvertToKernelMessage(item));
-        }
-
-        if (message != null)
-        {
-            history.Add(ConvertToKernelMessage(message));
+            if (item.Role != MessageRole.Client)
+            {
+                history.Add(ConvertToKernelMessage(item));
+            }
         }
 
         return history;
@@ -155,6 +144,14 @@ public sealed partial class ChatClient
     {
         switch (session.Provider)
         {
+            case ProviderType.Gemini:
+                return new GeminiPromptExecutionSettings
+                {
+                    TopP = session.Parameters.TopP,
+                    MaxTokens = session.Parameters.MaxTokens,
+                    Temperature = session.Parameters.Temperature,
+                    ToolCallBehavior = GeminiToolCallBehavior.AutoInvokeKernelFunctions,
+                };
             default:
                 return new OpenAIPromptExecutionSettings
                 {
@@ -258,37 +255,49 @@ public sealed partial class ChatClient
         {
             if (ShouldKernelRecreate(_openAIKernel))
             {
-                _openAIKernel = CreateKernel(_openAIProvider);
+                _openAIKernel = CreateOpenAIKernel(_openAIProvider);
             }
 
             return _openAIKernel;
         }
         else if (type == ProviderType.Zhipu)
         {
-            if (ShouldKernelRecreate(_zhipuAIKernel))
+            if (ShouldKernelRecreate(_zhipuKernel))
             {
-                _zhipuAIKernel = CreateKernel(_zhipuProvider);
+                _zhipuKernel = CreateOpenAIKernel(_zhipuProvider);
             }
 
-            return _zhipuAIKernel;
+            return _zhipuKernel;
         }
         else if (type == ProviderType.LingYi)
         {
-            if (ShouldKernelRecreate(_lingYiAIKernel))
+            if (ShouldKernelRecreate(_lingYiKernel))
             {
-                _lingYiAIKernel = CreateKernel(_lingYiProvider);
+                _lingYiKernel = CreateOpenAIKernel(_lingYiProvider);
             }
 
-            return _lingYiAIKernel;
+            return _lingYiKernel;
         }
         else if (type == ProviderType.Moonshot)
         {
-            if (ShouldKernelRecreate(_moonshotAIKernel))
+            if (ShouldKernelRecreate(_moonshotKernel))
             {
-                _moonshotAIKernel = CreateKernel(_moonshotProvider);
+                _moonshotKernel = CreateOpenAIKernel(_moonshotProvider);
             }
 
-            return _moonshotAIKernel;
+            return _moonshotKernel;
+        }
+        else if (type == ProviderType.Gemini)
+        {
+            if (ShouldKernelRecreate(_geminiKernel))
+            {
+                var builder = Kernel.CreateBuilder()
+                    .AddGoogleAIGeminiChatCompletion(modelId, _geminiProvider.AccessKey);
+                InitializePlugins(builder);
+                _geminiKernel = builder.Build();
+            }
+
+            return _geminiKernel;
         }
 
         return default;
@@ -305,7 +314,7 @@ public sealed partial class ChatClient
             return model != modelId;
         }
 
-        Kernel CreateKernel(ProviderBase provider)
+        Kernel CreateOpenAIKernel(ProviderBase provider)
         {
             var builder = Kernel.CreateBuilder()
                 .AddOpenAIChatCompletion(modelId, new Uri(provider.BaseUrl), provider.AccessKey);
@@ -338,6 +347,7 @@ public sealed partial class ChatClient
             ProviderType.DashScope => _dashScopeProvider,
             ProviderType.QianFan => _qianFanProvider,
             ProviderType.SparkDesk => _sparkDeskProvider,
+            ProviderType.Gemini => _geminiProvider,
             _ => throw new NotSupportedException("Provider not supported."),
         };
     }
@@ -361,13 +371,14 @@ public sealed partial class ChatClient
             }
 
             _openAIKernel = null;
-            _zhipuAIKernel = null;
-            _lingYiAIKernel = null;
-            _moonshotAIKernel = null;
+            _zhipuKernel = null;
+            _lingYiKernel = null;
+            _moonshotKernel = null;
             _azureOpenAIKernel = null;
             _dashScopeClient = null;
             _qianFanClient = null;
             _sparkDeskClient = null;
+            _geminiKernel = null;
             _disposedValue = true;
         }
     }

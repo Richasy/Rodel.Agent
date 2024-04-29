@@ -46,6 +46,11 @@ public sealed class ConsoleConfig
     /// 讯飞星火服务配置.
     /// </summary>
     public SparkDeskServiceConfig SparkDesk { get; set; }
+
+    /// <summary>
+    /// Gemini 服务配置.
+    /// </summary>
+    public ServiceConfigBase Gemini { get; set; }
 }
 
 /// <summary>

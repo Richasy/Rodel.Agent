@@ -123,4 +123,20 @@ public partial class Program
         var session = _chatClient.CreateSession(ChatParameters.Create(), ProviderType.SparkDesk, model.Id);
         await LoopMessageAsync(session);
     }
+
+    private static async Task RunGeminiAsync(ServiceConfigBase? config)
+    {
+        if (config == null)
+        {
+            // TODO: 询问用户是否要创建一个新的配置.
+            return;
+        }
+
+        _chatClient.InitializeGemini(config.Key, config.CustomModels);
+        _chatClient.SetDefaultProvider(ProviderType.Gemini);
+
+        var model = AskModel(_chatClient.GetServerModels(ProviderType.Gemini), config.CustomModels, config.DefaultModelId);
+        var session = _chatClient.CreateSession(ChatParameters.Create(), ProviderType.Gemini, model.Id);
+        await LoopMessageAsync(session);
+    }
 }

@@ -16,5 +16,6 @@ public sealed class MoonshotProvider : ProviderBase
     {
         Id = ProviderType.Moonshot.ToString();
         ServerModels = PredefinedModels.MoonshotModels;
+        BaseUrl = ProviderConstants.MoonshotApi;
     }
 }

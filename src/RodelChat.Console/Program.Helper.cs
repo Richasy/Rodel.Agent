@@ -112,7 +112,7 @@ public partial class Program
                 message = AnsiConsole.Ask<string>(GetString("UserInput") + ": ");
             }
 
-            ChatResponse? response = default;
+            ChatMessage? response = default;
             await AnsiConsole.Status()
                 .StartAsync(GetString("Processing"), async ctx =>
                 {
@@ -127,24 +127,24 @@ public partial class Program
         }
     }
 
-    private static bool HandleMessageResponse(ChatSession session, ChatResponse response)
+    private static bool HandleMessageResponse(ChatSession session, ChatMessage response)
     {
         if (response == null)
         {
             return false;
         }
 
-        if (response.Message.Role == MessageRole.Assistant)
+        if (response.Role == MessageRole.Assistant)
         {
-            var msg = response.Message;
+            var msg = response;
             AnsiConsole.MarkupLine($"[bold green]{GetString("AssistantOutput")}[/]: {msg.GetFirstTextContent()}");
             return true;
         }
-        else if (response.Message.Role == MessageRole.Client)
+        else if (response.Role == MessageRole.Client)
         {
             var oldFore = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine($"Client: {response.Message.GetFirstTextContent()}");
+            Console.WriteLine($"Client: {response.GetFirstTextContent()}");
             Console.ForegroundColor = oldFore;
         }
 

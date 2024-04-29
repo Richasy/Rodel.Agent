@@ -15,6 +15,7 @@ public sealed class ZhipuProvider : ProviderBase
     public ZhipuProvider()
     {
         Id = ProviderType.Zhipu.ToString();
+        BaseUrl = ProviderConstants.ZhipuApi;
         ServerModels = PredefinedModels.ZhipuModels;
     }
 }

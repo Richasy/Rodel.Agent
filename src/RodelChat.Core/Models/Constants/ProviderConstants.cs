@@ -10,4 +10,5 @@ internal static class ProviderConstants
     internal const string MoonshotApi = "https://api.moonshot.cn/v1";
     internal const string DashScopeApi = "https://dashscope.aliyuncs.com/api/v1";
     internal const string QianFanApi = "https://aip.baidubce.com/rpc/2.0/ai_custom/v1";
+    internal const string GeminiApi = "https://generativelanguage.googleapis.com";
 }

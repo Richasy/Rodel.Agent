@@ -24,15 +24,17 @@ public sealed partial class ChatClient
     private ZhipuProvider? _zhipuProvider;
     private LingYiProvider? _lingYiProvider;
     private MoonshotProvider? _moonshotProvider;
+    private GeminiProvider? _geminiProvider;
     private DashScopeProvider? _dashScopeProvider;
     private QianFanProvider? _qianFanProvider;
     private SparkDeskProvider? _sparkDeskProvider;
 
     private Kernel? _openAIKernel;
     private Kernel? _azureOpenAIKernel;
-    private Kernel? _zhipuAIKernel;
-    private Kernel? _lingYiAIKernel;
-    private Kernel? _moonshotAIKernel;
+    private Kernel? _zhipuKernel;
+    private Kernel? _lingYiKernel;
+    private Kernel? _moonshotKernel;
+    private Kernel? _geminiKernel;
     private DashScopeClient? _dashScopeClient;
     private QianFanClient? _qianFanClient;
     private SparkDeskClient? _sparkDeskClient;

@@ -15,6 +15,7 @@ public sealed class LingYiProvider : ProviderBase
     public LingYiProvider()
     {
         Id = ProviderType.LingYi.ToString();
+        BaseUrl = ProviderConstants.LingYiApi;
         ServerModels = PredefinedModels.LingYiModels;
     }
 }

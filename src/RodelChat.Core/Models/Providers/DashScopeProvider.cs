@@ -15,6 +15,7 @@ public sealed class DashScopeProvider : ProviderBase
     public DashScopeProvider()
     {
         Id = ProviderType.DashScope.ToString();
+        BaseUrl = ProviderConstants.DashScopeApi;
         ServerModels = PredefinedModels.DashScopeModels;
     }
 }

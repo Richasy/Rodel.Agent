@@ -92,7 +92,7 @@ public sealed partial class ChatClient : IDisposable
     /// <param name="cancellationToken">终止令牌.</param>
     /// <returns><see cref="ChatMessage"/>.</returns>
     /// <exception cref="ArgumentException">会话不存在.</exception>
-    public async Task<ChatResponse> SendMessageAsync(
+    public async Task<ChatMessage> SendMessageAsync(
         string sessionId,
         ChatMessage? message = null,
         Action<string> streamingAction = default,
@@ -101,14 +101,14 @@ public sealed partial class ChatClient : IDisposable
         var session = Sessions.FirstOrDefault(s => s.Id == sessionId)
             ?? throw new ArgumentException("Session not found.");
 
-        ChatResponse response = default;
+        ChatMessage response = default;
 
         try
         {
             var model = FindModelInProvider(session.Provider!.Value, session.Model);
             if (message.Content.Any(p => p.Type == ChatContentType.ImageUrl) && !model.IsSupportVision)
             {
-                return new ChatResponse { Message = ChatMessage.CreateClientMessage(ClientMessageType.ModelNotSupportImage, string.Empty) };
+                return ChatMessage.CreateClientMessage(ClientMessageType.ModelNotSupportImage, string.Empty);
             }
 
             if (session.Provider == ProviderType.DashScope)
@@ -128,24 +128,24 @@ public sealed partial class ChatClient : IDisposable
                 var kernel = FindKernelProvider(session.Provider!.Value, session.Model);
                 if (kernel == null)
                 {
-                    return new ChatResponse { Message = ChatMessage.CreateClientMessage(ClientMessageType.ProviderNotSupported, string.Empty) };
+                    return ChatMessage.CreateClientMessage(ClientMessageType.ProviderNotSupported, string.Empty);
                 }
 
                 response = await OpenAISendMessageAsync(kernel, session, message, streamingAction, cancellationToken);
             }
 
-            response.Message.Time = DateTimeOffset.Now;
-            session.History.Add(response.Message);
+            response.Time = DateTimeOffset.Now;
+            session.History.Add(response);
 
             return response;
         }
         catch (TaskCanceledException)
         {
-            return new ChatResponse { Message = ChatMessage.CreateClientMessage(ClientMessageType.GenerateCancelled, string.Empty) };
+            return ChatMessage.CreateClientMessage(ClientMessageType.GenerateCancelled, string.Empty);
         }
         catch (Exception ex)
         {
-            return new ChatResponse { Message = ChatMessage.CreateClientMessage(ClientMessageType.GeneralFailed, ex.Message) };
+            return ChatMessage.CreateClientMessage(ClientMessageType.GeneralFailed, ex.Message);
         }
     }
 

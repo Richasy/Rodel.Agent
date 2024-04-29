@@ -12,8 +12,13 @@ namespace RodelChat.Core;
 /// </summary>
 public sealed partial class ChatClient
 {
-    private static async Task<ChatResponse> OpenAISendMessageAsync(Kernel kernel, ChatSession session, ChatMessage message, Action<string> streamingAction = null, CancellationToken cancellationToken = default)
+    private static async Task<ChatMessage> OpenAISendMessageAsync(Kernel kernel, ChatSession session, ChatMessage message, Action<string> streamingAction = null, CancellationToken cancellationToken = default)
     {
+        if (message.Role == MessageRole.User)
+        {
+            session.History.Add(message);
+        }
+
         var history = GetChatHistory(session, message);
         var settings = GetExecutionSettings(session);
         var responseContent = string.Empty;
@@ -42,13 +47,10 @@ public sealed partial class ChatClient
                 ? ChatMessage.CreateAssistantMessage(responseContent)
                 : ChatMessage.CreateClientMessage(ClientMessageType.EmptyResponseContent, string.Empty);
 
-        return new ChatResponse
-        {
-            Message = msg,
-        };
+        return msg;
     }
 
-    private async Task<ChatResponse> DashScopeSendMessageAsync(ChatSession session, ChatMessage message, Action<string> streamingAction = null, CancellationToken cancellationToken = default)
+    private async Task<ChatMessage> DashScopeSendMessageAsync(ChatSession session, ChatMessage message, Action<string> streamingAction = null, CancellationToken cancellationToken = default)
     {
         var data = GetDashScopeRequest(session, message);
         var model = FindModelInProvider(session.Provider!.Value, session.Model);
@@ -95,13 +97,10 @@ public sealed partial class ChatClient
             ? ChatMessage.CreateAssistantMessage(responseContent)
             : ChatMessage.CreateClientMessage(ClientMessageType.EmptyResponseContent, string.Empty);
 
-        return new ChatResponse
-        {
-            Message = msg,
-        };
+        return msg;
     }
 
-    private async Task<ChatResponse> QianFanSendMessageAsync(ChatSession session, ChatMessage message, Action<string> streamingAction = null, CancellationToken cancellationToken = default)
+    private async Task<ChatMessage> QianFanSendMessageAsync(ChatSession session, ChatMessage message, Action<string> streamingAction = null, CancellationToken cancellationToken = default)
     {
         var (messages, parameters) = GetQianFanRequest(session, message);
         var model = FindModelInProvider(session.Provider!.Value, session.Model);
@@ -129,13 +128,10 @@ public sealed partial class ChatClient
             ? ChatMessage.CreateAssistantMessage(responseContent)
             : ChatMessage.CreateClientMessage(ClientMessageType.EmptyResponseContent, string.Empty);
 
-        return new ChatResponse
-        {
-            Message = msg,
-        };
+        return msg;
     }
 
-    private async Task<ChatResponse> SparkDeskSendMessageAsync(ChatSession session, ChatMessage message, Action<string> streamingAction = null, CancellationToken cancellationToken = default)
+    private async Task<ChatMessage> SparkDeskSendMessageAsync(ChatSession session, ChatMessage message, Action<string> streamingAction = null, CancellationToken cancellationToken = default)
     {
         var (messages, parameters) = GetSparkDeskRequest(session, message);
         var model = FindModelInProvider(session.Provider!.Value, session.Model);
@@ -154,10 +150,7 @@ public sealed partial class ChatClient
             ? ChatMessage.CreateAssistantMessage(responseContent)
             : ChatMessage.CreateClientMessage(ClientMessageType.EmptyResponseContent, string.Empty);
 
-        return new ChatResponse
-        {
-            Message = msg,
-        };
+        return msg;
 
         void StreamCallback(string content)
         {

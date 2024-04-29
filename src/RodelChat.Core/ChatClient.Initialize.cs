@@ -19,7 +19,11 @@ public sealed partial class ChatClient
         _openAIProvider ??= new OpenAIProvider();
         _openAIProvider.AccessKey = apiKey;
         _openAIProvider.OrganizationId = organizationId;
-        _openAIProvider.BaseUrl = string.IsNullOrWhiteSpace(proxyUrl) ? ProviderConstants.OpenAIApi : proxyUrl;
+
+        if (!string.IsNullOrEmpty(proxyUrl))
+        {
+            _openAIProvider.BaseUrl = proxyUrl;
+        }
 
         if (customModels != null)
         {
@@ -50,7 +54,6 @@ public sealed partial class ChatClient
     {
         _zhipuProvider ??= new ZhipuProvider();
         _zhipuProvider.AccessKey = apiKey;
-        _zhipuProvider.BaseUrl = ProviderConstants.ZhipuApi;
 
         if (customModels != null)
         {
@@ -65,7 +68,6 @@ public sealed partial class ChatClient
     {
         _lingYiProvider ??= new LingYiProvider();
         _lingYiProvider.AccessKey = apiKey;
-        _lingYiProvider.BaseUrl = ProviderConstants.LingYiApi;
 
         if (customModels != null)
         {
@@ -80,11 +82,24 @@ public sealed partial class ChatClient
     {
         _moonshotProvider ??= new MoonshotProvider();
         _moonshotProvider.AccessKey = apiKey;
-        _moonshotProvider.BaseUrl = ProviderConstants.MoonshotApi;
 
         if (customModels != null)
         {
             _moonshotProvider.CustomModels = customModels;
+        }
+    }
+
+    /// <summary>
+    /// 初始化Gemini服务.
+    /// </summary>
+    public void InitializeGemini(string apiKey, List<ChatModel> customModels = null)
+    {
+        _geminiProvider ??= new GeminiProvider();
+        _geminiProvider.AccessKey = apiKey;
+
+        if (customModels != null)
+        {
+            _geminiProvider.CustomModels = customModels;
         }
     }
 
@@ -97,7 +112,6 @@ public sealed partial class ChatClient
     {
         _dashScopeProvider ??= new DashScopeProvider();
         _dashScopeProvider.AccessKey = apiKey;
-        _dashScopeProvider.BaseUrl = ProviderConstants.DashScopeApi;
 
         if (customModels != null)
         {

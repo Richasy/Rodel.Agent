@@ -30,7 +30,8 @@ var provider = AnsiConsole.Prompt(
         ProviderType.Moonshot,
         ProviderType.DashScope,
         ProviderType.QianFan,
-        ProviderType.SparkDesk));
+        ProviderType.SparkDesk,
+        ProviderType.Gemini));
 
 try
 {
@@ -65,6 +66,10 @@ try
     {
         await RunSparkDeskAsync(config.SparkDesk);
     }
+    else if (provider == ProviderType.Gemini)
+    {
+        await RunGeminiAsync(config.Gemini);
+    }
     else
     {
         AnsiConsole.MarkupLine(GetString("UnknownProvider"));
@@ -87,6 +92,7 @@ string ConvertProviderTypeToString(ProviderType provider)
         ProviderType.DashScope => GetString("DashScope"),
         ProviderType.QianFan => GetString("QianFan"),
         ProviderType.SparkDesk => GetString("SparkDesk"),
+        ProviderType.Gemini => "Gemini",
         _ => "Unknown"
     };
 }
