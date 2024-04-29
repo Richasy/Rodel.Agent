@@ -1,6 +1,3 @@
-[submodule "src/Libs/OpenAI-DotNet"]
-	path = src/Libs/OpenAI-DotNet
-	url = https://github.com/Richasy/OpenAI-DotNet
 [submodule "src/Libs/Sdcb.WenXinQianFan"]
 	path = src/Libs/Sdcb.WenXinQianFan
 	url = https://github.com/Richasy/Sdcb.WenXinQianFan.git
