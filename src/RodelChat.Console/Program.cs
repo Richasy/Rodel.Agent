@@ -14,10 +14,8 @@ if (IsConfigExist())
 }
 
 config ??= new ConsoleConfig();
-_chatClient = new RodelChat.Core.ChatClient();
-
-_testTools.Add(new OpenAI.Tool(new OpenAI.Function("get_bilibili_hot_search", "Get BiliBili（B站）Hot search list.")));
-_chatClient.Tools.AddRange(_testTools);
+var plugins = new List<object>() { new TestPlugin() };
+_chatClient = new RodelChat.Core.ChatClient(plugins);
 
 var provider = AnsiConsole.Prompt(
     new SelectionPrompt<ProviderType>()

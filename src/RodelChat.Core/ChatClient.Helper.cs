@@ -1,7 +1,11 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
 using System.Text.Json;
-using OpenAI;
+using Azure.AI.OpenAI;
+using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.ChatCompletion;
+using Microsoft.SemanticKernel.Connectors.OpenAI;
+using Microsoft.SemanticKernel.Services;
 using RodelChat.Core.Models.Chat;
 using RodelChat.Core.Models.Constants;
 using RodelChat.Core.Models.Providers;
@@ -13,70 +17,10 @@ namespace RodelChat.Core;
 /// </summary>
 public sealed partial class ChatClient
 {
-    private static string ExtractAzureResourceName(string url)
-    {
-        Uri uriResult;
-        if (!Uri.TryCreate(url, UriKind.Absolute, out uriResult))
-        {
-            throw new ArgumentException("Invalid URL");
-        }
-
-        var host = uriResult.Host;
-        var parts = host.Split('.');
-        return parts.Length > 0 ? parts[0] : throw new Exception($"Resource name not found in {url}");
-    }
-
-    private static OpenAIClient CreateOpenAIClient(string apiKey, string proxyUrl = "", string organizationId = "")
-    {
-        var auth = new OpenAIAuthentication(apiKey, string.IsNullOrEmpty(organizationId) ? null : organizationId);
-
-        var settings = OpenAIClientSettings.Default;
-        if (!string.IsNullOrEmpty(proxyUrl))
-        {
-            var version = Uri.TryCreate(proxyUrl, UriKind.Absolute, out var uri) ? uri.Segments.LastOrDefault() ?? string.Empty : string.Empty;
-            settings = new OpenAIClientSettings(proxyUrl.Replace(version, string.Empty).Replace($"{uri.Scheme}://", string.Empty).Trim('/'), version.Trim('/'));
-        }
-
-        return new OpenAIClient(auth, settings);
-    }
-
-    private static List<OpenAI.Chat.Message> CovnertToMessages(List<ChatMessage> messages)
-    {
-        var result = new List<OpenAI.Chat.Message>();
-        foreach (var item in messages)
-        {
-            if (item.Role == MessageRole.Client)
-            {
-                continue;
-            }
-
-            result.Add(ConvertToOpenAIMessage(item));
-        }
-
-        return result;
-    }
-
-    private static OpenAI.Chat.Message ConvertToOpenAIMessage(ChatMessage message)
+    private static Microsoft.SemanticKernel.ChatMessageContent ConvertToKernelMessage(ChatMessage message)
     {
         var role = ConvertToRole(message.Role);
-        OpenAI.Chat.Message msg;
-        if (role == Role.Assistant && !string.IsNullOrEmpty(message.ToolCalls))
-        {
-            var tools = JsonSerializer.Deserialize<List<Tool>>(message.ToolCalls);
-            msg = new OpenAI.Chat.Message(Role.Assistant, message.Content.Select(ConvertToContent));
-            msg.ToolCalls = tools;
-        }
-        else if (role == Role.Tool && !string.IsNullOrEmpty(message.ToolId))
-        {
-            msg = new OpenAI.Chat.Message(Role.Tool, message.Content.Select(ConvertToContent));
-            msg.ToolCallId = message.ToolId;
-        }
-        else
-        {
-            msg = new OpenAI.Chat.Message(role, message.Content.Select(ConvertToContent), message.Name);
-        }
-
-        return msg;
+        return new Microsoft.SemanticKernel.ChatMessageContent(role, ConvertToContentItemCollection(message.Content.ToArray()));
     }
 
     private static dynamic ConvertToDashScopeMessage(ChatMessage message, bool isVisionMessage)
@@ -119,42 +63,53 @@ public sealed partial class ChatClient
         return new Sdcb.SparkDesk.ChatMessage(role, content);
     }
 
-    private static OpenAI.Chat.Content ConvertToContent(ChatMessageContent content)
-    {
-        return content.Type switch
-        {
-            ChatContentType.Text => new OpenAI.Chat.Content(content.Text),
-            ChatContentType.ImageUrl => ConvertToImageUrl(content),
-            _ => throw new NotSupportedException("Content type not supported."),
-        };
-    }
-
-    private static ImageUrl ConvertToImageUrl(ChatMessageContent content)
-    {
-        Enum.TryParse<ImageDetail>(content.Detail, true, out var detail);
-        return new ImageUrl(content.Text, detail);
-    }
-
-    private static Role ConvertToRole(MessageRole role)
+    private static AuthorRole ConvertToRole(MessageRole role)
         => role switch
         {
-            MessageRole.System => Role.System,
-            MessageRole.User => Role.User,
-            MessageRole.Assistant => Role.Assistant,
-            _ => Role.Tool,
+            MessageRole.System => AuthorRole.System,
+            MessageRole.User => AuthorRole.User,
+            MessageRole.Assistant => AuthorRole.Assistant,
+            _ => AuthorRole.Tool,
         };
 
-    private static string ConvertAzureOpenAIVersionToString(AzureOpenAIVersion version)
+    private static ChatMessageContentItemCollection ConvertToContentItemCollection(Models.Chat.ChatMessageContent[] contents)
+    {
+        var items = new ChatMessageContentItemCollection();
+        foreach (var item in contents)
+        {
+            if (item.Type == ChatContentType.Text)
+            {
+                items.Add(new TextContent(item.Text));
+            }
+            else if (item.Type == ChatContentType.ImageUrl)
+            {
+                if (item.Text.StartsWith("http"))
+                {
+                    items.Add(new ImageContent(new Uri(item.Text)));
+                }
+                else
+                {
+                    // convert to bytes from base64.
+                    var base64 = item.Text.Split(',')[1];
+                    var bytes = Convert.FromBase64String(base64);
+                    items.Add(new ImageContent(bytes));
+                }
+            }
+        }
+
+        return items;
+    }
+
+    private static OpenAIClientOptions.ServiceVersion ConvertAzureOpenAIVersion(AzureOpenAIVersion version)
     {
         return version switch
         {
-            AzureOpenAIVersion.V2022_12_01 => "2022-12-01",
-            AzureOpenAIVersion.V2023_05_15 => "2023-05-15",
-            AzureOpenAIVersion.V2023_06_01_Preview => "2023-06-01-preview",
-            AzureOpenAIVersion.V2023_10_01_Preview => "2023-10-01-preview",
-            AzureOpenAIVersion.V2024_02_15_Preview => "2024-02-15-preview",
-            AzureOpenAIVersion.V2024_03_01_Preview => "2024-03-01-preview",
-            AzureOpenAIVersion.V2024_02_01 => "2024-02-01",
+            AzureOpenAIVersion.V2022_12_01 => OpenAIClientOptions.ServiceVersion.V2022_12_01,
+            AzureOpenAIVersion.V2023_05_15 or AzureOpenAIVersion.V2023_10_01_Preview => OpenAIClientOptions.ServiceVersion.V2023_05_15,
+            AzureOpenAIVersion.V2023_06_01_Preview => OpenAIClientOptions.ServiceVersion.V2023_06_01_Preview,
+            AzureOpenAIVersion.V2024_02_15_Preview => OpenAIClientOptions.ServiceVersion.V2024_02_15_Preview,
+            AzureOpenAIVersion.V2024_03_01_Preview => OpenAIClientOptions.ServiceVersion.V2024_03_01_Preview,
+            AzureOpenAIVersion.V2024_02_01 => OpenAIClientOptions.ServiceVersion.V2024_02_15_Preview,
             _ => throw new NotSupportedException("Version not supported."),
         };
     }
@@ -173,6 +128,44 @@ public sealed partial class ChatClient
         }
 
         return history;
+    }
+
+    private static ChatHistory GetChatHistory(ChatSession session, ChatMessage? message = null)
+    {
+        var history = new ChatHistory();
+        if (!string.IsNullOrEmpty(session.SystemInstruction))
+        {
+            history.AddSystemMessage(session.SystemInstruction);
+        }
+
+        foreach (var item in session.History)
+        {
+            history.Add(ConvertToKernelMessage(item));
+        }
+
+        if (message != null)
+        {
+            history.Add(ConvertToKernelMessage(message));
+        }
+
+        return history;
+    }
+
+    private static PromptExecutionSettings GetExecutionSettings(ChatSession session)
+    {
+        switch (session.Provider)
+        {
+            default:
+                return new OpenAIPromptExecutionSettings
+                {
+                    PresencePenalty = session.Parameters.PresencePenalty,
+                    FrequencyPenalty = session.Parameters.FrequencyPenalty,
+                    MaxTokens = session.Parameters.MaxTokens,
+                    Temperature = session.Parameters.Temperature,
+                    TopP = session.Parameters.TopP,
+                    ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions,
+                };
+        }
     }
 
     private (List<dynamic>, Sdcb.DashScope.TextGeneration.ChatParameters) GetDashScopeRequest(ChatSession session, ChatMessage? message = null)
@@ -239,48 +232,98 @@ public sealed partial class ChatClient
         return (messages, parameters);
     }
 
-    private OpenAI.Chat.ChatRequest GetOpenAIChatRequest(ChatSession session, ChatMessage? message = null, string toolChoice = null)
+    private Kernel FindKernelProvider(ProviderType type, string modelId)
     {
-        var history = CreateHistoryCopyAndAddUserInput(session, message);
-        var messages = CovnertToMessages(history);
-        var model = FindModelInProvider(session.Provider ?? ProviderType.OpenAI, session.Model);
-        return model?.IsSupportTool ?? false
-            ? new OpenAI.Chat.ChatRequest(
-                messages,
-                Tools,
-                toolChoice,
-                session.Model,
-                session.Parameters.FrequencyPenalty,
-                maxTokens: session.Parameters.MaxTokens,
-                presencePenalty: session.Parameters.PresencePenalty,
-                temperature: session.Parameters.Temperature,
-                topP: session.Parameters.TopP)
-            : new OpenAI.Chat.ChatRequest(
-                messages,
-                session.Model,
-                session.Parameters.FrequencyPenalty,
-                maxTokens: session.Parameters.MaxTokens,
-                presencePenalty: session.Parameters.PresencePenalty,
-                temperature: session.Parameters.Temperature,
-                topP: session.Parameters.TopP);
-    }
-
-    private OpenAIClient GetOpenAIClient(ProviderType type, string modelId = "")
-    {
-        if (type == ProviderType.AzureOpenAI && !string.IsNullOrEmpty(modelId) && _azureOpenAIClient.OpenAIClientSettings.DeploymentId != modelId)
+        if (type == ProviderType.AzureOpenAI)
         {
-            _azureOpenAIClient.OpenAIClientSettings.UpdateDeploymentId(modelId);
+            var shouldRecreate = true;
+            if (_azureOpenAIKernel != null)
+            {
+                var depId = _azureOpenAIKernel.GetRequiredService<IChatCompletionService>().Attributes.GetValueOrDefault("DeploymentName").ToString();
+                shouldRecreate = depId != modelId;
+            }
+
+            if (shouldRecreate)
+            {
+                var version = ConvertAzureOpenAIVersion(_azureOpenAIProvider.Version);
+                var builder = Kernel.CreateBuilder()
+                    .AddAzureOpenAIChatCompletion(modelId, _azureOpenAIProvider.BaseUrl, _azureOpenAIProvider.AccessKey, apiVersion: version);
+                InitializePlugins(builder);
+                _azureOpenAIKernel = builder.Build();
+            }
+
+            return _azureOpenAIKernel;
+        }
+        else if (type == ProviderType.OpenAI)
+        {
+            if (ShouldKernelRecreate(_openAIKernel))
+            {
+                _openAIKernel = CreateKernel(_openAIProvider);
+            }
+
+            return _openAIKernel;
+        }
+        else if (type == ProviderType.Zhipu)
+        {
+            if (ShouldKernelRecreate(_zhipuAIKernel))
+            {
+                _zhipuAIKernel = CreateKernel(_zhipuProvider);
+            }
+
+            return _zhipuAIKernel;
+        }
+        else if (type == ProviderType.LingYi)
+        {
+            if (ShouldKernelRecreate(_lingYiAIKernel))
+            {
+                _lingYiAIKernel = CreateKernel(_lingYiProvider);
+            }
+
+            return _lingYiAIKernel;
+        }
+        else if (type == ProviderType.Moonshot)
+        {
+            if (ShouldKernelRecreate(_moonshotAIKernel))
+            {
+                _moonshotAIKernel = CreateKernel(_moonshotProvider);
+            }
+
+            return _moonshotAIKernel;
         }
 
-        return type switch
+        return default;
+
+        bool ShouldKernelRecreate(Kernel? kernel)
         {
-            ProviderType.OpenAI => _openAIClient,
-            ProviderType.AzureOpenAI => _azureOpenAIClient,
-            ProviderType.Zhipu => _zhipuAIClient,
-            ProviderType.LingYi => _lingYiAIClient,
-            ProviderType.Moonshot => _moonshotAIClient,
-            _ => throw new NotSupportedException("Provider not supported."),
-        };
+            if (kernel == null)
+            {
+                return true;
+            }
+
+            var chatService = kernel.GetRequiredService<IChatCompletionService>();
+            var model = chatService.Attributes.GetValueOrDefault(AIServiceExtensions.ModelIdKey).ToString();
+            return model != modelId;
+        }
+
+        Kernel CreateKernel(ProviderBase provider)
+        {
+            var builder = Kernel.CreateBuilder()
+                .AddOpenAIChatCompletion(modelId, new Uri(provider.BaseUrl), provider.AccessKey);
+            InitializePlugins(builder);
+            return builder.Build();
+        }
+
+        void InitializePlugins(IKernelBuilder builder)
+        {
+            var model = FindModelInProvider(type, modelId);
+            if (_plugins != null && model.IsSupportTool)
+            {
+                foreach (var item in _plugins)
+                {
+                    builder.Plugins.AddFromObject(item);
+                }
+            }
+        }
     }
 
     private ProviderBase GetProvider(ProviderType type)
@@ -313,20 +356,15 @@ public sealed partial class ChatClient
         {
             if (disposing)
             {
-                _openAIClient?.Dispose();
-                _zhipuAIClient?.Dispose();
-                _lingYiAIClient?.Dispose();
-                _moonshotAIClient?.Dispose();
-                _azureOpenAIClient?.Dispose();
                 _dashScopeClient?.Dispose();
                 _qianFanClient?.Dispose();
             }
 
-            _openAIClient = null;
-            _zhipuAIClient = null;
-            _lingYiAIClient = null;
-            _moonshotAIClient = null;
-            _azureOpenAIClient = null;
+            _openAIKernel = null;
+            _zhipuAIKernel = null;
+            _lingYiAIKernel = null;
+            _moonshotAIKernel = null;
+            _azureOpenAIKernel = null;
             _dashScopeClient = null;
             _qianFanClient = null;
             _sparkDeskClient = null;

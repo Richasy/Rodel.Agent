@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Globalization;
 using System.Resources;
 using System.Text;
-using OpenAI;
 using RodelChat.Core;
 using RodelChat.Core.Models.Chat;
 using RodelChat.Core.Models.Constants;
@@ -15,7 +14,6 @@ using Spectre.Console;
 /// </summary>
 public partial class Program
 {
-    private static readonly List<Tool> _testTools = new();
     private static ChatClient _chatClient;
     private static ResourceManager _resourceManager;
     private static CultureInfo _currentCulture;
@@ -121,7 +119,7 @@ public partial class Program
                     response = await _chatClient.SendMessageAsync(session.Id, chatMsg);
                 });
 
-            var result = await HandleMessageResponseAsync(session, response);
+            var result = HandleMessageResponse(session, response);
             if (!result)
             {
                 break;
@@ -129,32 +127,14 @@ public partial class Program
         }
     }
 
-    private static async Task<bool> HandleMessageResponseAsync(ChatSession session, ChatResponse response)
+    private static bool HandleMessageResponse(ChatSession session, ChatResponse response)
     {
         if (response == null)
         {
             return false;
         }
 
-        if (response.Tools != null && response.Tools.Count > 0)
-        {
-            await AnsiConsole.Status()
-                .StartAsync(GetString("ToolHandling"), async ctx =>
-                {
-                    var toolMessages = new List<ChatMessage>();
-                    foreach (var tool in response.Tools)
-                    {
-                        var toolName = tool.Function.Name;
-                        var toolResult = tool.InvokeFunction<string>();
-                        toolMessages.Add(ChatMessage.CreateToolMessage(toolName, toolResult, tool.Id));
-                    }
-
-                    response = await _chatClient.SendMessageAsync(session.Id, toolCallbacks: toolMessages);
-                });
-
-            return await HandleMessageResponseAsync(session, response);
-        }
-        else if (response.Message.Role == MessageRole.Assistant)
+        if (response.Message.Role == MessageRole.Assistant)
         {
             var msg = response.Message;
             AnsiConsole.MarkupLine($"[bold green]{GetString("AssistantOutput")}[/]: {msg.GetFirstTextContent()}");

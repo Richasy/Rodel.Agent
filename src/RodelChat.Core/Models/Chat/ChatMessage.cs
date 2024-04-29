@@ -1,7 +1,5 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
-using System.Text.Encodings.Web;
-using System.Text.Json;
 using RodelChat.Core.Models.Constants;
 
 namespace RodelChat.Core.Models.Chat;
@@ -101,22 +99,13 @@ public sealed class ChatMessage
     /// </summary>
     /// <param name="content">助手消息.</param>
     /// <returns><see cref="ChatMessage"/>.</returns>
-    public static ChatMessage CreateAssistantMessage(string content, List<OpenAI.Tool>? toolCalls = default)
+    public static ChatMessage CreateAssistantMessage(string content)
     {
         var msg = new ChatMessage
         {
             Role = MessageRole.Assistant,
             Content = new List<ChatMessageContent> { ChatMessageContent.CreateTextContent(content) },
         };
-
-        if (toolCalls != null && toolCalls.Count > 0)
-        {
-            msg.ToolCalls = JsonSerializer.Serialize(toolCalls, new JsonSerializerOptions
-            {
-                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            });
-        }
 
         return msg;
     }

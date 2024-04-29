@@ -1,7 +1,5 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
-using OpenAI;
-
 namespace RodelChat.Core.Models.Chat;
 
 /// <summary>
@@ -13,9 +11,4 @@ public sealed class ChatResponse
     /// 消息.
     /// </summary>
     public ChatMessage Message { get; set; }
-
-    /// <summary>
-    /// 调用的工具.
-    /// </summary>
-    public List<Tool>? Tools { get; set; }
 }

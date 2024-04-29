@@ -4,7 +4,7 @@
   <!-- This config may be incompatible with Jumpstart since it uses the same file.
        If we opt for Jumpstart, this may need to be migrated. -->
   <PropertyGroup>
-	  <NoWarn>$(NoWarn);NU1701;CS9057;MSB3277;NETSDK1206;IDE0161</NoWarn>
+	  <NoWarn>$(NoWarn);NU1701;NU1507;CS9057;MSB3277;NETSDK1206;IDE0161</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 

@@ -31,4 +31,9 @@ public enum ClientMessageType
     /// 模型不支持图片.
     /// </summary>
     ModelNotSupportImage,
+
+    /// <summary>
+    /// 服务商不支持.
+    /// </summary>
+    ProviderNotSupported,
 }

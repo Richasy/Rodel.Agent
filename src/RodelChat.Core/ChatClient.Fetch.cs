@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
-using OpenAI;
+using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.ChatCompletion;
 using RodelChat.Core.Models.Chat;
 using RodelChat.Core.Models.Constants;
 
@@ -11,75 +12,43 @@ namespace RodelChat.Core;
 /// </summary>
 public sealed partial class ChatClient
 {
-    private async Task<ChatResponse> OpenAISendMessageAsync(OpenAIClient client, ChatSession session, ChatMessage message, string toolChoice = null, Action<string> streamingAction = null, CancellationToken cancellationToken = default)
+    private static async Task<ChatResponse> OpenAISendMessageAsync(Kernel kernel, ChatSession session, ChatMessage message, Action<string> streamingAction = null, CancellationToken cancellationToken = default)
     {
-        var chatRequest = GetOpenAIChatRequest(session, message, toolChoice);
-
+        var history = GetChatHistory(session, message);
+        var settings = GetExecutionSettings(session);
         var responseContent = string.Empty;
-        List<Tool>? tools = default;
+        var chatService = kernel.GetRequiredService<IChatCompletionService>();
 
         // TODO: Support tool call.
         if (session.UseStreamOutput)
         {
-            await foreach (var partialResponse in client.ChatEndpoint.StreamCompletionEnumerableAsync(chatRequest, cancellationToken))
+            await foreach (var partialResponse in chatService.GetStreamingChatMessageContentsAsync(history, settings, kernel, cancellationToken: cancellationToken))
             {
-                var partialChoice = partialResponse.Choices.FirstOrDefault(p => !string.IsNullOrEmpty(p.Delta?.Content) || p.Delta?.ToolCalls != null);
-                if (partialChoice == null)
+                if (!string.IsNullOrEmpty(partialResponse.Content))
                 {
-                    continue;
+                    streamingAction?.Invoke(partialResponse.Content);
                 }
 
-                var content = partialChoice?.Delta?.Content;
-                if (partialChoice.Delta.ToolCalls != null && partialChoice.Delta.ToolCalls.Count > 0 && partialChoice.FinishReason == "tool_calls")
-                {
-                    tools ??= new List<Tool>();
-                    foreach (var t in partialChoice.Delta.ToolCalls)
-                    {
-                        if (!string.IsNullOrEmpty(t.Function?.Name))
-                        {
-                            tools.Add(t);
-                        }
-                    }
-                }
-
-                if (!string.IsNullOrEmpty(content))
-                {
-                    streamingAction?.Invoke(content);
-                }
-
-                responseContent += content;
+                responseContent += partialResponse.Content;
             }
         }
         else
         {
-            var response = await client.ChatEndpoint.GetCompletionAsync(chatRequest, cancellationToken);
-            var choice = response.FirstChoice;
-            if (choice.Message.ToolCalls != null && choice.Message.ToolCalls.Count > 0)
-            {
-                tools ??= new List<Tool>();
-                foreach (var t in choice.Message.ToolCalls)
-                {
-                    tools.Add(t);
-                }
-            }
-
-            responseContent = response.FirstChoice.Message.ToString();
+            var response = await chatService.GetChatMessageContentAsync(history, settings, cancellationToken: cancellationToken, kernel: kernel);
+            responseContent = response.Content;
         }
 
         var msg = !string.IsNullOrEmpty(responseContent)
-            ? ChatMessage.CreateAssistantMessage(responseContent)
-            : tools != null && tools.Count > 0
-                ? ChatMessage.CreateAssistantMessage(string.Empty, tools)
+                ? ChatMessage.CreateAssistantMessage(responseContent)
                 : ChatMessage.CreateClientMessage(ClientMessageType.EmptyResponseContent, string.Empty);
 
         return new ChatResponse
         {
             Message = msg,
-            Tools = tools,
         };
     }
 
-    private async Task<ChatResponse> DashScopeSendMessageAsync(ChatSession session, ChatMessage message, string toolChoice = null, Action<string> streamingAction = null, CancellationToken cancellationToken = default)
+    private async Task<ChatResponse> DashScopeSendMessageAsync(ChatSession session, ChatMessage message, Action<string> streamingAction = null, CancellationToken cancellationToken = default)
     {
         var data = GetDashScopeRequest(session, message);
         var model = FindModelInProvider(session.Provider!.Value, session.Model);
@@ -132,7 +101,7 @@ public sealed partial class ChatClient
         };
     }
 
-    private async Task<ChatResponse> QianFanSendMessageAsync(ChatSession session, ChatMessage message, string toolChoice = null, Action<string> streamingAction = null, CancellationToken cancellationToken = default)
+    private async Task<ChatResponse> QianFanSendMessageAsync(ChatSession session, ChatMessage message, Action<string> streamingAction = null, CancellationToken cancellationToken = default)
     {
         var (messages, parameters) = GetQianFanRequest(session, message);
         var model = FindModelInProvider(session.Provider!.Value, session.Model);
@@ -166,7 +135,7 @@ public sealed partial class ChatClient
         };
     }
 
-    private async Task<ChatResponse> SparkDeskSendMessageAsync(ChatSession session, ChatMessage message, string toolChoice = null, Action<string> streamingAction = null, CancellationToken cancellationToken = default)
+    private async Task<ChatResponse> SparkDeskSendMessageAsync(ChatSession session, ChatMessage message, Action<string> streamingAction = null, CancellationToken cancellationToken = default)
     {
         var (messages, parameters) = GetSparkDeskRequest(session, message);
         var model = FindModelInProvider(session.Provider!.Value, session.Model);

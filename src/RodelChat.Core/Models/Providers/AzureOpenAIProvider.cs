@@ -16,11 +16,6 @@ public sealed class AzureOpenAIProvider : ProviderBase
         => Id = ProviderType.AzureOpenAI.ToString();
 
     /// <summary>
-    /// 获取或设置资源名称.
-    /// </summary>
-    public string ResourceName { get; set; }
-
-    /// <summary>
     /// 获取或设置 API 版本.
     /// </summary>
     public AzureOpenAIVersion Version { get; set; }

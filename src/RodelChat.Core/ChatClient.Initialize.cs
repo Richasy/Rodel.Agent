@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
-using OpenAI;
 using RodelChat.Core.Models.Chat;
 using RodelChat.Core.Models.Constants;
 using RodelChat.Core.Models.Providers;
@@ -26,14 +25,6 @@ public sealed partial class ChatClient
         {
             _openAIProvider.CustomModels = customModels;
         }
-
-        if (_openAIClient != null)
-        {
-            _openAIClient.Dispose();
-            _openAIClient = null;
-        }
-
-        _openAIClient = CreateOpenAIClient(apiKey, proxyUrl, organizationId);
     }
 
     /// <summary>
@@ -45,16 +36,11 @@ public sealed partial class ChatClient
         _azureOpenAIProvider.AccessKey = apiKey;
         _azureOpenAIProvider.BaseUrl = endpoint;
         _azureOpenAIProvider.Version = apiVersion;
-        _azureOpenAIProvider.ResourceName = ExtractAzureResourceName(endpoint);
 
         if (customModels != null)
         {
             _azureOpenAIProvider.CustomModels = customModels;
         }
-
-        var auth = new OpenAIAuthentication(apiKey);
-        var settings = new OpenAIClientSettings(_azureOpenAIProvider.ResourceName, ConvertAzureOpenAIVersionToString(apiVersion), false);
-        _azureOpenAIClient = new OpenAIClient(auth, settings);
     }
 
     /// <summary>
@@ -70,14 +56,6 @@ public sealed partial class ChatClient
         {
             _zhipuProvider.CustomModels = customModels;
         }
-
-        if (_zhipuAIClient != null)
-        {
-            _zhipuAIClient.Dispose();
-            _zhipuAIClient = null;
-        }
-
-        _zhipuAIClient = CreateOpenAIClient(apiKey, _zhipuProvider.BaseUrl);
     }
 
     /// <summary>
@@ -93,14 +71,6 @@ public sealed partial class ChatClient
         {
             _lingYiProvider.CustomModels = customModels;
         }
-
-        if (_lingYiAIClient != null)
-        {
-            _lingYiAIClient.Dispose();
-            _lingYiAIClient = null;
-        }
-
-        _lingYiAIClient = CreateOpenAIClient(apiKey, _lingYiProvider.BaseUrl);
     }
 
     /// <summary>
@@ -116,14 +86,6 @@ public sealed partial class ChatClient
         {
             _moonshotProvider.CustomModels = customModels;
         }
-
-        if (_moonshotAIClient != null)
-        {
-            _moonshotAIClient.Dispose();
-            _moonshotAIClient = null;
-        }
-
-        _moonshotAIClient = CreateOpenAIClient(apiKey, _moonshotProvider.BaseUrl);
     }
 
     /// <summary>

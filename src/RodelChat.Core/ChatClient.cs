@@ -13,10 +13,10 @@ public sealed partial class ChatClient : IDisposable
     /// <summary>
     /// Initializes a new instance of the <see cref="ChatClient"/> class.
     /// </summary>
-    public ChatClient()
+    public ChatClient(List<object> plugins = null)
     {
         Sessions = new List<ChatSession>();
-        Tools = new List<OpenAI.Tool>();
+        _plugins = plugins;
     }
 
     /// <summary>
@@ -88,8 +88,6 @@ public sealed partial class ChatClient : IDisposable
     /// </summary>
     /// <param name="sessionId">会话标识符.</param>
     /// <param name="message">用户输入.</param>
-    /// <param name="toolChoice">工具选择.</param>
-    /// <param name="toolCallbacks">工具回调.</param>
     /// <param name="streamingAction">流式输出的处理.</param>
     /// <param name="cancellationToken">终止令牌.</param>
     /// <returns><see cref="ChatMessage"/>.</returns>
@@ -97,8 +95,6 @@ public sealed partial class ChatClient : IDisposable
     public async Task<ChatResponse> SendMessageAsync(
         string sessionId,
         ChatMessage? message = null,
-        string toolChoice = "auto",
-        IList<ChatMessage>? toolCallbacks = null,
         Action<string> streamingAction = default,
         CancellationToken cancellationToken = default)
     {
@@ -109,14 +105,6 @@ public sealed partial class ChatClient : IDisposable
 
         try
         {
-            if (toolCallbacks != null)
-            {
-                foreach (var c in toolCallbacks)
-                {
-                    session.History.Add(c);
-                }
-            }
-
             var model = FindModelInProvider(session.Provider!.Value, session.Model);
             if (message.Content.Any(p => p.Type == ChatContentType.ImageUrl) && !model.IsSupportVision)
             {
@@ -125,20 +113,25 @@ public sealed partial class ChatClient : IDisposable
 
             if (session.Provider == ProviderType.DashScope)
             {
-                response = await DashScopeSendMessageAsync(session, message, toolChoice, streamingAction, cancellationToken);
+                response = await DashScopeSendMessageAsync(session, message, streamingAction, cancellationToken);
             }
             else if (session.Provider == ProviderType.QianFan)
             {
-                response = await QianFanSendMessageAsync(session, message, toolChoice, streamingAction, cancellationToken);
+                response = await QianFanSendMessageAsync(session, message, streamingAction, cancellationToken);
             }
             else if (session.Provider == ProviderType.SparkDesk)
             {
-                response = await SparkDeskSendMessageAsync(session, message, toolChoice, streamingAction, cancellationToken);
+                response = await SparkDeskSendMessageAsync(session, message, streamingAction, cancellationToken);
             }
             else
             {
-                var client = GetOpenAIClient(session.Provider ?? _defaultProvider, session.Model);
-                response = await OpenAISendMessageAsync(client, session, message, toolChoice, streamingAction, cancellationToken);
+                var kernel = FindKernelProvider(session.Provider!.Value, session.Model);
+                if (kernel == null)
+                {
+                    return new ChatResponse { Message = ChatMessage.CreateClientMessage(ClientMessageType.ProviderNotSupported, string.Empty) };
+                }
+
+                response = await OpenAISendMessageAsync(kernel, session, message, streamingAction, cancellationToken);
             }
 
             response.Message.Time = DateTimeOffset.Now;
