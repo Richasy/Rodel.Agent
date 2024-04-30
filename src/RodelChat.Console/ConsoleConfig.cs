@@ -51,6 +51,21 @@ public sealed class ConsoleConfig
     /// Gemini 服务配置.
     /// </summary>
     public ServiceConfigBase Gemini { get; set; }
+
+    /// <summary>
+    /// Groq 服务配置.
+    /// </summary>
+    public ServiceConfigBase Groq { get; set; }
+
+    /// <summary>
+    /// Mistral AI 服务配置.
+    /// </summary>
+    public ServiceConfigBase MistralAI { get; set; }
+
+    /// <summary>
+    /// Perplexity 服务配置.
+    /// </summary>
+    public ServiceConfigBase Perplexity { get; set; }
 }
 
 /// <summary>

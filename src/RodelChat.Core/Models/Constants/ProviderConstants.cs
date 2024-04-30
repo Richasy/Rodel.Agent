@@ -11,4 +11,7 @@ internal static class ProviderConstants
     internal const string DashScopeApi = "https://dashscope.aliyuncs.com/compatible-mode/v1";
     internal const string QianFanApi = "https://aip.baidubce.com/rpc/2.0/ai_custom/v1";
     internal const string GeminiApi = "https://generativelanguage.googleapis.com";
+    internal const string GroqApi = "https://api.groq.com/openai/v1";
+    internal const string MistralAIApi = "https://api.mistral.ai/v1";
+    internal const string PerplexityApi = "https://api.perplexity.ai/";
 }

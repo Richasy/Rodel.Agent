@@ -25,6 +25,9 @@ public sealed partial class ChatClient
     private DashScopeProvider? _dashScopeProvider;
     private QianFanProvider? _qianFanProvider;
     private SparkDeskProvider? _sparkDeskProvider;
+    private GroqProvider? _groqProvider;
+    private MistralAIProvider? _mistralAIProvider;
+    private PerplexityProvider? _perplexityProvider;
 
     private Kernel? _openAIKernel;
     private Kernel? _azureOpenAIKernel;
@@ -35,6 +38,9 @@ public sealed partial class ChatClient
     private Kernel? _dashScopeKernel;
     private Kernel? _qianFanKernel;
     private Kernel? _sparkDeskKernel;
+    private Kernel? _groqKernel;
+    private Kernel? _mistralAIKernel;
+    private Kernel? _perplexityKernel;
 
     /// <summary>
     /// 会话列表.

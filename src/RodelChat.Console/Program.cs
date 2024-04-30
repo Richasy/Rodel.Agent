@@ -20,7 +20,7 @@ _chatClient = new RodelChat.Core.ChatClient(plugins);
 var provider = AnsiConsole.Prompt(
     new SelectionPrompt<ProviderType>()
     .Title(GetString("SelectProvider"))
-    .PageSize(10)
+    .PageSize(20)
     .UseConverter(ConvertProviderTypeToString)
     .AddChoices(
         ProviderType.OpenAI,
@@ -31,7 +31,10 @@ var provider = AnsiConsole.Prompt(
         ProviderType.DashScope,
         ProviderType.QianFan,
         ProviderType.SparkDesk,
-        ProviderType.Gemini));
+        ProviderType.Gemini,
+        ProviderType.Groq,
+        ProviderType.MistralAI,
+        ProviderType.Perplexity));
 
 try
 {
@@ -70,6 +73,18 @@ try
     {
         await RunGeminiAsync(config.Gemini);
     }
+    else if (provider == ProviderType.Groq)
+    {
+        await RunGroqAsync(config.Groq);
+    }
+    else if (provider == ProviderType.MistralAI)
+    {
+        await RunMistralAIAsync(config.MistralAI);
+    }
+    else if (provider == ProviderType.Perplexity)
+    {
+        await RunPerplexityAsync(config.Perplexity);
+    }
     else
     {
         AnsiConsole.MarkupLine(GetString("UnknownProvider"));
@@ -93,6 +108,9 @@ string ConvertProviderTypeToString(ProviderType provider)
         ProviderType.QianFan => GetString("QianFan"),
         ProviderType.SparkDesk => GetString("SparkDesk"),
         ProviderType.Gemini => "Gemini",
+        ProviderType.Groq => "Groq",
+        ProviderType.MistralAI => "Mistral AI",
+        ProviderType.Perplexity => "Perplexity",
         _ => "Unknown"
     };
 }

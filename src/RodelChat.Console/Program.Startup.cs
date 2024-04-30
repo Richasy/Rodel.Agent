@@ -139,4 +139,52 @@ public partial class Program
         var session = _chatClient.CreateSession(ChatParameters.Create(), ProviderType.Gemini, model.Id);
         await LoopMessageAsync(session);
     }
+
+    private static async Task RunGroqAsync(ServiceConfigBase? config)
+    {
+        if (config == null)
+        {
+            // TODO: 询问用户是否要创建一个新的配置.
+            return;
+        }
+
+        _chatClient.InitializeGroq(config.Key, config.CustomModels);
+        _chatClient.SetDefaultProvider(ProviderType.Groq);
+
+        var model = AskModel(_chatClient.GetServerModels(ProviderType.Groq), config.CustomModels, config.DefaultModelId);
+        var session = _chatClient.CreateSession(ChatParameters.Create(), ProviderType.Groq, model.Id);
+        await LoopMessageAsync(session);
+    }
+
+    private static async Task RunMistralAIAsync(ServiceConfigBase? config)
+    {
+        if (config == null)
+        {
+            // TODO: 询问用户是否要创建一个新的配置.
+            return;
+        }
+
+        _chatClient.InitializeMistralAI(config.Key, config.CustomModels);
+        _chatClient.SetDefaultProvider(ProviderType.MistralAI);
+
+        var model = AskModel(_chatClient.GetServerModels(ProviderType.MistralAI), config.CustomModels, config.DefaultModelId);
+        var session = _chatClient.CreateSession(ChatParameters.Create(), ProviderType.MistralAI, model.Id);
+        await LoopMessageAsync(session);
+    }
+
+    private static async Task RunPerplexityAsync(ServiceConfigBase? config)
+    {
+        if (config == null)
+        {
+            // TODO: 询问用户是否要创建一个新的配置.
+            return;
+        }
+
+        _chatClient.InitializePerplexity(config.Key, config.CustomModels);
+        _chatClient.SetDefaultProvider(ProviderType.Perplexity);
+
+        var model = AskModel(_chatClient.GetServerModels(ProviderType.Perplexity), config.CustomModels, config.DefaultModelId);
+        var session = _chatClient.CreateSession(ChatParameters.Create(), ProviderType.Perplexity, model.Id);
+        await LoopMessageAsync(session);
+    }
 }

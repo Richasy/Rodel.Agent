@@ -152,4 +152,46 @@ public sealed partial class ChatClient
             _sparkDeskProvider.CustomModels = customModels;
         }
     }
+
+    /// <summary>
+    /// 初始化Groq服务.
+    /// </summary>
+    public void InitializeGroq(string apiKey, List<ChatModel> customModels = null)
+    {
+        _groqProvider ??= new GroqProvider();
+        _groqProvider.AccessKey = apiKey;
+
+        if (customModels != null)
+        {
+            _groqProvider.CustomModels = customModels;
+        }
+    }
+
+    /// <summary>
+    /// 初始化MistralAI服务.
+    /// </summary>
+    public void InitializeMistralAI(string apiKey, List<ChatModel> customModels = null)
+    {
+        _mistralAIProvider ??= new MistralAIProvider();
+        _mistralAIProvider.AccessKey = apiKey;
+
+        if (customModels != null)
+        {
+            _mistralAIProvider.CustomModels = customModels;
+        }
+    }
+
+    /// <summary>
+    /// 初始化Perplexity服务.
+    /// </summary>
+    public void InitializePerplexity(string apiKey, List<ChatModel> customModels = null)
+    {
+        _perplexityProvider ??= new PerplexityProvider();
+        _perplexityProvider.AccessKey = apiKey;
+
+        if (customModels != null)
+        {
+            _perplexityProvider.CustomModels = customModels;
+        }
+    }
 }
