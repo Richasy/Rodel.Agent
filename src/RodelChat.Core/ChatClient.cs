@@ -111,21 +111,13 @@ public sealed partial class ChatClient : IDisposable
                 return ChatMessage.CreateClientMessage(ClientMessageType.ModelNotSupportImage, string.Empty);
             }
 
-            if (session.Provider == ProviderType.DashScope)
+            var kernel = FindKernelProvider(session.Provider!.Value, session.Model);
+            if (kernel == null)
             {
-                response = await DashScopeSendMessageAsync(session, message, streamingAction, cancellationToken);
-            }
-            else
-            {
-                var kernel = FindKernelProvider(session.Provider!.Value, session.Model);
-                if (kernel == null)
-                {
-                    return ChatMessage.CreateClientMessage(ClientMessageType.ProviderNotSupported, string.Empty);
-                }
-
-                response = await KernelSendMessageAsync(kernel, session, message, streamingAction, cancellationToken);
+                return ChatMessage.CreateClientMessage(ClientMessageType.ProviderNotSupported, string.Empty);
             }
 
+            response = await KernelSendMessageAsync(kernel, session, message, streamingAction, cancellationToken);
             response.Time = DateTimeOffset.Now;
             session.History.Add(response);
 

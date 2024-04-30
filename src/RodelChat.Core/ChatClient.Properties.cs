@@ -4,7 +4,6 @@ using Microsoft.SemanticKernel;
 using RodelChat.Core.Models.Chat;
 using RodelChat.Core.Models.Constants;
 using RodelChat.Core.Models.Providers;
-using Sdcb.DashScope;
 
 namespace RodelChat.Core;
 
@@ -33,7 +32,7 @@ public sealed partial class ChatClient
     private Kernel? _lingYiKernel;
     private Kernel? _moonshotKernel;
     private Kernel? _geminiKernel;
-    private DashScopeClient? _dashScopeClient;
+    private Kernel? _dashScopeKernel;
     private Kernel? _qianFanKernel;
     private Kernel? _sparkDeskKernel;
 

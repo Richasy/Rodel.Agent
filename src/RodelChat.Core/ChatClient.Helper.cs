@@ -26,32 +26,6 @@ public sealed partial class ChatClient
         return new Microsoft.SemanticKernel.ChatMessageContent(role, ConvertToContentItemCollection(message.Content.ToArray()));
     }
 
-    private static dynamic ConvertToDashScopeMessage(ChatMessage message, bool isVisionMessage)
-    {
-        var role = message.Role.ToString().ToLower();
-        if (isVisionMessage)
-        {
-            var contentList = new List<Sdcb.DashScope.TextGeneration.ContentItem>();
-            message.Content.ForEach(c =>
-            {
-                if (c.Type == ChatContentType.Text)
-                {
-                    contentList.Add(Sdcb.DashScope.TextGeneration.ContentItem.FromText(c.Text));
-                }
-                else if (c.Type == ChatContentType.ImageUrl)
-                {
-                    contentList.Add(Sdcb.DashScope.TextGeneration.ContentItem.FromImage(c.Text));
-                }
-            });
-
-            return new Sdcb.DashScope.TextGeneration.ChatVLMessage(role, contentList.ToArray());
-        }
-        else
-        {
-            return new Sdcb.DashScope.TextGeneration.ChatMessage(role, message.Content[0].Text);
-        }
-    }
-
     private static AuthorRole ConvertToRole(MessageRole role)
         => role switch
         {
@@ -178,41 +152,6 @@ public sealed partial class ChatClient
         }
     }
 
-    private (List<dynamic>, Sdcb.DashScope.TextGeneration.ChatParameters) GetDashScopeRequest(ChatSession session, ChatMessage? message = null)
-    {
-        var history = CreateHistoryCopyAndAddUserInput(session, message);
-        var msgs = new List<dynamic>();
-        var model = FindModelInProvider(ProviderType.DashScope, session.Model);
-        foreach (var item in history)
-        {
-            if (item.Role == MessageRole.Client)
-            {
-                continue;
-            }
-
-            var m = ConvertToDashScopeMessage(item, model.IsSupportVision);
-            if (m is Sdcb.DashScope.TextGeneration.ChatMessage cm)
-            {
-                msgs.Add(cm);
-            }
-            else if (m is Sdcb.DashScope.TextGeneration.ChatVLMessage cvlm)
-            {
-                msgs.Add(cvlm);
-            }
-        }
-
-        var parameters = new Sdcb.DashScope.TextGeneration.ChatParameters
-        {
-            ResultFormat = "text",
-            MaxTokens = session.Parameters.MaxTokens,
-            Temperature = (float)session.Parameters.Temperature,
-            TopP = (float)session.Parameters.TopP,
-            RepetitionPenalty = (float)session.Parameters.FrequencyPenalty + 1,
-        };
-
-        return (msgs, parameters);
-    }
-
     private Kernel FindKernelProvider(ProviderType type, string modelId)
     {
         if (type == ProviderType.AzureOpenAI)
@@ -270,6 +209,15 @@ public sealed partial class ChatClient
             }
 
             return _moonshotKernel;
+        }
+        else if (type == ProviderType.DashScope)
+        {
+            if (ShouldKernelRecreate(_dashScopeKernel))
+            {
+                _dashScopeKernel = CreateOpenAIKernel(_dashScopeProvider);
+            }
+
+            return _dashScopeKernel;
         }
         else if (type == ProviderType.Gemini)
         {
@@ -371,22 +319,18 @@ public sealed partial class ChatClient
     {
         if (!_disposedValue)
         {
-            if (disposing)
-            {
-                _dashScopeClient?.Dispose();
-            }
-
             _openAIKernel = null;
             _zhipuKernel = null;
             _lingYiKernel = null;
             _moonshotKernel = null;
             _azureOpenAIKernel = null;
-            _dashScopeClient = null;
+            _dashScopeKernel = null;
             _qianFanKernel = null;
             _sparkDeskKernel = null;
             _geminiKernel = null;
             _sparkDeskKernel = null;
             _qianFanKernel = null;
+            _dashScopeKernel = null;
             _disposedValue = true;
         }
     }

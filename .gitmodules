@@ -1,6 +1,3 @@
-[submodule "src/Libs/Sdcb.DashScope"]
-	path = src/Libs/Sdcb.DashScope
-	url = https://github.com/Richasy/Sdcb.DashScope.git
 [submodule "src/Libs/semantic-kernel"]
 	path = src/Libs/semantic-kernel
 	url = https://github.com/Richasy/semantic-kernel.git

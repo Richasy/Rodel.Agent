@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RodelChat.Console", "RodelC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{4B9E7C1C-23A5-4F32-A3E5-88F38D466FC0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sdcb.DashScope", "Libs\Sdcb.DashScope\Sdcb.DashScope\Sdcb.DashScope.csproj", "{75BF6570-8CED-4C14-96C7-B722EF632E19}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SemanticKernel.Core", "Libs\semantic-kernel\dotnet\src\SemanticKernel.Core\SemanticKernel.Core.csproj", "{CC7EA0AC-8B54-4B76-8F4F-E669E7759FF4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SemanticKernel.Abstractions", "Libs\semantic-kernel\dotnet\src\SemanticKernel.Abstractions\SemanticKernel.Abstractions.csproj", "{F0860AC6-75B1-49D9-A1D4-90FCDEC14BC2}"
@@ -42,12 +40,6 @@ Global
 		{EBF5ED1D-40CD-4A81-B56B-32FC469AE7EE}.Publish|Any CPU.Build.0 = Release|Any CPU
 		{EBF5ED1D-40CD-4A81-B56B-32FC469AE7EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBF5ED1D-40CD-4A81-B56B-32FC469AE7EE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{75BF6570-8CED-4C14-96C7-B722EF632E19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{75BF6570-8CED-4C14-96C7-B722EF632E19}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{75BF6570-8CED-4C14-96C7-B722EF632E19}.Publish|Any CPU.ActiveCfg = Release|Any CPU
-		{75BF6570-8CED-4C14-96C7-B722EF632E19}.Publish|Any CPU.Build.0 = Release|Any CPU
-		{75BF6570-8CED-4C14-96C7-B722EF632E19}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{75BF6570-8CED-4C14-96C7-B722EF632E19}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CC7EA0AC-8B54-4B76-8F4F-E669E7759FF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CC7EA0AC-8B54-4B76-8F4F-E669E7759FF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC7EA0AC-8B54-4B76-8F4F-E669E7759FF4}.Publish|Any CPU.ActiveCfg = Publish|Any CPU
@@ -89,7 +81,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{75BF6570-8CED-4C14-96C7-B722EF632E19} = {4B9E7C1C-23A5-4F32-A3E5-88F38D466FC0}
 		{CC7EA0AC-8B54-4B76-8F4F-E669E7759FF4} = {4B9E7C1C-23A5-4F32-A3E5-88F38D466FC0}
 		{F0860AC6-75B1-49D9-A1D4-90FCDEC14BC2} = {4B9E7C1C-23A5-4F32-A3E5-88F38D466FC0}
 		{F96A227A-348B-494D-A01F-F56EF9176CF4} = {4B9E7C1C-23A5-4F32-A3E5-88F38D466FC0}

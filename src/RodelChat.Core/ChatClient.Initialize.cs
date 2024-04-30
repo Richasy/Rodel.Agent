@@ -117,8 +117,6 @@ public sealed partial class ChatClient
         {
             _dashScopeProvider.CustomModels = customModels;
         }
-
-        _dashScopeClient = new Sdcb.DashScope.DashScopeClient(apiKey);
     }
 
     /// <summary>

@@ -11,7 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Libs\Sdcb.DashScope\Sdcb.DashScope\Sdcb.DashScope.csproj" />
     <ProjectReference Include="..\Libs\semantic-kernel\dotnet\src\Connectors\Connectors.Google\Connectors.Google.csproj" />
     <ProjectReference Include="..\Libs\semantic-kernel\dotnet\src\Connectors\Connectors.OpenAI\Connectors.OpenAI.csproj" />
     <ProjectReference Include="..\Libs\semantic-kernel\dotnet\src\Connectors\Connectors.QianFan\Connectors.QianFan.csproj" />

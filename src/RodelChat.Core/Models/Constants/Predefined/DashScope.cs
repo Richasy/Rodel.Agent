@@ -72,33 +72,5 @@ internal static partial class PredefinedModels
             Id = "qwen-7b-chat",
             Tokens = 6000,
         },
-        new ChatModel
-        {
-            DisplayName = "Qwen Vision V1",
-            Id = "qwen-vl-v1",
-            IsSupportVision = true,
-            IsSupportBase64Image = false,
-        },
-        new ChatModel
-        {
-            DisplayName = "Qwen Vision Chat V1",
-            Id = "qwen-vl-chat-v1",
-            IsSupportVision = true,
-            IsSupportBase64Image = false,
-        },
-        new ChatModel
-        {
-            DisplayName = "Qwen Vision Plus",
-            Id = "qwen-vl-plus",
-            IsSupportVision = true,
-            IsSupportBase64Image = false,
-        },
-        new ChatModel
-        {
-            DisplayName = "Qwen Vision Max",
-            Id = "qwen-vl-max",
-            IsSupportVision = true,
-            IsSupportBase64Image = false,
-        },
     };
 }
