@@ -1,6 +1,3 @@
-[submodule "src/Libs/Sdcb.WenXinQianFan"]
-	path = src/Libs/Sdcb.WenXinQianFan
-	url = https://github.com/Richasy/Sdcb.WenXinQianFan.git
 [submodule "src/Libs/Sdcb.DashScope"]
 	path = src/Libs/Sdcb.DashScope
 	url = https://github.com/Richasy/Sdcb.DashScope.git

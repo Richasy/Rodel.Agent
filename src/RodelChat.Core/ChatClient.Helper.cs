@@ -6,6 +6,7 @@ using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.Google;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
+using Microsoft.SemanticKernel.Connectors.QianFan;
 using Microsoft.SemanticKernel.Connectors.SparkDesk;
 using Microsoft.SemanticKernel.Services;
 using RodelChat.Core.Models.Chat;
@@ -49,13 +50,6 @@ public sealed partial class ChatClient
         {
             return new Sdcb.DashScope.TextGeneration.ChatMessage(role, message.Content[0].Text);
         }
-    }
-
-    private static Sdcb.WenXinQianFan.ChatMessage ConvertToQianFanMessage(ChatMessage message)
-    {
-        var role = message.Role.ToString().ToLower();
-        var content = message.Content[0].Text;
-        return new Sdcb.WenXinQianFan.ChatMessage(role, content);
     }
 
     private static AuthorRole ConvertToRole(MessageRole role)
@@ -163,6 +157,14 @@ public sealed partial class ChatClient
                     Temperature = session.Parameters.Temperature,
                     ToolCallBehavior = SparkDeskToolCallBehavior.AutoInvokeKernelFunctions,
                 };
+            case ProviderType.QianFan:
+                return new QianFanPromptExecutionSettings
+                {
+                    MaxTokens = session.Parameters.MaxTokens,
+                    Temperature = session.Parameters.Temperature,
+                    TopP = session.Parameters.TopP,
+                    PenaltyScore = session.Parameters.FrequencyPenalty + 1,
+                };
             default:
                 return new OpenAIPromptExecutionSettings
                 {
@@ -209,21 +211,6 @@ public sealed partial class ChatClient
         };
 
         return (msgs, parameters);
-    }
-
-    private (List<Sdcb.WenXinQianFan.ChatMessage>, Sdcb.WenXinQianFan.ChatRequestParameters) GetQianFanRequest(ChatSession session, ChatMessage? message = null)
-    {
-        var history = CreateHistoryCopyAndAddUserInput(session, message);
-        var model = FindModelInProvider(ProviderType.DashScope, session.Model);
-        var messages = history.Where(p => p.Role != MessageRole.Client).Select(ConvertToQianFanMessage).ToList();
-        var parameters = new Sdcb.WenXinQianFan.ChatRequestParameters
-        {
-            Temperature = (float)session.Parameters.Temperature,
-            TopP = (float)session.Parameters.TopP,
-            PenaltyScore = (float)session.Parameters.FrequencyPenalty + 1,
-        };
-
-        return (messages, parameters);
     }
 
     private Kernel FindKernelProvider(ProviderType type, string modelId)
@@ -296,7 +283,7 @@ public sealed partial class ChatClient
 
             return _geminiKernel;
         }
-        else if(type == ProviderType.SparkDesk)
+        else if (type == ProviderType.SparkDesk)
         {
             if (ShouldKernelRecreate(_sparkDeskKernel))
             {
@@ -307,6 +294,17 @@ public sealed partial class ChatClient
             }
 
             return _sparkDeskKernel;
+        }
+        else if (type == ProviderType.QianFan)
+        {
+            if (ShouldKernelRecreate(_qianFanKernel))
+            {
+                var builder = Kernel.CreateBuilder()
+                    .AddQianFanChatCompletion(modelId, _qianFanProvider.AccessKey, _qianFanProvider.Secret);
+                _qianFanKernel = builder.Build();
+            }
+
+            return _qianFanKernel;
         }
 
         return default;
@@ -376,7 +374,6 @@ public sealed partial class ChatClient
             if (disposing)
             {
                 _dashScopeClient?.Dispose();
-                _qianFanClient?.Dispose();
             }
 
             _openAIKernel = null;
@@ -385,10 +382,11 @@ public sealed partial class ChatClient
             _moonshotKernel = null;
             _azureOpenAIKernel = null;
             _dashScopeClient = null;
-            _qianFanClient = null;
+            _qianFanKernel = null;
             _sparkDeskKernel = null;
             _geminiKernel = null;
             _sparkDeskKernel = null;
+            _qianFanKernel = null;
             _disposedValue = true;
         }
     }

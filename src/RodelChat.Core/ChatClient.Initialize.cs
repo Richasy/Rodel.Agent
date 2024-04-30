@@ -137,8 +137,6 @@ public sealed partial class ChatClient
         {
             _qianFanProvider.CustomModels = customModels;
         }
-
-        _qianFanClient ??= new Sdcb.WenXinQianFan.QianFanClient(apiKey, secret);
     }
 
     /// <summary>

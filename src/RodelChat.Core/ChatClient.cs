@@ -115,10 +115,6 @@ public sealed partial class ChatClient : IDisposable
             {
                 response = await DashScopeSendMessageAsync(session, message, streamingAction, cancellationToken);
             }
-            else if (session.Provider == ProviderType.QianFan)
-            {
-                response = await QianFanSendMessageAsync(session, message, streamingAction, cancellationToken);
-            }
             else
             {
                 var kernel = FindKernelProvider(session.Provider!.Value, session.Model);

@@ -99,35 +99,4 @@ public sealed partial class ChatClient
 
         return msg;
     }
-
-    private async Task<ChatMessage> QianFanSendMessageAsync(ChatSession session, ChatMessage message, Action<string> streamingAction = null, CancellationToken cancellationToken = default)
-    {
-        var (messages, parameters) = GetQianFanRequest(session, message);
-        var model = FindModelInProvider(session.Provider!.Value, session.Model);
-        var responseContent = string.Empty;
-        if (session.UseStreamOutput)
-        {
-            await foreach (var partialResponse in _qianFanClient.ChatAsStreamAsync(session.Model, messages, parameters, cancellationToken))
-            {
-                var content = partialResponse.Result;
-                if (!string.IsNullOrEmpty(content))
-                {
-                    streamingAction?.Invoke(content);
-                }
-
-                responseContent += content;
-            }
-        }
-        else
-        {
-            var response = await _qianFanClient.ChatAsync(session.Model, messages, parameters, cancellationToken);
-            responseContent = response.Result;
-        }
-
-        var msg = !string.IsNullOrEmpty(responseContent)
-            ? ChatMessage.CreateAssistantMessage(responseContent)
-            : ChatMessage.CreateClientMessage(ClientMessageType.EmptyResponseContent, string.Empty);
-
-        return msg;
-    }
 }

@@ -5,7 +5,6 @@ using RodelChat.Core.Models.Chat;
 using RodelChat.Core.Models.Constants;
 using RodelChat.Core.Models.Providers;
 using Sdcb.DashScope;
-using Sdcb.WenXinQianFan;
 
 namespace RodelChat.Core;
 
@@ -35,7 +34,7 @@ public sealed partial class ChatClient
     private Kernel? _moonshotKernel;
     private Kernel? _geminiKernel;
     private DashScopeClient? _dashScopeClient;
-    private QianFanClient? _qianFanClient;
+    private Kernel? _qianFanKernel;
     private Kernel? _sparkDeskKernel;
 
     /// <summary>
