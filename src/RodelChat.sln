@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Connectors.OpenAI", "Libs\s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Connectors.Google", "Libs\semantic-kernel\dotnet\src\Connectors\Connectors.Google\Connectors.Google.csproj", "{6EB5B5E8-A75D-465E-AAFC-CD6D882E7405}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connectors.SparkDesk", "Libs\semantic-kernel\dotnet\src\Connectors\Connectors.SparkDesk\Connectors.SparkDesk.csproj", "{8D922565-7BF5-4532-98D3-EBEE08E9A043}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,6 +86,12 @@ Global
 		{6EB5B5E8-A75D-465E-AAFC-CD6D882E7405}.Publish|Any CPU.Build.0 = Publish|Any CPU
 		{6EB5B5E8-A75D-465E-AAFC-CD6D882E7405}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EB5B5E8-A75D-465E-AAFC-CD6D882E7405}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D922565-7BF5-4532-98D3-EBEE08E9A043}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D922565-7BF5-4532-98D3-EBEE08E9A043}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D922565-7BF5-4532-98D3-EBEE08E9A043}.Publish|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D922565-7BF5-4532-98D3-EBEE08E9A043}.Publish|Any CPU.Build.0 = Debug|Any CPU
+		{8D922565-7BF5-4532-98D3-EBEE08E9A043}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D922565-7BF5-4532-98D3-EBEE08E9A043}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -96,6 +104,7 @@ Global
 		{F0860AC6-75B1-49D9-A1D4-90FCDEC14BC2} = {4B9E7C1C-23A5-4F32-A3E5-88F38D466FC0}
 		{F96A227A-348B-494D-A01F-F56EF9176CF4} = {4B9E7C1C-23A5-4F32-A3E5-88F38D466FC0}
 		{6EB5B5E8-A75D-465E-AAFC-CD6D882E7405} = {4B9E7C1C-23A5-4F32-A3E5-88F38D466FC0}
+		{8D922565-7BF5-4532-98D3-EBEE08E9A043} = {4B9E7C1C-23A5-4F32-A3E5-88F38D466FC0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B237A43F-37BA-406A-B5D0-24FB28F3F1E3}

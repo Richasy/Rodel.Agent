@@ -12,7 +12,7 @@ namespace RodelChat.Core;
 /// </summary>
 public sealed partial class ChatClient
 {
-    private static async Task<ChatMessage> OpenAISendMessageAsync(Kernel kernel, ChatSession session, ChatMessage message, Action<string> streamingAction = null, CancellationToken cancellationToken = default)
+    private static async Task<ChatMessage> KernelSendMessageAsync(Kernel kernel, ChatSession session, ChatMessage message, Action<string> streamingAction = null, CancellationToken cancellationToken = default)
     {
         if (message.Role == MessageRole.User)
         {
@@ -129,37 +129,5 @@ public sealed partial class ChatClient
             : ChatMessage.CreateClientMessage(ClientMessageType.EmptyResponseContent, string.Empty);
 
         return msg;
-    }
-
-    private async Task<ChatMessage> SparkDeskSendMessageAsync(ChatSession session, ChatMessage message, Action<string> streamingAction = null, CancellationToken cancellationToken = default)
-    {
-        var (messages, parameters) = GetSparkDeskRequest(session, message);
-        var model = FindModelInProvider(session.Provider!.Value, session.Model);
-        var responseContent = string.Empty;
-        if (session.UseStreamOutput)
-        {
-            await _sparkDeskClient.ChatAsStreamAsync(session.Model, messages.ToArray(), StreamCallback, parameters, cancellationToken: cancellationToken);
-        }
-        else
-        {
-            var response = await _sparkDeskClient.ChatAsync(session.Model, messages.ToArray(), parameters, cancellationToken: cancellationToken);
-            responseContent = response.Text;
-        }
-
-        var msg = !string.IsNullOrEmpty(responseContent)
-            ? ChatMessage.CreateAssistantMessage(responseContent)
-            : ChatMessage.CreateClientMessage(ClientMessageType.EmptyResponseContent, string.Empty);
-
-        return msg;
-
-        void StreamCallback(string content)
-        {
-            if (!string.IsNullOrEmpty(content))
-            {
-                streamingAction?.Invoke(content);
-            }
-
-            responseContent += content;
-        }
     }
 }

@@ -155,7 +155,5 @@ public sealed partial class ChatClient
         {
             _sparkDeskProvider.CustomModels = customModels;
         }
-
-        _sparkDeskClient ??= new Sdcb.SparkDesk.SparkDeskClient(appId, apiKey, secret);
     }
 }

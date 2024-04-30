@@ -6,6 +6,7 @@ using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.Google;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
+using Microsoft.SemanticKernel.Connectors.SparkDesk;
 using Microsoft.SemanticKernel.Services;
 using RodelChat.Core.Models.Chat;
 using RodelChat.Core.Models.Constants;
@@ -57,13 +58,6 @@ public sealed partial class ChatClient
         return new Sdcb.WenXinQianFan.ChatMessage(role, content);
     }
 
-    private static Sdcb.SparkDesk.ChatMessage ConvertToSparkDeskMessage(ChatMessage message)
-    {
-        var role = message.Role.ToString().ToLower();
-        var content = message.Content[0].Text;
-        return new Sdcb.SparkDesk.ChatMessage(role, content);
-    }
-
     private static AuthorRole ConvertToRole(MessageRole role)
         => role switch
         {
@@ -104,6 +98,16 @@ public sealed partial class ChatClient
             _ => throw new NotSupportedException("Version not supported."),
         };
     }
+
+    private static SparkDeskAIVersion ConvertToSparkVersion(string modelId)
+        => modelId switch
+        {
+            "V1_5" => SparkDeskAIVersion.V1_5,
+            "V2" => SparkDeskAIVersion.V2,
+            "V3" => SparkDeskAIVersion.V3,
+            "V3_5" => SparkDeskAIVersion.V3_5,
+            _ => throw new NotSupportedException("Version not supported."),
+        };
 
     private static List<ChatMessage> CreateHistoryCopyAndAddUserInput(ChatSession session, ChatMessage? message = default)
     {
@@ -151,6 +155,13 @@ public sealed partial class ChatClient
                     MaxTokens = session.Parameters.MaxTokens,
                     Temperature = session.Parameters.Temperature,
                     ToolCallBehavior = GeminiToolCallBehavior.AutoInvokeKernelFunctions,
+                };
+            case ProviderType.SparkDesk:
+                return new SparkDeskPromptExecutionSettings
+                {
+                    MaxTokens = session.Parameters.MaxTokens,
+                    Temperature = session.Parameters.Temperature,
+                    ToolCallBehavior = SparkDeskToolCallBehavior.AutoInvokeKernelFunctions,
                 };
             default:
                 return new OpenAIPromptExecutionSettings
@@ -210,20 +221,6 @@ public sealed partial class ChatClient
             Temperature = (float)session.Parameters.Temperature,
             TopP = (float)session.Parameters.TopP,
             PenaltyScore = (float)session.Parameters.FrequencyPenalty + 1,
-        };
-
-        return (messages, parameters);
-    }
-
-    private (List<Sdcb.SparkDesk.ChatMessage>, Sdcb.SparkDesk.ChatRequestParameters) GetSparkDeskRequest(ChatSession session, ChatMessage? message = null)
-    {
-        var history = CreateHistoryCopyAndAddUserInput(session, message);
-        var model = FindModelInProvider(ProviderType.DashScope, session.Model);
-        var messages = history.Where(p => p.Role != MessageRole.Client).Select(ConvertToSparkDeskMessage).ToList();
-        var parameters = new Sdcb.SparkDesk.ChatRequestParameters
-        {
-            Temperature = (float)session.Parameters.Temperature,
-            MaxTokens = session.Parameters.MaxTokens,
         };
 
         return (messages, parameters);
@@ -298,6 +295,18 @@ public sealed partial class ChatClient
             }
 
             return _geminiKernel;
+        }
+        else if(type == ProviderType.SparkDesk)
+        {
+            if (ShouldKernelRecreate(_sparkDeskKernel))
+            {
+                var builder = Kernel.CreateBuilder()
+                    .AddSparkDeskChatCompletion(_sparkDeskProvider.AccessKey, _sparkDeskProvider.Secret, _sparkDeskProvider.AppId, ConvertToSparkVersion(modelId));
+                InitializePlugins(builder);
+                _sparkDeskKernel = builder.Build();
+            }
+
+            return _sparkDeskKernel;
         }
 
         return default;
@@ -377,8 +386,9 @@ public sealed partial class ChatClient
             _azureOpenAIKernel = null;
             _dashScopeClient = null;
             _qianFanClient = null;
-            _sparkDeskClient = null;
+            _sparkDeskKernel = null;
             _geminiKernel = null;
+            _sparkDeskKernel = null;
             _disposedValue = true;
         }
     }

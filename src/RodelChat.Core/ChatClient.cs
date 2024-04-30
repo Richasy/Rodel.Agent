@@ -119,10 +119,6 @@ public sealed partial class ChatClient : IDisposable
             {
                 response = await QianFanSendMessageAsync(session, message, streamingAction, cancellationToken);
             }
-            else if (session.Provider == ProviderType.SparkDesk)
-            {
-                response = await SparkDeskSendMessageAsync(session, message, streamingAction, cancellationToken);
-            }
             else
             {
                 var kernel = FindKernelProvider(session.Provider!.Value, session.Model);
@@ -131,7 +127,7 @@ public sealed partial class ChatClient : IDisposable
                     return ChatMessage.CreateClientMessage(ClientMessageType.ProviderNotSupported, string.Empty);
                 }
 
-                response = await OpenAISendMessageAsync(kernel, session, message, streamingAction, cancellationToken);
+                response = await KernelSendMessageAsync(kernel, session, message, streamingAction, cancellationToken);
             }
 
             response.Time = DateTimeOffset.Now;
