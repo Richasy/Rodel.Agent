@@ -36,7 +36,9 @@ var provider = AnsiConsole.Prompt(
         ProviderType.MistralAI,
         ProviderType.Perplexity,
         ProviderType.TogetherAI,
-        ProviderType.OpenRouter));
+        ProviderType.OpenRouter,
+        ProviderType.Anthropic,
+        ProviderType.Ollama));
 
 try
 {
@@ -95,6 +97,14 @@ try
     {
         await RunOpenRouterAsync(config.OpenRouter);
     }
+    else if (provider == ProviderType.Anthropic)
+    {
+        await RunAnthropicAsync(config.Anthropic);
+    }
+    else if (provider == ProviderType.Ollama)
+    {
+        await RunOllamaAsync(config.Ollama);
+    }
     else
     {
         AnsiConsole.MarkupLine(GetString("UnknownProvider"));
@@ -123,6 +133,8 @@ string ConvertProviderTypeToString(ProviderType provider)
         ProviderType.Perplexity => "Perplexity",
         ProviderType.TogetherAI => "Together AI",
         ProviderType.OpenRouter => "Open Router",
+        ProviderType.Anthropic => "Anthropic",
+        ProviderType.Ollama => "Ollama",
         _ => "Unknown"
     };
 }

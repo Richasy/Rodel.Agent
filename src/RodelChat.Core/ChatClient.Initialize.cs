@@ -222,4 +222,41 @@ public sealed partial class ChatClient
             _openRouterProvider.CustomModels = customModels;
         }
     }
+
+    /// <summary>
+    /// 初始化Anthropic服务.
+    /// </summary>
+    public void InitializeAnthropic(string apiKey, string? proxyUrl = null, List<ChatModel> customModels = null)
+    {
+        _anthropicProvider ??= new AnthropicProvider();
+        _anthropicProvider.AccessKey = apiKey;
+        if (!string.IsNullOrEmpty(proxyUrl))
+        {
+            _anthropicProvider.BaseUrl = proxyUrl;
+        }
+
+        if (customModels != null)
+        {
+            _anthropicProvider.CustomModels = customModels;
+        }
+    }
+
+    /// <summary>
+    /// 初始化Ollama服务.
+    /// </summary>
+    public void InitializeOllama(string apiKey, string? url = null, List<ChatModel> customModels = null)
+    {
+        _ollamaProvider ??= new OllamaProvider();
+        _ollamaProvider.AccessKey = apiKey;
+
+        if (!string.IsNullOrEmpty(url))
+        {
+            _ollamaProvider.BaseUrl = url;
+        }
+
+        if (customModels != null)
+        {
+            _ollamaProvider.CustomModels = customModels;
+        }
+    }
 }

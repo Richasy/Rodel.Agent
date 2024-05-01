@@ -30,6 +30,8 @@ public sealed partial class ChatClient
     private PerplexityProvider? _perplexityProvider;
     private TogetherAIProvider? _togetherAIProvider;
     private OpenRouterProvider? _openRouterProvider;
+    private AnthropicProvider? _anthropicProvider;
+    private OllamaProvider? _ollamaProvider;
 
     private Kernel? _openAIKernel;
     private Kernel? _azureOpenAIKernel;
@@ -45,6 +47,8 @@ public sealed partial class ChatClient
     private Kernel? _perplexityKernel;
     private Kernel? _togetherAIKernel;
     private Kernel? _openRouterKernel;
+    private Kernel? _anthropicKernel;
+    private Kernel? _ollamaKernel;
 
     /// <summary>
     /// 会话列表.

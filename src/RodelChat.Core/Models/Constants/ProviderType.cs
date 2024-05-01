@@ -28,11 +28,6 @@ public enum ProviderType
     Anthropic,
 
     /// <summary>
-    /// Amazon Bedrock.
-    /// </summary>
-    AmazonBedrock,
-
-    /// <summary>
     /// Open Router.
     /// </summary>
     OpenRouter,
@@ -86,4 +81,9 @@ public enum ProviderType
     /// 讯飞星火.
     /// </summary>
     SparkDesk,
+
+    /// <summary>
+    /// Ollama.
+    /// </summary>
+    Ollama,
 }

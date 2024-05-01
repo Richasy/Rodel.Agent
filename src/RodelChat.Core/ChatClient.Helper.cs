@@ -4,6 +4,7 @@ using System.Text.Json;
 using Azure.AI.OpenAI;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
+using Microsoft.SemanticKernel.Connectors.Anthropic;
 using Microsoft.SemanticKernel.Connectors.Google;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Microsoft.SemanticKernel.Connectors.QianFan;
@@ -139,6 +140,13 @@ public sealed partial class ChatClient
                     TopP = session.Parameters.TopP,
                     PenaltyScore = session.Parameters.FrequencyPenalty + 1,
                 };
+            case ProviderType.Anthropic:
+                return new AnthropicPromptExecutionSettings
+                {
+                    MaxTokens = session.Parameters.MaxTokens,
+                    Temperature = session.Parameters.Temperature,
+                    TopP = session.Parameters.TopP,
+                };
             default:
                 return new OpenAIPromptExecutionSettings
                 {
@@ -264,6 +272,15 @@ public sealed partial class ChatClient
 
             return _openRouterKernel;
         }
+        else if (type == ProviderType.Ollama)
+        {
+            if (ShouldKernelRecreate(_ollamaKernel))
+            {
+                _ollamaKernel = CreateOpenAIKernel(_ollamaProvider);
+            }
+
+            return _ollamaKernel;
+        }
         else if (type == ProviderType.Gemini)
         {
             if (ShouldKernelRecreate(_geminiKernel))
@@ -298,6 +315,17 @@ public sealed partial class ChatClient
             }
 
             return _qianFanKernel;
+        }
+        else if (type == ProviderType.Anthropic)
+        {
+            if (ShouldKernelRecreate(_anthropicKernel))
+            {
+                var builder = Kernel.CreateBuilder()
+                    .AddAnthropicChatCompletion(modelId, _anthropicProvider.AccessKey, new Uri(_anthropicProvider.BaseUrl));
+                _anthropicKernel = builder.Build();
+            }
+
+            return _anthropicKernel;
         }
 
         return default;
@@ -353,6 +381,8 @@ public sealed partial class ChatClient
             ProviderType.Perplexity => _perplexityProvider,
             ProviderType.TogetherAI => _togetherAIProvider,
             ProviderType.OpenRouter => _openRouterProvider,
+            ProviderType.Anthropic => _anthropicProvider,
+            ProviderType.Ollama => _ollamaProvider,
             _ => throw new NotSupportedException("Provider not supported."),
         };
     }
@@ -386,6 +416,8 @@ public sealed partial class ChatClient
             _perplexityKernel = null;
             _togetherAIKernel = null;
             _openRouterKernel = null;
+            _anthropicKernel = null;
+            _ollamaKernel = null;
             _disposedValue = true;
         }
     }

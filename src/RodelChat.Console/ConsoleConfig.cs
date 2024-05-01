@@ -76,6 +76,16 @@ public sealed class ConsoleConfig
     /// Open Router 服务配置.
     /// </summary>
     public ServiceConfigBase OpenRouter { get; set; }
+
+    /// <summary>
+    /// Anthropic 服务配置.
+    /// </summary>
+    public OpenAIServiceConfig Anthropic { get; set; }
+
+    /// <summary>
+    /// Ollama 服务配置.
+    /// </summary>
+    public OpenAIServiceConfig Ollama { get; set; }
 }
 
 /// <summary>

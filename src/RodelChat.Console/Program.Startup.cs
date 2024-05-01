@@ -217,4 +217,34 @@ public partial class Program
         var session = _chatClient.CreateSession(ChatParameters.Create(), ProviderType.OpenRouter, model.Id);
         await LoopMessageAsync(session);
     }
+
+    private static async Task RunAnthropicAsync(ServiceConfigBase? config)
+    {
+        if (config == null)
+        {
+            return;
+        }
+
+        _chatClient.InitializeAnthropic(config.Key, customModels: config.CustomModels);
+        _chatClient.SetDefaultProvider(ProviderType.Anthropic);
+
+        var model = AskModel(_chatClient.GetServerModels(ProviderType.Anthropic), config.CustomModels, config.DefaultModelId);
+        var session = _chatClient.CreateSession(ChatParameters.Create(), ProviderType.Anthropic, model.Id);
+        await LoopMessageAsync(session);
+    }
+
+    private static async Task RunOllamaAsync(OpenAIServiceConfig? config)
+    {
+        if (config == null)
+        {
+            return;
+        }
+
+        _chatClient.InitializeOllama(config.Key, config.ProxyUrl, config.CustomModels);
+        _chatClient.SetDefaultProvider(ProviderType.Ollama);
+
+        var model = AskModel(_chatClient.GetServerModels(ProviderType.Ollama), config.CustomModels, config.DefaultModelId);
+        var session = _chatClient.CreateSession(ChatParameters.Create(), ProviderType.Ollama, model.Id);
+        await LoopMessageAsync(session);
+    }
 }

@@ -17,9 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Connectors.OpenAI", "Libs\s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Connectors.Google", "Libs\semantic-kernel\dotnet\src\Connectors\Connectors.Google\Connectors.Google.csproj", "{6EB5B5E8-A75D-465E-AAFC-CD6D882E7405}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connectors.SparkDesk", "Libs\semantic-kernel\dotnet\src\Connectors\Connectors.SparkDesk\Connectors.SparkDesk.csproj", "{8D922565-7BF5-4532-98D3-EBEE08E9A043}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Connectors.SparkDesk", "Libs\semantic-kernel\dotnet\src\Connectors\Connectors.SparkDesk\Connectors.SparkDesk.csproj", "{8D922565-7BF5-4532-98D3-EBEE08E9A043}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connectors.QianFan", "Libs\semantic-kernel\dotnet\src\Connectors\Connectors.QianFan\Connectors.QianFan.csproj", "{2BA1ADB0-D6AC-4333-BA9B-2D1379457A0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Connectors.QianFan", "Libs\semantic-kernel\dotnet\src\Connectors\Connectors.QianFan\Connectors.QianFan.csproj", "{2BA1ADB0-D6AC-4333-BA9B-2D1379457A0E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connectors.Anthropic", "Libs\semantic-kernel\dotnet\src\Connectors\Connectors.Anthropic\Connectors.Anthropic.csproj", "{DD26E0A0-361E-45A1-BD84-80AA6C0F0715}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,6 +78,12 @@ Global
 		{2BA1ADB0-D6AC-4333-BA9B-2D1379457A0E}.Publish|Any CPU.Build.0 = Debug|Any CPU
 		{2BA1ADB0-D6AC-4333-BA9B-2D1379457A0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BA1ADB0-D6AC-4333-BA9B-2D1379457A0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD26E0A0-361E-45A1-BD84-80AA6C0F0715}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD26E0A0-361E-45A1-BD84-80AA6C0F0715}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD26E0A0-361E-45A1-BD84-80AA6C0F0715}.Publish|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD26E0A0-361E-45A1-BD84-80AA6C0F0715}.Publish|Any CPU.Build.0 = Debug|Any CPU
+		{DD26E0A0-361E-45A1-BD84-80AA6C0F0715}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD26E0A0-361E-45A1-BD84-80AA6C0F0715}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,6 +95,7 @@ Global
 		{6EB5B5E8-A75D-465E-AAFC-CD6D882E7405} = {4B9E7C1C-23A5-4F32-A3E5-88F38D466FC0}
 		{8D922565-7BF5-4532-98D3-EBEE08E9A043} = {4B9E7C1C-23A5-4F32-A3E5-88F38D466FC0}
 		{2BA1ADB0-D6AC-4333-BA9B-2D1379457A0E} = {4B9E7C1C-23A5-4F32-A3E5-88F38D466FC0}
+		{DD26E0A0-361E-45A1-BD84-80AA6C0F0715} = {4B9E7C1C-23A5-4F32-A3E5-88F38D466FC0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B237A43F-37BA-406A-B5D0-24FB28F3F1E3}
