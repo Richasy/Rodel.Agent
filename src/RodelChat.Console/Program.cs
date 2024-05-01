@@ -34,7 +34,9 @@ var provider = AnsiConsole.Prompt(
         ProviderType.Gemini,
         ProviderType.Groq,
         ProviderType.MistralAI,
-        ProviderType.Perplexity));
+        ProviderType.Perplexity,
+        ProviderType.TogetherAI,
+        ProviderType.OpenRouter));
 
 try
 {
@@ -85,6 +87,14 @@ try
     {
         await RunPerplexityAsync(config.Perplexity);
     }
+    else if (provider == ProviderType.TogetherAI)
+    {
+        await RunTogetherAIAsync(config.TogetherAI);
+    }
+    else if (provider == ProviderType.OpenRouter)
+    {
+        await RunOpenRouterAsync(config.OpenRouter);
+    }
     else
     {
         AnsiConsole.MarkupLine(GetString("UnknownProvider"));
@@ -111,6 +121,8 @@ string ConvertProviderTypeToString(ProviderType provider)
         ProviderType.Groq => "Groq",
         ProviderType.MistralAI => "Mistral AI",
         ProviderType.Perplexity => "Perplexity",
+        ProviderType.TogetherAI => "Together AI",
+        ProviderType.OpenRouter => "Open Router",
         _ => "Unknown"
     };
 }

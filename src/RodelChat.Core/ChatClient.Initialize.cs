@@ -194,4 +194,32 @@ public sealed partial class ChatClient
             _perplexityProvider.CustomModels = customModels;
         }
     }
+
+    /// <summary>
+    /// 初始化TogetherAI服务.
+    /// </summary>
+    public void InitializeTogetherAI(string apiKey, List<ChatModel> customModels = null)
+    {
+        _togetherAIProvider ??= new TogetherAIProvider();
+        _togetherAIProvider.AccessKey = apiKey;
+
+        if (customModels != null)
+        {
+            _togetherAIProvider.CustomModels = customModels;
+        }
+    }
+
+    /// <summary>
+    /// 初始化OpenRouter服务.
+    /// </summary>
+    public void InitializeOpenRouter(string apiKey, List<ChatModel> customModels = null)
+    {
+        _openRouterProvider ??= new OpenRouterProvider();
+        _openRouterProvider.AccessKey = apiKey;
+
+        if (customModels != null)
+        {
+            _openRouterProvider.CustomModels = customModels;
+        }
+    }
 }

@@ -66,6 +66,16 @@ public sealed class ConsoleConfig
     /// Perplexity 服务配置.
     /// </summary>
     public ServiceConfigBase Perplexity { get; set; }
+
+    /// <summary>
+    /// Together AI 服务配置.
+    /// </summary>
+    public ServiceConfigBase TogetherAI { get; set; }
+
+    /// <summary>
+    /// Open Router 服务配置.
+    /// </summary>
+    public ServiceConfigBase OpenRouter { get; set; }
 }
 
 /// <summary>

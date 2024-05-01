@@ -246,6 +246,24 @@ public sealed partial class ChatClient
 
             return _perplexityKernel;
         }
+        else if (type == ProviderType.TogetherAI)
+        {
+            if (ShouldKernelRecreate(_togetherAIKernel))
+            {
+                _togetherAIKernel = CreateOpenAIKernel(_togetherAIProvider);
+            }
+
+            return _togetherAIKernel;
+        }
+        else if (type == ProviderType.OpenRouter)
+        {
+            if (ShouldKernelRecreate(_openRouterKernel))
+            {
+                _openRouterKernel = CreateOpenAIKernel(_openRouterProvider);
+            }
+
+            return _openRouterKernel;
+        }
         else if (type == ProviderType.Gemini)
         {
             if (ShouldKernelRecreate(_geminiKernel))
@@ -331,6 +349,10 @@ public sealed partial class ChatClient
             ProviderType.SparkDesk => _sparkDeskProvider,
             ProviderType.Gemini => _geminiProvider,
             ProviderType.Groq => _groqProvider,
+            ProviderType.MistralAI => _mistralAIProvider,
+            ProviderType.Perplexity => _perplexityProvider,
+            ProviderType.TogetherAI => _togetherAIProvider,
+            ProviderType.OpenRouter => _openRouterProvider,
             _ => throw new NotSupportedException("Provider not supported."),
         };
     }
@@ -360,6 +382,10 @@ public sealed partial class ChatClient
             _qianFanKernel = null;
             _dashScopeKernel = null;
             _groqKernel = null;
+            _mistralAIKernel = null;
+            _perplexityKernel = null;
+            _togetherAIKernel = null;
+            _openRouterKernel = null;
             _disposedValue = true;
         }
     }

@@ -28,6 +28,8 @@ public sealed partial class ChatClient
     private GroqProvider? _groqProvider;
     private MistralAIProvider? _mistralAIProvider;
     private PerplexityProvider? _perplexityProvider;
+    private TogetherAIProvider? _togetherAIProvider;
+    private OpenRouterProvider? _openRouterProvider;
 
     private Kernel? _openAIKernel;
     private Kernel? _azureOpenAIKernel;
@@ -41,6 +43,8 @@ public sealed partial class ChatClient
     private Kernel? _groqKernel;
     private Kernel? _mistralAIKernel;
     private Kernel? _perplexityKernel;
+    private Kernel? _togetherAIKernel;
+    private Kernel? _openRouterKernel;
 
     /// <summary>
     /// 会话列表.

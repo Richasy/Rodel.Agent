@@ -187,4 +187,34 @@ public partial class Program
         var session = _chatClient.CreateSession(ChatParameters.Create(), ProviderType.Perplexity, model.Id);
         await LoopMessageAsync(session);
     }
+
+    private static async Task RunTogetherAIAsync(ServiceConfigBase? config)
+    {
+        if (config == null)
+        {
+            return;
+        }
+
+        _chatClient.InitializeTogetherAI(config.Key, config.CustomModels);
+        _chatClient.SetDefaultProvider(ProviderType.TogetherAI);
+
+        var model = AskModel(_chatClient.GetServerModels(ProviderType.TogetherAI), config.CustomModels, config.DefaultModelId);
+        var session = _chatClient.CreateSession(ChatParameters.Create(), ProviderType.TogetherAI, model.Id);
+        await LoopMessageAsync(session);
+    }
+
+    private static async Task RunOpenRouterAsync(ServiceConfigBase? config)
+    {
+        if (config == null)
+        {
+            return;
+        }
+
+        _chatClient.InitializeOpenRouter(config.Key, config.CustomModels);
+        _chatClient.SetDefaultProvider(ProviderType.OpenRouter);
+
+        var model = AskModel(_chatClient.GetServerModels(ProviderType.OpenRouter), config.CustomModels, config.DefaultModelId);
+        var session = _chatClient.CreateSession(ChatParameters.Create(), ProviderType.OpenRouter, model.Id);
+        await LoopMessageAsync(session);
+    }
 }

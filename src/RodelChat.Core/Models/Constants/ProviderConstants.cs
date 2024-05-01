@@ -14,4 +14,6 @@ internal static class ProviderConstants
     internal const string GroqApi = "https://api.groq.com/openai/v1";
     internal const string MistralAIApi = "https://api.mistral.ai/v1";
     internal const string PerplexityApi = "https://api.perplexity.ai/";
+    internal const string TogetherAIApi = "https://api.together.xyz/v1";
+    internal const string OpenRouterApi = "https://openrouter.ai/api/v1";
 }
