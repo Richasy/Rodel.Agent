@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "RodelChat.UI (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "RodelChat.UI (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

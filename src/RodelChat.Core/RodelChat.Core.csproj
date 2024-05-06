@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google_GenerativeAI" Version="0.1.19" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Libs\semantic-kernel\dotnet\src\Connectors\Connectors.Anthropic\Connectors.Anthropic.csproj" />
     <ProjectReference Include="..\Libs\semantic-kernel\dotnet\src\Connectors\Connectors.Google\Connectors.Google.csproj" />
     <ProjectReference Include="..\Libs\semantic-kernel\dotnet\src\Connectors\Connectors.OpenAI\Connectors.OpenAI.csproj" />
