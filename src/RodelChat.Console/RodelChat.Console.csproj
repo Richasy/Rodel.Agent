@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RodelChat.Core\RodelChat.Core.csproj" />
+    <ProjectReference Include="..\Core\RodelChat.Core\RodelChat.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

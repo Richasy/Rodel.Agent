@@ -4,9 +4,9 @@ using System.Drawing;
 using System.Globalization;
 using System.Resources;
 using System.Text;
-using RodelChat.Core;
-using RodelChat.Core.Models.Chat;
-using RodelChat.Core.Models.Constants;
+using RodelChat.Interfaces.Client;
+using RodelChat.Models.Chat;
+using RodelChat.Models.Constants;
 using Spectre.Console;
 
 /// <summary>
@@ -14,7 +14,7 @@ using Spectre.Console;
 /// </summary>
 public partial class Program
 {
-    private static ChatClient _chatClient;
+    private static IChatClient _chatClient;
     private static ResourceManager _resourceManager;
     private static CultureInfo _currentCulture;
 
@@ -168,28 +168,15 @@ public partial class Program
             : base64String;
     }
 
-    private static ChatModel AskModel(List<ChatModel> serverModels, List<ChatModel>? customModels = default, string? defaultModelId = "")
+    private static ChatModel AskModel(ProviderType type)
     {
-        var totalModels = new List<ChatModel>();
-        totalModels.AddRange(serverModels);
-        if (customModels != null)
-        {
-            totalModels.AddRange(customModels);
-        }
-
-        totalModels = totalModels.Distinct().ToList();
-
+        var models = _chatClient.GetModels(type);
         ChatModel? selectedModel = default;
-        if (!string.IsNullOrEmpty(defaultModelId))
-        {
-            selectedModel = totalModels.FirstOrDefault(m => m.Id == defaultModelId);
-        }
-
         selectedModel ??= AnsiConsole.Prompt(
                 new SelectionPrompt<ChatModel>()
                 .Title(GetString("SelectModel"))
                 .PageSize(10)
-                .AddChoices(totalModels));
+                .AddChoices(models));
 
         return selectedModel;
     }

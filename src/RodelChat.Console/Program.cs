@@ -1,21 +1,24 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
 using System.Text.Json;
-using RodelChat.Core.Models.Constants;
+using RodelChat.Core.Factories;
+using RodelChat.Models.Chat;
+using RodelChat.Models.Client;
+using RodelChat.Models.Constants;
 using Spectre.Console;
 
 ConfigureConsole();
 
-ConsoleConfig config = default;
+ChatClientConfiguration config = default;
 if (IsConfigExist())
 {
     var configContent = File.ReadAllText(GetConfigPath());
-    config = JsonSerializer.Deserialize<ConsoleConfig>(configContent, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+    config = JsonSerializer.Deserialize<ChatClientConfiguration>(configContent, new JsonSerializerOptions(JsonSerializerDefaults.Web));
 }
 
-config ??= new ConsoleConfig();
-var plugins = new List<object>() { new TestPlugin() };
-_chatClient = new RodelChat.Core.ChatClient(plugins);
+config ??= new ChatClientConfiguration();
+var factory = new ChatProviderFactory(config);
+_chatClient = new RodelChat.Core.ChatClient(factory);
 
 var provider = AnsiConsole.Prompt(
     new SelectionPrompt<ProviderType>()
@@ -25,7 +28,7 @@ var provider = AnsiConsole.Prompt(
     .AddChoices(
         ProviderType.OpenAI,
         ProviderType.AzureOpenAI,
-        ProviderType.Zhipu,
+        ProviderType.ZhiPu,
         ProviderType.LingYi,
         ProviderType.Moonshot,
         ProviderType.DashScope,
@@ -42,73 +45,7 @@ var provider = AnsiConsole.Prompt(
 
 try
 {
-    if (provider == ProviderType.OpenAI)
-    {
-    }
-    else if (provider == ProviderType.AzureOpenAI)
-    {
-        await RunAzureOpenAIAsync(config.AzureOpenAI);
-    }
-    else if (provider == ProviderType.Zhipu)
-    {
-        await RunZhipuAsync(config.Zhipu);
-    }
-    else if (provider == ProviderType.LingYi)
-    {
-        await RunLingYiAsync(config.LingYi);
-    }
-    else if (provider == ProviderType.Moonshot)
-    {
-        await RunMoonshotAsync(config.Moonshot);
-    }
-    else if (provider == ProviderType.DashScope)
-    {
-        await RunDashScopeAsync(config.DashScope);
-    }
-    else if (provider == ProviderType.QianFan)
-    {
-        await RunQianFanAsync(config.QianFan);
-    }
-    else if (provider == ProviderType.SparkDesk)
-    {
-        await RunSparkDeskAsync(config.SparkDesk);
-    }
-    else if (provider == ProviderType.Gemini)
-    {
-        await RunGeminiAsync(config.Gemini);
-    }
-    else if (provider == ProviderType.Groq)
-    {
-        await RunGroqAsync(config.Groq);
-    }
-    else if (provider == ProviderType.MistralAI)
-    {
-        await RunMistralAIAsync(config.MistralAI);
-    }
-    else if (provider == ProviderType.Perplexity)
-    {
-        await RunPerplexityAsync(config.Perplexity);
-    }
-    else if (provider == ProviderType.TogetherAI)
-    {
-        await RunTogetherAIAsync(config.TogetherAI);
-    }
-    else if (provider == ProviderType.OpenRouter)
-    {
-        await RunOpenRouterAsync(config.OpenRouter);
-    }
-    else if (provider == ProviderType.Anthropic)
-    {
-        await RunAnthropicAsync(config.Anthropic);
-    }
-    else if (provider == ProviderType.Ollama)
-    {
-        await RunOllamaAsync(config.Ollama);
-    }
-    else
-    {
-        AnsiConsole.MarkupLine(GetString("UnknownProvider"));
-    }
+    await RunAIAsync(provider);
 }
 catch (Exception ex)
 {
@@ -121,7 +58,7 @@ string ConvertProviderTypeToString(ProviderType provider)
     {
         ProviderType.OpenAI => "Open AI",
         ProviderType.AzureOpenAI => "Azure Open AI",
-        ProviderType.Zhipu => GetString("Zhipu"),
+        ProviderType.ZhiPu => GetString("Zhipu"),
         ProviderType.LingYi => GetString("LingYi"),
         ProviderType.Moonshot => GetString("Moonshot"),
         ProviderType.DashScope => GetString("DashScope"),
@@ -137,4 +74,11 @@ string ConvertProviderTypeToString(ProviderType provider)
         ProviderType.Ollama => "Ollama",
         _ => "Unknown"
     };
+}
+
+async Task RunAIAsync(ProviderType type)
+{
+    var model = AskModel(type);
+    var session = _chatClient.CreateSession(type, ChatParameters.Create(), model.Id);
+    await LoopMessageAsync(session);
 }
