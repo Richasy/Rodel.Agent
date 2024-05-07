@@ -14,19 +14,19 @@ internal static partial class PredefinedModels
         {
             DisplayName = "Moonshot V1 8K",
             Id = "moonshot-v1-8k",
-            Tokens = 8192,
+            MaxTokens = 8192,
         },
         new ChatModel
         {
             DisplayName = "Moonshot V1 32K",
             Id = "moonshot-v1-32k",
-            Tokens = 32_768,
+            MaxTokens = 32_768,
         },
         new ChatModel
         {
             DisplayName = "Moonshot V1 128K",
             Id = "moonshot-v1-128k",
-            Tokens = 128_000,
+            MaxTokens = 128_000,
         },
     };
 }

@@ -14,11 +14,11 @@ public sealed partial class ChatClient : IChatClient
     /// <summary>
     /// Initializes a new instance of the <see cref="ChatClient"/> class.
     /// </summary>
-    public ChatClient(IChatProviderFactory providerFactory, List<object> plugins = null)
+    public ChatClient(IChatProviderFactory providerFactory)
     {
         Sessions = new List<ChatSession>();
         _providerFactory = providerFactory;
-        _plugins = plugins;
+        _plugins = new List<object>();
     }
 
     /// <inheritdoc/>

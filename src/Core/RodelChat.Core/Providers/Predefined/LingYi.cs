@@ -14,20 +14,20 @@ internal static partial class PredefinedModels
         {
             DisplayName = "Yi 34B Chat",
             Id = "yi-34b-chat-0205",
-            Tokens = 4000,
+            MaxTokens = 4000,
         },
         new ChatModel
         {
             DisplayName = "Yi 34B Chat 200k",
             Id = "yi-34b-chat-200k",
-            Tokens = 200_000,
+            MaxTokens = 200_000,
         },
         new ChatModel
         {
             DisplayName = "Yi Vision Plus",
             Id = "yi-vl-plus",
             IsSupportVision = true,
-            Tokens = 4000,
+            MaxTokens = 4000,
         },
     };
 }

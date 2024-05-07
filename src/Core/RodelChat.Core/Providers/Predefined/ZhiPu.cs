@@ -14,7 +14,7 @@ internal static partial class PredefinedModels
             DisplayName = "GLM-4",
             Id = "glm-4",
             IsSupportTool = true,
-            Tokens = 128_000,
+            MaxTokens = 128_000,
         },
         new ChatModel
         {
@@ -22,14 +22,14 @@ internal static partial class PredefinedModels
             Id = "glm-4v",
             IsSupportVision = true,
             IsSupportBase64Image = true,
-            Tokens = 128_000,
+            MaxTokens = 128_000,
         },
         new ChatModel
         {
             DisplayName = "GLM-3 Turbo",
             Id = "glm-3-turbo",
             IsSupportTool = true,
-            Tokens = 128_000,
+            MaxTokens = 128_000,
         },
     };
 }

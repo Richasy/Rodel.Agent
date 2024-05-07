@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AssistantOutput" xml:space="preserve">
+  <data name="Assistant" xml:space="preserve">
     <value>助理</value>
   </data>
   <data name="DashScope" xml:space="preserve">
@@ -141,6 +141,9 @@
   <data name="QianFan" xml:space="preserve">
     <value>百度千帆</value>
   </data>
+  <data name="Reminder" xml:space="preserve">
+    <value>提醒</value>
+  </data>
   <data name="SelectModel" xml:space="preserve">
     <value>请选择一个合适的模型</value>
   </data>
@@ -151,7 +154,7 @@
     <value>讯飞星火</value>
   </data>
   <data name="SystemInstruction" xml:space="preserve">
-    <value>系统指令：</value>
+    <value>系统指令</value>
   </data>
   <data name="ToolHandling" xml:space="preserve">
     <value>正在调用工具...</value>
