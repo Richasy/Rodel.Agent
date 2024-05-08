@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
+using System.Reflection;
+using Microsoft.SemanticKernel;
 using RodelChat.Interfaces.Client;
 using RodelChat.Models.Chat;
 using RodelChat.Models.Constants;
@@ -18,7 +20,7 @@ public sealed partial class ChatClient : IChatClient
     {
         Sessions = new List<ChatSession>();
         _providerFactory = providerFactory;
-        _plugins = new List<object>();
+        _plugins = new List<KernelPlugin>();
     }
 
     /// <inheritdoc/>
@@ -62,6 +64,7 @@ public sealed partial class ChatClient : IChatClient
         ChatMessage? message = null,
         string? modelId = null,
         Action<string> streamingAction = default,
+        List<KernelPlugin>? plugins = default,
         CancellationToken cancellationToken = default)
     {
         var session = Sessions.FirstOrDefault(s => s.Id == sessionId)
@@ -82,6 +85,12 @@ public sealed partial class ChatClient : IChatClient
             if (kernel == null)
             {
                 return ChatMessage.CreateClientMessage(ClientMessageType.ProviderNotSupported, string.Empty);
+            }
+
+            kernel.Plugins.Clear();
+            if (plugins != null && plugins.Count > 0 && model.IsSupportTool)
+            {
+                kernel.Plugins.AddRange(plugins);
             }
 
             response = await KernelSendMessageAsync(kernel, session, message, streamingAction, cancellationToken);
@@ -106,4 +115,60 @@ public sealed partial class ChatClient : IChatClient
         Dispose(disposing: true);
         GC.SuppressFinalize(this);
     }
+
+    /// <inheritdoc/>
+    public Dictionary<string, object> RetrievePluginsFromDll(string dllPath)
+    {
+        var result = new Dictionary<string, object>();
+        var assembly = Assembly.LoadFile(dllPath);
+        foreach (var type in assembly.GetTypes())
+        {
+            if (type.Name.Contains("Plugin", StringComparison.InvariantCultureIgnoreCase))
+            {
+                try
+                {
+                    var instance = Activator.CreateInstance(type);
+                    result.Add(type.Name, instance);
+                }
+                catch (Exception)
+                {
+                    continue;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    /// <inheritdoc/>
+    public void InjectPluginsToKernel(Dictionary<string, object> plugins)
+    {
+        if (plugins.Count == 0)
+        {
+            return;
+        }
+
+        foreach (var plugin in plugins)
+        {
+            if (_plugins.Any(p => p.Name == plugin.Key))
+            {
+                _plugins.RemoveAll(p => p.Name == plugin.Key);
+            }
+
+            try
+            {
+                var kernelPlugin = KernelPluginFactory.CreateFromObject(plugin.Value, plugin.Key)
+                    ?? throw new Exception("Plugin not created.");
+                _plugins.Add(kernelPlugin);
+            }
+            catch (Exception)
+            {
+                continue;
+            }
+        }
+    }
+
+    /// <inheritdoc/>
+    public List<KernelPlugin> GetKernelPlugins()
+        => _plugins;
 }

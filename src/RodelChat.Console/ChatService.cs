@@ -52,7 +52,16 @@ public sealed class ChatService : IHostedService
     {
         var model = AskModel(type);
         var session = _chatClient.CreateSession(type, ChatParameters.Create(maxTokens: 1200), model.Id);
+        InitializePlugins("Microsoft.SemanticKernel.Plugins.Core.dll");
+
         await LoopMessageAsync(session);
+    }
+
+    private void InitializePlugins(string pluginDllName)
+    {
+        var path = Path.Combine(AppContext.BaseDirectory, "Plugins", pluginDllName);
+        var plugins = _chatClient.RetrievePluginsFromDll(path);
+        _chatClient.InjectPluginsToKernel(plugins);
     }
 
     private async Task LoopMessageAsync(ChatSession session)
@@ -85,7 +94,8 @@ public sealed class ChatService : IHostedService
             await AnsiConsole.Status()
                 .StartAsync(GetString("Processing"), async ctx =>
                 {
-                    response = await _chatClient.SendMessageAsync(session.Id, chatMsg);
+                    var plugins = _chatClient.GetKernelPlugins();
+                    response = await _chatClient.SendMessageAsync(session.Id, chatMsg, plugins: plugins);
                 });
 
             var result = HandleMessageResponse(response);
@@ -217,7 +227,7 @@ public sealed class ChatService : IHostedService
             return;
         }
 
-        var panel = new Panel(new Markup($"[silver]{text.Trim().EscapeMarkup()}[/]"))
+        var panel = new Panel(text)
         {
             Border = BoxBorder.Rounded,
             Expand = true,
@@ -235,7 +245,7 @@ public sealed class ChatService : IHostedService
             return;
         }
 
-        AnsiConsole.MarkupLine($"[orange]{GetString("Reminder")}: {text.EscapeMarkup()}[/]");
+        AnsiConsole.MarkupLine($"[yellow]{GetString("Reminder")}: {text.EscapeMarkup()}[/]");
     }
 
     private string ConvertProviderTypeToString(ProviderType provider)

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.SemanticKernel;
 using RodelChat.Models.Chat;
 using RodelChat.Models.Constants;
 
@@ -34,7 +35,7 @@ public interface IChatClient : IDisposable
     ChatSession CreateSession(ProviderType providerType, ChatParameters parameters = null, string? modelId = null);
 
     /// <summary>
-    /// 获取服务端模型列表.
+    /// 获取模型列表.
     /// </summary>
     /// <param name="type">供应商类型.</param>
     /// <returns>模型列表.</returns>
@@ -54,5 +55,25 @@ public interface IChatClient : IDisposable
         ChatMessage? message = null,
         string? modelId = null,
         Action<string> streamingAction = default,
+        List<KernelPlugin> plugins = null,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// 从 DLL 中检索插件.
+    /// </summary>
+    /// <param name="dllPath">DLL 路径.</param>
+    /// <returns>插件实例列表.</returns>
+    Dictionary<string, object> RetrievePluginsFromDll(string dllPath);
+
+    /// <summary>
+    /// 注入插件到内核.
+    /// </summary>
+    /// <param name="plugins">插件列表.</param>
+    void InjectPluginsToKernel(Dictionary<string, object> plugins);
+
+    /// <summary>
+    /// 获取内核插件列表.
+    /// </summary>
+    /// <returns>插件列表.</returns>
+    List<KernelPlugin> GetKernelPlugins();
 }

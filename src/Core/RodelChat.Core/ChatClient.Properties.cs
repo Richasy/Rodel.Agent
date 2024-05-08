@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
+using Microsoft.SemanticKernel;
 using RodelChat.Interfaces.Client;
 using RodelChat.Models.Chat;
 
@@ -10,8 +11,8 @@ namespace RodelChat.Core;
 /// </summary>
 public sealed partial class ChatClient
 {
-    private readonly List<object>? _plugins;
     private readonly IChatProviderFactory _providerFactory;
+    private readonly List<KernelPlugin>? _plugins;
     private bool _disposedValue;
 
     /// <summary>
