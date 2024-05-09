@@ -34,7 +34,7 @@ public sealed class AzureOpenAIProvider : ProviderBase, IProvider
         if (ShouldRecreateKernel(modelId))
         {
             Kernel = Kernel.CreateBuilder()
-                .AddAzureOpenAIChatCompletion(modelId, BaseUri.AbsoluteUri, AccessKey, apiVersion: ConvertAzureOpenAIVersion(Version))
+                .AddAzureOpenAIChatCompletion(modelId, BaseUri.AbsoluteUri, AccessKey, apiVersion: ConvertAzureOpenAIVersion(Version), modelId: modelId)
                 .Build();
         }
 

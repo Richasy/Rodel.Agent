@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
+using RodelChat.Core.Providers;
 using RodelChat.Interfaces.Client;
 using RodelChat.Models.Client;
 using RodelChat.Models.Constants;
@@ -13,14 +14,21 @@ public sealed partial class ChatProviderFactory : IChatProviderFactory
 {
     private readonly Dictionary<ProviderType, IProvider> _providers;
     private readonly Dictionary<ProviderType, Func<IProvider>> _functions;
+    private readonly Action<ToolInvokingEventArgs>? _toolInvokingAction;
+    private readonly Action<ToolInvokedEventArgs>? _toolInvokedAction;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ChatProviderFactory"/> class.
     /// </summary>
-    public ChatProviderFactory(ChatClientConfiguration configuration)
+    public ChatProviderFactory(
+        ChatClientConfiguration configuration,
+        Action<ToolInvokingEventArgs>? toolInvokingAction = null,
+        Action<ToolInvokedEventArgs>? toolInvokedAction = null)
     {
         _providers = new Dictionary<ProviderType, IProvider>();
         _functions = new Dictionary<ProviderType, Func<IProvider>>();
+        _toolInvokingAction = toolInvokingAction;
+        _toolInvokedAction = toolInvokedAction;
         Initialize(configuration);
     }
 
@@ -31,6 +39,13 @@ public sealed partial class ChatProviderFactory : IChatProviderFactory
         if (!providerExist && _functions.TryGetValue(type, out var createFunc))
         {
             provider = createFunc();
+
+            if (provider is ProviderBase baseProvider)
+            {
+                baseProvider.ToolInvoking += OnToolInvoking;
+                baseProvider.ToolInvoked += OnToolInvoked;
+            }
+
             _providers.Add(type, provider);
         }
 
@@ -71,6 +86,12 @@ public sealed partial class ChatProviderFactory : IChatProviderFactory
     {
         if (_providers.TryGetValue(type, out var value))
         {
+            if (value is ProviderBase baseProvider)
+            {
+                baseProvider.ToolInvoking -= OnToolInvoking;
+                baseProvider.ToolInvoked -= OnToolInvoked;
+            }
+
             value.Release();
             _providers.Remove(type);
         }
@@ -81,4 +102,10 @@ public sealed partial class ChatProviderFactory : IChatProviderFactory
         RemoveProvider(type);
         _functions[type] = createFunc;
     }
+
+    private void OnToolInvoking(object? sender, ToolInvokingEventArgs args)
+        => _toolInvokingAction?.Invoke(args);
+
+    private void OnToolInvoked(object? sender, ToolInvokedEventArgs args)
+        => _toolInvokedAction?.Invoke(args);
 }

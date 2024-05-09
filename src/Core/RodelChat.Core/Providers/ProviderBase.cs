@@ -5,6 +5,8 @@ using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Microsoft.SemanticKernel.Services;
 using RodelChat.Models.Chat;
+using RodelChat.Models.Client;
+using RodelChat.Models.Constants;
 
 namespace RodelChat.Core.Providers;
 
@@ -13,6 +15,8 @@ namespace RodelChat.Core.Providers;
 /// </summary>
 public abstract class ProviderBase
 {
+    private Kernel? _kernel;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="ProviderBase"/> class.
     /// </summary>
@@ -25,6 +29,16 @@ public abstract class ProviderBase
             CustomModels = customModels;
         }
     }
+
+    /// <summary>
+    /// 工具调用事件.
+    /// </summary>
+    public event EventHandler<ToolInvokingEventArgs>? ToolInvoking;
+
+    /// <summary>
+    /// 工具调用完成事件.
+    /// </summary>
+    public event EventHandler<ToolInvokedEventArgs>? ToolInvoked;
 
     /// <summary>
     /// 自定义的模型列表.
@@ -44,7 +58,15 @@ public abstract class ProviderBase
     /// <summary>
     /// 内核.
     /// </summary>
-    protected Kernel? Kernel { get; set; }
+    protected Kernel? Kernel
+    {
+        get => _kernel;
+        set
+        {
+            _kernel = value;
+            RegisterKernelFilters();
+        }
+    }
 
     /// <summary>
     /// 基础 URL.
@@ -52,19 +74,16 @@ public abstract class ProviderBase
     protected Uri? BaseUri { get; private set; }
 
     /// <summary>
+    /// 服务商类型.
+    /// </summary>
+    protected ProviderType Type { get; init; }
+
+    /// <summary>
     /// 获取当前模型 ID.
     /// </summary>
     /// <returns>模型 ID.</returns>
     public string? GetCurrentModelId()
-    {
-        if (Kernel == null)
-        {
-            return null;
-        }
-
-        var chatService = Kernel.GetRequiredService<IChatCompletionService>();
-        return chatService?.Attributes?.GetValueOrDefault(AIServiceExtensions.ModelIdKey)?.ToString() ?? default;
-    }
+        => GetKernelModelId(Kernel);
 
     /// <summary>
     /// 获取模型信息.
@@ -132,6 +151,23 @@ public abstract class ProviderBase
             ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions,
         };
 
+    internal static string GetKernelModelId(Kernel? kernel)
+    {
+        if (kernel == null)
+        {
+            return null;
+        }
+
+        var chatService = kernel.GetRequiredService<IChatCompletionService>();
+        return chatService?.Attributes?.GetValueOrDefault(AIServiceExtensions.ModelIdKey)?.ToString() ?? default;
+    }
+
+    internal void RaiseToolInvoking(ToolInvokingEventArgs args)
+        => ToolInvoking?.Invoke(this, args);
+
+    internal void RaiseToolInvoked(ToolInvokedEventArgs args)
+        => ToolInvoked?.Invoke(this, args);
+
     /// <summary>
     /// 是否需要重新创建内核.
     /// </summary>
@@ -155,6 +191,33 @@ public abstract class ProviderBase
         if (Uri.TryCreate(url, UriKind.Absolute, out var uri))
         {
             BaseUri = uri;
+        }
+    }
+
+    /// <summary>
+    /// 注册内核过滤器.
+    /// </summary>
+    protected virtual void RegisterKernelFilters()
+    {
+        if (Kernel == null)
+        {
+            return;
+        }
+
+        Kernel.FunctionInvocationFilters.Clear();
+        Kernel.FunctionInvocationFilters.Add(new ProviderFunctionInvocationFilter(this));
+    }
+
+    internal class ProviderFunctionInvocationFilter(ProviderBase provider) : IFunctionInvocationFilter
+    {
+        public async Task OnFunctionInvocationAsync(FunctionInvocationContext context, Func<FunctionInvocationContext, Task> next)
+        {
+            var modelId = GetKernelModelId(provider.Kernel);
+            var invokingArgs = new ToolInvokingEventArgs(context, modelId);
+            provider.RaiseToolInvoking(invokingArgs);
+            await next(context);
+            var invokedArgs = new ToolInvokedEventArgs(context, modelId);
+            provider.RaiseToolInvoked(invokedArgs);
         }
     }
 }

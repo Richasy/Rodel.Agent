@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
+using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +27,20 @@ public partial class Program
 
         var configContent = File.ReadAllText(configPath);
         var config = JsonSerializer.Deserialize<ChatClientConfiguration>(configContent);
-        return new ChatProviderFactory(config);
+        return new ChatProviderFactory(config, ToolInvoking, ToolInvoked);
+    }
+
+    private static void ToolInvoking(ToolInvokingEventArgs args)
+    {
+        Debug.WriteLine($"准备调用工具： {args.Function.PluginName}/{args.Function.Name}");
+        Debug.WriteLine($"模型 ID： {args.ModelId}");
+        Debug.WriteLine($"参数： {JsonSerializer.Serialize(args.Parameters)}");
+    }
+
+    private static void ToolInvoked(ToolInvokedEventArgs args)
+    {
+        Debug.WriteLine($"工具调用完成： {args.Function.PluginName}/{args.Function.Name}");
+        Debug.WriteLine($"模型 ID： {args.ModelId}");
+        Debug.WriteLine($"结果： {args.Result}");
     }
 }

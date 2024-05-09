@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
-using System.Collections.Generic;
 using RodelChat.Models.Chat;
 
 /// <summary>

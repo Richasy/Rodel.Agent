@@ -11,4 +11,8 @@
     <PackageReference Include="System.Text.Json" Version="8.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Libs\semantic-kernel\dotnet\src\SemanticKernel.Abstractions\SemanticKernel.Abstractions.csproj" />
+  </ItemGroup>
+
 </Project>

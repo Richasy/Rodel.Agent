@@ -71,22 +71,21 @@ public sealed partial class ChatClient : IChatClient
             ?? throw new ArgumentException("Session not found.");
 
         ChatMessage response = default;
+        ResetSessionModel(session, modelId);
+        var model = FindModelInProvider(session.Provider!.Value, session.Model);
+        if (message.Content.Any(p => p.Type == ChatContentType.ImageUrl) && !model.IsSupportVision)
+        {
+            return ChatMessage.CreateClientMessage(ClientMessageType.ModelNotSupportImage, string.Empty);
+        }
+
+        var kernel = FindKernelProvider(session.Provider!.Value, session.Model);
+        if (kernel == null)
+        {
+            return ChatMessage.CreateClientMessage(ClientMessageType.ProviderNotSupported, string.Empty);
+        }
 
         try
         {
-            ResetSessionModel(session, modelId);
-            var model = FindModelInProvider(session.Provider!.Value, session.Model);
-            if (message.Content.Any(p => p.Type == ChatContentType.ImageUrl) && !model.IsSupportVision)
-            {
-                return ChatMessage.CreateClientMessage(ClientMessageType.ModelNotSupportImage, string.Empty);
-            }
-
-            var kernel = FindKernelProvider(session.Provider!.Value, session.Model);
-            if (kernel == null)
-            {
-                return ChatMessage.CreateClientMessage(ClientMessageType.ProviderNotSupported, string.Empty);
-            }
-
             kernel.Plugins.Clear();
             if (plugins != null && plugins.Count > 0 && model.IsSupportTool)
             {

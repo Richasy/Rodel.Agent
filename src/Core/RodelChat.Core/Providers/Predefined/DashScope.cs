@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
-using System.Collections.Generic;
 using RodelChat.Models.Chat;
 
 /// <summary>
@@ -8,6 +7,7 @@ using RodelChat.Models.Chat;
 /// </summary>
 internal static partial class PredefinedModels
 {
+    // 通义千问对 Function call 的支持并不完善，无法兼容标准的 OpenAI 接口，因此暂时不支持工具调用。
     internal static List<ChatModel> DashScopeModels { get; } = new List<ChatModel>
     {
         new ChatModel
