@@ -61,6 +61,8 @@ public sealed class ChatService : IHostedService
     {
         var path = Path.Combine(AppContext.BaseDirectory, "Plugins", pluginDllName);
         var plugins = _chatClient.RetrievePluginsFromDll(path);
+        var testPlugin = new TestPlugin();
+        plugins.Add("Test", testPlugin);
         _chatClient.InjectPluginsToKernel(plugins);
     }
 

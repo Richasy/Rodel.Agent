@@ -5,8 +5,8 @@ using Microsoft.SemanticKernel;
 public sealed class TestPlugin
 {
     [KernelFunction]
-    [Description("根据关键词查询BiliBili(B站)的热搜。")]
-    public static string GetBiliBiliHotSearch([Description("搜索关键词，比如老虎。")]string keyword)
+    [Description("Get hot search from bilibili, aka, B站")]
+    public static string GetBiliBiliHotSearch()
     {
         return """
             1. 《鬼灭之刃》
