@@ -79,6 +79,7 @@ public sealed partial class ChatProviderFactory : IChatProviderFactory
         InjectTogetherAI(config.TogetherAI);
         InjectOpenRouter(config.OpenRouter);
         InjectAnthropic(config.Anthropic);
+        InjectDeepSeek(config.DeepSeek);
         InjectOllama(config.Ollama);
     }
 

@@ -68,6 +68,7 @@ public sealed class ChatService : IHostedService
 
     private async Task LoopMessageAsync(ChatSession session)
     {
+#if USE_SYSTEM_PROMPT
         var sysPrompt = AnsiConsole.Prompt(
             new TextPrompt<string>($"{GetString("SystemInstruction")} [green]({GetString("Optional")})[/]: ")
             .AllowEmpty());
@@ -76,6 +77,7 @@ public sealed class ChatService : IHostedService
         {
             session.SystemInstruction = sysPrompt;
         }
+#endif
 
         session.UseStreamOutput = false;
 
@@ -125,6 +127,7 @@ public sealed class ChatService : IHostedService
                 ProviderType.QianFan,
                 ProviderType.SparkDesk,
                 ProviderType.Gemini,
+                ProviderType.DeepSeek,
                 ProviderType.Groq,
                 ProviderType.MistralAI,
                 ProviderType.Perplexity,
@@ -270,6 +273,7 @@ public sealed class ChatService : IHostedService
             ProviderType.OpenRouter => "Open Router",
             ProviderType.Anthropic => "Anthropic",
             ProviderType.Ollama => "Ollama",
+            ProviderType.DeepSeek => "DeepSeek",
             _ => "Unknown"
         };
     }

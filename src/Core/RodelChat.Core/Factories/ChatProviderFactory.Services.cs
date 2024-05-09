@@ -136,6 +136,14 @@ public sealed partial class ChatProviderFactory
         }
     }
 
+    private void InjectDeepSeek(DeepSeekClientConfig? config)
+    {
+        if (!string.IsNullOrEmpty(config?.Key))
+        {
+            AddCreateMethod(ProviderType.DeepSeek, () => new DeepSeekProvider(config));
+        }
+    }
+
     private void InjectOllama(OllamaClientConfig? config)
     {
         if (!string.IsNullOrEmpty(config?.Key)

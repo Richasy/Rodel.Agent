@@ -49,6 +49,12 @@ public sealed class ChatClientConfiguration
     public DashScopeClientConfig? DashScope { get; set; }
 
     /// <summary>
+    /// DeepSeek 客户端配置.
+    /// </summary>
+    [JsonPropertyName("deep_seek")]
+    public DeepSeekClientConfig? DeepSeek { get; set; }
+
+    /// <summary>
     /// 千帆客户端配置.
     /// </summary>
     [JsonPropertyName("qianfan")]
@@ -225,6 +231,13 @@ public sealed class TogetherAIClientConfig : ClientConfigBase
 /// Open Router 客户端配置.
 /// </summary>
 public sealed class OpenRouterClientConfig : ClientConfigBase
+{
+}
+
+/// <summary>
+/// DeepSeek 客户端配置.
+/// </summary>
+public sealed class DeepSeekClientConfig : ClientConfigBase
 {
 }
 

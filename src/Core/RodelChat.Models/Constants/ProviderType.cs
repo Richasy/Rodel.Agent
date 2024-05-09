@@ -83,6 +83,11 @@ public enum ProviderType
     SparkDesk,
 
     /// <summary>
+    /// DeepSeek.
+    /// </summary>
+    DeepSeek,
+
+    /// <summary>
     /// Ollama.
     /// </summary>
     Ollama,

@@ -15,5 +15,6 @@ internal static class ProviderConstants
     internal const string TogetherAIApi = "https://api.together.xyz/v1";
     internal const string OpenRouterApi = "https://openrouter.ai/api/v1";
     internal const string AnthropicApi = "https://api.anthropic.com/v1";
+    internal const string DeepSeekApi = "https://api.deepseek.com";
     internal const string OllamaApi = "http://localhost:11434/v1";
 }
