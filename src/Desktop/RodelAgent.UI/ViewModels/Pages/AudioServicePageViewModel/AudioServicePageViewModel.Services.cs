@@ -87,30 +87,37 @@ public sealed partial class AudioServicePageViewModel
 
         var listDict = list.ToDictionary(item => item.Id);
 
-        for (var i = History.Count - 1; i >= 0; i--)
+        try
         {
-            var item = History[i];
-            if (!listDict.ContainsKey(item.Id))
+            for (var i = History.Count - 1; i >= 0; i--)
             {
-                History.RemoveAt(i);
-            }
-        }
-
-        for (var i = 0; i < list.Count; i++)
-        {
-            var listItem = list[i];
-            if (i < History.Count)
-            {
-                var collectionItem = History[i];
-                if (!Equals(listItem.Id, collectionItem.Id))
+                var item = History[i];
+                if (!listDict.ContainsKey(item.Id))
                 {
-                    History.Insert(i, listItem);
+                    History.RemoveAt(i);
                 }
             }
-            else
+
+            for (var i = 0; i < list.Count; i++)
             {
-                History.Add(listItem);
+                var listItem = list[i];
+                if (i < History.Count)
+                {
+                    var collectionItem = History[i];
+                    if (!Equals(listItem.Id, collectionItem.Id))
+                    {
+                        History.Insert(i, listItem);
+                    }
+                }
+                else
+                {
+                    History.Add(listItem);
+                }
             }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to sync audio history.");
         }
     }
 

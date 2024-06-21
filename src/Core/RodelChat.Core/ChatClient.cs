@@ -133,6 +133,7 @@ public sealed partial class ChatClient : IChatClient
             return ChatMessage.CreateClientMessage(ClientMessageType.ProviderNotSupported, string.Empty);
         }
 
+        AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve;
         try
         {
             kernel.Plugins.Clear();
@@ -160,6 +161,10 @@ public sealed partial class ChatClient : IChatClient
         {
             throw;
         }
+        finally
+        {
+            AppDomain.CurrentDomain.AssemblyResolve -= OnAssemblyResolve;
+        }
     }
 
     /// <inheritdoc/>
@@ -173,7 +178,12 @@ public sealed partial class ChatClient : IChatClient
     public async Task<List<KernelPlugin>> RetrievePluginsFromDllAsync(string dllPath)
     {
         var result = new List<KernelPlugin>();
-        _tempPluginPath = dllPath;
+        if (!_dllPaths.Contains(dllPath))
+        {
+            _dllPaths.Add(dllPath);
+        }
+
+        _preferDllPath = dllPath;
         AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve;
 
         try
@@ -212,7 +222,7 @@ public sealed partial class ChatClient : IChatClient
         finally
         {
             AppDomain.CurrentDomain.AssemblyResolve -= OnAssemblyResolve;
-            _tempPluginPath = string.Empty;
+            _preferDllPath = string.Empty;
         }
 
         return result;
@@ -236,9 +246,33 @@ public sealed partial class ChatClient : IChatClient
 
     private Assembly? OnAssemblyResolve(object? sender, ResolveEventArgs args)
     {
-        // 当导入插件需要依赖其他程序集时，尝试从插件目录加载.
-        var pluginFolder = Path.GetDirectoryName(_tempPluginPath);
-        var assemblyPath = Path.Combine(pluginFolder, new AssemblyName(args.Name).Name + ".dll");
-        return File.Exists(assemblyPath) ? Assembly.LoadFile(assemblyPath) : default;
+        var assemblyPath = string.Empty;
+        if (!string.IsNullOrEmpty(_preferDllPath))
+        {
+            var pluginFolder = Path.GetDirectoryName(_preferDllPath);
+            assemblyPath = Path.Combine(pluginFolder, new AssemblyName(args.Name).Name + ".dll");
+            if (!File.Exists(assemblyPath))
+            {
+                assemblyPath = string.Empty;
+            }
+        }
+        else if (_dllPaths.Count > 0)
+        {
+            foreach (var dllPath in _dllPaths)
+            {
+                var pluginFolder = Path.GetDirectoryName(dllPath);
+                assemblyPath = Path.Combine(pluginFolder, new AssemblyName(args.Name).Name + ".dll");
+                if (!File.Exists(assemblyPath))
+                {
+                    assemblyPath = string.Empty;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
+        return !string.IsNullOrEmpty(assemblyPath) && File.Exists(assemblyPath) ? Assembly.LoadFile(assemblyPath) : default;
     }
 }

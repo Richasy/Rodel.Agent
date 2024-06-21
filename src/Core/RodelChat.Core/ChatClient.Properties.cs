@@ -14,8 +14,9 @@ public sealed partial class ChatClient
     private readonly IChatProviderFactory _providerFactory;
     private readonly IChatParametersFactory _parameterFactory;
     private readonly ILogger<ChatClient> _logger;
+    private readonly List<string> _dllPaths = new();
     private bool _disposedValue;
-    private string _tempPluginPath;
+    private string _preferDllPath;
 
     /// <summary>
     /// 会话列表.

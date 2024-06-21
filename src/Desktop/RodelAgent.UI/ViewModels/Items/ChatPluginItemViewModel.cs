@@ -97,8 +97,8 @@ public sealed partial class ChatPluginItemViewModel : ViewModelBase<KernelPlugin
 
     private string GetCurrentPluginFolder()
     {
-        var pluginFolder = AppToolkit.GetChatPluginFolder();
-        var destFolder = Path.Combine(pluginFolder, Id);
-        return destFolder;
+        var actualId = Id.Split("<|>").First();
+        var pluginFolder = Path.Combine(AppToolkit.GetChatPluginFolder(), actualId);
+        return pluginFolder;
     }
 }

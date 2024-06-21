@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\RodelAgent.Statics\RodelAgent.Statics.csproj" />
     <ProjectReference Include="..\..\Core\RodelChat.Core\RodelChat.Core.csproj" />
+    <ProjectReference Include="..\..\Libs\semantic-kernel\dotnet\src\SemanticKernel.Abstractions\SemanticKernel.Abstractions.csproj" />
   </ItemGroup>
 
   <ItemGroup>
