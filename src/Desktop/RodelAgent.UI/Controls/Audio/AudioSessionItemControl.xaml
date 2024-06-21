@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:AudioSessionItemControlBase
+    x:Class="RodelAgent.UI.Controls.Audio.AudioSessionItemControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:RodelAgent.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:local="using:RodelAgent.UI.Controls.Audio"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <controls:CardPanel Click="OnSessionClick">
+        <controls:CardPanel.ContextFlyout>
+            <MenuFlyout>
+                <MenuFlyoutItem Click="OnOpenItemClick" Text="{ext:Locale Name=OpenAudio}">
+                    <MenuFlyoutItem.Icon>
+                        <ic:SymbolIcon Symbol="MusicNote1" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem Click="OnDeleteItemClick" Text="{ext:Locale Name=Delete}">
+                    <MenuFlyoutItem.Icon>
+                        <ic:SymbolIcon Foreground="{ThemeResource SystemFillColorCriticalBrush}" Symbol="Delete" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+            </MenuFlyout>
+        </controls:CardPanel.ContextFlyout>
+        <Grid Margin="16,12" RowSpacing="8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock
+                x:Name="PromptBlock"
+                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                MaxLines="2"
+                Style="{StaticResource CaptionTextBlockStyle}"
+                Text="{x:Bind ViewModel.Text, Mode=OneWay}"
+                TextTrimming="CharacterEllipsis"
+                TextWrapping="Wrap">
+                <ToolTipService.ToolTip>
+                    <ToolTip Content="{x:Bind ViewModel.Text, Mode=OneWay}" IsEnabled="{x:Bind PromptBlock.IsTextTrimmed, Mode=OneWay}" />
+                </ToolTipService.ToolTip>
+            </TextBlock>
+            <Border
+                Grid.Row="1"
+                Padding="4,2"
+                HorizontalAlignment="Left"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                CornerRadius="{StaticResource ControlCornerRadius}">
+                <TextBlock
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    Style="{StaticResource CaptionTextBlockStyle}"
+                    Text="{x:Bind ViewModel.Voice, Mode=OneWay}" />
+            </Border>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <controls:ProviderLogo
+                    Width="20"
+                    Height="20"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    AvatarPadding="4"
+                    IsAvatar="True"
+                    Provider="{x:Bind ViewModel.Provider, Mode=OneWay}" />
+                <TextBlock
+                    x:Name="DateBlock"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                    Style="{StaticResource CaptionTextBlockStyle}" />
+            </Grid>
+        </Grid>
+    </controls:CardPanel>
+
+</local:AudioSessionItemControlBase>

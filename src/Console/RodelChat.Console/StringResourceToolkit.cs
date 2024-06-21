@@ -1,0 +1,30 @@
+﻿// Copyright (c) Rodel. All rights reserved.
+
+using System.Diagnostics;
+using Microsoft.Extensions.Localization;
+using RodelAgent.Interfaces;
+
+/// <summary>
+/// 字符串资源工具箱.
+/// </summary>
+public sealed class StringResourceToolkit : IStringResourceToolkit
+{
+    private readonly IStringLocalizer<ChatService> _localizer;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="StringResourceToolkit"/> class.
+    /// </summary>
+    public StringResourceToolkit(IStringLocalizer<ChatService> localizer) => _localizer = localizer;
+
+    /// <inheritdoc/>
+    public string GetString(string key)
+    {
+        var str = _localizer.GetString(key);
+        if (str.ResourceNotFound)
+        {
+            Debug.WriteLine($"Resource not found: {key}: {str.SearchedLocation}");
+        }
+
+        return str.ResourceNotFound ? string.Empty : str.Value;
+    }
+}

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:ChatServicePageBase
+    x:Class="RodelAgent.UI.Pages.ChatServicePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:chat="using:RodelAgent.UI.Controls.Chat"
+    xmlns:community="using:CommunityToolkit.WinUI.Controls"
+    xmlns:controls="using:RodelAgent.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:local="using:RodelAgent.UI.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid>
+        <controls:EmptyHolder
+            Title="{ext:Locale Name=NoAvailableService}"
+            Description="{ext:Locale Name=NoAvailableServiceDescription}"
+            Emoji="&#x1FAE3;"
+            Style="{StaticResource BasicEmptyHolderStyle}"
+            Visibility="{x:Bind ViewModel.IsAvailableServicesEmpty, Mode=OneWay}" />
+        <Grid Visibility="{x:Bind ViewModel.IsAvailableServicesEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!--  助手及服务列表  -->
+            <Grid Width="{x:Bind ViewModel.ServiceColumnWidth, Mode=OneWay}" Margin="0,0,-6,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <chat:ChatServiceHeader Margin="0,0,0,8" />
+                <ScrollViewer
+                    Grid.Row="1"
+                    Padding="8,0"
+                    Style="{StaticResource PageScrollViewerStyle}">
+                    <Grid Margin="0,0,0,12">
+                        <StackPanel Visibility="{x:Bind ViewModel.IsServiceSectionVisible, Mode=OneWay}">
+                            <chat:AvailableChatServiceSection Margin="0,0,0,12" />
+                            <chat:AgentsSection Margin="0,0,0,12" Visibility="{x:Bind ViewModel.IsAgentsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
+                            <chat:SessionPresetsSection Visibility="{x:Bind ViewModel.IsSessionPresetsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
+                        </StackPanel>
+                        <chat:ChatPluginSection Visibility="{x:Bind ViewModel.IsPluginSectionVisible, Mode=OneWay}" />
+                    </Grid>
+                </ScrollViewer>
+                <Grid
+                    Grid.Row="2"
+                    Padding="8,4"
+                    BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
+                    BorderThickness="0,1,0,0"
+                    ColumnSpacing="8"
+                    Visibility="{x:Bind ViewModel.IsDeletingPluginsNotEmpty, Mode=OneWay}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <controls:StatusTip
+                        VerticalAlignment="Center"
+                        Status="Information"
+                        Text="{ext:Locale Name=RestartAppToEffectTip}" />
+                    <Button
+                        Grid.Column="1"
+                        Click="OnRestartButtonClick"
+                        Content="{ext:Locale Name=Restart}"
+                        FontSize="12" />
+                </Grid>
+            </Grid>
+
+            <controls:EmptyHolder
+                Title="{ext:Locale Name=ChooseServiceOrAgent}"
+                Grid.Column="2"
+                Grid.ColumnSpan="3"
+                Description="{ext:Locale Name=ChooseServiceOrAgentDescription}"
+                Emoji="&#x1F60E;"
+                Style="{StaticResource BasicEmptyHolderStyle}"
+                Visibility="{x:Bind ViewModel.CurrentSession, Mode=OneWay, Converter={StaticResource ObjectToVisibilityReverseConverter}}" />
+
+            <!--  对话界面  -->
+            <Grid Grid.Column="2" Margin="-6,0">
+                <chat:ChatSessionPanel ViewModel="{x:Bind ViewModel.CurrentSession, Mode=OneWay}" Visibility="{x:Bind ViewModel.CurrentSession, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}" />
+            </Grid>
+
+            <!--  附加面板  -->
+            <Grid
+                Grid.Column="4"
+                Width="{x:Bind ViewModel.ExtraColumnWidth, Mode=OneWay}"
+                Margin="-6,0,0,0"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                Visibility="{x:Bind ViewModel.CurrentSession, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid Height="{x:Bind ViewModel.ExtraRowHeight, Mode=OneWay}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="53" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <SelectorBar
+                        x:Name="PanelTypeSelector"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        SelectionChanged="OnPanelTypeChanged" />
+                    <Border
+                        Grid.Row="1"
+                        Height="1"
+                        HorizontalAlignment="Stretch"
+                        Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
+                    <chat:ChatProviderOptionPanel
+                        Grid.Row="2"
+                        PropertyChanged="OnSessionParameterChanged"
+                        ViewModel="{x:Bind ViewModel.CurrentSession.Data, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.IsSessionOptionsVisible, Mode=OneWay}" />
+                    <chat:SystemInstructionPanel
+                        Grid.Row="2"
+                        ViewModel="{x:Bind ViewModel.CurrentSession, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.IsSystemInstructionVisible, Mode=OneWay}" />
+                </Grid>
+                <chat:ChatSessionListPanel Grid.Row="2" ViewModel="{x:Bind ViewModel}" />
+                <!--  分栏大小控制器  -->
+                <Border
+                    Grid.Row="1"
+                    Height="1"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
+                    Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
+                <community:PropertySizer
+                    x:Name="ExtraSizer"
+                    Grid.Row="1"
+                    HorizontalAlignment="Stretch"
+                    Binding="{x:Bind ViewModel.ExtraRowHeight, Mode=TwoWay}"
+                    Minimum="200"
+                    Orientation="Horizontal" />
+            </Grid>
+
+            <!--  左侧分栏大小控制器  -->
+            <Border
+                Grid.Column="1"
+                Width="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Stretch"
+                Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
+            <community:PropertySizer
+                Grid.Column="1"
+                HorizontalAlignment="Left"
+                Binding="{x:Bind ViewModel.ServiceColumnWidth, Mode=TwoWay}"
+                Maximum="360"
+                Minimum="220" />
+
+
+            <!--  右侧分栏大小控制器  -->
+            <Grid Grid.Column="3" Visibility="{x:Bind ViewModel.CurrentSession, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
+                <Border
+                    Width="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Stretch"
+                    Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
+                <community:PropertySizer
+                    HorizontalAlignment="Left"
+                    Binding="{x:Bind ViewModel.ExtraColumnWidth, Mode=TwoWay}"
+                    IsDragInverted="True"
+                    Maximum="360"
+                    Minimum="220" />
+            </Grid>
+        </Grid>
+    </Grid>
+</local:ChatServicePageBase>

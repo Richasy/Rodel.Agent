@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<UserControl
+    x:Class="RodelAgent.UI.Controls.CommentHeader"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:local="using:RodelAgent.UI.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid ColumnSpacing="8">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <TextBlock
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+            Style="{StaticResource CaptionTextBlockStyle}"
+            Text="{x:Bind Title, Mode=OneWay}"
+            TextTrimming="CharacterEllipsis" />
+        <Button
+            Grid.Column="1"
+            VerticalAlignment="Center"
+            AutomationProperties.Name="{x:Bind Comment, Mode=OneWay}"
+            Style="{StaticResource MiniIconButtonStyle}"
+            ToolTipService.ToolTip="{ext:Locale Name=ShowInformation}">
+            <Button.Flyout>
+                <Flyout Placement="Bottom">
+                    <TextBlock
+                        MaxWidth="220"
+                        Text="{x:Bind Comment, Mode=OneWay}"
+                        TextWrapping="Wrap" />
+                </Flyout>
+            </Button.Flyout>
+            <ic:SymbolIcon
+                FontSize="12"
+                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                Symbol="Info" />
+        </Button>
+    </Grid>
+</UserControl>

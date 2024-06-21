@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:TranslateServicePageControlBase
+    x:Class="RodelAgent.UI.Controls.Translation.TranslationServiceHeader"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:client="using:RodelTranslate.Models.Client"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:itemcontrol="using:RodelAgent.UI.Controls.Items"
+    xmlns:items="using:RodelAgent.UI.ViewModels.Items"
+    xmlns:local="using:RodelAgent.UI.Controls.Translation"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid
+        Padding="20,12"
+        BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
+        BorderThickness="0,0,0,1"
+        ColumnSpacing="12">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <TextBlock
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            FontSize="18"
+            Style="{StaticResource BodyStrongTextBlockStyle}"
+            Text="{ext:Locale Name=TranslateService_Full}"
+            TextTrimming="CharacterEllipsis" />
+        <StackPanel
+            Grid.Column="1"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
+            <ComboBox
+                x:Name="ServiceSelection"
+                MinWidth="120"
+                VerticalAlignment="Center"
+                AutomationProperties.Name="{ext:Locale Name=AvailableService}"
+                ItemsSource="{x:Bind ViewModel.AvailableServices, Mode=OneWay}"
+                SelectedItem="{x:Bind ViewModel.Session.TranslateService, Mode=OneWay}"
+                SelectionChanged="OnServiceSelectionChanged"
+                ToolTipService.ToolTip="{ext:Locale Name=AvailableService}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="items:TranslateServiceItemViewModel">
+                        <itemcontrol:TranslateServiceItemControl Style="{StaticResource SelectionTranslateServiceStyle}" ViewModel="{x:Bind}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <HyperlinkButton
+                Margin="12,0,0,0"
+                VerticalAlignment="Center"
+                Click="OnHistoryButtonClick"
+                Content="{ext:Locale Name=History}"
+                Visibility="{x:Bind ViewModel.IsHistoryShown, Mode=OneWay}">
+                <FlyoutBase.AttachedFlyout>
+                    <Flyout Placement="Bottom" ShouldConstrainToRootBounds="False">
+                        <Flyout.FlyoutPresenterStyle>
+                            <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
+                                <Setter Property="Padding" Value="0" />
+                                <Setter Property="MaxHeight" Value="500" />
+                            </Style>
+                        </Flyout.FlyoutPresenterStyle>
+                        <Grid Width="320" MinHeight="120">
+                            <Border
+                                Padding="12,8"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Visibility="{x:Bind ViewModel.IsHistoryEmpty, Mode=OneWay}">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Style="{StaticResource CaptionTextBlockStyle}"
+                                    Text="{ext:Locale Name=NoTranslationHistory}"
+                                    TextAlignment="Center" />
+                            </Border>
+                            <ItemsRepeater ItemsSource="{x:Bind ViewModel.History}" Visibility="{x:Bind ViewModel.IsHistoryEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+                                <ItemsRepeater.ItemTemplate>
+                                    <DataTemplate x:DataType="client:TranslateSession">
+                                        <local:TranslateSessionItemControl ViewModel="{x:Bind}" />
+                                    </DataTemplate>
+                                </ItemsRepeater.ItemTemplate>
+                                <ItemsRepeater.Layout>
+                                    <StackLayout Spacing="4" />
+                                </ItemsRepeater.Layout>
+                            </ItemsRepeater>
+                        </Grid>
+                    </Flyout>
+                </FlyoutBase.AttachedFlyout>
+            </HyperlinkButton>
+        </StackPanel>
+    </Grid>
+</local:TranslateServicePageControlBase>

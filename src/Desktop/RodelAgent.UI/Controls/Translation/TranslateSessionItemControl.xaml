@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:TranslateSessionItemControlBase
+    x:Class="RodelAgent.UI.Controls.Translation.TranslateSessionItemControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:local="using:RodelAgent.UI.Controls.Translation"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid
+        Padding="20,12,20,16"
+        BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
+        BorderThickness="0,0,0,1"
+        RowSpacing="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid ColumnSpacing="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" Spacing="12">
+                <TextBlock
+                    x:Name="SourceLanguageBlock"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource CaptionTextBlockStyle}" />
+                <ic:SymbolIcon
+                    VerticalAlignment="Center"
+                    FontSize="10"
+                    Symbol="ArrowRight" />
+                <TextBlock
+                    x:Name="TargetLanguageBlock"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource CaptionTextBlockStyle}" />
+            </StackPanel>
+            <Button
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                AutomationProperties.Name="{ext:Locale Name=MoreOptions}"
+                Style="{StaticResource MiniIconButtonStyle}"
+                ToolTipService.ToolTip="{ext:Locale Name=MoreOptions}">
+                <ic:SymbolIcon FontSize="12" Symbol="MoreVertical" />
+                <Button.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Click="OnCopySourceTextItemClick" Text="{ext:Locale Name=CopySourceText}">
+                            <MenuFlyoutItem.Icon>
+                                <ic:SymbolIcon Symbol="Copy" />
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutItem Click="OnCopyTranslatedTextItemClick" Text="{ext:Locale Name=CopyTranslatedText}">
+                            <MenuFlyoutItem.Icon>
+                                <ic:SymbolIcon Symbol="CopyArrowRight" />
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutItem
+                            MinWidth="160"
+                            Click="OnDeleteButtonClick"
+                            Text="{ext:Locale Name=Delete}">
+                            <MenuFlyoutItem.Icon>
+                                <ic:SymbolIcon Foreground="{ThemeResource SystemFillColorCriticalBrush}" Symbol="Delete" />
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>
+        </Grid>
+        <StackPanel Grid.Row="1" Spacing="8">
+            <TextBlock
+                x:Name="InputBlock"
+                IsTextSelectionEnabled="True"
+                MaxLines="3"
+                Style="{StaticResource BodyTextBlockStyle}"
+                Text="{x:Bind ViewModel.InputText, Mode=OneWay}"
+                TextTrimming="CharacterEllipsis"
+                TextWrapping="Wrap">
+                <ToolTipService.ToolTip>
+                    <ToolTip Content="{x:Bind ViewModel.InputText, Mode=OneWay}" IsEnabled="{x:Bind InputBlock.IsTextTrimmed, Mode=OneWay}" />
+                </ToolTipService.ToolTip>
+            </TextBlock>
+            <TextBlock
+                x:Name="OutputBlock"
+                Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                IsTextSelectionEnabled="True"
+                MaxLines="3"
+                Text="{x:Bind ViewModel.OutputText, Mode=OneWay}"
+                TextTrimming="CharacterEllipsis"
+                TextWrapping="Wrap">
+                <ToolTipService.ToolTip>
+                    <ToolTip Content="{x:Bind ViewModel.OutputText, Mode=OneWay}" IsEnabled="{x:Bind OutputBlock.IsTextTrimmed, Mode=OneWay}" />
+                </ToolTipService.ToolTip>
+            </TextBlock>
+        </StackPanel>
+    </Grid>
+</local:TranslateSessionItemControlBase>

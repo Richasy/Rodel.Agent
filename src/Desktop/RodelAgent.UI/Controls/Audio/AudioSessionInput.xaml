@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:AudioSessionControlBase
+    x:Class="RodelAgent.UI.Controls.Audio.AudioSessionInput"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:animations="using:CommunityToolkit.WinUI.Animations"
+    xmlns:controls="using:RodelAgent.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:items="using:RodelAgent.UI.ViewModels.Items"
+    xmlns:itemscontrol="using:RodelAgent.UI.Controls.Items"
+    xmlns:local="using:RodelAgent.UI.Controls.Audio"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Padding="20,0,20,20">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <!--  输入框  -->
+        <TextBox
+            x:Name="InputBox"
+            MaxHeight="400"
+            Padding="12,8,12,12"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            AcceptsReturn="True"
+            FontSize="14"
+            InputScope="Chat"
+            IsEnabled="{x:Bind ViewModel.IsGenerating, Mode=OneWay, Converter={StaticResource ObjectToBoolReverseConverter}}"
+            IsSpellCheckEnabled="False"
+            PlaceholderText="{ext:Locale Name=AudioInputPlaceholder}"
+            PreviewKeyDown="OnInputBoxPreviewKeyDownAsync"
+            Style="{StaticResource SolidTextBoxStyle}"
+            Text="{x:Bind ViewModel.Prompt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            TextWrapping="Wrap" />
+
+        <!--  底部  -->
+        <Grid Grid.Row="1" Padding="0,12,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Orientation="Horizontal"
+                Spacing="8"
+                Visibility="{x:Bind ViewModel.IsGenerating, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+                <Button
+                    Padding="8,4"
+                    HorizontalAlignment="Left"
+                    AutomationProperties.Name="{ext:Locale Name=Model}"
+                    FontSize="12"
+                    ToolTipService.ToolTip="{ext:Locale Name=Model}">
+                    <TextBlock Text="{x:Bind ViewModel.Model, Mode=OneWay}" />
+                    <Button.Flyout>
+                        <Flyout x:Name="ModelFlyout" Placement="Top">
+                            <ItemsRepeater ItemsSource="{x:Bind ViewModel.Models}">
+                                <ItemsRepeater.ItemTemplate>
+                                    <DataTemplate x:DataType="items:AudioModelItemViewModel">
+                                        <itemscontrol:AudioModelCard
+                                            Click="OnModelClick"
+                                            Style="{StaticResource SessionAudioModelCardStyle}"
+                                            ViewModel="{x:Bind}" />
+                                    </DataTemplate>
+                                </ItemsRepeater.ItemTemplate>
+                            </ItemsRepeater>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+
+                <Button
+                    Padding="8,4"
+                    HorizontalAlignment="Left"
+                    AutomationProperties.Name="{ext:Locale Name=Language}"
+                    FontSize="12"
+                    ToolTipService.ToolTip="{ext:Locale Name=Language}">
+                    <TextBlock Text="{x:Bind ViewModel.SelectedLanguage.Name, Mode=OneWay}" />
+                    <Button.Flyout>
+                        <Flyout x:Name="LanguageFlyout" Placement="Top">
+                            <ItemsRepeater ItemsSource="{x:Bind ViewModel.Languages}">
+                                <ItemsRepeater.ItemTemplate>
+                                    <DataTemplate x:DataType="items:AudioLanguageViewModel">
+                                        <controls:CardPanel
+                                            x:Name="RootCard"
+                                            MinWidth="260"
+                                            AutomationProperties.Name="{x:Bind Name, Mode=OneWay}"
+                                            Background="Transparent"
+                                            Click="OnLanguageItemClick"
+                                            DataContext="{x:Bind}"
+                                            IsChecked="{x:Bind IsSelected, Mode=OneWay}"
+                                            StrokeThickness="0">
+                                            <Grid Margin="12,8" ColumnSpacing="8">
+                                                <TextBlock
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Center"
+                                                    Text="{x:Bind Name, Mode=OneWay}"
+                                                    TextTrimming="CharacterEllipsis" />
+                                            </Grid>
+                                        </controls:CardPanel>
+                                    </DataTemplate>
+                                </ItemsRepeater.ItemTemplate>
+                                <ItemsRepeater.Layout>
+                                    <StackLayout Spacing="4" />
+                                </ItemsRepeater.Layout>
+                            </ItemsRepeater>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+
+                <Button
+                    Padding="8,4"
+                    HorizontalAlignment="Left"
+                    AutomationProperties.Name="{ext:Locale Name=Voice}"
+                    FontSize="12"
+                    ToolTipService.ToolTip="{ext:Locale Name=Voice}">
+                    <TextBlock Text="{x:Bind ViewModel.Voice.DisplayName, Mode=OneWay}" />
+                    <Button.Flyout>
+                        <Flyout x:Name="VoiceFlyout" Placement="Top">
+                            <ItemsRepeater ItemsSource="{x:Bind ViewModel.Voices}">
+                                <ItemsRepeater.ItemTemplate>
+                                    <DataTemplate x:DataType="items:AudioVoiceViewModel">
+                                        <controls:CardPanel
+                                            x:Name="RootCard"
+                                            MinWidth="260"
+                                            AutomationProperties.Name="{x:Bind Name, Mode=OneWay}"
+                                            Background="Transparent"
+                                            Click="OnVoiceItemClick"
+                                            DataContext="{x:Bind}"
+                                            IsChecked="{x:Bind IsSelected, Mode=OneWay}"
+                                            StrokeThickness="0">
+                                            <Grid Margin="12,8" ColumnSpacing="8">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Center"
+                                                    Text="{x:Bind Name, Mode=OneWay}"
+                                                    TextTrimming="CharacterEllipsis" />
+                                                <Grid Grid.Column="1" VerticalAlignment="Center">
+                                                    <TextBlock
+                                                        FontFamily="Segoe UI Emoji"
+                                                        FontSize="12"
+                                                        Text="&#x2642;"
+                                                        Visibility="{x:Bind IsMale, Mode=OneWay}" />
+                                                    <TextBlock
+                                                        FontFamily="Segoe UI Emoji"
+                                                        FontSize="12"
+                                                        Text="&#x2640;"
+                                                        Visibility="{x:Bind IsFemale, Mode=OneWay}" />
+                                                    <TextBlock
+                                                        FontFamily="Segoe UI Emoji"
+                                                        FontSize="12"
+                                                        Text="&#x26A7;"
+                                                        Visibility="{x:Bind IsNeutral, Mode=OneWay}" />
+                                                </Grid>
+                                            </Grid>
+                                        </controls:CardPanel>
+                                    </DataTemplate>
+                                </ItemsRepeater.ItemTemplate>
+                                <ItemsRepeater.Layout>
+                                    <StackLayout Spacing="4" />
+                                </ItemsRepeater.Layout>
+                            </ItemsRepeater>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+            </StackPanel>
+            <StackPanel
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Orientation="Horizontal"
+                Spacing="8"
+                Visibility="{x:Bind ViewModel.IsGenerating, Mode=OneWay}">
+                <ProgressBar
+                    Width="16"
+                    VerticalAlignment="Center"
+                    IsIndeterminate="True" />
+                <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="{ext:Locale Name=Generating}" />
+                <animations:Implicit.ShowAnimations>
+                    <animations:OpacityAnimation
+                        From="0"
+                        To="1.0"
+                        Duration="0:0:0.5" />
+                </animations:Implicit.ShowAnimations>
+                <animations:Implicit.HideAnimations>
+                    <animations:OpacityAnimation
+                        From="1"
+                        To="0"
+                        Duration="0:0:0.5" />
+                </animations:Implicit.HideAnimations>
+            </StackPanel>
+            <StackPanel
+                Grid.Column="1"
+                Orientation="Horizontal"
+                Spacing="12">
+                <controls:EnterWrapTip IsEnterSend="{x:Bind ViewModel.IsEnterSend, Mode=OneWay}" />
+                <Grid>
+                    <SplitButton
+                        MinWidth="120"
+                        AutomationProperties.Name="{ext:Locale Name=Send}"
+                        Command="{x:Bind ViewModel.GenerateCommand, Mode=OneWay}"
+                        Content="{ext:Locale Name=Send}"
+                        Style="{StaticResource AccentSplitButtonStyle}"
+                        ToolTipService.ToolTip="{ext:Locale Name=Send}"
+                        Visibility="{x:Bind ViewModel.IsGenerating, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+                        <SplitButton.Flyout>
+                            <MenuFlyout>
+                                <ToggleMenuFlyoutItem
+                                    x:Name="EnterSendItem"
+                                    MinWidth="140"
+                                    Click="OnEnterSendItemClick"
+                                    Text="{ext:Locale Name=PressEnterToSend}" />
+                                <ToggleMenuFlyoutItem
+                                    x:Name="CtrlEnterSendItem"
+                                    MinWidth="140"
+                                    Click="OnCtrlEnterSendItemClick"
+                                    Text="{ext:Locale Name=PressCtrlEnterSend}" />
+                            </MenuFlyout>
+                        </SplitButton.Flyout>
+                    </SplitButton>
+                    <Button
+                        MinWidth="120"
+                        AutomationProperties.Name="{ext:Locale Name=Cancel}"
+                        Command="{x:Bind ViewModel.CancelGenerateCommand, Mode=OneWay}"
+                        Style="{StaticResource AccentButtonStyle}"
+                        Visibility="{x:Bind ViewModel.IsGenerating, Mode=OneWay}">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <ProgressRing
+                                Width="16"
+                                Height="16"
+                                VerticalAlignment="Center"
+                                Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}" />
+                            <TextBlock VerticalAlignment="Center" Text="{ext:Locale Name=Cancel}" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</local:AudioSessionControlBase>

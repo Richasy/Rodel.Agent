@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:ChatSessionControlBase
+    x:Class="RodelAgent.UI.Controls.Chat.ChatSessionInput"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:animations="using:CommunityToolkit.WinUI.Animations"
+    xmlns:controls="using:RodelAgent.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:local="using:RodelAgent.UI.Controls.Chat"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" BorderThickness="0,1,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <!--  工具栏  -->
+        <Grid Padding="12,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <Button
+                    AutomationProperties.Name="{ext:Locale Name=Model}"
+                    Style="{StaticResource SmallIconButtonStyle}"
+                    ToolTipService.ToolTip="{ext:Locale Name=Model}">
+                    <ic:SymbolIcon FontSize="14" Symbol="BrainCircuit" />
+                    <Button.Flyout>
+                        <Flyout x:Name="ModelFlyout" ShouldConstrainToRootBounds="False">
+                            <local:ChatModelSelection ViewModel="{x:Bind ViewModel, Mode=OneWay}" />
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+                <Button
+                    x:Name="ImageButton"
+                    AutomationProperties.Name="{ext:Locale Name=InsertImage}"
+                    IsEnabled="{x:Bind ViewModel.IsSupportVision, Mode=OneWay}"
+                    Style="{StaticResource SmallIconButtonStyle}"
+                    ToolTipService.ToolTip="{ext:Locale Name=InsertImage}">
+                    <ic:SymbolIcon FontSize="14" Symbol="Image" />
+                </Button>
+                <Button
+                    AutomationProperties.Name="{ext:Locale Name=Tools}"
+                    IsEnabled="{x:Bind ViewModel.IsSupportTool, Mode=OneWay}"
+                    Style="{StaticResource SmallIconButtonStyle}"
+                    ToolTipService.ToolTip="{ext:Locale Name=Tools}">
+                    <ic:SymbolIcon FontSize="14" Symbol="Wrench" />
+                    <Button.Flyout>
+                        <Flyout x:Name="PluginFlyout" ShouldConstrainToRootBounds="False">
+                            <local:ChatPluginSelection ViewModel="{x:Bind ViewModel, Mode=OneWay}" />
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+                <Button
+                    AutomationProperties.Name="{ext:Locale Name=Regenerate}"
+                    Command="{x:Bind ViewModel.RegenerateCommand, Mode=OneWay}"
+                    IsEnabled="{x:Bind ViewModel.IsResponding, Mode=OneWay, Converter={StaticResource ObjectToBoolReverseConverter}}"
+                    Style="{StaticResource SmallIconButtonStyle}"
+                    ToolTipService.ToolTip="{ext:Locale Name=Regenerate}"
+                    Visibility="{x:Bind ViewModel.IsRegenerateButtonShown, Mode=OneWay}">
+                    <ic:SymbolIcon
+                        FontSize="14"
+                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                        Symbol="ArrowSync" />
+                </Button>
+            </StackPanel>
+            <Grid Grid.Column="1">
+                <!--<Button
+                    AutomationProperties.Name="{ext:Locale Name=SpeechInput}"
+                    Style="{StaticResource SmallIconButtonStyle}"
+                    ToolTipService.ToolTip="{ext:Locale Name=SpeechInput}">
+                    <ic:SymbolIcon FontSize="14" Symbol="Mic" />
+                </Button>-->
+                <Button
+                    x:Name="CleanMessageButton"
+                    AutomationProperties.Name="{ext:Locale Name=CleanMessages}"
+                    Click="OnCleanMessageButtonClick"
+                    Style="{StaticResource SmallIconButtonStyle}"
+                    ToolTipService.ToolTip="{ext:Locale Name=CleanMessages}"
+                    Visibility="{x:Bind ViewModel.IsChatEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+                    <ic:SymbolIcon
+                        FontSize="14"
+                        Foreground="{ThemeResource SystemFillColorCriticalBrush}"
+                        Symbol="Eraser" />
+                </Button>
+            </Grid>
+        </Grid>
+
+        <!--  输入框  -->
+        <TextBox
+            x:Name="InputBox"
+            Grid.Row="1"
+            MaxHeight="400"
+            Padding="12,8,12,12"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            AcceptsReturn="True"
+            CornerRadius="0"
+            FontSize="14"
+            InputScope="Chat"
+            IsSpellCheckEnabled="False"
+            PlaceholderText="{ext:Locale Name=ChatInputPlaceholder}"
+            PreviewKeyDown="OnInputBoxPreviewKeyDownAsync"
+            Style="{StaticResource TransparentTextBoxStyle}"
+            Text="{x:Bind ViewModel.UserInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            TextWrapping="Wrap" />
+
+        <!--  底部  -->
+        <Grid Grid.Row="3" Padding="12,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Orientation="Horizontal"
+                Spacing="8"
+                Visibility="{x:Bind ViewModel.IsResponding, Mode=OneWay}">
+                <ProgressBar
+                    Width="16"
+                    VerticalAlignment="Center"
+                    IsIndeterminate="True" />
+                <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="{x:Bind ViewModel.GeneratingTipText, Mode=OneWay}" />
+                <animations:Implicit.ShowAnimations>
+                    <animations:OpacityAnimation
+                        From="0"
+                        To="1.0"
+                        Duration="0:0:0.5" />
+                </animations:Implicit.ShowAnimations>
+                <animations:Implicit.HideAnimations>
+                    <animations:OpacityAnimation
+                        From="1"
+                        To="0"
+                        Duration="0:0:0.5" />
+                </animations:Implicit.HideAnimations>
+            </StackPanel>
+            <StackPanel
+                Grid.Column="1"
+                Orientation="Horizontal"
+                Spacing="12">
+                <controls:EnterWrapTip IsEnterSend="{x:Bind ViewModel.IsEnterSend, Mode=OneWay}" />
+                <Button
+                    AutomationProperties.Name="{ext:Locale Name=NewSession}"
+                    Command="{x:Bind ViewModel.NewSessionCommand, Mode=OneWay}"
+                    IsEnabled="{x:Bind ViewModel.IsResponding, Mode=OneWay, Converter={StaticResource ObjectToBoolReverseConverter}}"
+                    Style="{StaticResource IconButtonStyle}"
+                    ToolTipService.ToolTip="{ext:Locale Name=NewSession}">
+                    <ic:SymbolIcon FontSize="14" Symbol="ChatAdd" />
+                </Button>
+                <Grid>
+                    <SplitButton
+                        MinWidth="120"
+                        AutomationProperties.Name="{ext:Locale Name=Send}"
+                        Command="{x:Bind ViewModel.SendCommand, Mode=OneWay}"
+                        Content="{ext:Locale Name=Send}"
+                        Style="{StaticResource AccentSplitButtonStyle}"
+                        ToolTipService.ToolTip="{ext:Locale Name=Send}"
+                        Visibility="{x:Bind ViewModel.IsResponding, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+                        <SplitButton.Flyout>
+                            <MenuFlyout>
+                                <ToggleMenuFlyoutItem
+                                    x:Name="EnterSendItem"
+                                    MinWidth="140"
+                                    Click="OnEnterSendItemClick"
+                                    Text="{ext:Locale Name=PressEnterToSend}" />
+                                <ToggleMenuFlyoutItem
+                                    x:Name="CtrlEnterSendItem"
+                                    MinWidth="140"
+                                    Click="OnCtrlEnterSendItemClick"
+                                    Text="{ext:Locale Name=PressCtrlEnterSend}" />
+                                <MenuFlyoutSeparator />
+                                <MenuFlyoutItem
+                                    Command="{x:Bind ViewModel.AddUserInputCommand, Mode=OneWay}"
+                                    Text="{ext:Locale Name=JustAddMessage}"
+                                    ToolTipService.ToolTip="{ext:Locale Name=JustAddMessageDescription}" />
+                            </MenuFlyout>
+                        </SplitButton.Flyout>
+                    </SplitButton>
+                    <Button
+                        MinWidth="120"
+                        AutomationProperties.Name="{ext:Locale Name=Cancel}"
+                        Command="{x:Bind ViewModel.CancelMessageCommand, Mode=OneWay}"
+                        Style="{StaticResource AccentButtonStyle}"
+                        Visibility="{x:Bind ViewModel.IsResponding, Mode=OneWay}">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <ProgressRing
+                                Width="16"
+                                Height="16"
+                                VerticalAlignment="Center"
+                                Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}" />
+                            <TextBlock VerticalAlignment="Center" Text="{ext:Locale Name=Cancel}" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </StackPanel>
+        </Grid>
+
+        <TeachingTip
+            x:Name="CleanMessageTip"
+            ActionButtonClick="OnClearMessageActionButtonClick"
+            ActionButtonCommand="{x:Bind ViewModel.ClearMessageCommand, Mode=OneWay}"
+            ActionButtonContent="{ext:Locale Name=Confirm}"
+            IsLightDismissEnabled="True"
+            PreferredPlacement="TopLeft"
+            Subtitle="{ext:Locale Name=CleanChatMessagesWarning}"
+            Target="{x:Bind CleanMessageButton}" />
+    </Grid>
+</local:ChatSessionControlBase>

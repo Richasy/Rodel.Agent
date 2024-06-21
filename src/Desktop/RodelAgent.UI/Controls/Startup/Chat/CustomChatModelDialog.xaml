@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<controls:AppContentDialog
+    x:Class="RodelAgent.UI.Controls.Startup.CustomChatModelDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:RodelAgent.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:local="using:RodelAgent.UI.Controls.Startup"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    CloseButtonText="{ext:Locale Name=Cancel}"
+    DefaultButton="Primary"
+    PrimaryButtonClick="OnPrimaryButtonClick"
+    PrimaryButtonText="{ext:Locale Name=Confirm}"
+    Style="{StaticResource DefaultContentDialogStyle}"
+    mc:Ignorable="d">
+
+    <StackPanel Spacing="8">
+        <TextBox
+            x:Name="ModelNameBox"
+            HorizontalAlignment="Stretch"
+            PlaceholderText="{ext:Locale Name=ModelNamePlaceholder}">
+            <TextBox.Header>
+                <controls:CommentHeader Title="{ext:Locale Name=ModelName}" Comment="{ext:Locale Name=ModelNameDescription}" />
+            </TextBox.Header>
+        </TextBox>
+        <TextBox
+            x:Name="ModelIdBox"
+            HorizontalAlignment="Stretch"
+            PlaceholderText="{ext:Locale Name=ModelIdPlaceholder}">
+            <TextBox.Header>
+                <controls:CommentHeader Title="{ext:Locale Name=ModelId}" Comment="{ext:Locale Name=ModelIdDescription}" />
+            </TextBox.Header>
+        </TextBox>
+        <ComboBox
+            x:Name="ContextLengthSelection"
+            HorizontalAlignment="Stretch"
+            AutomationProperties.Name="{ext:Locale Name=ContextLength}"
+            SelectedIndex="0">
+            <ComboBox.Header>
+                <controls:CommentHeader Title="{ext:Locale Name=ContextLength}" Comment="{ext:Locale Name=ContextLengthDescription}" />
+            </ComboBox.Header>
+            <ComboBoxItem
+                AutomationProperties.Name="{ext:Locale Name=ContextLength_Unknown}"
+                Content="{ext:Locale Name=Unknow}"
+                Tag="0"
+                ToolTipService.ToolTip="{ext:Locale Name=ContextLength_Unknown}" />
+            <ComboBoxItem
+                AutomationProperties.Name="{ext:Locale Name=ContextLength_2K}"
+                Content="2K"
+                Tag="2048"
+                ToolTipService.ToolTip="{ext:Locale Name=ContextLength_2K}" />
+            <ComboBoxItem
+                AutomationProperties.Name="{ext:Locale Name=ContextLength_4K}"
+                Content="4K"
+                Tag="4096"
+                ToolTipService.ToolTip="{ext:Locale Name=ContextLength_4K}" />
+            <ComboBoxItem
+                AutomationProperties.Name="{ext:Locale Name=ContextLength_8K}"
+                Content="8K"
+                Tag="8192"
+                ToolTipService.ToolTip="{ext:Locale Name=ContextLength_8K}" />
+            <ComboBoxItem
+                AutomationProperties.Name="{ext:Locale Name=ContextLength_12K}"
+                Content="12K"
+                Tag="12288"
+                ToolTipService.ToolTip="{ext:Locale Name=ContextLength_12K}" />
+            <ComboBoxItem
+                AutomationProperties.Name="{ext:Locale Name=ContextLength_16K}"
+                Content="16K"
+                Tag="16384"
+                ToolTipService.ToolTip="{ext:Locale Name=ContextLength_16K}" />
+            <ComboBoxItem
+                AutomationProperties.Name="{ext:Locale Name=ContextLength_32K}"
+                Content="32K"
+                Tag="32768"
+                ToolTipService.ToolTip="{ext:Locale Name=ContextLength_32K}" />
+            <ComboBoxItem
+                AutomationProperties.Name="{ext:Locale Name=ContextLength_128K}"
+                Content="128K"
+                Tag="131072"
+                ToolTipService.ToolTip="{ext:Locale Name=ContextLength_128K}" />
+            <ComboBoxItem
+                AutomationProperties.Name="{ext:Locale Name=ContextLength_256K}"
+                Content="256K"
+                Tag="262144"
+                ToolTipService.ToolTip="{ext:Locale Name=ContextLength_256K}" />
+        </ComboBox>
+        <StackPanel
+            Margin="0,4,0,0"
+            Padding="0,8,0,0"
+            BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
+            BorderThickness="0,1,0,0"
+            Orientation="Horizontal"
+            Spacing="8">
+            <ToggleButton
+                x:Name="ToolButton"
+                Width="28"
+                Height="28"
+                Padding="0"
+                HorizontalAlignment="Center"
+                AutomationProperties.Name="{ext:Locale Name=SupportTool}"
+                ToolTipService.ToolTip="{ext:Locale Name=SupportTool}">
+                <ic:SymbolIcon FontSize="14" Symbol="WrenchScrewdriver" />
+            </ToggleButton>
+            <ToggleButton
+                x:Name="VisionButton"
+                Grid.Column="1"
+                Width="28"
+                Height="28"
+                Padding="0"
+                HorizontalAlignment="Center"
+                AutomationProperties.Name="{ext:Locale Name=SupportVision}"
+                ToolTipService.ToolTip="{ext:Locale Name=SupportVision}">
+                <ic:SymbolIcon FontSize="14" Symbol="EyeTracking" />
+            </ToggleButton>
+            <ToggleButton
+                x:Name="FileUploadButton"
+                Grid.Column="2"
+                Width="28"
+                Height="28"
+                Padding="0"
+                HorizontalAlignment="Center"
+                AutomationProperties.Name="{ext:Locale Name=SupportFileUpload}"
+                ToolTipService.ToolTip="{ext:Locale Name=SupportFileUpload}">
+                <ic:SymbolIcon FontSize="14" Symbol="CloudArrowUp" />
+            </ToggleButton>
+        </StackPanel>
+    </StackPanel>
+</controls:AppContentDialog>

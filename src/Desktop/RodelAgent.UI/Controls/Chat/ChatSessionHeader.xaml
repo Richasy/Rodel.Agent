@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:ChatSessionControlBase
+    x:Class="RodelAgent.UI.Controls.Chat.ChatSessionHeader"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:RodelAgent.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:local="using:RodelAgent.UI.Controls.Chat"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid
+        Padding="12,8"
+        BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
+        BorderThickness="0,0,0,1"
+        ColumnSpacing="12">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid VerticalAlignment="Center">
+            <controls:ProviderLogo
+                Width="36"
+                Height="36"
+                IsAvatar="True"
+                Provider="{x:Bind ViewModel.Data.Provider, Mode=OneWay}"
+                Visibility="{x:Bind ViewModel.IsNormalSession, Mode=OneWay}" />
+            <controls:PresetAvatar
+                Width="36"
+                Height="36"
+                CornerRadius="18"
+                FontSize="16"
+                PresetId="{x:Bind ViewModel.Data.PresetId, Mode=OneWay}"
+                Visibility="{x:Bind ViewModel.IsAgentPreset, Mode=OneWay}" />
+            <controls:PresetAvatar
+                Width="36"
+                Height="36"
+                CornerRadius="18"
+                DefaultSymbol="ChatMultiple"
+                FontSize="16"
+                PresetId="{x:Bind ViewModel.Data.PresetId, Mode=OneWay}"
+                Visibility="{x:Bind ViewModel.IsSessionPreset, Mode=OneWay}" />
+        </Grid>
+        <Grid Grid.Column="1">
+            <StackPanel x:Name="TitleContainer" Spacing="2">
+                <TextBlock
+                    MaxLines="1"
+                    Style="{StaticResource BodyStrongTextBlockStyle}"
+                    Tapped="OnTitleTapped"
+                    Text="{x:Bind ViewModel.Title, Mode=OneWay}"
+                    TextTrimming="CharacterEllipsis"
+                    ToolTipService.ToolTip="{ext:Locale Name=ClickToRename}" />
+                <TextBlock
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    Style="{StaticResource CaptionTextBlockStyle}"
+                    Text="{x:Bind ViewModel.Model, Mode=OneWay}" />
+            </StackPanel>
+            <TextBox
+                x:Name="RenameBox"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"
+                LostFocus="OnRenameBoxLostFocus"
+                PreviewKeyDown="OnRenameBoxPreviewKeyDown"
+                Visibility="Collapsed" />
+        </Grid>
+
+        <StackPanel
+            Grid.Column="3"
+            Orientation="Horizontal"
+            Spacing="4">
+            <Button
+                x:Name="ShareButton"
+                AutomationProperties.Name="{ext:Locale Name=Share}"
+                Style="{StaticResource IconButtonStyle}"
+                ToolTipService.ToolTip="{ext:Locale Name=Share}">
+                <ic:SymbolIcon FontSize="14" Symbol="Share" />
+            </Button>
+            <Button
+                AutomationProperties.Name="{ext:Locale Name=SavePreset}"
+                Command="{x:Bind ViewModel.SaveAsPresetCommand, Mode=OneWay}"
+                Style="{StaticResource IconButtonStyle}"
+                ToolTipService.ToolTip="{ext:Locale Name=SavePreset}">
+                <ic:SymbolIcon FontSize="14" Symbol="Save" />
+            </Button>
+        </StackPanel>
+    </Grid>
+</local:ChatSessionControlBase>

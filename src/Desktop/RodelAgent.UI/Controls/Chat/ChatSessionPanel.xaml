@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:ChatSessionControlBase
+    x:Class="RodelAgent.UI.Controls.Chat.ChatSessionPanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:RodelAgent.UI.Controls.Chat"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource LayerFillColorDefaultBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <local:ChatSessionHeader ViewModel="{x:Bind ViewModel, Mode=OneWay}" />
+        <local:ChatSessionHistory Grid.Row="1" ViewModel="{x:Bind ViewModel, Mode=OneWay}" />
+        <local:ChatSessionInput
+            Grid.Row="2"
+            MinHeight="220"
+            ViewModel="{x:Bind ViewModel, Mode=OneWay}" />
+    </Grid>
+</local:ChatSessionControlBase>

@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+    
+  <ItemGroup>
+    <ProjectReference Include="..\..\Libs\semantic-kernel\dotnet\src\Connectors\Connectors.HunYuan\Connectors.HunYuan.csproj" />
+    <ProjectReference Include="..\..\Libs\semantic-kernel\dotnet\src\Connectors\Connectors.OpenAI\Connectors.OpenAI.csproj" />
+    <ProjectReference Include="..\..\Libs\semantic-kernel\dotnet\src\Connectors\Connectors.QianFan\Connectors.QianFan.csproj" />
+    <ProjectReference Include="..\..\Libs\semantic-kernel\dotnet\src\Connectors\Connectors.SparkDesk\Connectors.SparkDesk.csproj" />
+    <ProjectReference Include="..\..\Libs\semantic-kernel\dotnet\src\SemanticKernel.Abstractions\SemanticKernel.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Libs\semantic-kernel\dotnet\src\SemanticKernel.Core\SemanticKernel.Core.csproj" />
+    <ProjectReference Include="..\RodelAgent.Interfaces\RodelAgent.Interfaces.csproj" />
+    <ProjectReference Include="..\RodelAgent.Models\RodelAgent.Models.csproj" />
+    <ProjectReference Include="..\RodelDraw.Interfaces\RodelDraw.Interfaces.csproj" />
+    <ProjectReference Include="..\RodelDraw.Models\RodelDraw.Models.csproj" />
+  </ItemGroup>
+
+</Project>

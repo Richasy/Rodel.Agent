@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:ChatSessionPresetItemControlBase
+    x:Class="RodelAgent.UI.Controls.Items.ChatSessionPresetItemControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:RodelAgent.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:local="using:RodelAgent.UI.Controls.Items"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <controls:CardPanel
+        x:Name="RootCard"
+        HorizontalAlignment="Stretch"
+        HorizontalContentAlignment="Stretch"
+        AutomationProperties.Name="{x:Bind ViewModel.Name, Mode=OneWay}"
+        Background="Transparent"
+        BorderBrush="Transparent"
+        Click="OnClick"
+        IsChecked="{x:Bind ViewModel.IsSelected, Mode=OneWay}"
+        StrokeThickness="0">
+        <Grid Margin="12,8" ColumnSpacing="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <controls:PresetAvatar
+                x:Name="Avatar"
+                Width="28"
+                Height="28"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                CornerRadius="16"
+                DefaultSymbol="{x:Bind DefaultSymbol, Mode=OneWay}"
+                FontSize="14"
+                PresetId="{x:Bind ViewModel.Data.Id, Mode=OneWay}" />
+            <TextBlock
+                Grid.Column="1"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                MaxLines="1"
+                Text="{x:Bind ViewModel.Name, Mode=OneWay}"
+                TextTrimming="CharacterEllipsis" />
+        </Grid>
+    </controls:CardPanel>
+</local:ChatSessionPresetItemControlBase>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<controls:TranslateServiceConfigControlBase
+    x:Class="RodelAgent.UI.Controls.Settings.VolcanoTranslateConfigSettingSection"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:community="using:CommunityToolkit.WinUI.Controls"
+    xmlns:controls="using:RodelAgent.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:local="using:RodelAgent.UI.Controls.Settings"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <community:SettingsExpander AutomationProperties.Name="{x:Bind ViewModel.Name, Mode=OneWay}">
+        <community:SettingsExpander.Header>
+            <controls:ProviderLogo
+                x:Name="Logo"
+                Height="20"
+                Provider="{x:Bind ViewModel.ProviderType, Mode=OneWay}" />
+        </community:SettingsExpander.Header>
+        <community:SettingsExpander.Items>
+            <community:SettingsCard
+                x:Name="KeyCard"
+                Description="{ext:Locale Name=VolcanoAccessKeyDescription}"
+                Header="{ext:Locale Name=AccessKey}">
+                <PasswordBox
+                    x:Name="KeyBox"
+                    Width="200"
+                    AutomationProperties.Name="{ext:Locale Name=AccessKey}"
+                    Loaded="OnKeyBoxLoaded"
+                    PasswordChanged="OnKeyBoxPasswordChanged" />
+            </community:SettingsCard>
+            <community:SettingsCard Description="{ext:Locale Name=VolcanoKeyIdDescription}" Header="{ext:Locale Name=KeyId}">
+                <TextBox
+                    x:Name="IdBox"
+                    Width="200"
+                    AutomationProperties.Name="{ext:Locale Name=KeyId}"
+                    TextChanged="OnIdBoxTextChanged" />
+            </community:SettingsCard>
+        </community:SettingsExpander.Items>
+        <ic:SymbolIcon
+            FontSize="14"
+            Foreground="{ThemeResource SystemFillColorSuccessBrush}"
+            IsFilled="True"
+            Symbol="CheckmarkCircle"
+            Visibility="{x:Bind ViewModel.IsCompleted, Mode=OneWay}" />
+    </community:SettingsExpander>
+</controls:TranslateServiceConfigControlBase>

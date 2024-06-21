@@ -1,0 +1,36 @@
+﻿// Copyright (c) Rodel. All rights reserved.
+
+using RodelAgent.UI.ViewModels.Pages;
+
+namespace RodelAgent.UI.Pages;
+
+/// <summary>
+/// 音频生成页面.
+/// </summary>
+public sealed partial class AudioServicePage : AudioServicePageBase
+{
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AudioServicePage"/> class.
+    /// </summary>
+    public AudioServicePage()
+    {
+        InitializeComponent();
+        ViewModel = ServiceProvider.GetRequiredService<AudioServicePageViewModel>();
+    }
+
+    /// <inheritdoc/>
+    protected override void OnPageLoaded()
+    {
+        if (ViewModel.IsAvailableServicesEmpty)
+        {
+            ViewModel.ResetAvailableAudioServicesCommand.Execute(default);
+        }
+    }
+}
+
+/// <summary>
+/// 音频服务页面基类.
+/// </summary>
+public abstract class AudioServicePageBase : PageBase<AudioServicePageViewModel>
+{
+}

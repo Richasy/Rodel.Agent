@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:AppTitleBarBase
+    x:Class="RodelAgent.UI.Controls.Main.AppTitleBar"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:local="using:RodelAgent.UI.Controls.Main"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid
+        Height="48"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="128" />
+        </Grid.ColumnDefinitions>
+        <StackPanel
+            Margin="22,0,0,0"
+            VerticalAlignment="Center"
+            Orientation="Horizontal"
+            Spacing="12">
+            <Image
+                Height="16"
+                VerticalAlignment="Center"
+                Source="ms-appx:///Assets/small-logo.png"
+                Stretch="Uniform" />
+            <TextBlock
+                VerticalAlignment="Center"
+                Style="{StaticResource CaptionTextBlockStyle}"
+                Text="{ext:Locale Name=AppName}" />
+        </StackPanel>
+
+        <AutoSuggestBox
+            x:Name="AppSearchBox"
+            Grid.Column="1"
+            MinWidth="200"
+            MaxWidth="400"
+            VerticalAlignment="Center"
+            AutomationProperties.Name="{ext:Locale Name=AppSearchPlaceholder}"
+            PlaceholderText="{ext:Locale Name=AppSearchPlaceholder}"
+            QueryIcon="Find" />
+    </Grid>
+</local:AppTitleBarBase>
