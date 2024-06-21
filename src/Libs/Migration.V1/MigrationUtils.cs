@@ -54,7 +54,7 @@ public sealed class MigrationUtils
     {
         await Task.Run(() =>
         {
-            var zipPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "v1_backup.zip");
+            var zipPath = Path.Combine(Path.GetDirectoryName(_workDir)!, "v1_backup.zip");
             if (File.Exists(zipPath))
             {
                 File.Delete(zipPath);
