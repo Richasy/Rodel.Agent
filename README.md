@@ -32,9 +32,8 @@ Please refer to the document website for detailed introduction: [Rodel Agent](ht
 
 ### Prerequisites
 
-|||
-|-|-|
 |Development Tools|Visual Studio 2022|
+|-|-|
 |Basic Dependencies|.NET 8, Windows App SDK 1.5|
 |Submodules|[Richasy/semantic-kernel](https://github.com/Richasy/semantic-kernel/tree/dev)|
 
@@ -83,6 +82,8 @@ The console will automatically load the local `config.json` but will not upload 
 ## 🔗 Links
 
 - [Rodel Agent Documentation](https://agent.richasy.net)
+- [Lobe Chat](https://github.com/lobehub/lobe-chat)
+- [Lobe Icons](https://github.com/lobehub/lobe-icons)
 - [Spectre.Console](https://spectreconsole.net)
 - [Windows App SDK](https://github.com/microsoft/WindowsAppSDK)
 - [CommunityToolkit](https://github.com/CommunityToolkit)

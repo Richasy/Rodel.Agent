@@ -129,6 +129,9 @@
   <data name="AccessKeyPlaceholder" xml:space="preserve">
     <value>{0} API 密钥</value>
   </data>
+  <data name="AccessKeySecret" xml:space="preserve">
+    <value>访问密文（AccessKey Secret）</value>
+  </data>
   <data name="AddAgent" xml:space="preserve">
     <value>添加助理</value>
   </data>
@@ -158,6 +161,9 @@
   </data>
   <data name="AliTranslate" xml:space="preserve">
     <value>阿里云翻译</value>
+  </data>
+  <data name="ApiKey" xml:space="preserve">
+    <value>API 密钥（API Key）</value>
   </data>
   <data name="ApiVersion" xml:space="preserve">
     <value>API 版本</value>
@@ -855,6 +861,9 @@
   </data>
   <data name="SecretId" xml:space="preserve">
     <value>密文 ID（Secret ID）</value>
+  </data>
+  <data name="SecretKey" xml:space="preserve">
+    <value>密文密钥（Secret Key）</value>
   </data>
   <data name="SeeAllModels" xml:space="preserve">
     <value>查看全部模型</value>

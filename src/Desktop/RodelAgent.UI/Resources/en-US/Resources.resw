@@ -129,6 +129,9 @@
   <data name="AccessKeyPlaceholder" xml:space="preserve">
     <value>{0} API key</value>
   </data>
+  <data name="AccessKeySecret" xml:space="preserve">
+    <value>AccessKey Secret</value>
+  </data>
   <data name="AddAgent" xml:space="preserve">
     <value>Add agent</value>
   </data>
@@ -158,6 +161,9 @@
   </data>
   <data name="AliTranslate" xml:space="preserve">
     <value>Alibaba Cloud Translate</value>
+  </data>
+  <data name="ApiKey" xml:space="preserve">
+    <value>API Key</value>
   </data>
   <data name="ApiVersion" xml:space="preserve">
     <value>API version</value>
@@ -855,6 +861,9 @@ You can manually adjust the limit, and the application will capture the specifie
   </data>
   <data name="SecretId" xml:space="preserve">
     <value>Secret ID</value>
+  </data>
+  <data name="SecretKey" xml:space="preserve">
+    <value>Secret Key</value>
   </data>
   <data name="SeeAllModels" xml:space="preserve">
     <value>See all models</value>

@@ -18,11 +18,11 @@
             <controls:ProviderLogo x:Name="Logo" Height="22" />
         </community:SettingsExpander.Header>
         <community:SettingsExpander.Items>
-            <community:SettingsCard x:Name="KeyCard" Header="{ext:Locale Name=AccessKey}">
+            <community:SettingsCard x:Name="KeyCard" Header="{ext:Locale Name=ApiKey}">
                 <PasswordBox
                     x:Name="KeyBox"
                     Width="200"
-                    AutomationProperties.Name="{ext:Locale Name=AccessKey}"
+                    AutomationProperties.Name="{ext:Locale Name=ApiKey}"
                     Loaded="OnKeyBoxLoaded"
                     PasswordChanged="OnKeyBoxPasswordChanged" />
             </community:SettingsCard>
