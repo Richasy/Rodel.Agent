@@ -1,0 +1,52 @@
+name: 文档修改 / Document Change
+description: 关于文档的建议或问题 / Suggestions or problems about the document
+title: "[Doc] Title"
+labels:
+  - "document"
+assignees: Richasy
+body:
+- type: markdown
+  attributes: 
+    value: |
+      ## 写在开头 / Beginning
+      🚨 请务必完整填写下面的内容，如果缺少必要的信息，开发者可能会在未调查的情况下直接关闭问题 🚨  
+      🚨 Be sure to fill out the following completely, if the necessary information is missing, the developer may close the issue without investigating 🚨
+
+- type: textarea
+  id: problem-description
+  validations: 
+    required: true
+  attributes: 
+    label: 问题描述 / Problem Description
+    description: 描述当前文档存在的问题 / Describe the problem with the current document
+    placeholder: |
+      请描述你遇到的问题，以及为什么会对你造成困扰  
+      Please describe the problem you encountered and why it caused you trouble
+
+- type: textarea
+  id: expect-document
+  validations: 
+    required: true
+  attributes: 
+    label: 预期内容 / Expected Content
+    description: 说说对于该问题, 你预期的文档内容是怎样的 / Describe what you expect the document to be like
+    placeholder: |
+      尽量清晰地描述你所预期的文档内容，这有助于开发者做出符合你预期的修改  
+      Describe as clearly as possible what you expect the document content to be, which helps developers make changes that meet your expectations
+
+- type: textarea
+  id: alternatives
+  attributes: 
+    label: 对应文档 / Corresponding Document
+    description: 如果文档已存在，请添加文档链接 / If the document already exists, please add the document link
+    placeholder: |
+      [文档名称](文档链接)  
+      [Document Name](Document Link)
+
+- type: textarea
+  id: additional-info
+  attributes:
+    label: 附加信息 / Additional Information
+    description: |
+     添加一些你认为有必要的备注信息，或者展示一些能表现你思路的草图  
+     Add some notes you think are necessary, or show some sketches that can show your thoughts
