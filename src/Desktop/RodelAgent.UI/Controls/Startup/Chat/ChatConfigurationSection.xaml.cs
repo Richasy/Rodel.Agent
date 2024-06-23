@@ -38,6 +38,7 @@ public sealed partial class ChatConfigurationSection : ChatServiceConfigControlB
             or ProviderType.MistralAI
             or ProviderType.TogetherAI
             or ProviderType.Perplexity
+            or ProviderType.SiliconFlow
             or ProviderType.DashScope => CreateForm<ChatClientConfigSection>(),
             ProviderType.Anthropic
             or ProviderType.Gemini

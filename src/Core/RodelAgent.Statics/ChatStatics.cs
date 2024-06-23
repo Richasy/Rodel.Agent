@@ -33,6 +33,7 @@ public static class ChatStatics
             { ProviderType.QianFan, resourceToolkit.GetString("QianFan") },
             { ProviderType.HunYuan, resourceToolkit.GetString("HunYuan") },
             { ProviderType.SparkDesk, resourceToolkit.GetString("SparkDesk") },
+            { ProviderType.SiliconFlow, "Silicon Cloud" },
             { ProviderType.OpenRouter, "Open Router" },
             { ProviderType.TogetherAI, "Together AI" },
             { ProviderType.Groq, "Groq" },

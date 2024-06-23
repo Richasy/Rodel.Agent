@@ -34,6 +34,7 @@ public sealed partial class ChatServicesPage : SettingsPageBase
                 or ProviderType.MistralAI
                 or ProviderType.TogetherAI
                 or ProviderType.Perplexity
+                or ProviderType.SiliconFlow
                 or ProviderType.DashScope => CreateForm<ModelClientConfigSettingSection>(item),
                 ProviderType.Anthropic
                 or ProviderType.Gemini

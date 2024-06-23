@@ -160,4 +160,12 @@ public sealed partial class ChatProviderFactory
             AddCreateMethod(ProviderType.Ollama, () => new OllamaProvider(config));
         }
     }
+
+    private void InjectSiliconFlow(SiliconFlowClientConfig? config)
+    {
+        if (!string.IsNullOrEmpty(config?.Key))
+        {
+            AddCreateMethod(ProviderType.SiliconFlow, () => new SiliconFlowProvider(config));
+        }
+    }
 }
