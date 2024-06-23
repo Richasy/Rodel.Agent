@@ -15,7 +15,7 @@ public sealed class OllamaProvider : ProviderBase, IProvider
     /// Initializes a new instance of the <see cref="OllamaProvider"/> class.
     /// </summary>
     public OllamaProvider(OllamaClientConfig config)
-        : base(config.Key, config.CustomModels)
+        : base("ollama", config.CustomModels)
     {
         SetBaseUri(ProviderConstants.OllamaApi, config.Endpoint);
     }

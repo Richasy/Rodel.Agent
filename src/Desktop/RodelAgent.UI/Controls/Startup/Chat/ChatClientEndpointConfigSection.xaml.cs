@@ -31,6 +31,11 @@ public sealed partial class ChatClientEndpointConfigSection : ChatServiceConfigC
         }
 
         newVM.Config ??= CreateCurrentConfig();
+        if (newVM.Config is OllamaClientConfig)
+        {
+            BaseSection.Visibility = Visibility.Collapsed;
+        }
+
         Debug.Assert(ViewModel.Config != null, "ViewModel.Config should not be null.");
         ViewModel.CheckCurrentConfig();
     }
@@ -66,7 +71,6 @@ public sealed partial class ChatClientEndpointConfigSection : ChatServiceConfigC
                 }
                 else if (config is OllamaClientConfig)
                 {
-                    config.Key = "ollama";
                     config.Endpoint = ProviderConstants.OllamaApi;
                 }
 

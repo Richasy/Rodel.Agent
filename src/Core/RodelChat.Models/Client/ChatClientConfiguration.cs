@@ -309,9 +309,14 @@ public sealed class SiliconFlowClientConfig : ClientConfigBase
 /// </summary>
 public sealed class OllamaClientConfig : ClientEndpointConfigBase
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="OllamaClientConfig"/> class.
+    /// </summary>
+    public OllamaClientConfig() => Key = "ollama";
+
     /// <inheritdoc/>
     public override bool IsValid()
-        => IsCustomModelNotEmpty() && !string.IsNullOrEmpty(Key) && !string.IsNullOrEmpty(Endpoint);
+        => IsCustomModelNotEmpty() && !string.IsNullOrEmpty(Endpoint);
 }
 
 /// <summary>
