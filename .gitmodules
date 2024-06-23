@@ -1,3 +1,6 @@
 [submodule "src/Libs/semantic-kernel"]
 	path = src/Libs/semantic-kernel
 	url = https://github.com/Richasy/semantic-kernel.git
+[submodule "src/Libs/fluentui-emoji"]
+	path = src/Libs/fluentui-emoji
+	url = https://github.com/microsoft/fluentui-emoji.git
