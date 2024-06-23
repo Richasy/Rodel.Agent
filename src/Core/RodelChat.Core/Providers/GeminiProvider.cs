@@ -20,7 +20,7 @@ public sealed class GeminiProvider : ProviderBase, IProvider
     public GeminiProvider(GeminiClientConfig config)
         : base(config.Key, config.CustomModels)
     {
-        SetBaseUri(ProviderConstants.GeminiApi);
+        SetBaseUri(ProviderConstants.GeminiApi, config.Endpoint);
         ServerModels = PredefinedModels.GeminiModels;
     }
 
@@ -30,7 +30,7 @@ public sealed class GeminiProvider : ProviderBase, IProvider
         if (ShouldRecreateKernel(modelId))
         {
             Kernel = Kernel.CreateBuilder()
-                .AddGoogleAIGeminiChatCompletion(modelId, AccessKey)
+                .AddGoogleAIGeminiChatCompletion(modelId, BaseUri, AccessKey)
                 .Build();
         }
 

@@ -33,7 +33,6 @@ public sealed partial class ChatConfigurationSection : ChatServiceConfigControlB
             or ProviderType.ZhiPu
             or ProviderType.LingYi
             or ProviderType.DeepSeek
-            or ProviderType.Gemini
             or ProviderType.OpenRouter
             or ProviderType.Groq
             or ProviderType.MistralAI
@@ -41,6 +40,7 @@ public sealed partial class ChatConfigurationSection : ChatServiceConfigControlB
             or ProviderType.Perplexity
             or ProviderType.DashScope => CreateForm<ChatClientConfigSection>(),
             ProviderType.Anthropic
+            or ProviderType.Gemini
             or ProviderType.Ollama => CreateForm<ChatClientEndpointConfigSection>(),
             ProviderType.OpenAI => CreateForm<OpenAIChatConfigSection>(),
             ProviderType.AzureOpenAI => CreateForm<AzureOpenAIChatConfigSection>(),

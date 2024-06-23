@@ -78,6 +78,10 @@ public sealed partial class ModelClientEndpointConfigSettingSection : ChatServic
                 {
                     config.Endpoint = ProviderConstants.AnthropicApi;
                 }
+                else if (config is GeminiClientConfig)
+                {
+                    config.Endpoint = ProviderConstants.GeminiApi;
+                }
                 else if (config is OllamaClientConfig)
                 {
                     config.Endpoint = ProviderConstants.OllamaApi;

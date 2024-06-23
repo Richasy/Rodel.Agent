@@ -60,8 +60,13 @@ public sealed partial class ChatClientEndpointConfigSection : ChatServiceConfigC
                 {
                     config.Endpoint = ProviderConstants.AnthropicApi;
                 }
+                else if (config is GeminiClientConfig)
+                {
+                    config.Endpoint = ProviderConstants.GeminiApi;
+                }
                 else if (config is OllamaClientConfig)
                 {
+                    config.Key = "ollama";
                     config.Endpoint = ProviderConstants.OllamaApi;
                 }
 
