@@ -255,43 +255,56 @@
         </Setter>
     </Style>
 
-    <Style x:Key="LocalChatModelCardStyle" TargetType="local:ChatModelCard">
+    <Style x:Key="SelectionChatModelCardStyle" TargetType="local:ChatModelCard">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:ChatModelCard">
-                    <controls:CardPanel
-                        x:Name="RootCard"
-                        MinWidth="260"
-                        AutomationProperties.Name="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ViewModel.Name}"
-                        Background="Transparent"
-                        IsChecked="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ViewModel.IsSelected}"
-                        StrokeThickness="0">
-                        <Grid Margin="12,8" ColumnSpacing="8">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Border
-                                Width="32"
-                                Height="32"
-                                VerticalAlignment="Center"
+                    <Grid Padding="8,4" ColumnSpacing="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ViewModel.Name}"
+                            TextTrimming="CharacterEllipsis" />
+                        <StackPanel
+                            Grid.Column="1"
+                            Margin="0,0,-8,0"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                            <Grid
+                                Width="24"
+                                Height="24"
+                                Margin="0,0,8,0"
                                 Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                                CornerRadius="20">
-                                <ic:SymbolIcon
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    FontSize="14"
-                                    Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                    Symbol="Cube" />
-                            </Border>
-                            <TextBlock
-                                Grid.Column="1"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ViewModel.Name}"
-                                TextTrimming="CharacterEllipsis" />
-                        </Grid>
-                    </controls:CardPanel>
+                                CornerRadius="{StaticResource ControlCornerRadius}"
+                                ToolTipService.ToolTip="{ext:Locale Name=SupportTool}"
+                                Visibility="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ViewModel.IsSupportTool}">
+                                <ic:SymbolIcon FontSize="12" Symbol="WrenchScrewdriver" />
+                            </Grid>
+                            <Grid
+                                Width="24"
+                                Height="24"
+                                Margin="0,0,8,0"
+                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                CornerRadius="{StaticResource ControlCornerRadius}"
+                                ToolTipService.ToolTip="{ext:Locale Name=SupportVision}"
+                                Visibility="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ViewModel.IsSupportVision}">
+                                <ic:SymbolIcon FontSize="12" Symbol="EyeTracking" />
+                            </Grid>
+                            <Grid
+                                Width="24"
+                                Height="24"
+                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                CornerRadius="{StaticResource ControlCornerRadius}"
+                                ToolTipService.ToolTip="{ext:Locale Name=SupportFileUpload}"
+                                Visibility="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ViewModel.IsSupportFileUpload}">
+                                <ic:SymbolIcon FontSize="12" Symbol="CloudArrowUp" />
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

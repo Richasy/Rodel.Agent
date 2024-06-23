@@ -55,7 +55,13 @@ public sealed partial class ChatPresetModuleViewModel
     private ChatServiceItemViewModel _selectedService;
 
     [ObservableProperty]
+    private ChatModelItemViewModel _selectedModel;
+
+    [ObservableProperty]
     private bool _isMessageEmpty;
+
+    [ObservableProperty]
+    private bool _isModelsEmpty;
 
     /// <summary>
     /// 关闭请求事件.
@@ -76,6 +82,11 @@ public sealed partial class ChatPresetModuleViewModel
     /// 可用服务.
     /// </summary>
     public ObservableCollection<ChatServiceItemViewModel> AvailableServices { get; } = new();
+
+    /// <summary>
+    /// 可用的模型.
+    /// </summary>
+    public ObservableCollection<ChatModelItemViewModel> Models { get; } = new();
 
     /// <summary>
     /// 预设消息.

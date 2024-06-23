@@ -172,6 +172,34 @@ public sealed partial class ChatPresetModuleViewModel : ViewModelBase<ChatPreset
     private void CheckMessageCount()
         => IsMessageEmpty = Messages.Count == 0;
 
+    private void ReloadModels()
+    {
+        Models.Clear();
+        if (SelectedService == null)
+        {
+            IsModelsEmpty = true;
+            return;
+        }
+
+        var chatClient = GlobalDependencies.ServiceProvider.GetService<IChatClient>();
+        var totalModels = chatClient.GetModels(SelectedService.ProviderType);
+        foreach (var item in totalModels)
+        {
+            Models.Add(new ChatModelItemViewModel(item));
+        }
+
+        IsModelsEmpty = Models.Count == 0;
+
+        if(!IsModelsEmpty)
+        {
+            SelectedModel = Models.FirstOrDefault(x => x.Data.Id == Data.Data.Model) ?? Models.First();
+        }
+        else
+        {
+            Data.Data.Model = default;
+        }
+    }
+
     partial void OnCurrentStepChanged(int value)
         => CheckStep();
 
@@ -190,7 +218,18 @@ public sealed partial class ChatPresetModuleViewModel : ViewModelBase<ChatPreset
 
         Data.Data.Provider = value.ProviderType;
         Data.Data.Parameters = _chatParametersFactory.CreateChatParameters(value.ProviderType);
+        ReloadModels();
         CheckNextStepEnabled();
+    }
+
+    partial void OnSelectedModelChanged(ChatModelItemViewModel value)
+    {
+        if (value == null)
+        {
+            return;
+        }
+
+        Data.Data.Model = value.Data.Id;
     }
 
     partial void OnPresetTypeChanged(ChatSessionPresetType value)

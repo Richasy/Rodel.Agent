@@ -92,13 +92,15 @@
             Height="120"
             VerticalAlignment="Center"
             Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
-        <Grid Grid.Column="2" RowSpacing="12">
+        <Grid Grid.Column="2">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
             <ComboBox
+                Margin="0,0,0,12"
                 HorizontalAlignment="Stretch"
                 Header="{ext:Locale Name=ChatService_Slim}"
                 ItemsSource="{x:Bind ViewModel.AvailableServices}"
@@ -109,9 +111,24 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
+            <ComboBox
+                Grid.Row="1"
+                Margin="0,0,0,12"
+                HorizontalAlignment="Stretch"
+                Header="{ext:Locale Name=Model}"
+                ItemsSource="{x:Bind ViewModel.Models}"
+                SelectedItem="{x:Bind ViewModel.SelectedModel, Mode=TwoWay}"
+                Visibility="{x:Bind ViewModel.IsModelsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="items:ChatModelItemViewModel">
+                        <itemcontrol:ChatModelCard Style="{StaticResource SelectionChatModelCardStyle}" ViewModel="{x:Bind}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
             <TextBox
                 x:Name="NameBox"
-                Grid.Row="1"
+                Grid.Row="2"
+                Margin="0,0,0,12"
                 HorizontalAlignment="Stretch"
                 AutomationProperties.Name="{ext:Locale Name=PresetName}"
                 Header="{ext:Locale Name=PresetName}"
@@ -120,7 +137,7 @@
                 Text="{x:Bind ViewModel.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <TextBox
                 x:Name="SystemInstructionBox"
-                Grid.Row="2"
+                Grid.Row="3"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 AcceptsReturn="True"
