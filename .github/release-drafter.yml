@@ -2,6 +2,8 @@ template: |
   ## 更改记录 / Changelog
 
   $CHANGES
+
+  <a title="Get from Microsoft" href="https://www.microsoft.com/store/apps/9NB0NB3MLQTM?launch=true&amp;mode=full" target="_blank"><picture><source srcset="https://get.microsoft.com/images/en-US%20light.svg" media="(prefers-color-scheme: dark)"><source srcset="https://get.microsoft.com/images/en-US%20dark.svg" media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)"><img src="https://get.microsoft.com/images/en-US%20dark.svg" width="144"></picture></a>
 name-template: 'v$RESOLVED_VERSION 🌈'
 tag-template: 'v$RESOLVED_VERSION'
 categories:
