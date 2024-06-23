@@ -41,6 +41,11 @@ public sealed partial class ModelClientEndpointConfigSettingSection : ChatServic
         PredefinedCard.Description = string.Format(ResourceToolkit.GetLocalizedString(Models.Constants.StringNames.PredefinedModelsDescription), newVM.Name);
 
         newVM.Config ??= CreateCurrentConfig();
+        if (newVM.Config is OllamaClientConfig)
+        {
+            KeyCard.Visibility = Visibility.Collapsed;
+        }
+
         Debug.Assert(ViewModel.Config != null, "ViewModel.Config should not be null.");
         ViewModel.CheckCurrentConfig();
     }
@@ -85,7 +90,6 @@ public sealed partial class ModelClientEndpointConfigSettingSection : ChatServic
                 else if (config is OllamaClientConfig)
                 {
                     config.Endpoint = ProviderConstants.OllamaApi;
-                    config.Key = "ollama";
                 }
 
                 return config;
