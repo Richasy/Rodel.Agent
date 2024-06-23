@@ -19,4 +19,5 @@ public static class ProviderConstants
     public const string DeepSeekApi = "https://api.deepseek.com";
     public const string HunYuanApi = "https://hunyuan.tencentcloudapi.com";
     public const string OllamaApi = "http://localhost:11434/v1";
+    public const string SiliconFlowApi = "https://api.siliconflow.cn/v1";
 }

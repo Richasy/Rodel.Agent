@@ -101,6 +101,11 @@ public enum ProviderType
     /// Ollama.
     /// </summary>
     Ollama,
+
+    /// <summary>
+    /// Silicon Flow.
+    /// </summary>
+    SiliconFlow,
 }
 
 /// <summary>
@@ -131,6 +136,7 @@ public sealed class ProviderTypeConverter : JsonConverter<ProviderType>
             "deep_seek" or "deepseek" => ProviderType.DeepSeek,
             "hunyuan" => ProviderType.HunYuan,
             "ollama" => ProviderType.Ollama,
+            "silicon_flow" or "siliconflow" => ProviderType.SiliconFlow,
             _ => throw new JsonException(),
         };
     }
@@ -158,6 +164,7 @@ public sealed class ProviderTypeConverter : JsonConverter<ProviderType>
             ProviderType.DeepSeek => "deep_seek",
             ProviderType.HunYuan => "hunyuan",
             ProviderType.Ollama => "ollama",
+            ProviderType.SiliconFlow => "silicon_flow",
             _ => throw new JsonException(),
         };
 
