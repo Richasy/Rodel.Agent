@@ -92,6 +92,10 @@ Azure Open AI 相较于 Open AI，最大的不同在于你需要手动部署需�
 
 和 [Open AI](#open-ai) 类似，获取访问密钥后，将其填入 `访问密钥` 中即可。
 
+### 代理
+
+Gemini 作为谷歌提供的 AI 服务，国内用户如果要访问，也可能需要代理，这一点和 [OpenAI](#open-ai) 是一致的，请参考 Open AI 的配置方式，配置 Gemini 的代理服务。需要注意的是，Gemini 中的代理终结点不要加版本号，目前应用使用 `v1-beta`。
+
 ## Anthropic
 
 |||

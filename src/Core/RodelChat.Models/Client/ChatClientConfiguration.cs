@@ -238,7 +238,7 @@ public sealed class DashScopeClientConfig : ClientConfigBase
 /// <summary>
 /// Gemini 客户端配置.
 /// </summary>
-public sealed class GeminiClientConfig : ClientConfigBase
+public sealed class GeminiClientConfig : ClientEndpointConfigBase
 {
 }
 
