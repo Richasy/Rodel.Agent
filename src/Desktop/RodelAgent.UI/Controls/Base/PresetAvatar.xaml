@@ -9,18 +9,31 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" CornerRadius="{x:Bind CornerRadius, Mode=OneWay}">
-        <ic:SymbolIcon
+    <Grid>
+        <Grid
             x:Name="DefaultIcon"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            FontSize="{x:Bind FontSize, Mode=OneWay}"
-            Symbol="{x:Bind DefaultSymbol, Mode=OneWay}" />
-        <Image
+            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+            CornerRadius="{x:Bind CornerRadius, Mode=OneWay}">
+            <ic:SymbolIcon
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="{x:Bind FontSize, Mode=OneWay}"
+                Symbol="{x:Bind DefaultSymbol, Mode=OneWay}" />
+        </Grid>
+        <local:ImageEx
             x:Name="AgentAvatar"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
+            CornerRadius="{x:Bind CornerRadius, Mode=OneWay}"
             Stretch="UniformToFill"
+            Visibility="Collapsed" />
+        <TextBlock
+            x:Name="EmojiAvatar"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontFamily="Segoe UI Emoji"
+            FontSize="28"
+            TextLineBounds="Tight"
             Visibility="Collapsed" />
     </Grid>
 </UserControl>

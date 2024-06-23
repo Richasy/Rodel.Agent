@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
+using RodelAgent.Statics;
 using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels;
 using Windows.ApplicationModel.DataTransfer;
@@ -13,6 +14,7 @@ namespace RodelAgent.UI.Controls.Chat;
 public sealed partial class PresetModelPanel : ChatPresetControlBase
 {
     private bool _avatarChanged = false;
+    private bool _isEmojiAvatar = false;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PresetModelPanel"/> class.
@@ -29,7 +31,7 @@ public sealed partial class PresetModelPanel : ChatPresetControlBase
     /// <returns><see cref="Task"/>.</returns>
     public async Task SaveAvatarAsync()
     {
-        if (Cropper.Visibility == Visibility.Collapsed || !_avatarChanged)
+        if (Cropper.Visibility == Visibility.Collapsed || !_avatarChanged || _isEmojiAvatar)
         {
             return;
         }
@@ -48,6 +50,14 @@ public sealed partial class PresetModelPanel : ChatPresetControlBase
 
     private async void OnLoadedAsync(object sender, RoutedEventArgs e)
     {
+        if (!string.IsNullOrEmpty(ViewModel.Data.Data.Emoji))
+        {
+            _isEmojiAvatar = true;
+            var emoji = EmojiStatics.GetEmojis().FirstOrDefault(x => x.Unicode == ViewModel.Data.Data.Emoji);
+            ShowEmoji(emoji);
+            return;
+        }
+
         var avatarPath = AppToolkit.GetPresetAvatarPath(ViewModel.Data.Data.Id);
         if (File.Exists(avatarPath))
         {
@@ -99,9 +109,32 @@ public sealed partial class PresetModelPanel : ChatPresetControlBase
 
     private async Task InitializeCropperAsync(StorageFile imageFile)
     {
+        _isEmojiAvatar = false;
+        ViewModel.Data.Data.Emoji = default;
+        EmojiContainer.Visibility = Visibility.Collapsed;
         Cropper.Visibility = Visibility.Visible;
         ImagePlaceholderContainer.Visibility = Visibility.Collapsed;
         ReplaceImageButton.Visibility = Visibility.Visible;
         await Cropper.LoadImageFromFile(imageFile);
     }
+
+    private void ShowEmoji(EmojiItem emoji)
+    {
+        _isEmojiAvatar = true;
+        ViewModel.Data.Data.Emoji = emoji.Unicode;
+        EmojiContainer.Visibility = Visibility.Visible;
+        EmojiBlock.Text = emoji.ToEmoji();
+        Cropper.Visibility = Visibility.Collapsed;
+        ReplaceImageButton.Visibility = Visibility.Visible;
+        ImagePlaceholderContainer.Visibility = Visibility.Collapsed;
+    }
+
+    private void OnEmojiClick(object sender, Statics.EmojiItem e)
+    {
+        EmojiFlyout.Hide();
+        ShowEmoji(e);
+    }
+
+    private void OnEmojiAvatarButtonClick(object sender, RoutedEventArgs e)
+        => FlyoutBase.ShowAttachedFlyout(sender as FrameworkElement);
 }

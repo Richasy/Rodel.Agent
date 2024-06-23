@@ -57,6 +57,14 @@ public sealed partial class StorageService
     }
 
     /// <inheritdoc/>
+    public async Task<ChatSessionPreset> GetChatSessionPresetByIdAsync(string presetId)
+    {
+        await InitializePresetInternalAsync(chatConstants.ChatSessionPresetType.Session);
+        await InitializePresetInternalAsync(chatConstants.ChatSessionPresetType.Agent);
+        return _chatSessionPresets.Concat(_chatAgents).FirstOrDefault(p => p.Id == presetId);
+    }
+
+    /// <inheritdoc/>
     public Task AddOrUpdateChatSessionPresetAsync(ChatSessionPreset preset)
         => AddOrUpdatePresetInternalAsync(chatConstants.ChatSessionPresetType.Session, preset);
 
@@ -91,7 +99,7 @@ public sealed partial class StorageService
                 {
                     var sessionObj = JsonSerializer.Deserialize<ChatSession>(session);
                     var parameters = _chatParametersFactory.CreateChatParameters(sessionObj.Provider);
-                    if(sessionObj.Parameters == null)
+                    if (sessionObj.Parameters == null)
                     {
                         sessionObj.Parameters = parameters;
                     }

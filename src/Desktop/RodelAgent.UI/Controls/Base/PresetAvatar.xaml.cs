@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
 using Microsoft.UI.Xaml.Media.Imaging;
+using RodelAgent.Interfaces;
+using RodelAgent.Statics;
 using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels;
 using Windows.Storage;
@@ -77,27 +79,41 @@ public sealed partial class PresetAvatar : UserControl
 
     private async void CheckAvatarAsync()
     {
-        if (!IsLoaded || AgentAvatar == null)
+        if (!IsLoaded || AgentAvatar == null || string.IsNullOrEmpty(PresetId))
         {
             return;
         }
 
-        var avatarPath = AppToolkit.GetPresetAvatarPath(PresetId);
-        if (File.Exists(avatarPath))
+        var preset = await GlobalDependencies.ServiceProvider.GetRequiredService<IStorageService>().GetChatSessionPresetByIdAsync(PresetId);
+        if (!string.IsNullOrEmpty(preset.Emoji))
         {
-            var bitmap = new BitmapImage();
-            var file = await StorageFile.GetFileFromPathAsync(avatarPath);
-            using var stream = await file.OpenReadAsync();
-            await bitmap.SetSourceAsync(stream);
-            bitmap.DecodePixelWidth = Convert.ToInt32(Math.Max(ActualWidth * 2, 96));
-            AgentAvatar.Source = bitmap;
-            AgentAvatar.Visibility = Visibility.Visible;
+            AgentAvatar.Visibility = Visibility.Collapsed;
             DefaultIcon.Visibility = Visibility.Collapsed;
+            EmojiAvatar.Visibility = Visibility.Visible;
+            var emoji = EmojiStatics.GetEmojis().FirstOrDefault(x => x.Unicode == preset.Emoji);
+            EmojiAvatar.Text = emoji?.ToEmoji();
         }
         else
         {
-            AgentAvatar.Visibility = Visibility.Collapsed;
-            DefaultIcon.Visibility = Visibility.Visible;
+            var avatarPath = AppToolkit.GetPresetAvatarPath(PresetId);
+            if (File.Exists(avatarPath))
+            {
+                var bitmap = new BitmapImage();
+                var file = await StorageFile.GetFileFromPathAsync(avatarPath);
+                using var stream = await file.OpenReadAsync();
+                await bitmap.SetSourceAsync(stream);
+                bitmap.DecodePixelWidth = Convert.ToInt32(Math.Max(ActualWidth * 2, 96));
+                AgentAvatar.Source = bitmap;
+                AgentAvatar.Visibility = Visibility.Visible;
+                DefaultIcon.Visibility = Visibility.Collapsed;
+                EmojiAvatar.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                AgentAvatar.Visibility = Visibility.Collapsed;
+                EmojiAvatar.Visibility = Visibility.Collapsed;
+                DefaultIcon.Visibility = Visibility.Visible;
+            }
         }
     }
 }

@@ -3,6 +3,7 @@
     x:Class="RodelAgent.UI.Controls.Chat.PresetModelPanel"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:base="using:RodelAgent.UI.Controls.Base"
     xmlns:community="using:CommunityToolkit.WinUI.Controls"
     xmlns:controls="using:RodelAgent.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -25,24 +26,60 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <Grid ColumnSpacing="8">
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <TextBlock
+                    Margin="0,0,8,0"
                     VerticalAlignment="Center"
                     Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                     Style="{StaticResource CaptionTextBlockStyle}"
                     Text="{ext:Locale Name=Avatar}" />
                 <HyperlinkButton
-                    x:Name="ReplaceImageButton"
+                    x:Name="EmojiAvatarButton"
                     Grid.Column="1"
+                    Margin="0,0,8,0"
+                    VerticalAlignment="Center"
+                    Click="OnEmojiAvatarButtonClick"
+                    Content="{ext:Locale Name=EmojiAvatar}"
+                    FontSize="12">
+                    <FlyoutBase.AttachedFlyout>
+                        <Flyout x:Name="EmojiFlyout" Placement="Bottom">
+                            <Flyout.FlyoutPresenterStyle>
+                                <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
+                                    <Setter Property="Padding" Value="12" />
+                                </Style>
+                            </Flyout.FlyoutPresenterStyle>
+                            <base:EmojiPanel EmojiClick="OnEmojiClick" />
+                        </Flyout>
+                    </FlyoutBase.AttachedFlyout>
+                </HyperlinkButton>
+                <HyperlinkButton
+                    x:Name="ReplaceImageButton"
+                    Grid.Column="2"
                     VerticalAlignment="Center"
                     Click="OnReplaceImageButtonClickAsync"
                     Content="{ext:Locale Name=ReplaceImage}"
                     FontSize="12"
                     Visibility="Collapsed" />
+            </Grid>
+            <Grid
+                x:Name="EmojiContainer"
+                Grid.Row="1"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="2"
+                CornerRadius="{StaticResource ControlCornerRadius}"
+                Visibility="Collapsed">
+                <TextBlock
+                    x:Name="EmojiBlock"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontFamily="Segoe UI Emoji"
+                    FontSize="98" />
             </Grid>
             <Grid
                 x:Name="ImagePlaceholderContainer"
@@ -102,7 +139,7 @@
             <ComboBox
                 Margin="0,0,0,12"
                 HorizontalAlignment="Stretch"
-                Header="{ext:Locale Name=ChatService_Slim}"
+                Header="{ext:Locale Name=Services}"
                 ItemsSource="{x:Bind ViewModel.AvailableServices}"
                 SelectedItem="{x:Bind ViewModel.SelectedService, Mode=TwoWay}">
                 <ComboBox.ItemTemplate>
