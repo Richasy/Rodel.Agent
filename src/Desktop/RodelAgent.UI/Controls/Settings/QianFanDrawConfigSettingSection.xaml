@@ -18,23 +18,23 @@
             <controls:ProviderLogo x:Name="Logo" Height="22" />
         </community:SettingsExpander.Header>
         <community:SettingsExpander.Items>
-            <community:SettingsCard x:Name="KeyCard" Header="{ext:Locale Name=AccessKey}">
+            <community:SettingsCard x:Name="KeyCard" Header="{ext:Locale Name=ApiKey}">
                 <PasswordBox
                     x:Name="KeyBox"
                     Width="200"
-                    AutomationProperties.Name="{ext:Locale Name=AccessKey}"
+                    AutomationProperties.Name="{ext:Locale Name=ApiKey}"
                     Loaded="OnKeyBoxLoaded"
                     PasswordChanged="OnKeyBoxPasswordChanged" />
             </community:SettingsCard>
             <community:SettingsCard
                 x:Name="SecretCard"
                 Description="{ext:Locale Name=QianFanSecretDescription}"
-                Header="{ext:Locale Name=Secret}">
+                Header="{ext:Locale Name=SecretKey}">
                 <PasswordBox
                     x:Name="SecretBox"
                     Width="200"
                     HorizontalAlignment="Stretch"
-                    AutomationProperties.Name="{ext:Locale Name=Secret}"
+                    AutomationProperties.Name="{ext:Locale Name=SecretKey}"
                     PasswordChanged="OnSecretBoxTextChanged" />
             </community:SettingsCard>
             <community:SettingsCard

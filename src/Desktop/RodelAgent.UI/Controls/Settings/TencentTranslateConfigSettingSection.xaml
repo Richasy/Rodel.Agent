@@ -23,19 +23,19 @@
             <community:SettingsCard
                 x:Name="KeyCard"
                 Description="{ext:Locale Name=TencentAccessKeyDescription}"
-                Header="{ext:Locale Name=AccessKey}">
+                Header="{ext:Locale Name=SecretKey}">
                 <PasswordBox
                     x:Name="KeyBox"
                     Width="200"
-                    AutomationProperties.Name="{ext:Locale Name=AccessKey}"
+                    AutomationProperties.Name="{ext:Locale Name=SecretKey}"
                     Loaded="OnKeyBoxLoaded"
                     PasswordChanged="OnKeyBoxPasswordChanged" />
             </community:SettingsCard>
-            <community:SettingsCard Description="{ext:Locale Name=HunYuanSecretDescription}" Header="{ext:Locale Name=Secret}">
+            <community:SettingsCard Description="{ext:Locale Name=HunYuanSecretDescription}" Header="{ext:Locale Name=SecretId}">
                 <PasswordBox
                     x:Name="SecretBox"
                     Width="200"
-                    AutomationProperties.Name="{ext:Locale Name=Secret}"
+                    AutomationProperties.Name="{ext:Locale Name=SecretId}"
                     PasswordChanged="OnSecretBoxPasswordChanged" />
             </community:SettingsCard>
         </community:SettingsExpander.Items>

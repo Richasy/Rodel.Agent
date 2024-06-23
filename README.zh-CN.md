@@ -32,9 +32,8 @@
 
 ### 前置需求
 
-|||
-|-|-|
 |开发工具|Visual Studio 2022|
+|-|-|
 |基础依赖|.NET 8, Windows App SDK 1.5|
 |子仓库|[Richasy/semantic-kernel](https://github.com/Richasy/semantic-kernel/tree/dev)|
 
@@ -83,6 +82,8 @@ git submodule update --init --recursive
 ## 🔗 链接
 
 - [小幻助理文档](https://agent.richasy.net)
+- [Lobe Chat](https://github.com/lobehub/lobe-chat)
+- [Lobe Icons](https://github.com/lobehub/lobe-icons)
 - [Spectre.Console](https://spectreconsole.net)
 - [Windows App SDK](https://github.com/microsoft/WindowsAppSDK)
 - [CommunityToolkit](https://github.com/CommunityToolkit)
