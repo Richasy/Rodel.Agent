@@ -120,6 +120,12 @@ public sealed class ChatClientConfiguration
     public HunYuanClientConfig? HunYuan { get; set; }
 
     /// <summary>
+    /// 硅动客户端配置.
+    /// </summary>
+    [JsonPropertyName("silicon_flow")]
+    public SiliconFlowClientConfig? SiliconFlow { get; set; }
+
+    /// <summary>
     /// 本地模型配置.
     /// </summary>
     [JsonPropertyName("local")]
@@ -288,6 +294,13 @@ public sealed class DeepSeekClientConfig : ClientConfigBase
 /// Anthropic 客户端配置.
 /// </summary>
 public sealed class AnthropicClientConfig : ClientEndpointConfigBase
+{
+}
+
+/// <summary>
+/// 硅动客户端配置.
+/// </summary>
+public sealed class SiliconFlowClientConfig : ClientConfigBase
 {
 }
 
