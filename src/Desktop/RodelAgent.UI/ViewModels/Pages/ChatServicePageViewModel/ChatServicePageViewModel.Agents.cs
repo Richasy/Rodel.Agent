@@ -67,6 +67,30 @@ public sealed partial class ChatServicePageViewModel
     }
 
     [RelayCommand]
+    private async Task CreateAgentCopyAsync(ChatPresetItemViewModel presetVM)
+    {
+        var tempAgent = presetVM.Data.Clone();
+        tempAgent.Id = Guid.NewGuid().ToString("N");
+
+        var vm = new ChatPresetItemViewModel(tempAgent);
+        _presetModuleVM.SetData(vm, ChatSessionPresetType.Agent);
+        var dialog = new ChatPresetSettingsDialog();
+        await dialog.ShowAsync();
+
+        var preset = dialog.ViewModel.Data;
+        if (preset is not null && !_presetModuleVM.IsManualClose)
+        {
+            if (!AgentPresets.Any(p => p.Data.Id == preset.Data.Id))
+            {
+                AgentPresets.Add(new ChatPresetItemViewModel(preset.Data));
+                await _storageService.AddOrUpdateChatAgentAsync(preset.Data);
+            }
+        }
+
+        IsAgentsEmpty = AgentPresets.Count == 0;
+    }
+
+    [RelayCommand]
     private async Task SetSelectedAgentAsync(ChatPresetItemViewModel presetVM)
     {
         foreach (var item in AgentPresets)

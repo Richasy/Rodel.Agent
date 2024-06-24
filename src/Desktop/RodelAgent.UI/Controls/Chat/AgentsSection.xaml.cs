@@ -32,4 +32,13 @@ public sealed partial class AgentsSection : ChatServicePageControlBase
             ViewModel.EditAgentCommand.Execute(vm);
         }
     }
+
+    private void OnCreateCopyItemClick(object sender, RoutedEventArgs e)
+    {
+        var vm = (sender as FrameworkElement)?.DataContext as ViewModels.Items.ChatPresetItemViewModel;
+        if (vm != null)
+        {
+            ViewModel.CreateAgentCopyCommand.Execute(vm);
+        }
+    }
 }

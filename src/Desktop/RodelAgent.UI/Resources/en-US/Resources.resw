@@ -256,7 +256,7 @@
     <value>Keep plugin</value>
   </data>
   <data name="CanNotLoadAgentWarning" xml:space="preserve">
-    <value>Unable to load the assistant. The corresponding service may have been deregistered. Please check and try again.</value>
+    <value>Unable to load the agent. The corresponding service may have been deregistered. Please check and try again.</value>
   </data>
   <data name="CanNotLoadLocalModelWarning" xml:space="preserve">
     <value>Unable to load the local model. The model may have been deleted or the default preset is missing. Please try deleting and re-importing the model.</value>
@@ -286,7 +286,7 @@
     <value>Conversation turn</value>
   </data>
   <data name="ChooseServiceOrAgent" xml:space="preserve">
-    <value>Choose a service or assistant</value>
+    <value>Choose a service or agent</value>
   </data>
   <data name="ChooseServiceOrAgentDescription" xml:space="preserve">
     <value>Start a constructive conversation!</value>
@@ -362,6 +362,9 @@
   </data>
   <data name="Create" xml:space="preserve">
     <value>Create</value>
+  </data>
+  <data name="CreateCopyFromThis" xml:space="preserve">
+    <value>Create copy</value>
   </data>
   <data name="CreateCustomModel" xml:space="preserve">
     <value>Create custom model</value>
@@ -611,7 +614,7 @@ You can manually adjust the limit, and the application will capture the specifie
     <value>Modify</value>
   </data>
   <data name="ModifyAgent" xml:space="preserve">
-    <value>Modify assistant</value>
+    <value>Modify agent</value>
   </data>
   <data name="ModifyCustomModel" xml:space="preserve">
     <value>Modify custom model</value>
@@ -662,7 +665,7 @@ You can manually adjust the limit, and the application will capture the specifie
     <value>Next step</value>
   </data>
   <data name="NoAgents" xml:space="preserve">
-    <value>No available assistants</value>
+    <value>No available agents</value>
   </data>
   <data name="NoAudioHistory" xml:space="preserve">
     <value>No audio records yet, go generate one~</value>
