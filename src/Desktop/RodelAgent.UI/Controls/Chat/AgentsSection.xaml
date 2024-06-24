@@ -39,6 +39,11 @@
                                             <ic:SymbolIcon Symbol="Edit" />
                                         </MenuFlyoutItem.Icon>
                                     </MenuFlyoutItem>
+                                    <MenuFlyoutItem Click="OnCreateCopyItemClick" Text="{ext:Locale Name=CreateCopyFromThis}">
+                                        <MenuFlyoutItem.Icon>
+                                            <ic:SymbolIcon Symbol="SaveCopy" />
+                                        </MenuFlyoutItem.Icon>
+                                    </MenuFlyoutItem>
                                     <MenuFlyoutItem Click="OnPresetItemDeleteClick" Text="{ext:Locale Name=Delete}">
                                         <MenuFlyoutItem.Icon>
                                             <ic:SymbolIcon Foreground="{ThemeResource SystemFillColorCriticalBrush}" Symbol="Delete" />

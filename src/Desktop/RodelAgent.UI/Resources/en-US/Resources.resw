@@ -363,6 +363,9 @@
   <data name="Create" xml:space="preserve">
     <value>Create</value>
   </data>
+  <data name="CreateCopyFromThis" xml:space="preserve">
+    <value>Create copy</value>
+  </data>
   <data name="CreateCustomModel" xml:space="preserve">
     <value>Create custom model</value>
   </data>

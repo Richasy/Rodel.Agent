@@ -363,6 +363,9 @@
   <data name="Create" xml:space="preserve">
     <value>创建</value>
   </data>
+  <data name="CreateCopyFromThis" xml:space="preserve">
+    <value>创建副本</value>
+  </data>
   <data name="CreateCustomModel" xml:space="preserve">
     <value>创建自定义模型</value>
   </data>
