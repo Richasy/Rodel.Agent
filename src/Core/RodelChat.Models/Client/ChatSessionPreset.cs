@@ -99,6 +99,12 @@ public class ChatSessionPreset
     public IList<string>? Plugins { get; set; }
 
     /// <summary>
+    /// 表情头像.
+    /// </summary>
+    [JsonPropertyName("emoji")]
+    public string? Emoji { get; set; }
+
+    /// <summary>
     /// 克隆当前实例.
     /// </summary>
     /// <returns><see cref="ChatSession"/>.</returns>
@@ -117,6 +123,8 @@ public class ChatSessionPreset
             Messages = Messages,
             StopSequences = StopSequences,
             FilterCharacters = FilterCharacters,
+            Plugins = Plugins,
+            Emoji = Emoji,
         };
     }
 

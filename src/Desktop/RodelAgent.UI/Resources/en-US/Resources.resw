@@ -408,6 +408,9 @@
   <data name="DropPresetImageTip" xml:space="preserve">
     <value>Click the image area or drag the image into the box to create a preset image</value>
   </data>
+  <data name="EmojiAvatar" xml:space="preserve">
+    <value>Emoji avatar</value>
+  </data>
   <data name="EnableCitation" xml:space="preserve">
     <value>Enable citation</value>
   </data>

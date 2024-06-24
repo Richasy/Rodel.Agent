@@ -408,6 +408,9 @@
   <data name="DropPresetImageTip" xml:space="preserve">
     <value>点击图片区域或者将图片拖拽到框内，以此创建预设图片</value>
   </data>
+  <data name="EmojiAvatar" xml:space="preserve">
+    <value>Emoji 头像</value>
+  </data>
   <data name="EnableCitation" xml:space="preserve">
     <value>上角标返回</value>
   </data>

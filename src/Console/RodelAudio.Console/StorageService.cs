@@ -49,6 +49,9 @@ public sealed class StorageService : IStorageService
         where T : class => throw new NotImplementedException();
 
     /// <inheritdoc/>
+    public Task<ChatSessionPreset> GetChatSessionPresetByIdAsync(string presetId) => throw new NotImplementedException();
+
+    /// <inheritdoc/>
     public Task<List<ChatSessionPreset>> GetChatSessionPresetsAsync() => throw new NotImplementedException();
 
     /// <inheritdoc/>
@@ -91,9 +94,6 @@ public sealed class StorageService : IStorageService
 
     /// <inheritdoc/>
     public Task RemoveTranslateSessionAsync(string sessionId) => throw new NotImplementedException();
-
-    /// <inheritdoc/>
-    public void ResetDbService() => throw new NotImplementedException();
 
     /// <inheritdoc/>
     public async Task<string> RetrieveAzureSpeechVoicesAsync()

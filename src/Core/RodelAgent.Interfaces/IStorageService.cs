@@ -141,6 +141,13 @@ public interface IStorageService
     Task<List<ChatSessionPreset>> GetChatSessionPresetsAsync();
 
     /// <summary>
+    /// 获取指定 ID 的聊天会话预设.
+    /// </summary>
+    /// <param name="presetId">预设 ID.</param>
+    /// <returns><see cref="ChatSessionPreset"/>.</returns>
+    Task<ChatSessionPreset> GetChatSessionPresetByIdAsync(string presetId);
+
+    /// <summary>
     /// 添加或更新聊天会话预设.
     /// </summary>
     /// <param name="preset">预设.</param>
