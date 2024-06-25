@@ -44,7 +44,7 @@ public sealed class QianFanProvider : ProviderBase, IProvider
     }
 
     /// <inheritdoc/>
-    public override PromptExecutionSettings ConvertExecutionSettings(ChatSession sessionData)
+    public override PromptExecutionSettings ConvertExecutionSettings(ChatSessionPreset sessionData)
         => new QianFanPromptExecutionSettings
         {
             MaxTokens = sessionData.Parameters.GetValueOrDefault<int>(nameof(QianFanChatParameters.MaxOutputTokens)),

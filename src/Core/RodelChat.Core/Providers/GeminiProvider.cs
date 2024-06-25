@@ -38,7 +38,7 @@ public sealed class GeminiProvider : ProviderBase, IProvider
     }
 
     /// <inheritdoc/>
-    public override PromptExecutionSettings ConvertExecutionSettings(ChatSession sessionData)
+    public override PromptExecutionSettings ConvertExecutionSettings(ChatSessionPreset sessionData)
         => new GeminiPromptExecutionSettings
         {
             TopP = sessionData.Parameters.GetValueOrDefault<double>(nameof(GeminiChatParameters.TopP)),

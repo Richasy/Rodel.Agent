@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
-using System.Text.Json;
+#define USE_GROUP
+
 using Microsoft.Extensions.Hosting;
 using RodelAgent.Interfaces;
 using RodelAgent.Statics;
@@ -15,6 +16,7 @@ using Spectre.Console;
 public sealed class ChatService : IHostedService
 {
     private readonly IChatClient _chatClient;
+    private readonly IChatParametersFactory _chatParametersFactory;
     private readonly IStringResourceToolkit _localizer;
     private ProviderType _currentType;
     private ChatSession _currentSession;
@@ -23,10 +25,12 @@ public sealed class ChatService : IHostedService
     /// Initializes a new instance of the <see cref="ChatService"/> class.
     /// </summary>
     public ChatService(
+        IChatParametersFactory chatParametersFactory,
         IChatClient chatClient,
         IHostApplicationLifetime lifetime,
         IStringResourceToolkit localizer)
     {
+        _chatParametersFactory = chatParametersFactory;
         _chatClient = chatClient;
         _localizer = localizer;
         lifetime.ApplicationStopping.Register(_chatClient.Dispose);
@@ -37,11 +41,27 @@ public sealed class ChatService : IHostedService
     {
         try
         {
-#if USE_PRESET
-            var preset = AskSessionPreset();
-            var session = _chatClient.CreateSession(preset);
-            _currentType = session.Provider;
-            await RunAIAsync(session);
+#if USE_GROUP
+            var agents = CreateNewsAgents();
+            var message = AskInput();
+            var preset = new ChatGroupPreset
+            {
+                Agents = agents.Select(a => a.Id).ToList(),
+                Id = "group",
+                MaxRounds = 6,
+                Name = "Group",
+                TerminateText = "approve",
+            };
+            var chatMsg = ChatMessage.CreateUserMessage(message);
+            await _chatClient.SendGroupMessageAsync(
+                chatMsg,
+                preset,
+                (response) =>
+                {
+                    HandleMessageResponse(response);
+                },
+                CancellationToken.None,
+                [.. agents]);
 #else
             var provider = AskProvider();
             await RunAIAsync(provider);
@@ -69,6 +89,111 @@ public sealed class ChatService : IHostedService
     {
         _currentSession = session;
         await LoopMessageAsync(session);
+    }
+
+    private List<ChatSessionPreset> CreateCoderAgents()
+    {
+        _ = this;
+        var progamManagerText =
+            """
+            You are a program manager which will take the requirement and create a plan for creating app. Program Manager understands the 
+            user requirements and form the detail documents with requirements and costing. 
+            """;
+
+        var softwareEngineerText =
+            """
+            You are Software Engieer, and your goal is develop web app using HTML and JavaScript (JS) by taking into consideration all
+            the requirements given by Program Manager. 
+            """;
+
+        var managerText =
+            """
+            You are manager which will review software engineer code, and make sure all client requirements are completed.
+            Once all client requirements are completed, you can approve the request by just responding "approve"
+            """;
+
+        var programManager = new ChatSessionPreset
+        {
+            Name = "Program Manager",
+            Provider = ProviderType.AzureOpenAI,
+            Model = "gpt-4o",
+            Id = "program-manager",
+            SystemInstruction = progamManagerText,
+            Parameters = _chatParametersFactory.CreateChatParameters(ProviderType.AzureOpenAI),
+        };
+
+        var softwareEngineer = new ChatSessionPreset
+        {
+            Name = "Software Engineer",
+            Provider = ProviderType.ZhiPu,
+            Model = "glm-4",
+            Id = "software-engineer",
+            SystemInstruction = softwareEngineerText,
+            Parameters = _chatParametersFactory.CreateChatParameters(ProviderType.ZhiPu),
+        };
+
+        var manager = new ChatSessionPreset
+        {
+            Name = "Manager",
+            Provider = ProviderType.AzureOpenAI,
+            Model = "gpt-4o",
+            Id = "manager",
+            SystemInstruction = managerText,
+            Parameters = _chatParametersFactory.CreateChatParameters(ProviderType.AzureOpenAI),
+        };
+
+        return [programManager, softwareEngineer, manager];
+    }
+
+    private List<ChatSessionPreset> CreateNewsAgents()
+    {
+        var reporterText =
+            """
+            You are a reporter which will take the news and create a news article. Reporter understands the news and form the detail article with 
+            news and images. 
+            """;
+        var editorText =
+            """
+            You are editor, and your goal is to review the news article, and make sure all the news are correct.
+            """;
+
+        var publishManagerText =
+            """
+            You are publish manager which will review editor news article, and make sure all news are correct.
+            Once all news are correct, you can approve the request by just responding "approve"
+            """;
+
+        var reporter = new ChatSessionPreset
+        {
+            Name = "Reporter",
+            Provider = ProviderType.AzureOpenAI,
+            Model = "gpt-4o",
+            Id = "reporter",
+            SystemInstruction = reporterText,
+            Parameters = _chatParametersFactory.CreateChatParameters(ProviderType.AzureOpenAI),
+        };
+
+        var editor = new ChatSessionPreset
+        {
+            Name = "Editor",
+            Provider = ProviderType.ZhiPu,
+            Model = "glm-4",
+            Id = "editor",
+            SystemInstruction = editorText,
+            Parameters = _chatParametersFactory.CreateChatParameters(ProviderType.ZhiPu),
+        };
+
+        var publishManager = new ChatSessionPreset
+        {
+            Name = "Publish Manager",
+            Provider = ProviderType.AzureOpenAI,
+            Model = "gpt-4o",
+            Id = "publish-manager",
+            SystemInstruction = publishManagerText,
+            Parameters = _chatParametersFactory.CreateChatParameters(ProviderType.AzureOpenAI),
+        };
+
+        return [reporter, editor, publishManager];
     }
 
     private async Task LoopMessageAsync(ChatSession session)
@@ -125,24 +250,6 @@ public sealed class ChatService : IHostedService
             .AddChoices(chatProviders.Keys));
 
         return provider;
-    }
-
-    private ChatSessionPreset AskSessionPreset()
-    {
-        // Get presets file list in Presets folder without extension name.
-        var presetFiles = Directory.GetFiles(Path.Combine(AppContext.BaseDirectory, "Presets"), "*.json");
-        var presetNames = presetFiles.Select(p => Path.GetFileNameWithoutExtension(p)!).ToList();
-
-        var presetName = AnsiConsole.Prompt(
-                new SelectionPrompt<string>()
-                   .Title(GetString("SelectPreset"))
-                   .PageSize(10)
-                   .AddChoices(presetNames));
-
-        var presetFile = Path.Combine(AppContext.BaseDirectory, "Presets", $"{presetName}.json");
-        var presetContent = File.ReadAllText(presetFile);
-        var preset = JsonSerializer.Deserialize<ChatSessionPreset>(presetContent);
-        return preset;
     }
 
     private ChatModel AskModel(ProviderType type)
@@ -263,6 +370,11 @@ public sealed class ChatService : IHostedService
             Expand = true,
             Padding = new Padding(2, 2, 2, 2),
         };
+
+        if (!string.IsNullOrEmpty(response.Author))
+        {
+            panel.Header = new PanelHeader(response.Author);
+        }
 
         AnsiConsole.Write(panel);
     }

@@ -134,7 +134,7 @@ public abstract class ProviderBase
     /// </summary>
     /// <param name="sessionData">会话.</param>
     /// <returns>执行设置.</returns>
-    public virtual PromptExecutionSettings ConvertExecutionSettings(ChatSession sessionData)
+    public virtual PromptExecutionSettings ConvertExecutionSettings(ChatSessionPreset sessionData)
         => new OpenAIPromptExecutionSettings
         {
             PresencePenalty = sessionData.Parameters.GetValueOrDefault<double>(nameof(OpenAIChatParameters.FrequencyPenalty)),

@@ -21,7 +21,7 @@ public interface IChatClient : IDisposable
     /// 加载会话列表.
     /// </summary>
     /// <param name="sessions">会话列表.</param>
-    void LoadSessions(List<ChatSession> sessions);
+    void LoadChatSessions(List<ChatSession> sessions);
 
     /// <summary>
     /// 获取预定义模型.
@@ -67,6 +67,22 @@ public interface IChatClient : IDisposable
         Action<string> streamingAction = default,
         List<KernelPlugin> plugins = null,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// 发送群组消息.
+    /// </summary>
+    /// <param name="message">群组消息.</param>
+    /// <param name="preset">群组预设.</param>
+    /// <param name="messageAction">消息生成事件.</param>
+    /// <param name="cancellationToken">终止令牌.</param>
+    /// <param name="agents">助理列表.</param>
+    /// <returns><see cref="Task"/>.</returns>
+    Task SendGroupMessageAsync(
+        ChatMessage message,
+        ChatGroupPreset preset,
+        Action<ChatMessage> messageAction = default,
+        CancellationToken cancellationToken = default,
+        params ChatSessionPreset[] agents);
 
     /// <summary>
     /// 从 DLL 中检索插件.

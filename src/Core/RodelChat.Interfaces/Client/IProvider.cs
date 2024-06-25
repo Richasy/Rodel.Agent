@@ -36,7 +36,7 @@ public interface IProvider
     /// </summary>
     /// <param name="sessionData">会话.</param>
     /// <returns>执行设置.</returns>
-    PromptExecutionSettings ConvertExecutionSettings(ChatSession sessionData);
+    PromptExecutionSettings ConvertExecutionSettings(ChatSessionPreset sessionData);
 
     /// <summary>
     /// 获取模型列表.

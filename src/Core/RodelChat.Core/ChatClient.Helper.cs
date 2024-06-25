@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
+using System.Text;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using RodelAgent.Models.Abstractions;
@@ -133,5 +134,45 @@ public sealed partial class ChatClient
         }
 
         return parameters;
+    }
+
+    private string EncodeName(string input)
+    {
+        var encoded = new StringBuilder();
+        foreach (var c in input)
+        {
+            if (_nameEncodePattern.IsMatch(c.ToString()))
+            {
+                encoded.Append(c);
+            }
+            else
+            {
+                encoded.Append('_').Append(((int)c).ToString("X4"));
+            }
+        }
+
+        return encoded.ToString();
+    }
+
+    private string DecodeName(string input)
+    {
+        _ = this;
+        var decoded = new StringBuilder();
+        for (var i = 0; i < input.Length; i++)
+        {
+            if (input[i] == '_')
+            {
+                var hexCode = input.Substring(i + 1, 4);
+                var charCode = Convert.ToInt32(hexCode, 16);
+                decoded.Append((char)charCode);
+                i += 4;
+            }
+            else
+            {
+                decoded.Append(input[i]);
+            }
+        }
+
+        return decoded.ToString();
     }
 }

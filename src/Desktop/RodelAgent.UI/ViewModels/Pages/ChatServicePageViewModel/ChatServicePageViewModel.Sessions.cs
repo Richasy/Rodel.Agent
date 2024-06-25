@@ -251,7 +251,7 @@ public sealed partial class ChatServicePageViewModel
             }
 
             CheckHistorySessionStatus();
-            _chatClient.LoadSessions(sessions);
+            _chatClient.LoadChatSessions(sessions);
             SettingsToolkit.WriteLocalSetting(SettingNames.LastSelectedSessionPreset, presetVM.Data.Id);
             CreateNewSession();
             return;
