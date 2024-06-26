@@ -227,7 +227,9 @@ public sealed partial class ChatClient : IChatClient
         {
             var assistantName = DecodeName(content.AuthorName);
             var msg = ChatMessage.CreateAssistantMessage(content.Content);
+            msg.Time = DateTimeOffset.Now;
             msg.Author = assistantName;
+            group.Messages.Add(msg);
             messageAction?.Invoke(msg);
         }
     }
