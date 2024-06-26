@@ -8,7 +8,7 @@ namespace RodelChat.Models.Client;
 /// <summary>
 /// 聊天群组.
 /// </summary>
-public sealed class ChatGroup
+public sealed class ChatGroup : ChatGroupPreset
 {
     /// <summary>
     /// 群组标题.
@@ -27,4 +27,25 @@ public sealed class ChatGroup
     /// </summary>
     [JsonPropertyName("messages")]
     public List<ChatMessage>? Messages { get; set; }
+
+    /// <summary>
+    /// 创建会话.
+    /// </summary>
+    /// <param name="id">标识符.</param>
+    /// <param name="preset">预设.</param>
+    /// <returns>群组会话.</returns>
+    public static ChatGroup CreateGroup(string id, ChatGroupPreset preset)
+    {
+        return new ChatGroup
+        {
+            Title = preset.Name,
+            PresetId = preset.Id,
+            Messages = new List<ChatMessage>(),
+            Agents = preset.Agents,
+            Emoji = preset.Emoji,
+            Name = preset.Name,
+            MaxRounds = preset.MaxRounds,
+            TerminateText = preset.TerminateText,
+        };
+    }
 }

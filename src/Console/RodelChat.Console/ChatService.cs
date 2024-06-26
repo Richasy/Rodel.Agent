@@ -50,18 +50,19 @@ public sealed class ChatService : IHostedService
                 Id = "group",
                 MaxRounds = 6,
                 Name = "Group",
-                TerminateText = "approve",
+                TerminateText = ["approve", "批准"],
             };
+            var group = _chatClient.CreateSession(preset);
             var chatMsg = ChatMessage.CreateUserMessage(message);
             await _chatClient.SendGroupMessageAsync(
+                group.Id,
                 chatMsg,
-                preset,
                 (response) =>
                 {
                     HandleMessageResponse(response);
                 },
-                CancellationToken.None,
-                [.. agents]);
+                agents,
+                CancellationToken.None);
 #else
             var provider = AskProvider();
             await RunAIAsync(provider);
@@ -160,7 +161,7 @@ public sealed class ChatService : IHostedService
         var publishManagerText =
             """
             You are publish manager which will review editor news article, and make sure all news are correct.
-            Once all news are correct, you can approve the request by just responding "approve"
+            Once all news are correct, you can approve the request (with 'approve' keyword) and give final news article to publish.
             """;
 
         var reporter = new ChatSessionPreset

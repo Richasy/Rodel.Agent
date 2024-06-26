@@ -25,4 +25,9 @@ public sealed partial class ChatClient
     /// 会话列表.
     /// </summary>
     public List<ChatSession> Sessions { get; }
+
+    /// <summary>
+    /// 群组会话列表.
+    /// </summary>
+    public List<ChatGroup> Groups { get; }
 }

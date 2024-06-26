@@ -24,6 +24,12 @@ public interface IChatClient : IDisposable
     void LoadChatSessions(List<ChatSession> sessions);
 
     /// <summary>
+    /// 加载群组会话列表.
+    /// </summary>
+    /// <param name="groups">群组会话列表.</param>
+    void LoadGroupSessions(List<ChatGroup> groups);
+
+    /// <summary>
     /// 获取预定义模型.
     /// </summary>
     /// <param name="type">供应商类型.</param>
@@ -42,6 +48,13 @@ public interface IChatClient : IDisposable
     /// <param name="preset">会话预设.</param>
     /// <returns>会话信息.</returns>
     ChatSession CreateSession(ChatSessionPreset preset);
+
+    /// <summary>
+    /// 创建新群组会话.
+    /// </summary>
+    /// <param name="preset">群组预设.</param>
+    /// <returns>群组会话.</returns>
+    ChatGroup CreateSession(ChatGroupPreset preset);
 
     /// <summary>
     /// 获取模型列表.
@@ -71,18 +84,18 @@ public interface IChatClient : IDisposable
     /// <summary>
     /// 发送群组消息.
     /// </summary>
+    /// <param name="groupId">群组标识符.</param>
     /// <param name="message">群组消息.</param>
-    /// <param name="preset">群组预设.</param>
     /// <param name="messageAction">消息生成事件.</param>
-    /// <param name="cancellationToken">终止令牌.</param>
     /// <param name="agents">助理列表.</param>
+    /// <param name="cancellationToken">终止令牌.</param>
     /// <returns><see cref="Task"/>.</returns>
     Task SendGroupMessageAsync(
+        string groupId,
         ChatMessage message,
-        ChatGroupPreset preset,
         Action<ChatMessage> messageAction = default,
-        CancellationToken cancellationToken = default,
-        params ChatSessionPreset[] agents);
+        List<ChatSessionPreset> agents = default,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// 从 DLL 中检索插件.

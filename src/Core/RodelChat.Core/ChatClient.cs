@@ -29,6 +29,7 @@ public sealed partial class ChatClient : IChatClient
         ILogger<ChatClient> logger)
     {
         Sessions = new List<ChatSession>();
+        Groups = new List<ChatGroup>();
         _logger = logger;
         _providerFactory = providerFactory;
         _parameterFactory = parameterFactory;
@@ -39,6 +40,13 @@ public sealed partial class ChatClient : IChatClient
     {
         Sessions.Clear();
         Sessions.AddRange(sessions);
+    }
+
+    /// <inheritdoc/>
+    public void LoadGroupSessions(List<ChatGroup> groups)
+    {
+        Groups.Clear();
+        Groups.AddRange(groups);
     }
 
     /// <inheritdoc/>
@@ -102,6 +110,18 @@ public sealed partial class ChatClient : IChatClient
             : throw new ArgumentException("Model not found.");
 
         Sessions.Add(session);
+        return session;
+    }
+
+    /// <inheritdoc/>
+    public ChatGroup CreateSession(ChatGroupPreset preset)
+    {
+        var id = Guid.NewGuid().ToString("N");
+
+        var presetJson = JsonSerializer.Serialize(preset);
+        var newPreset = JsonSerializer.Deserialize<ChatGroupPreset>(presetJson);
+        var session = ChatGroup.CreateGroup(id, newPreset);
+        Groups.Add(session);
         return session;
     }
 
@@ -170,10 +190,12 @@ public sealed partial class ChatClient : IChatClient
     }
 
     /// <inheritdoc/>
-    public async Task SendGroupMessageAsync(ChatMessage message, ChatGroupPreset preset, Action<ChatMessage> messageAction = null, CancellationToken cancellationToken = default, params ChatSessionPreset[] agents)
+    public async Task SendGroupMessageAsync(string groupId, ChatMessage message, Action<ChatMessage> messageAction = null, List<ChatSessionPreset> agents = null, CancellationToken cancellationToken = default)
     {
+        var group = Groups.FirstOrDefault(g => g.Id == groupId)
+            ?? throw new ArgumentException("Group not found.");
         var chatAgents = new List<ChatCompletionAgent>();
-        foreach (var agentId in preset.Agents)
+        foreach (var agentId in group.Agents)
         {
             var agent = agents.FirstOrDefault(p => p.Id == agentId)
                 ?? throw new ArgumentException("Agent not found.");
@@ -197,7 +219,7 @@ public sealed partial class ChatClient : IChatClient
             ExecutionSettings =
                     new()
                     {
-                        TerminationStrategy = new CustomTerminationStrategy(preset.MaxRounds, preset.TerminateText),
+                        TerminationStrategy = new CustomTerminationStrategy(group.MaxRounds, group.TerminateText),
                     },
         };
         groupChat.AddChatMessage(ConvertToKernelMessage(message));
@@ -321,9 +343,9 @@ public sealed partial class ChatClient : IChatClient
 
     private sealed class CustomTerminationStrategy : TerminationStrategy
     {
-        private readonly string? _terminateText;
+        private readonly IList<string>? _terminateText;
 
-        public CustomTerminationStrategy(int maxRounds, string? terminateText = default)
+        public CustomTerminationStrategy(int maxRounds, IList<string>? terminateText = default)
         {
             MaximumIterations = maxRounds;
             _terminateText = terminateText;
@@ -331,9 +353,9 @@ public sealed partial class ChatClient : IChatClient
 
         protected override Task<bool> ShouldAgentTerminateAsync(Agent agent, IReadOnlyList<Microsoft.SemanticKernel.ChatMessageContent> history, CancellationToken cancellationToken)
         {
-            return string.IsNullOrEmpty(_terminateText)
+            return _terminateText is null || _terminateText.Count == 0
                 ? Task.FromResult(false)
-                : Task.FromResult(history[history.Count - 1].Content?.Contains(_terminateText, StringComparison.OrdinalIgnoreCase) ?? false);
+                : Task.FromResult(_terminateText.Any(p => history[history.Count - 1].Content?.Contains(p, StringComparison.InvariantCultureIgnoreCase) ?? false));
         }
     }
 }

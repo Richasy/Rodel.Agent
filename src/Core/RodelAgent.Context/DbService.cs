@@ -68,15 +68,26 @@ public sealed class DbService
     }
 
     /// <summary>
+    /// 获取所有群组会话数据.
+    /// </summary>
+    /// <returns>JSON 列表.</returns>
+    public async Task<List<string>> GetAllChatGroupAsync()
+    {
+        _chatDb ??= await MigrationUtils.GetChatDbAsync(_workingDirectory);
+        return await _chatDb.Groups.Select(p => p.Value).ToListAsync();
+    }
+
+    /// <summary>
     /// 添加或更新聊天数据.
     /// </summary>
     /// <param name="dataId">会话标识符.</param>
     /// <param name="value">会话 JSON 数据.</param>
+    /// <param name="isGroup">是否为群组数据.</param>
     /// <returns><see cref="Task"/>.</returns>
-    public async Task AddOrUpdateChatDataAsync(string dataId, string value)
+    public async Task AddOrUpdateChatDataAsync(string dataId, string value, bool isGroup = false)
     {
         _chatDb ??= await MigrationUtils.GetChatDbAsync(_workingDirectory);
-        var dataset = _chatDb.Sessions;
+        var dataset = isGroup ? _chatDb.Groups : _chatDb.Sessions;
         var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId);
         if (data is null)
         {
@@ -95,11 +106,12 @@ public sealed class DbService
     /// 移除聊天会话.
     /// </summary>
     /// <param name="dataId">数据标识符.</param>
+    /// <param name="isGroup">是否为群组消息.</param>
     /// <returns><see cref="Task"/>.</returns>
-    public async Task RemoveChatDataAsync(string dataId)
+    public async Task RemoveChatDataAsync(string dataId, bool isGroup = false)
     {
         _chatDb ??= await MigrationUtils.GetChatDbAsync(_workingDirectory);
-        var dataset = _chatDb.Sessions;
+        var dataset = isGroup ? _chatDb.Groups : _chatDb.Sessions;
         var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId);
         if (data is not null)
         {

@@ -46,7 +46,7 @@ public class ChatGroupPreset
     /// 终结文本.
     /// </summary>
     [JsonPropertyName("terminate_text")]
-    public string? TerminateText { get; set; }
+    public IList<string>? TerminateText { get; set; }
 
     /// <summary>
     /// 克隆当前实例.
