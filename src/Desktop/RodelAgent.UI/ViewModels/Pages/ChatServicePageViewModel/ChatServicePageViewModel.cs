@@ -22,13 +22,15 @@ public sealed partial class ChatServicePageViewModel : ViewModelBase
         IStorageService storageService,
         IChatClient chatClient,
         ILogger<ChatServicePageViewModel> logger,
-        ChatPresetModuleViewModel presetModuleVM)
+        ChatPresetModuleViewModel chatPresetModuleVM,
+        GroupPresetModuleViewModel groupPresetModuleVM)
     {
         _chatParametersFactory = chatParametersFactory;
         _storageService = storageService;
         _chatClient = chatClient;
         _logger = logger;
-        _presetModuleVM = presetModuleVM;
+        _chatPresetModuleVM = chatPresetModuleVM;
+        _groupPresetModuleVM = groupPresetModuleVM;
         ServiceColumnWidth = SettingsToolkit.ReadLocalSetting(SettingNames.ChatServicePageServiceColumnWidth, 280d);
         ExtraColumnWidth = SettingsToolkit.ReadLocalSetting(SettingNames.ChatServicePageExtraColumnWidth, 240d);
         ExtraColumnVisible = SettingsToolkit.ReadLocalSetting(SettingNames.ChatServicePageExtraColumnVisible, true);
@@ -37,11 +39,12 @@ public sealed partial class ChatServicePageViewModel : ViewModelBase
         CheckPanelType();
         IsServiceSectionVisible = true;
         IsAvailableServicesEmpty = AvailableServices.Count == 0;
-        IsLocalModelsEmpty = LocalModels.Count == 0;
         IsAgentsEmpty = AgentPresets.Count == 0;
         IsSessionPresetsEmpty = SessionPresets.Count == 0;
+        IsGroupsEmpty = GroupPresets.Count == 0;
         CheckHistorySessionStatus();
-        HistorySessions.CollectionChanged += OnHistorySessionsCountChanged;
+        HistoryChatSessions.CollectionChanged += OnHistorySessionsCountChanged;
+        HistoryGroupSessions.CollectionChanged += OnHistorySessionsCountChanged;
         Plugins.CollectionChanged += OnPluginsCountChanged;
         CheckPluginsCount();
 
@@ -58,7 +61,10 @@ public sealed partial class ChatServicePageViewModel : ViewModelBase
         => CheckHistorySessionStatus();
 
     private void CheckHistorySessionStatus()
-        => IsHistorySessionsEmpty = HistorySessions.Count == 0;
+    {
+        IsChatHistorySessionsEmpty = HistoryChatSessions.Count == 0;
+        IsGroupHistorySessionsEmpty = HistoryGroupSessions.Count == 0;
+    }
 
     partial void OnServiceColumnWidthChanged(double value)
     {

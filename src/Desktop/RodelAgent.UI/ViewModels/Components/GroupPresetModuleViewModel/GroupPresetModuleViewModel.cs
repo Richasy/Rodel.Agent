@@ -2,6 +2,7 @@
 
 using RodelAgent.Interfaces;
 using RodelAgent.UI.ViewModels.Items;
+using RodelAgent.UI.ViewModels.Pages;
 
 namespace RodelAgent.UI.ViewModels.Components;
 
@@ -58,6 +59,40 @@ public sealed partial class GroupPresetModuleViewModel : ViewModelBase<GroupPres
                 TerminateText.Add(item);
             }
         }
+    }
+
+    [RelayCommand]
+    private async Task SaveGroupPresetAsync()
+    {
+        UpdatePresetData();
+        var pageVM = GlobalDependencies.ServiceProvider.GetRequiredService<ChatServicePageViewModel>();
+        await _storageService.AddOrUpdateChatGroupPresetAsync(Data.Data);
+        pageVM.ResetGroupsCommand.Execute(default);
+        GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>().ForceUpdatePresetAvatar(Data.Data.Id);
+        CloseRequested?.Invoke(this, EventArgs.Empty);
+    }
+
+    [RelayCommand]
+    private void AddAgent(ChatPresetItemViewModel agent)
+    {
+        if (SelectedAgents.Contains(agent))
+        {
+            return;
+        }
+
+        SelectedAgents.Add(agent);
+    }
+
+    [RelayCommand]
+    private void RemoveAgent(ChatPresetItemViewModel agent)
+        => SelectedAgents.Remove(agent);
+
+    private void UpdatePresetData()
+    {
+        Data.Data.Name = Name;
+        Data.Data.MaxRounds = MaxRounds;
+        Data.Data.Agents = SelectedAgents.Select(p => p.Data.Id).ToList();
+        Data.Data.TerminateText = TerminateText.ToList();
     }
 
     private void CheckAgentCount()

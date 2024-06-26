@@ -34,6 +34,8 @@ public sealed partial class StorageService : IStorageService
     private List<ChatSession> _chatSessions;
     private List<ChatSessionPreset> _chatSessionPresets;
     private List<ChatSessionPreset> _chatAgents;
+    private List<ChatGroupPreset> _chatGroupPresets;
+    private List<ChatGroup> _chatGroups;
     private List<TranslateSession> _translateSessions;
     private List<DrawSession> _drawSessions;
     private List<AudioSession> _audioSessions;

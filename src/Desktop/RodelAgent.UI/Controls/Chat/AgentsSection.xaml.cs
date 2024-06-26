@@ -3,7 +3,7 @@
 namespace RodelAgent.UI.Controls.Chat;
 
 /// <summary>
-/// 本地模型区.
+/// 助理区.
 /// </summary>
 public sealed partial class AgentsSection : ChatServicePageControlBase
 {

@@ -63,6 +63,15 @@
                     <Button.Flyout>
                         <MenuFlyout Placement="Bottom">
                             <MenuFlyoutItem
+                                x:Name="AddGroupItem"
+                                MinWidth="200"
+                                Command="{x:Bind ViewModel.AddGroupCommand}"
+                                Text="{ext:Locale Name=CreateGroup}">
+                                <MenuFlyoutItem.Icon>
+                                    <ic:SymbolIcon Symbol="ChatMultiple" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem
                                 x:Name="ImportPluginItem"
                                 MinWidth="200"
                                 Command="{x:Bind ViewModel.ImportPluginCommand}"

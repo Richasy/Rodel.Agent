@@ -45,6 +45,7 @@
                             <chat:AvailableChatServiceSection Margin="0,0,0,12" />
                             <chat:AgentsSection Margin="0,0,0,12" Visibility="{x:Bind ViewModel.IsAgentsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
                             <chat:SessionPresetsSection Visibility="{x:Bind ViewModel.IsSessionPresetsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
+                            <chat:GroupsSection Visibility="{x:Bind ViewModel.IsGroupsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
                         </StackPanel>
                         <chat:ChatPluginSection Visibility="{x:Bind ViewModel.IsPluginSectionVisible, Mode=OneWay}" />
                     </Grid>

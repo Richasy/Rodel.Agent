@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:RodelAgent.UI.Controls"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:local="using:RodelAgent.UI.Controls.Items">
+
+    <Style BasedOn="{StaticResource DefaultChatPresetItemStyle}" TargetType="local:ChatSessionPresetItemControl" />
+
+    <Style x:Key="DefaultChatPresetItemStyle" TargetType="local:ChatSessionPresetItemControl">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <controls:CardPanel
+                        x:Name="RootCard"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        AutomationProperties.Name="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ViewModel.Name}"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        IsChecked="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ViewModel.IsSelected}"
+                        StrokeThickness="0">
+                        <Grid Margin="12,8" ColumnSpacing="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <controls:PresetAvatar
+                                x:Name="Avatar"
+                                Width="28"
+                                Height="28"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                CornerRadius="16"
+                                DefaultSymbol="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=DefaultSymbol}"
+                                FontSize="14"
+                                PresetId="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ViewModel.Data.Id}" />
+                            <TextBlock
+                                Grid.Column="1"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                MaxLines="1"
+                                Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ViewModel.Name}"
+                                TextTrimming="CharacterEllipsis" />
+                        </Grid>
+                    </controls:CardPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="GroupPanelAgentStyle" TargetType="local:ChatSessionPresetItemControl">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid
+                        Padding="12,8"
+                        HorizontalAlignment="Stretch"
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        ColumnSpacing="12"
+                        CornerRadius="{StaticResource ControlCornerRadius}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <controls:PresetAvatar
+                            x:Name="Avatar"
+                            Width="28"
+                            Height="28"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            CornerRadius="16"
+                            DefaultSymbol="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=DefaultSymbol}"
+                            FontSize="14"
+                            PresetId="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ViewModel.Data.Id}" />
+                        <TextBlock
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            MaxLines="1"
+                            Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ViewModel.Name}"
+                            TextTrimming="CharacterEllipsis" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

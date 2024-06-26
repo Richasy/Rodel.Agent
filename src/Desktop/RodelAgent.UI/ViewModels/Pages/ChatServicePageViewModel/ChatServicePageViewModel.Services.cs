@@ -41,11 +41,11 @@ public sealed partial class ChatServicePageViewModel
         {
             SetSelectedAgentCommand.Execute(default);
             SetSelectedSessionPresetCommand.Execute(default);
-            HistorySessions.Clear();
+            HistoryChatSessions.Clear();
             var sessions = await _storageService.GetChatSessionsAsync(chatVM.ProviderType);
             foreach (var session in sessions)
             {
-                HistorySessions.Add(new ChatSessionViewModel(session, _chatClient));
+                HistoryChatSessions.Add(new ChatSessionViewModel(session, _chatClient));
             }
 
             CheckHistorySessionStatus();

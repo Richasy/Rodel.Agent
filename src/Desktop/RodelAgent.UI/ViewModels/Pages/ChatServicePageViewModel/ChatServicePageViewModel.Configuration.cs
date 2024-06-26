@@ -29,12 +29,6 @@ public sealed partial class ChatServicePageViewModel
             }
         }
 
-        if (LocalModels.Count > 0)
-        {
-            config.Local = new LocalModelConfig();
-            config.Local.CustomModels = LocalModels.Select(p => p.Data).ToList();
-        }
-
         var chatProviderFactory = GlobalDependencies.ServiceProvider.GetRequiredService<IChatProviderFactory>();
         chatProviderFactory.ResetConfiguration(config);
     }

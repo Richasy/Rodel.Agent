@@ -40,6 +40,11 @@ public sealed partial class ChatServicePage : ChatServicePageBase
             ViewModel.ResetSessionPresetsCommand.Execute(default);
         }
 
+        if (ViewModel.IsGroupsEmpty)
+        {
+            ViewModel.ResetGroupsCommand.Execute(default);
+        }
+
         InitializePanelType();
         UpdateExtraSizer();
     }

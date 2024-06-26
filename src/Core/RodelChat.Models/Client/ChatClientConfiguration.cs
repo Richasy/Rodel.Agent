@@ -124,12 +124,6 @@ public sealed class ChatClientConfiguration
     /// </summary>
     [JsonPropertyName("silicon_flow")]
     public SiliconFlowClientConfig? SiliconFlow { get; set; }
-
-    /// <summary>
-    /// 本地模型配置.
-    /// </summary>
-    [JsonPropertyName("local")]
-    public LocalModelConfig? Local { get; set; }
 }
 
 /// <summary>
@@ -317,13 +311,6 @@ public sealed class OllamaClientConfig : ClientEndpointConfigBase
     /// <inheritdoc/>
     public override bool IsValid()
         => IsCustomModelNotEmpty() && !string.IsNullOrEmpty(Endpoint);
-}
-
-/// <summary>
-/// 本地模型配置.
-/// </summary>
-public sealed class LocalModelConfig : ConfigBase
-{
 }
 
 /// <summary>

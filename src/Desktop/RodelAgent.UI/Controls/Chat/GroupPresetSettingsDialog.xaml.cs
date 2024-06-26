@@ -9,21 +9,21 @@ namespace RodelAgent.UI.Controls.Chat;
 /// <summary>
 /// 预设设置面板.
 /// </summary>
-public sealed partial class ChatPresetSettingsDialog : AppContentDialog
+public sealed partial class GroupPresetSettingsDialog : AppContentDialog
 {
     /// <summary>
     /// <see cref="ViewModel"/> 的依赖属性.
     /// </summary>
     public static readonly DependencyProperty ViewModelProperty =
-        DependencyProperty.Register(nameof(ViewModel), typeof(ChatPresetModuleViewModel), typeof(ChatPresetSettingsDialog), new PropertyMetadata(default));
+        DependencyProperty.Register(nameof(ViewModel), typeof(GroupPresetModuleViewModel), typeof(ChatPresetSettingsDialog), new PropertyMetadata(default));
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ChatPresetSettingsDialog"/> class.
+    /// Initializes a new instance of the <see cref="GroupPresetSettingsDialog"/> class.
     /// </summary>
-    public ChatPresetSettingsDialog()
+    public GroupPresetSettingsDialog()
     {
         InitializeComponent();
-        ViewModel = GlobalDependencies.ServiceProvider.GetRequiredService<ChatPresetModuleViewModel>();
+        ViewModel = GlobalDependencies.ServiceProvider.GetRequiredService<GroupPresetModuleViewModel>();
         Closed += (_, _) => ViewModel.CloseRequested -= OnCloseRequested;
         ViewModel.CloseRequested += OnCloseRequested;
     }
@@ -31,9 +31,9 @@ public sealed partial class ChatPresetSettingsDialog : AppContentDialog
     /// <summary>
     /// 视图模型.
     /// </summary>
-    public ChatPresetModuleViewModel ViewModel
+    public GroupPresetModuleViewModel ViewModel
     {
-        get => (ChatPresetModuleViewModel)GetValue(ViewModelProperty);
+        get => (GroupPresetModuleViewModel)GetValue(ViewModelProperty);
         set => SetValue(ViewModelProperty, value);
     }
 
@@ -50,7 +50,7 @@ public sealed partial class ChatPresetSettingsDialog : AppContentDialog
     {
         var btn = (Button)sender;
         btn.IsEnabled = false;
-        if (!ModelPanel.IsValid())
+        if(!GroupPanel.IsValid())
         {
             GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>()
                 .ShowTip(StringNames.MustFillRequireFields, InfoType.Warning);
@@ -60,16 +60,8 @@ public sealed partial class ChatPresetSettingsDialog : AppContentDialog
 
         try
         {
-            await ModelPanel.SaveAvatarAsync();
-
-            if (ViewModel.IsAgentPreset)
-            {
-                await ViewModel.SaveAgentPresetCommand.ExecuteAsync(default);
-            }
-            else if (ViewModel.IsSessionPreset)
-            {
-                await ViewModel.SaveSessionPresetCommand.ExecuteAsync(default);
-            }
+            await GroupPanel.SaveAvatarAsync();
+            ViewModel.SaveGroupPresetCommand.Execute(default);
         }
         catch (Exception)
         {

@@ -52,6 +52,9 @@
     <None Remove="Controls\Chat\AgentsSection.xaml" />
     <None Remove="Controls\Chat\ChatPluginSection.xaml" />
     <None Remove="Controls\Chat\ChatPluginSelection.xaml" />
+    <None Remove="Controls\Chat\GroupPresetSettingsDialog.xaml" />
+    <None Remove="Controls\Chat\GroupsSection.xaml" />
+    <None Remove="Controls\Chat\PresetGroupPanel.xaml" />
     <None Remove="Controls\Chat\SessionPresetsSection.xaml" />
     <None Remove="Controls\Draw\DrawHistorySection.xaml" />
     <None Remove="Controls\Draw\DrawProviderOptionPanel.xaml" />
@@ -62,6 +65,7 @@
     <None Remove="Controls\Draw\LocalDrawImage.xaml" />
     <None Remove="Controls\Items\AudioModelCard\AudioModelCard.xaml" />
     <None Remove="Controls\Items\AudioServiceItemControl\AudioServiceItemControl.xaml" />
+    <None Remove="Controls\Items\ChatGroupPresetItemControl\ChatGroupPresetItemControl.xaml" />
     <None Remove="Controls\Items\ChatModelCard\ChatModelCard.xaml" />
     <None Remove="Controls\Base\EmptyHolder.xaml" />
     <None Remove="Controls\Chat\AvailableChatServiceSection.xaml" />
@@ -95,7 +99,7 @@
     <None Remove="Controls\Items\ChatPluginItemControl\ChatPluginItemControl.xaml" />
     <None Remove="Controls\Items\ChatServiceItemControl\ChatServiceItemControl.xaml" />
     <None Remove="Controls\Items\ChatSessionItemControl\ChatSessionItemControl.xaml" />
-    <None Remove="Controls\Items\ChatSessionPresetItemControl.xaml" />
+    <None Remove="Controls\Items\ChatSessionPresetItemControl\ChatSessionPresetItemControl.xaml" />
     <None Remove="Controls\Items\DrawModelCard\DrawModelCard.xaml" />
     <None Remove="Controls\Items\DrawServiceItemControl\DrawServiceItemControl.xaml" />
     <None Remove="Controls\Items\NavigateItemControl.xaml" />
@@ -343,9 +347,6 @@
     <Page Update="Controls\Chat\AgentsSection.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="Controls\Items\ChatSessionPresetItemControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Update="Controls\Base\PresetAvatar.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -557,6 +558,21 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Controls\Base\EmojiPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Controls\Chat\GroupPresetSettingsDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Controls\Chat\PresetGroupPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Controls\Items\ChatSessionPresetItemControl\ChatSessionPresetItemControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Controls\Items\ChatGroupPresetItemControl\ChatGroupPresetItemControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Controls\Chat\GroupsSection.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <None Update="NLog.config">

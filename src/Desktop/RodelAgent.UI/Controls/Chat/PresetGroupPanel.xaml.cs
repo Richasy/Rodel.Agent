@@ -3,6 +3,7 @@
 using RodelAgent.Statics;
 using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels;
+using RodelAgent.UI.ViewModels.Items;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 
@@ -11,15 +12,15 @@ namespace RodelAgent.UI.Controls.Chat;
 /// <summary>
 /// 预设模型面板.
 /// </summary>
-public sealed partial class PresetModelPanel : ChatPresetControlBase
+public sealed partial class PresetGroupPanel : GroupPresetControlBase
 {
     private bool _avatarChanged = false;
     private bool _isEmojiAvatar = false;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PresetModelPanel"/> class.
+    /// Initializes a new instance of the <see cref="PresetGroupPanel"/> class.
     /// </summary>
-    public PresetModelPanel()
+    public PresetGroupPanel()
     {
         InitializeComponent();
         Loaded += OnLoadedAsync;
@@ -53,7 +54,7 @@ public sealed partial class PresetModelPanel : ChatPresetControlBase
     /// </summary>
     /// <returns>是否有效.</returns>
     public bool IsValid()
-        => !string.IsNullOrEmpty(ViewModel.Name);
+        => !string.IsNullOrEmpty(ViewModel.Name) && ViewModel.SelectedAgents.Count >= 2;
 
     private async void OnLoadedAsync(object sender, RoutedEventArgs e)
     {
@@ -144,4 +145,13 @@ public sealed partial class PresetModelPanel : ChatPresetControlBase
 
     private void OnEmojiAvatarButtonClick(object sender, RoutedEventArgs e)
         => FlyoutBase.ShowAttachedFlyout(sender as FrameworkElement);
+
+    private void OnBackupAgentClick(object sender, ViewModels.Items.ChatPresetItemViewModel e)
+        => ViewModel.AddAgentCommand.Execute(e);
+
+    private void OnAddAgentButtonClick(object sender, RoutedEventArgs e)
+        => FlyoutBase.ShowAttachedFlyout(sender as FrameworkElement);
+
+    private void OnAgentRightClick(object sender, RightTappedRoutedEventArgs e)
+        => ViewModel.RemoveAgentCommand.Execute((sender as FrameworkElement).DataContext as ChatPresetItemViewModel);
 }

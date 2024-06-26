@@ -39,4 +39,5 @@ public enum SettingNames
     AudioHistoryColumnWidth,
     AudioServicePageIsEnterSend,
     IsMigrating,
+    LastSelectedGroup,
 }

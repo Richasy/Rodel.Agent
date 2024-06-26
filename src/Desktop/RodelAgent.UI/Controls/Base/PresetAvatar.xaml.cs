@@ -37,6 +37,11 @@ public sealed partial class PresetAvatar : UserControl
     }
 
     /// <summary>
+    /// 是否为聊天预设.
+    /// </summary>
+    public bool IsChatPreset { get; set; } = true;
+
+    /// <summary>
     /// 预设 ID.
     /// </summary>
     public string PresetId
@@ -84,13 +89,25 @@ public sealed partial class PresetAvatar : UserControl
             return;
         }
 
-        var preset = await GlobalDependencies.ServiceProvider.GetRequiredService<IStorageService>().GetChatSessionPresetByIdAsync(PresetId);
-        if (!string.IsNullOrEmpty(preset.Emoji))
+        var emojiText = string.Empty;
+        var storageService = GlobalDependencies.ServiceProvider.GetRequiredService<IStorageService>();
+        if (IsChatPreset)
+        {
+            var preset = await storageService.GetChatSessionPresetByIdAsync(PresetId);
+            emojiText = preset?.Emoji;
+        }
+        else
+        {
+            var preset = await storageService.GetChatGroupPresetByIdAsync(PresetId);
+            emojiText = preset?.Emoji;
+        }
+
+        if (!string.IsNullOrEmpty(emojiText))
         {
             AgentAvatar.Visibility = Visibility.Collapsed;
             DefaultIcon.Visibility = Visibility.Collapsed;
             EmojiAvatar.Visibility = Visibility.Visible;
-            var emoji = EmojiStatics.GetEmojis().FirstOrDefault(x => x.Unicode == preset.Emoji);
+            var emoji = EmojiStatics.GetEmojis().FirstOrDefault(x => x.Unicode == emojiText);
             EmojiAvatar.Text = emoji?.ToEmoji();
         }
         else

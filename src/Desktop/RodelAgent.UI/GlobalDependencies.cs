@@ -76,6 +76,7 @@ public static class GlobalDependencies
             .AddSingleton<AudioWaveModuleViewModel>()
             .AddSingleton<StartupPageViewModel>()
             .AddSingleton<ChatPresetModuleViewModel>()
+            .AddSingleton<GroupPresetModuleViewModel>()
             .AddSingleton<ChatServicePageViewModel>()
             .AddSingleton<DrawSessionViewModel>()
             .AddSingleton<DrawServicePageViewModel>()

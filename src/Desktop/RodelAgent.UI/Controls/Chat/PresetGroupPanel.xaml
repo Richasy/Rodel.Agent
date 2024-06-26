@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:GroupPresetControlBase
+    x:Class="RodelAgent.UI.Controls.Chat.PresetGroupPanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:base="using:RodelAgent.UI.Controls.Base"
+    xmlns:community="using:CommunityToolkit.WinUI.Controls"
+    xmlns:controls="using:RodelAgent.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:itemcontrol="using:RodelAgent.UI.Controls.Items"
+    xmlns:items="using:RodelAgent.UI.ViewModels.Items"
+    xmlns:local="using:RodelAgent.UI.Controls.Chat"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid ColumnSpacing="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid RowSpacing="8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    Margin="0,0,8,0"
+                    VerticalAlignment="Center"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    Style="{StaticResource CaptionTextBlockStyle}"
+                    Text="{ext:Locale Name=Avatar}" />
+                <HyperlinkButton
+                    x:Name="EmojiAvatarButton"
+                    Grid.Column="1"
+                    Margin="0,0,8,0"
+                    VerticalAlignment="Center"
+                    Click="OnEmojiAvatarButtonClick"
+                    Content="{ext:Locale Name=EmojiAvatar}"
+                    FontSize="12">
+                    <FlyoutBase.AttachedFlyout>
+                        <Flyout x:Name="EmojiFlyout" Placement="Bottom">
+                            <Flyout.FlyoutPresenterStyle>
+                                <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
+                                    <Setter Property="Padding" Value="12" />
+                                </Style>
+                            </Flyout.FlyoutPresenterStyle>
+                            <base:EmojiPanel EmojiClick="OnEmojiClick" />
+                        </Flyout>
+                    </FlyoutBase.AttachedFlyout>
+                </HyperlinkButton>
+                <HyperlinkButton
+                    x:Name="ReplaceImageButton"
+                    Grid.Column="2"
+                    VerticalAlignment="Center"
+                    Click="OnReplaceImageButtonClickAsync"
+                    Content="{ext:Locale Name=ReplaceImage}"
+                    FontSize="12"
+                    Visibility="Collapsed" />
+            </Grid>
+            <Grid
+                x:Name="EmojiContainer"
+                Grid.Row="1"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="2"
+                CornerRadius="{StaticResource ControlCornerRadius}"
+                Visibility="Collapsed">
+                <TextBlock
+                    x:Name="EmojiBlock"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontFamily="Segoe UI Emoji"
+                    FontSize="98" />
+            </Grid>
+            <Grid
+                x:Name="ImagePlaceholderContainer"
+                Grid.Row="1"
+                AllowDrop="True"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="2"
+                CornerRadius="{StaticResource ControlCornerRadius}"
+                DragOver="OnImageAreaDragOver"
+                Drop="OnImageAreaDropAsync"
+                Tapped="OnImageAreaTappedAsync">
+                <StackPanel
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Spacing="16">
+                    <ic:SymbolIcon
+                        HorizontalAlignment="Center"
+                        FontSize="48"
+                        Foreground="{ThemeResource TextFillColorDisabledBrush}"
+                        Symbol="ImageSparkle" />
+                    <TextBlock
+                        MaxWidth="210"
+                        HorizontalAlignment="Center"
+                        Foreground="{ThemeResource TextFillColorDisabledBrush}"
+                        LineHeight="20"
+                        Style="{StaticResource CaptionTextBlockStyle}"
+                        Text="{ext:Locale Name=DropPresetImageTip}"
+                        TextAlignment="Center"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+            </Grid>
+            <community:ImageCropper
+                x:Name="Cropper"
+                Grid.Row="1"
+                AspectRatio="1"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="2"
+                CornerRadius="{StaticResource ControlCornerRadius}"
+                CropShape="Circular"
+                Visibility="Collapsed" />
+        </Grid>
+        <Border
+            Grid.Column="1"
+            Width="1"
+            Height="120"
+            VerticalAlignment="Center"
+            Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
+        <Grid Grid.Column="2" RowSpacing="12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBox
+                x:Name="NameBox"
+                HorizontalAlignment="Stretch"
+                AutomationProperties.Name="{ext:Locale Name=GroupName}"
+                Header="{ext:Locale Name=GroupName}"
+                HeaderTemplate="{StaticResource InputHeaderTemplate}"
+                PlaceholderText="{ext:Locale Name=GroupNamePlaceholder}"
+                Text="{x:Bind ViewModel.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <community:TokenizingTextBox
+                x:Name="TerminateBox"
+                Grid.Row="1"
+                HorizontalAlignment="Stretch"
+                Header="{ext:Locale Name=TerminateText}"
+                HeaderTemplate="{StaticResource InputHeaderTemplate}"
+                ItemsSource="{x:Bind ViewModel.TerminateText, Mode=OneWay}"
+                MaximumTokens="10"
+                PlaceholderText="{ext:Locale Name=AddToken}"
+                SelectionMode="None"
+                ToolTipService.ToolTip="{ext:Locale Name=TerminateTextDescription}">
+                <community:TokenizingTextBox.QueryIcon>
+                    <ic:SymbolIconSource Symbol="ArrowEnterLeft" />
+                </community:TokenizingTextBox.QueryIcon>
+                <community:TokenizingTextBox.ItemTemplate>
+                    <DataTemplate x:DataType="x:String">
+                        <TextBlock
+                            MaxWidth="120"
+                            MaxLines="1"
+                            Text="{x:Bind}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap" />
+                    </DataTemplate>
+                </community:TokenizingTextBox.ItemTemplate>
+            </community:TokenizingTextBox>
+            <Slider
+                x:Name="MaxRoundsSlider"
+                Grid.Row="2"
+                HorizontalAlignment="Stretch"
+                Header="{ext:Locale Name=MaxRounds}"
+                HeaderTemplate="{StaticResource InputHeaderTemplate}"
+                Maximum="10"
+                Minimum="1"
+                TickFrequency="1"
+                Value="{x:Bind ViewModel.MaxRounds, Mode=TwoWay}" />
+            <Grid Grid.Row="3" RowSpacing="12">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Style="{StaticResource CaptionTextBlockStyle}"
+                        Text="{ext:Locale Name=Agents}" />
+                    <HyperlinkButton
+                        Grid.Column="1"
+                        Padding="4"
+                        VerticalAlignment="Center"
+                        AutomationProperties.Name="{ext:Locale Name=AddAgent}"
+                        Click="OnAddAgentButtonClick"
+                        Content="{ext:Locale Name=AddAgent}"
+                        FontSize="12">
+                        <FlyoutBase.AttachedFlyout>
+                            <Flyout Placement="Bottom">
+                                <Flyout.FlyoutPresenterStyle>
+                                    <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
+                                        <Setter Property="Padding" Value="12,8" />
+                                    </Style>
+                                </Flyout.FlyoutPresenterStyle>
+                                <Grid Width="240">
+                                    <ItemsRepeater ItemsSource="{x:Bind ViewModel.TotalAgents}">
+                                        <ItemsRepeater.ItemTemplate>
+                                            <DataTemplate x:DataType="items:ChatPresetItemViewModel">
+                                                <itemcontrol:ChatSessionPresetItemControl
+                                                    Click="OnBackupAgentClick"
+                                                    DataContext="{x:Bind}"
+                                                    ViewModel="{x:Bind}" />
+                                            </DataTemplate>
+                                        </ItemsRepeater.ItemTemplate>
+                                        <ItemsRepeater.Layout>
+                                            <StackLayout Spacing="2" />
+                                        </ItemsRepeater.Layout>
+                                    </ItemsRepeater>
+                                </Grid>
+                            </Flyout>
+                        </FlyoutBase.AttachedFlyout>
+                    </HyperlinkButton>
+                </Grid>
+
+                <Grid
+                    Grid.Row="1"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="{ThemeResource LayerFillColorDefaultBrush}"
+                    CornerRadius="{StaticResource ControlCornerRadius}">
+                    <ListView
+                        Margin="-16,0,-12,0"
+                        AllowDrop="True"
+                        CanDragItems="True"
+                        CanReorderItems="True"
+                        IsSwipeEnabled="True"
+                        ItemsSource="{x:Bind ViewModel.SelectedAgents}"
+                        ReorderMode="Enabled"
+                        SelectionMode="None"
+                        Visibility="{x:Bind ViewModel.IsNoAgentSelected, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="items:ChatPresetItemViewModel">
+                                <itemcontrol:ChatSessionPresetItemControl
+                                    Margin="0,2"
+                                    DataContext="{x:Bind}"
+                                    IsRightTapEnabled="True"
+                                    RightTapped="OnAgentRightClick"
+                                    Style="{StaticResource GroupPanelAgentStyle}"
+                                    ToolTipService.ToolTip="{ext:Locale Name=RightClickDelete}"
+                                    ViewModel="{x:Bind}" />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <Border
+                        Padding="12,8"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        CornerRadius="{StaticResource ControlCornerRadius}"
+                        Visibility="{x:Bind ViewModel.IsNoAgentSelected, Mode=OneWay}">
+                        <TextBlock
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Style="{StaticResource CaptionTextBlockStyle}"
+                            Text="{ext:Locale Name=NoAgents}" />
+                    </Border>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</local:GroupPresetControlBase>
