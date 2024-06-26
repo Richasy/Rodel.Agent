@@ -13,7 +13,7 @@ public sealed partial class GroupsSection : ChatServicePageControlBase
     public GroupsSection() => InitializeComponent();
 
     private void OnPresetItemClick(object sender, ViewModels.Items.GroupPresetItemViewModel e)
-        => ViewModel.SetSelectedGroupCommand.Execute(e);
+        => ViewModel.SetSelectedGroupPresetCommand.Execute(e);
 
     private void OnPresetItemDeleteClick(object sender, RoutedEventArgs e)
     {

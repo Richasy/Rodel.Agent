@@ -78,7 +78,7 @@ public sealed partial class ChatGroupViewModel : ViewModelBase<ChatGroup>
         }
 
         await _storageService.AddOrUpdateChatGroupSessionAsync(Data);
-        GlobalDependencies.ServiceProvider.GetService<ChatServicePageViewModel>().CheckCurrentSessionExistCommand.Execute(this);
+        GlobalDependencies.ServiceProvider.GetService<ChatServicePageViewModel>().CheckCurrentGroupExistCommand.Execute(this);
     }
 
     [RelayCommand]
@@ -109,9 +109,16 @@ public sealed partial class ChatGroupViewModel : ViewModelBase<ChatGroup>
     {
         Agents.Clear();
         var storageService = GlobalDependencies.ServiceProvider.GetRequiredService<IStorageService>();
+        await Task.Delay(200);
         var agents = await storageService.GetChatAgentsAsync();
-        foreach (var agent in agents)
+        foreach (var agentId in Data.Agents)
         {
+            var agent = agents.FirstOrDefault(p => p.Id == agentId);
+            if (agent is null)
+            {
+                continue;
+            }
+
             var a = new ChatPresetItemViewModel(agent);
             Agents.Add(a);
         }

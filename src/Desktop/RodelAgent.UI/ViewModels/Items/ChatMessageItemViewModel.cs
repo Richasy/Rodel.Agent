@@ -30,6 +30,12 @@ public sealed partial class ChatMessageItemViewModel : ViewModelBase<ChatMessage
     [ObservableProperty]
     private bool _isEditing;
 
+    [ObservableProperty]
+    private string _author;
+
+    [ObservableProperty]
+    private string _agentId;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="ChatMessageItemViewModel"/> class.
     /// </summary>

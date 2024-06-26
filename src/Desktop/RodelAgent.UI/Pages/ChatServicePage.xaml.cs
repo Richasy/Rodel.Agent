@@ -61,6 +61,7 @@ public sealed partial class ChatServicePage : ChatServicePageBase
         }
 
         ExtraSizer.Maximum = height;
+        ExtraSizer2.Maximum = height;
     }
 
     private void InitializePanelType()

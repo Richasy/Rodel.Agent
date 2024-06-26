@@ -38,6 +38,7 @@ public sealed class ChatGroup : ChatGroupPreset
     {
         return new ChatGroup
         {
+            Id = id,
             Title = preset.Name,
             PresetId = preset.Id,
             Messages = new List<ChatMessage>(),

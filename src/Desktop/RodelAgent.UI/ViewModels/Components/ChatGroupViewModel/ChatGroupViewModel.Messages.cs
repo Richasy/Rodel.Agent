@@ -126,6 +126,7 @@ public sealed partial class ChatGroupViewModel
                                DeleteMessageAsync));
         }
 
+        UserInput = string.Empty;
         var selectedAgents = Agents.Select(p => p.Data).ToList();
         await _chatClient.SendGroupMessageAsync(
                 SessionId,
@@ -134,7 +135,7 @@ public sealed partial class ChatGroupViewModel
                 {
                     _ = _dispatcherQueue.TryEnqueue(() =>
                     {
-                        if (_cancellationTokenSource is null || _cancellationTokenSource.IsCancellationRequested)
+                        if (_cancellationTokenSource is null && Messages.Count == 0)
                         {
                             return;
                         }
@@ -159,10 +160,13 @@ public sealed partial class ChatGroupViewModel
 
                         if (response.Role == MessageRole.Assistant)
                         {
-                            Messages.Add(new ChatMessageItemViewModel(
-                            response,
-                            EditMessageAsync,
-                            DeleteMessageAsync));
+                            var msg = new ChatMessageItemViewModel(
+                                response,
+                                EditMessageAsync,
+                                DeleteMessageAsync);
+                            msg.Author = name;
+                            msg.AgentId = agent?.Data.Id;
+                            Messages.Add(msg);
                         }
                         else if (response.Role == MessageRole.Client)
                         {

@@ -50,8 +50,8 @@ public sealed partial class ChatMessageItemControl : ChatMessageItemControlBase
         }
 
         OptionsContainer.Visibility = Visibility.Visible;
-        var offset = MessageBackground.ActualWidth + 12;
-        var verticalOffset = TimeBlock.ActualHeight + 4;
+        var offset = MessageBackground.ActualWidth + Avatar.ActualWidth + 16;
+        var verticalOffset = TimeBlock.ActualHeight + 12;
         if (RootCard.ActualWidth - offset < 90)
         {
             offset = RootCard.ActualWidth - 90;

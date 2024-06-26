@@ -102,7 +102,7 @@ public sealed partial class ChatServicePageViewModel
         {
             SetSelectedChatServiceCommand.Execute(default);
             SetSelectedSessionPresetCommand.Execute(default);
-            SetSelectedGroupCommand.Execute(default);
+            SetSelectedGroupPresetCommand.Execute(default);
             HistoryChatSessions.Clear();
             var service = AvailableServices.FirstOrDefault(p => p.ProviderType == presetVM.Data.Provider);
             if (service == null)

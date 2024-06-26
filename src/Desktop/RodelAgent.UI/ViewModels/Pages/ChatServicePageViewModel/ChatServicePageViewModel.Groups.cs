@@ -27,8 +27,8 @@ public sealed partial class ChatServicePageViewModel
         if (SettingsToolkit.IsSettingKeyExist(SettingNames.LastSelectedGroup))
         {
             var lastSelectedGroup = SettingsToolkit.ReadLocalSetting(SettingNames.LastSelectedGroup, string.Empty);
-            var agent = GroupPresets.FirstOrDefault(p => p.Data.Id == lastSelectedGroup);
-            SetSelectedAgentCommand.Execute(agent);
+            var group = GroupPresets.FirstOrDefault(p => p.Data.Id == lastSelectedGroup);
+            SetSelectedGroupPresetCommand.Execute(group);
         }
 
         IsGroupsEmpty = GroupPresets.Count == 0;
@@ -70,7 +70,7 @@ public sealed partial class ChatServicePageViewModel
     }
 
     [RelayCommand]
-    private async Task SetSelectedGroupAsync(GroupPresetItemViewModel presetVM)
+    private async Task SetSelectedGroupPresetAsync(GroupPresetItemViewModel presetVM)
     {
         foreach (var item in GroupPresets)
         {
@@ -137,5 +137,78 @@ public sealed partial class ChatServicePageViewModel
         GroupPresets.Remove(presetVM);
         IsGroupsEmpty = GroupPresets.Count == 0;
         await _storageService.RemoveChatGroupPresetAsync(presetVM.Data.Id);
+    }
+
+    [RelayCommand]
+    private void CheckCurrentGroupExist(ChatGroupViewModel vm)
+    {
+        if (CurrentGroup != vm)
+        {
+            return;
+        }
+
+        if (!string.IsNullOrEmpty(vm.Data.PresetId)
+            && GroupPresets.FirstOrDefault(p => p.IsSelected)?.Data.Id != CurrentGroup.Data.PresetId)
+        {
+            return;
+        }
+
+        var sourceSession = HistoryGroupSessions.FirstOrDefault(p => p.SessionId == CurrentGroup.SessionId);
+        if (sourceSession != null)
+        {
+            sourceSession.Title = CurrentGroup.Title;
+            sourceSession.Data.Title = CurrentGroup.Title;
+            return;
+        }
+
+        HistoryGroupSessions.Insert(0, CurrentGroup);
+        SetSelectedGroupSession(CurrentGroup);
+    }
+
+    [RelayCommand]
+    private void SetSelectedGroupSession(ChatGroupViewModel groupVM)
+    {
+        foreach (var item in HistoryChatSessions)
+        {
+            item.IsSelected = groupVM != null && item.Equals(groupVM);
+        }
+
+        if (groupVM != null && CurrentGroup != groupVM)
+        {
+            CurrentGroup = groupVM;
+        }
+    }
+
+    [RelayCommand]
+    private async Task RemoveGroupAsync(ChatGroupViewModel groupVM)
+    {
+        if (groupVM == null)
+        {
+            return;
+        }
+
+        if (CurrentGroup == groupVM)
+        {
+            CreateNewSession();
+        }
+
+        groupVM.CancelMessageCommand.Execute(default);
+        await _storageService.RemoveChatGroupSessionAsync(groupVM.SessionId);
+        HistoryGroupSessions.Remove(groupVM);
+    }
+
+    [RelayCommand]
+    private async Task RemoveAllGroupsAsync()
+    {
+        foreach (var session in HistoryGroupSessions)
+        {
+            session.IsSelected = false;
+            session.CancelMessageCommand.Execute(default);
+            await _storageService.RemoveChatGroupSessionAsync(session.Data.Id);
+        }
+
+        CurrentGroup = default;
+        HistoryGroupSessions.Clear();
+        CreateNewSessionCommand.Execute(default);
     }
 }

@@ -33,13 +33,18 @@ public sealed partial class SystemInstructionPanel : ChatSessionControlBase
 
     private void OnSystemBoxTextChanged(object sender, TextChangedEventArgs e)
     {
+        if (ViewModel is null)
+        {
+            return;
+        }
+
         ViewModel.Data.SystemInstruction = SystemBox.Text;
         _textChanged = true;
     }
 
     private void OnSystemBoxLostFocus(object sender, RoutedEventArgs e)
     {
-        if (_textChanged)
+        if (_textChanged && ViewModel is not null)
         {
             ViewModel.SaveSessionToDatabaseCommand.Execute(default);
         }

@@ -50,6 +50,11 @@
     <None Remove="Controls\Base\TipDialog.xaml" />
     <None Remove="Controls\Base\WavePanel\WavePanel.xaml" />
     <None Remove="Controls\Chat\AgentsSection.xaml" />
+    <None Remove="Controls\Chat\ChatGroupHeader.xaml" />
+    <None Remove="Controls\Chat\ChatGroupHistory.xaml" />
+    <None Remove="Controls\Chat\ChatGroupInput.xaml" />
+    <None Remove="Controls\Chat\ChatGroupListPanel.xaml" />
+    <None Remove="Controls\Chat\ChatGroupPanel.xaml" />
     <None Remove="Controls\Chat\ChatPluginSection.xaml" />
     <None Remove="Controls\Chat\ChatPluginSelection.xaml" />
     <None Remove="Controls\Chat\GroupPresetSettingsDialog.xaml" />
@@ -65,6 +70,7 @@
     <None Remove="Controls\Draw\LocalDrawImage.xaml" />
     <None Remove="Controls\Items\AudioModelCard\AudioModelCard.xaml" />
     <None Remove="Controls\Items\AudioServiceItemControl\AudioServiceItemControl.xaml" />
+    <None Remove="Controls\Items\ChatGroupItemControl\ChatGroupItemControl.xaml" />
     <None Remove="Controls\Items\ChatGroupPresetItemControl\ChatGroupPresetItemControl.xaml" />
     <None Remove="Controls\Items\ChatModelCard\ChatModelCard.xaml" />
     <None Remove="Controls\Base\EmptyHolder.xaml" />
@@ -573,6 +579,24 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Controls\Chat\GroupsSection.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Controls\Chat\ChatGroupPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Controls\Chat\ChatGroupHeader.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Controls\Chat\ChatGroupInput.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Controls\Chat\ChatGroupHistory.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Controls\Chat\ChatGroupListPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Controls\Items\ChatGroupItemControl\ChatGroupItemControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <None Update="NLog.config">

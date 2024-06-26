@@ -55,6 +55,18 @@ public sealed partial class ChatServicePageViewModel
             SetSelectedSession(default);
             CreateNewChatSessionInternal(sessionPresetVM);
         }
+        else if (SettingsToolkit.IsSettingKeyExist(SettingNames.LastSelectedGroup))
+        {
+            var lastGroup = SettingsToolkit.ReadLocalSetting(SettingNames.LastSelectedGroup, string.Empty);
+            var groupVM = GroupPresets.FirstOrDefault(p => p.Data.Id == lastGroup);
+            if (groupVM == null)
+            {
+                return;
+            }
+
+            SetSelectedSession(default);
+            CreateNewChatGroupInternal(groupVM);
+        }
     }
 
     [RelayCommand]
@@ -122,8 +134,7 @@ public sealed partial class ChatServicePageViewModel
 
         if (!string.IsNullOrEmpty(vm.Data.PresetId)
             && AgentPresets.FirstOrDefault(p => p.IsSelected)?.Data.Id != CurrentSession.Data.PresetId
-            && SessionPresets.FirstOrDefault(p => p.IsSelected)?.Data.Id != CurrentSession.Data.PresetId
-            && !LocalModelPresets.Any(p => p.Data.Id == CurrentSession.Data.PresetId))
+            && SessionPresets.FirstOrDefault(p => p.IsSelected)?.Data.Id != CurrentSession.Data.PresetId)
         {
             return;
         }
@@ -235,6 +246,7 @@ public sealed partial class ChatServicePageViewModel
         {
             SetSelectedChatServiceCommand.Execute(default);
             SetSelectedAgentCommand.Execute(default);
+            SetSelectedGroupPresetCommand.Execute(default);
             HistoryChatSessions.Clear();
             var service = AvailableServices.FirstOrDefault(p => p.ProviderType == presetVM.Data.Provider);
             if (service == null)
@@ -262,6 +274,7 @@ public sealed partial class ChatServicePageViewModel
 
     private void CreateNewChatSessionInternal(ChatServiceItemViewModel serviceVM)
     {
+        ExitGroupChat();
         CurrentSession?.SaveSessionToDatabaseCommand.ExecuteAsync(default);
         var defaultModel = SettingsToolkit.ReadLocalSetting($"{serviceVM.ProviderType}DefaultModel", string.Empty);
         var hasModel = !string.IsNullOrEmpty(defaultModel) && (serviceVM.ServerModels.Any(p => p.Id == defaultModel) || serviceVM.CustomModels.Any(p => p.Id == defaultModel));
@@ -275,19 +288,30 @@ public sealed partial class ChatServicePageViewModel
         CurrentSession.ResetPluginsCommand.Execute(default);
     }
 
-    private void CreateNewChatSessionInternal(ChatModelItemViewModel modelItem)
-    {
-        CurrentSession?.SaveSessionToDatabaseCommand.ExecuteAsync(default);
-        var presetVM = LocalModelPresets.FirstOrDefault(p => p.Data.Model == modelItem.Id);
-        CreateNewChatSessionInternal(presetVM);
-    }
-
     private void CreateNewChatSessionInternal(ChatPresetItemViewModel preset)
     {
+        ExitGroupChat();
         CurrentSession?.SaveSessionToDatabaseCommand.ExecuteAsync(default);
         var newSession = _chatClient.CreateSession(preset.Data);
         CurrentSession = new ChatSessionViewModel(newSession, _chatClient);
         CurrentSession.Title = preset.Data.Name;
         CurrentSession.ResetPluginsCommand.Execute(default);
+    }
+
+    private void CreateNewChatGroupInternal(GroupPresetItemViewModel preset)
+    {
+        CurrentSession?.SaveSessionToDatabaseCommand.ExecuteAsync(default);
+        CurrentSession = default;
+        CurrentGroup?.SaveSessionToDatabaseCommand.ExecuteAsync(default);
+        var newSession = _chatClient.CreateSession(preset.Data);
+        CurrentGroup = new ChatGroupViewModel(newSession, _chatClient);
+        IsGroupChat = true;
+    }
+
+    private void ExitGroupChat()
+    {
+        IsGroupChat = false;
+        CurrentGroup?.SaveSessionToDatabaseCommand.ExecuteAsync(default);
+        CurrentGroup = default;
     }
 }

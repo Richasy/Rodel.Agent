@@ -41,6 +41,7 @@ public sealed partial class ChatServicePageViewModel
         {
             SetSelectedAgentCommand.Execute(default);
             SetSelectedSessionPresetCommand.Execute(default);
+            SetSelectedGroupPresetCommand.Execute(default);
             HistoryChatSessions.Clear();
             var sessions = await _storageService.GetChatSessionsAsync(chatVM.ProviderType);
             foreach (var session in sessions)

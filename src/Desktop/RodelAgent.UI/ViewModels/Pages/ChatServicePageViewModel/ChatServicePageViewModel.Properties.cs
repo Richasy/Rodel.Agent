@@ -77,7 +77,13 @@ public sealed partial class ChatServicePageViewModel
     private ChatSessionViewModel _currentSession;
 
     [ObservableProperty]
+    private ChatGroupViewModel _currentGroup;
+
+    [ObservableProperty]
     private bool _isDeletingPluginsNotEmpty;
+
+    [ObservableProperty]
+    private bool _isGroupChat;
 
     /// <summary>
     /// 可用的聊天服务.
@@ -98,11 +104,6 @@ public sealed partial class ChatServicePageViewModel
     /// 会话预设.
     /// </summary>
     public ObservableCollection<ChatPresetItemViewModel> SessionPresets { get; } = new();
-
-    /// <summary>
-    /// 本地模型预设.
-    /// </summary>
-    public ObservableCollection<ChatPresetItemViewModel> LocalModelPresets { get; } = new();
 
     /// <summary>
     /// 助理列表.
