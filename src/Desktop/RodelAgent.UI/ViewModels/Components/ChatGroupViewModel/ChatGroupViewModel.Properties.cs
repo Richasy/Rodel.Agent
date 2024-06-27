@@ -77,4 +77,9 @@ public sealed partial class ChatGroupViewModel
     /// 助理列表.
     /// </summary>
     public ObservableCollection<ChatPresetItemViewModel> Agents { get; } = new();
+
+    /// <summary>
+    /// 终止文本列表.
+    /// </summary>
+    public ObservableCollection<string> TerminateText { get; } = new();
 }

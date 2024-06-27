@@ -41,6 +41,15 @@ public sealed partial class ChatGroupViewModel : ViewModelBase<ChatGroup>
         GroupName = data.Name;
         Title = data.Title ?? ResourceToolkit.GetLocalizedString(StringNames.RandomChat);
         MaxRounds = data.MaxRounds;
+
+        if (data.TerminateText != null && data.TerminateText.Count > 0)
+        {
+            foreach (var item in data.TerminateText)
+            {
+                TerminateText.Add(item);
+            }
+        }
+
         if (data.Messages != null && data.Messages.Count > 0)
         {
             foreach (var message in data.Messages)
@@ -101,6 +110,16 @@ public sealed partial class ChatGroupViewModel : ViewModelBase<ChatGroup>
             {
                 SaveSessionToDatabaseCommand.Execute(default);
             }
+        }
+    }
+
+    [RelayCommand]
+    private void CheckTerminateText()
+    {
+        if (TerminateText != null)
+        {
+            Data.TerminateText = new List<string>(TerminateText);
+            SaveSessionToDatabaseCommand.Execute(default);
         }
     }
 

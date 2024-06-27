@@ -510,6 +510,9 @@
   <data name="GroupNamePlaceholder" xml:space="preserve">
     <value>An understandable name</value>
   </data>
+  <data name="GroupOptions" xml:space="preserve">
+    <value>Group options</value>
+  </data>
   <data name="Groups" xml:space="preserve">
     <value>Groups</value>
   </data>

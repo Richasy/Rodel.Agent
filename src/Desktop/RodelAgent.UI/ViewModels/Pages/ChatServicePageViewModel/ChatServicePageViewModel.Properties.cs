@@ -56,6 +56,12 @@ public sealed partial class ChatServicePageViewModel
     private bool _isSessionOptionsVisible;
 
     [ObservableProperty]
+    private bool _isAgentsSectionVisible;
+
+    [ObservableProperty]
+    private bool _isGroupOptionsVisible;
+
+    [ObservableProperty]
     private bool _isAgentsEmpty;
 
     [ObservableProperty]
@@ -71,7 +77,10 @@ public sealed partial class ChatServicePageViewModel
     private bool _isPluginEmpty;
 
     [ObservableProperty]
-    private ChatSessionPanelType _panelType;
+    private ChatSessionPanelType _sessionPanelType;
+
+    [ObservableProperty]
+    private ChatGroupPanelType _groupPanelType;
 
     [ObservableProperty]
     private ChatSessionViewModel _currentSession;

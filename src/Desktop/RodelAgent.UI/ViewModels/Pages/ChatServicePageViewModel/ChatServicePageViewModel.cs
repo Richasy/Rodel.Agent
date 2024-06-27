@@ -35,8 +35,10 @@ public sealed partial class ChatServicePageViewModel : ViewModelBase
         ExtraColumnWidth = SettingsToolkit.ReadLocalSetting(SettingNames.ChatServicePageExtraColumnWidth, 240d);
         ExtraColumnVisible = SettingsToolkit.ReadLocalSetting(SettingNames.ChatServicePageExtraColumnVisible, true);
         ExtraRowHeight = SettingsToolkit.ReadLocalSetting(SettingNames.ChatServicePageExtraRowHeight, 400d);
-        PanelType = SettingsToolkit.ReadLocalSetting(SettingNames.ChatSessionPanelType, ChatSessionPanelType.SystemInstruction);
-        CheckPanelType();
+        SessionPanelType = SettingsToolkit.ReadLocalSetting(SettingNames.ChatSessionPanelType, ChatSessionPanelType.SystemInstruction);
+        GroupPanelType = SettingsToolkit.ReadLocalSetting(SettingNames.ChatGroupPanelType, ChatGroupPanelType.Agents);
+        CheckSessionPanelType();
+        CheckGroupPanelType();
         IsServiceSectionVisible = true;
         IsAvailableServicesEmpty = AvailableServices.Count == 0;
         IsAgentsEmpty = AgentPresets.Count == 0;
@@ -51,10 +53,16 @@ public sealed partial class ChatServicePageViewModel : ViewModelBase
         AttachIsRunningToAsyncCommand(p => IsPluginLoading = p, ResetPluginsCommand);
     }
 
-    private void CheckPanelType()
+    private void CheckSessionPanelType()
     {
-        IsSystemInstructionVisible = PanelType == ChatSessionPanelType.SystemInstruction;
-        IsSessionOptionsVisible = PanelType == ChatSessionPanelType.SessionOptions;
+        IsSystemInstructionVisible = SessionPanelType == ChatSessionPanelType.SystemInstruction;
+        IsSessionOptionsVisible = SessionPanelType == ChatSessionPanelType.SessionOptions;
+    }
+
+    private void CheckGroupPanelType()
+    {
+        IsAgentsSectionVisible = GroupPanelType == ChatGroupPanelType.Agents;
+        IsGroupOptionsVisible = GroupPanelType == ChatGroupPanelType.GroupOptions;
     }
 
     private void OnHistorySessionsCountChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -110,9 +118,15 @@ public sealed partial class ChatServicePageViewModel : ViewModelBase
         }
     }
 
-    partial void OnPanelTypeChanged(ChatSessionPanelType value)
+    partial void OnSessionPanelTypeChanged(ChatSessionPanelType value)
     {
         SettingsToolkit.WriteLocalSetting(SettingNames.ChatSessionPanelType, value);
-        CheckPanelType();
+        CheckSessionPanelType();
+    }
+
+    partial void OnGroupPanelTypeChanged(ChatGroupPanelType value)
+    {
+        SettingsToolkit.WriteLocalSetting(SettingNames.ChatGroupPanelType, value);
+        CheckGroupPanelType();
     }
 }

@@ -57,6 +57,8 @@
     <None Remove="Controls\Chat\ChatGroupPanel.xaml" />
     <None Remove="Controls\Chat\ChatPluginSection.xaml" />
     <None Remove="Controls\Chat\ChatPluginSelection.xaml" />
+    <None Remove="Controls\Chat\GroupAgentsPanel.xaml" />
+    <None Remove="Controls\Chat\GroupOptionsPanel.xaml" />
     <None Remove="Controls\Chat\GroupPresetSettingsDialog.xaml" />
     <None Remove="Controls\Chat\GroupsSection.xaml" />
     <None Remove="Controls\Chat\PresetGroupPanel.xaml" />
@@ -599,6 +601,9 @@
     <Page Update="Controls\Items\ChatGroupItemControl\ChatGroupItemControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Update="Controls\Chat\GroupOptionsPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <None Update="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -846,5 +851,11 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Remove="Controls\Startup\StartupDrawSection.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomAdditionalCompileInputs Remove="Controls\Chat\GroupAgentsPanel.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Remove="Controls\Chat\GroupAgentsPanel.xaml" />
   </ItemGroup>
 </Project>

@@ -40,4 +40,5 @@ public enum SettingNames
     AudioServicePageIsEnterSend,
     IsMigrating,
     LastSelectedGroup,
+    ChatGroupPanelType,
 }

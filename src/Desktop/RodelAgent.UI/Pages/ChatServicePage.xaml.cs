@@ -45,7 +45,8 @@ public sealed partial class ChatServicePage : ChatServicePageBase
             ViewModel.ResetGroupsCommand.Execute(default);
         }
 
-        InitializePanelType();
+        InitializeSessionPanelType();
+        InitializeGroupPanelType();
         UpdateExtraSizer();
     }
 
@@ -64,7 +65,7 @@ public sealed partial class ChatServicePage : ChatServicePageBase
         ExtraSizer2.Maximum = height;
     }
 
-    private void InitializePanelType()
+    private void InitializeSessionPanelType()
     {
         var names = Enum.GetNames(typeof(ChatSessionPanelType));
         var stringToolkit = ServiceProvider.GetRequiredService<IStringResourceToolkit>();
@@ -77,18 +78,39 @@ public sealed partial class ChatServicePage : ChatServicePageBase
                 Text = stringToolkit.GetString(name),
             };
 
-            PanelTypeSelector.Items.Add(item);
-            if (ViewModel.PanelType == (ChatSessionPanelType)i)
+            SessionPanelTypeSelector.Items.Add(item);
+            if (ViewModel.SessionPanelType == (ChatSessionPanelType)i)
             {
-                PanelTypeSelector.SelectedItem = item;
+                SessionPanelTypeSelector.SelectedItem = item;
             }
         }
     }
 
-    private void OnPanelTypeChanged(SelectorBar sender, SelectorBarSelectionChangedEventArgs args)
+    private void InitializeGroupPanelType()
     {
-        var currentType = (ChatSessionPanelType)PanelTypeSelector.SelectedItem.Tag;
-        ViewModel.PanelType = currentType;
+        var names = Enum.GetNames(typeof(ChatGroupPanelType));
+        var stringToolkit = ServiceProvider.GetRequiredService<IStringResourceToolkit>();
+        for (var i = 0; i < names.Length; i++)
+        {
+            var name = names[i];
+            var item = new SelectorBarItem
+            {
+                Tag = (ChatGroupPanelType)i,
+                Text = stringToolkit.GetString(name),
+            };
+
+            GroupPanelTypeSelector.Items.Add(item);
+            if (ViewModel.GroupPanelType == (ChatGroupPanelType)i)
+            {
+                GroupPanelTypeSelector.SelectedItem = item;
+            }
+        }
+    }
+
+    private void OnSessionPanelTypeChanged(SelectorBar sender, SelectorBarSelectionChangedEventArgs args)
+    {
+        var currentType = (ChatSessionPanelType)SessionPanelTypeSelector.SelectedItem.Tag;
+        ViewModel.SessionPanelType = currentType;
     }
 
     private void OnSessionParameterChanged(object sender, EventArgs e)
@@ -98,6 +120,12 @@ public sealed partial class ChatServicePage : ChatServicePageBase
     {
         AppInstance.GetCurrent().UnregisterKey();
         _ = AppInstance.Restart(default);
+    }
+
+    private void OnGroupPanelTypeChanged(SelectorBar sender, SelectorBarSelectionChangedEventArgs args)
+    {
+        var currentType = (ChatGroupPanelType)GroupPanelTypeSelector.SelectedItem.Tag;
+        ViewModel.GroupPanelType = currentType;
     }
 }
 

@@ -101,7 +101,7 @@
             VerticalAlignment="Center"
             Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
             CornerRadius="{StaticResource ControlCornerRadius}"
-            Visibility="{x:Bind ViewModel.IsChatHistorySessionsEmpty, Mode=OneWay}">
+            Visibility="{x:Bind ViewModel.IsGroupHistorySessionsEmpty, Mode=OneWay}">
             <TextBlock
                 Foreground="{ThemeResource TextFillColorTertiaryBrush}"
                 Style="{StaticResource CaptionTextBlockStyle}"

@@ -110,10 +110,10 @@
                         <RowDefinition />
                     </Grid.RowDefinitions>
                     <SelectorBar
-                        x:Name="PanelTypeSelector"
+                        x:Name="SessionPanelTypeSelector"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        SelectionChanged="OnPanelTypeChanged" />
+                        SelectionChanged="OnSessionPanelTypeChanged" />
                     <Border
                         Grid.Row="1"
                         Height="1"
@@ -161,23 +161,30 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <Grid Height="{x:Bind ViewModel.ExtraRowHeight, Mode=OneWay}" Visibility="{x:Bind ViewModel.IsGroupChat, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+                <Grid Height="{x:Bind ViewModel.ExtraRowHeight, Mode=OneWay}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="53" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <Rectangle
-                        Grid.Row="2"
-                        Height="100"
-                        HorizontalAlignment="Stretch"
-                        Fill="{ThemeResource DividerStrokeColorDefaultBrush}" />
+                    <SelectorBar
+                        x:Name="GroupPanelTypeSelector"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        SelectionChanged="OnGroupPanelTypeChanged" />
                     <Border
                         Grid.Row="1"
                         Height="1"
                         HorizontalAlignment="Stretch"
                         Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
-
+                    <chat:GroupOptionsPanel
+                        Grid.Row="2"
+                        ViewModel="{x:Bind ViewModel.CurrentGroup, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.IsGroupOptionsVisible, Mode=OneWay}" />
+                    <chat:GroupAgentsPanel
+                        Grid.Row="2"
+                        ViewModel="{x:Bind ViewModel.CurrentGroup, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.IsAgentsSectionVisible, Mode=OneWay}" />
                 </Grid>
                 <chat:ChatGroupListPanel
                     Grid.Row="2"
