@@ -55,34 +55,44 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Grid
-                        Padding="12,8"
-                        HorizontalAlignment="Stretch"
-                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                        ColumnSpacing="12"
-                        CornerRadius="{StaticResource ControlCornerRadius}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <controls:PresetAvatar
-                            x:Name="Avatar"
-                            Width="28"
-                            Height="28"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            CornerRadius="16"
-                            DefaultSymbol="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=DefaultSymbol}"
-                            FontSize="14"
-                            PresetId="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ViewModel.Data.Id}" />
-                        <TextBlock
-                            Grid.Column="1"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            MaxLines="1"
-                            Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ViewModel.Name}"
-                            TextTrimming="CharacterEllipsis" />
+                    <Grid>
+                        <Grid
+                            Padding="12,8"
+                            HorizontalAlignment="Stretch"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            ColumnSpacing="12"
+                            CornerRadius="{StaticResource ControlCornerRadius}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <controls:PresetAvatar
+                                x:Name="Avatar"
+                                Width="28"
+                                Height="28"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                CornerRadius="16"
+                                DefaultSymbol="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=DefaultSymbol}"
+                                FontSize="14"
+                                PresetId="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ViewModel.Data.Id}" />
+                            <TextBlock
+                                Grid.Column="1"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                MaxLines="1"
+                                Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ViewModel.Name}"
+                                TextTrimming="CharacterEllipsis" />
+                        </Grid>
+                        <controls:ColorfulBorder
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            BorderThickness="2"
+                            CornerRadius="{StaticResource ControlCornerRadius}"
+                            IsLoading="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ViewModel.IsSelected}"
+                            Visibility="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ViewModel.IsSelected, Converter={StaticResource BoolToVisibilityConverter}}" />
                     </Grid>
+
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

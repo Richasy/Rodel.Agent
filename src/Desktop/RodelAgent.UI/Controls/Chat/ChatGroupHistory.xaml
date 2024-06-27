@@ -39,17 +39,6 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                    <Grid
-                        Margin="0,0,0,20"
-                        HorizontalAlignment="Left"
-                        Visibility="{x:Bind ViewModel.IsResponding, Mode=OneWay}">
-                        <controls:ColorfulBorder
-                            MinWidth="200"
-                            MinHeight="45"
-                            BorderThickness="1"
-                            CornerRadius="{StaticResource ControlCornerRadius}"
-                            IsLoading="{x:Bind ViewModel.IsResponding, Mode=OneWay}" />
-                    </Grid>
 
                     <StackPanel
                         Margin="0,0,0,12"

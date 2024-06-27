@@ -74,6 +74,7 @@ public sealed partial class ChatGroupViewModel
             });
         }
 
+        ResetAgentSelection();
         RequestFocusInput?.Invoke(this, EventArgs.Empty);
     }
 
@@ -115,6 +116,7 @@ public sealed partial class ChatGroupViewModel
         _currentGeneratingIndex = 0;
         ErrorText = string.Empty;
         UpdateGeneratingTip();
+        UpdateAgentSelection();
 
         var chatMessage = CreateUserMessage();
 
@@ -147,7 +149,7 @@ public sealed partial class ChatGroupViewModel
                             var index = Agents.IndexOf(agent);
                             if (index >= Agents.Count - 1)
                             {
-                                index = 0;
+                                index = IsResponding ? 0 : _currentGeneratingIndex;
                             }
                             else
                             {
@@ -156,6 +158,7 @@ public sealed partial class ChatGroupViewModel
 
                             _currentGeneratingIndex = index;
                             UpdateGeneratingTip();
+                            UpdateAgentSelection();
                         }
 
                         if (response.Role == MessageRole.Assistant)
@@ -178,6 +181,7 @@ public sealed partial class ChatGroupViewModel
                 selectedAgents,
                 _cancellationTokenSource.Token);
 
+        ResetAgentSelection();
         if (_cancellationTokenSource is null || _cancellationTokenSource.IsCancellationRequested)
         {
             return;
@@ -191,9 +195,18 @@ public sealed partial class ChatGroupViewModel
 
     private void UpdateGeneratingTip()
     {
-        var currentAgent = Agents.Count > _currentGeneratingIndex ? Agents[_currentGeneratingIndex] : default;
+        var currentAgent = Agents.Count > _currentGeneratingIndex && _currentGeneratingIndex >= 0 ? Agents[_currentGeneratingIndex] : default;
         var name = currentAgent?.Name ?? string.Empty;
         GeneratingTipText = $"{name} {ResourceToolkit.GetLocalizedString(StringNames.Generating)}".Trim();
+    }
+
+    private void UpdateAgentSelection()
+    {
+        for (var i = 0; i < Agents.Count; i++)
+        {
+            var agent = Agents[i];
+            agent.IsSelected = i == _currentGeneratingIndex;
+        }
     }
 
     private Task EditMessageAsync(ChatMessage msg)
@@ -213,5 +226,12 @@ public sealed partial class ChatGroupViewModel
         ErrorText = ex.Message;
         _logger.LogDebug(ex, "Failed to send message.");
         CancelMessage();
+        ResetAgentSelection();
+    }
+
+    private void ResetAgentSelection()
+    {
+        _currentGeneratingIndex = -1;
+        UpdateAgentSelection();
     }
 }

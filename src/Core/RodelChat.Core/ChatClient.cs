@@ -222,7 +222,17 @@ public sealed partial class ChatClient : IChatClient
                         TerminationStrategy = new CustomTerminationStrategy(group.MaxRounds, group.TerminateText),
                     },
         };
-        groupChat.AddChatMessage(ConvertToKernelMessage(message));
+
+        if (message.Role == MessageRole.User)
+        {
+            group.Messages.Add(message);
+        }
+
+        foreach (var item in group.Messages)
+        {
+            groupChat.AddChatMessage(ConvertToKernelMessage(item));
+        }
+
         await foreach (var content in groupChat.InvokeAsync(cancellationToken))
         {
             var assistantName = DecodeName(content.AuthorName);

@@ -15,12 +15,6 @@ namespace RodelChat.Core;
 /// </summary>
 public sealed partial class ChatClient
 {
-    private static Microsoft.SemanticKernel.ChatMessageContent ConvertToKernelMessage(ChatMessage message)
-    {
-        var role = ConvertToRole(message.Role);
-        return new Microsoft.SemanticKernel.ChatMessageContent(role, ConvertToContentItemCollection(message.Content.ToArray()));
-    }
-
     private static AuthorRole ConvertToRole(MessageRole role)
         => role switch
         {
@@ -48,7 +42,7 @@ public sealed partial class ChatClient
         return items;
     }
 
-    private static ChatHistory GetChatHistory(ChatSession session)
+    private ChatHistory GetChatHistory(ChatSession session)
     {
         var history = new ChatHistory();
         if (!string.IsNullOrEmpty(session.SystemInstruction))
@@ -72,6 +66,18 @@ public sealed partial class ChatClient
         }
 
         return history;
+    }
+
+    private Microsoft.SemanticKernel.ChatMessageContent ConvertToKernelMessage(ChatMessage message)
+    {
+        var role = ConvertToRole(message.Role);
+        var msg = new Microsoft.SemanticKernel.ChatMessageContent(role, ConvertToContentItemCollection(message.Content.ToArray()));
+        if (!string.IsNullOrEmpty(message.Author))
+        {
+            msg.AuthorName = EncodeName(message.Author);
+        }
+
+        return msg;
     }
 
     private PromptExecutionSettings GetExecutionSettings(ChatSession session)

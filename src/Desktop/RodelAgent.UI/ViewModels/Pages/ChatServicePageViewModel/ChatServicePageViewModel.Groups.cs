@@ -168,7 +168,7 @@ public sealed partial class ChatServicePageViewModel
     [RelayCommand]
     private void SetSelectedGroupSession(ChatGroupViewModel groupVM)
     {
-        foreach (var item in HistoryChatSessions)
+        foreach (var item in HistoryGroupSessions)
         {
             item.IsSelected = groupVM != null && item.Equals(groupVM);
         }
@@ -210,5 +210,17 @@ public sealed partial class ChatServicePageViewModel
         CurrentGroup = default;
         HistoryGroupSessions.Clear();
         CreateNewSessionCommand.Execute(default);
+    }
+
+    [RelayCommand]
+    private void ReloadGroupAgents(string agentId)
+    {
+        foreach (var group in HistoryGroupSessions)
+        {
+            if (group.Agents.Any(p => p.Data.Id == agentId))
+            {
+                group.InitializeAgentsCommand.Execute(default);
+            }
+        }
     }
 }

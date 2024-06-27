@@ -18,7 +18,7 @@ public sealed partial class ChatGroupViewModel
     private readonly IStorageService _storageService;
     private readonly ILogger<ChatSessionViewModel> _logger;
     private CancellationTokenSource _cancellationTokenSource;
-    private int _currentGeneratingIndex;
+    private int _currentGeneratingIndex = -1;
 
     [ObservableProperty]
     private string _title;

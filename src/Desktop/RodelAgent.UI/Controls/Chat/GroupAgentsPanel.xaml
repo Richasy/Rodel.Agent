@@ -15,7 +15,7 @@
             <ItemsRepeater Margin="0,8" ItemsSource="{x:Bind ViewModel.Agents, Mode=OneWay}">
                 <ItemsRepeater.ItemTemplate>
                     <DataTemplate x:DataType="items:ChatPresetItemViewModel">
-                        <items1:ChatSessionPresetItemControl Style="{StaticResource DefaultChatPresetItemStyle}" ViewModel="{x:Bind}" />
+                        <items1:ChatSessionPresetItemControl Style="{StaticResource GroupPanelAgentStyle}" ViewModel="{x:Bind}" />
                     </DataTemplate>
                 </ItemsRepeater.ItemTemplate>
                 <ItemsRepeater.Layout>

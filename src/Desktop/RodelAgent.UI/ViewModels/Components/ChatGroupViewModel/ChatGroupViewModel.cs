@@ -30,17 +30,19 @@ public sealed partial class ChatGroupViewModel : ViewModelBase<ChatGroup>
         _storageService = GlobalDependencies.ServiceProvider.GetService<IStorageService>();
         IsEnterSend = SettingsToolkit.ReadLocalSetting(SettingNames.ChatServicePageIsEnterSend, true);
         Messages.CollectionChanged += OnMessageCountChanged;
-        Initialize(data);
+        InitializeCommand.Execute(data);
 
         AttachIsRunningToAsyncCommand(p => IsResponding = p, SendCommand);
         AttachExceptionHandlerToAsyncCommand(HandleSendMessageException, SendCommand);
     }
 
-    private void Initialize(ChatGroup data)
+    [RelayCommand]
+    private async Task InitializeAsync(ChatGroup data)
     {
         GroupName = data.Name;
         Title = data.Title ?? ResourceToolkit.GetLocalizedString(StringNames.RandomChat);
         MaxRounds = data.MaxRounds;
+        await InitializeAgentsCommand.ExecuteAsync(default);
 
         if (data.TerminateText != null && data.TerminateText.Count > 0)
         {
@@ -60,14 +62,22 @@ public sealed partial class ChatGroupViewModel : ViewModelBase<ChatGroup>
                 }
 
                 var vm = new ChatMessageItemViewModel(message, EditMessageAsync, DeleteMessageAsync);
+
+                var agent = Agents.FirstOrDefault(p => p.Name == message.Author);
+                if (agent is not null)
+                {
+                    vm.Author = agent.Name;
+                    vm.AgentId = agent.Data.Id;
+                }
+
                 Messages.Add(vm);
             }
         }
 
-        InitializeAgentsCommand.Execute(default);
         CheckChatEmpty();
         CheckLastMessageTime();
         RequestFocusInput?.Invoke(this, EventArgs.Empty);
+        RequestScrollToBottom?.Invoke(this, EventArgs.Empty);
     }
 
     [RelayCommand]
@@ -128,7 +138,7 @@ public sealed partial class ChatGroupViewModel : ViewModelBase<ChatGroup>
     {
         Agents.Clear();
         var storageService = GlobalDependencies.ServiceProvider.GetRequiredService<IStorageService>();
-        await Task.Delay(200);
+        await Task.Delay(500);
         var agents = await storageService.GetChatAgentsAsync();
         foreach (var agentId in Data.Agents)
         {
@@ -141,6 +151,8 @@ public sealed partial class ChatGroupViewModel : ViewModelBase<ChatGroup>
             var a = new ChatPresetItemViewModel(agent);
             Agents.Add(a);
         }
+
+        UpdateAgentSelection();
     }
 
     private void CheckChatEmpty()

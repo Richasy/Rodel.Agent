@@ -218,7 +218,7 @@ public sealed partial class StorageService
             }
         }
 
-        _chatGroups = chatGroups;
+        _chatGroups = chatGroups.OrderByDescending(p => p.Messages?.LastOrDefault()?.Time ?? DateTimeOffset.MinValue).ToList();
     }
 
     private async Task InitializeChatGroupPresetsAsync()
