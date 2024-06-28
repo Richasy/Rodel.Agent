@@ -11,24 +11,29 @@ internal static partial class PredefinedModels
     {
         new ChatModel
         {
-            DisplayName = "V1.5",
-            Id = "V1_5",
+            DisplayName = "Spark Lite",
+            Id = "v1.1",
         },
         new ChatModel
         {
-            DisplayName = "V2.0",
-            Id = "V2",
+            DisplayName = "Spark V2.0",
+            Id = "v2.1",
         },
         new ChatModel
         {
-            DisplayName = "V3.0",
-            Id = "V3",
+            DisplayName = "Spark Pro",
+            Id = "v3.1",
+        },
+        new ChatModel
+        {
+            DisplayName = "Spark Max",
+            Id = "v3.5",
             IsSupportTool = true,
         },
         new ChatModel
         {
-            DisplayName = "V3.5",
-            Id = "V3_5",
+            DisplayName = "Spark4.0 Ultra",
+            Id = "v4.0",
             IsSupportTool = true,
         },
     };
