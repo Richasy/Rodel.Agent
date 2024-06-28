@@ -116,8 +116,8 @@ public sealed partial class ChatSessionViewModel : ViewModelBase<ChatSession>
             return;
         }
 
-        Model = model.Name;
         Data.Model = model.Id;
+        Model = model.Name;
         foreach (var item in Models)
         {
             item.IsSelected = item.Equals(model);

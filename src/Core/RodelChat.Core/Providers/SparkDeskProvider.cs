@@ -41,7 +41,7 @@ public sealed class SparkDeskProvider : ProviderBase, IProvider
         if (ShouldRecreateKernel(modelId))
         {
             Kernel = Kernel.CreateBuilder()
-                .AddSparkDeskChatCompletion(AccessKey, Secret, AppId, ConvertToSparkVersion(modelId))
+                .AddSparkDeskChatCompletion(AccessKey, Secret, AppId, modelId)
                 .Build();
         }
 
@@ -58,16 +58,6 @@ public sealed class SparkDeskProvider : ProviderBase, IProvider
             ChatId = sessionData.Id,
             ModelId = sessionData.Model,
             TopK = Convert.ToInt32(sessionData.Parameters.GetValueOrDefault<int>(nameof(SparkDeskChatParameters.TopK))),
-        };
-
-    private static SparkDeskTextVersion ConvertToSparkVersion(string modelId)
-        => modelId switch
-        {
-            "V1_5" => SparkDeskTextVersion.V1_5,
-            "V2" => SparkDeskTextVersion.V2,
-            "V3" => SparkDeskTextVersion.V3,
-            "V3_5" => SparkDeskTextVersion.V3_5,
-            _ => throw new NotSupportedException("Version not supported."),
         };
 
     /// <summary>
