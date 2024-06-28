@@ -270,6 +270,9 @@
   <data name="ChangeDirectory" xml:space="preserve">
     <value>更改目录</value>
   </data>
+  <data name="ChangeLanguageTip" xml:space="preserve">
+    <value>您更改了应用语言，需要重启应用以生效</value>
+  </data>
   <data name="ChatInputPlaceholder" xml:space="preserve">
     <value>请输入聊天内容...</value>
   </data>
@@ -563,6 +566,12 @@
   </data>
   <data name="Language" xml:space="preserve">
     <value>语言</value>
+  </data>
+  <data name="LanguageSetting" xml:space="preserve">
+    <value>应用程序语言</value>
+  </data>
+  <data name="LanguageSettingDescription" xml:space="preserve">
+    <value>选择应用程序的首选语言</value>
   </data>
   <data name="LaunchApp" xml:space="preserve">
     <value>启动应用</value>

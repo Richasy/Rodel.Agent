@@ -116,7 +116,7 @@ public partial class MarkdownTextBlock : Control
     private void Clean()
     {
         _document.RichTextBlock.Blocks.Clear();
-        _renderer.Clear();
+        _renderer?.Clear();
         GC.Collect();
     }
 

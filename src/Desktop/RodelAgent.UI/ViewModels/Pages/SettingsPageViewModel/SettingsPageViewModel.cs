@@ -29,6 +29,8 @@ public sealed partial class SettingsPageViewModel : ViewModelBase
     private void InitializeGenericSettings()
     {
         AppTheme = SettingsToolkit.ReadLocalSetting(SettingNames.AppTheme, ElementTheme.Default);
+        CheckTheme();
+        AppLanguage = SettingsToolkit.ReadLocalSetting(SettingNames.AppLanguage, "default");
         UseStreamOutput = SettingsToolkit.ReadLocalSetting(SettingNames.UseStreamOutput, true);
         AppVersion = AppToolkit.GetPackageVersion();
         var copyrightTemplate = ResourceToolkit.GetLocalizedString(StringNames.CopyrightTemplate);
@@ -155,6 +157,9 @@ public sealed partial class SettingsPageViewModel : ViewModelBase
         SettingsToolkit.WriteLocalSetting(SettingNames.AppTheme, value);
         CheckTheme();
     }
+
+    partial void OnAppLanguageChanged(string value)
+        => SettingsToolkit.WriteLocalSetting(SettingNames.AppLanguage, value);
 
     partial void OnUseStreamOutputChanged(bool value)
         => SettingsToolkit.WriteLocalSetting(SettingNames.UseStreamOutput, value);

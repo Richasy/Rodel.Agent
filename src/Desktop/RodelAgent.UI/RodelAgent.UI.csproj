@@ -125,6 +125,7 @@
     <None Remove="Controls\Settings\AzureTranslateConfigSettingSection.xaml" />
     <None Remove="Controls\Settings\HunYuanChatConfigSettingSection.xaml" />
     <None Remove="Controls\Settings\HunYuanDrawConfigSettingSection.xaml" />
+    <None Remove="Controls\Settings\LanguageSettingSection.xaml" />
     <None Remove="Controls\Settings\LibrarySettingSection.xaml" />
     <None Remove="Controls\Settings\ModelClientConfigSettingSection.xaml" />
     <None Remove="Controls\Settings\ModelClientEndpointConfigSettingSection.xaml" />
@@ -602,6 +603,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Controls\Chat\GroupOptionsPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Controls\Settings\LanguageSettingSection.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <None Update="NLog.config">

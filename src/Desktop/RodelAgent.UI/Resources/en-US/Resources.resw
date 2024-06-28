@@ -270,6 +270,9 @@
   <data name="ChangeDirectory" xml:space="preserve">
     <value>Change directory</value>
   </data>
+  <data name="ChangeLanguageTip" xml:space="preserve">
+    <value>You have changed the language of the app and need to restart the app for it to take effect.</value>
+  </data>
   <data name="ChatInputPlaceholder" xml:space="preserve">
     <value>Please enter chat content...</value>
   </data>
@@ -563,6 +566,12 @@
   </data>
   <data name="Language" xml:space="preserve">
     <value>Language</value>
+  </data>
+  <data name="LanguageSetting" xml:space="preserve">
+    <value>Application language</value>
+  </data>
+  <data name="LanguageSettingDescription" xml:space="preserve">
+    <value>Select the preferred language of the application.</value>
   </data>
   <data name="LaunchApp" xml:space="preserve">
     <value>Launch app</value>

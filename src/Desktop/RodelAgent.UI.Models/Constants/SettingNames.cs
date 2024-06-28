@@ -41,4 +41,5 @@ public enum SettingNames
     IsMigrating,
     LastSelectedGroup,
     ChatGroupPanelType,
+    AppLanguage,
 }
