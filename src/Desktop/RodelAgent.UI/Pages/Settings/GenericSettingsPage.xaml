@@ -25,6 +25,7 @@
                 Style="{StaticResource BodyStrongTextBlockStyle}"
                 Text="{ext:Locale Name=Generic}" />
             <settings:ThemeSettingSection ViewModel="{x:Bind ViewModel}" />
+            <settings:LanguageSettingSection ViewModel="{x:Bind ViewModel}" />
             <settings:AppLogSettingSection ViewModel="{x:Bind ViewModel}" />
             <settings:LibrarySettingSection ViewModel="{x:Bind ViewModel}" />
             <TextBlock

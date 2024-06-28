@@ -9,6 +9,7 @@ using RodelAgent.UI.Forms;
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Toolkits;
 using Windows.ApplicationModel.Activation;
+using Windows.Globalization;
 using Windows.Storage;
 
 namespace RodelAgent.UI;
@@ -29,6 +30,11 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
+        var language = SettingsToolkit.ReadLocalSetting(SettingNames.AppLanguage, "default");
+        ApplicationLanguages.PrimaryLanguageOverride = language != "default"
+            ? language
+            : string.Empty;
+
         FluentIcons.WinUI.Extensions.UseSegoeMetrics(this);
         var mainAppInstance = AppInstance.FindOrRegisterForKey(Id);
         mainAppInstance.Activated += OnAppInstanceActivated;

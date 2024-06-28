@@ -40,6 +40,9 @@ public sealed partial class SettingsPageViewModel
     [ObservableProperty]
     private bool _shouldRecordTranslate;
 
+    [ObservableProperty]
+    private string _appLanguage;
+
     /// <summary>
     /// 在线聊天服务.
     /// </summary>
