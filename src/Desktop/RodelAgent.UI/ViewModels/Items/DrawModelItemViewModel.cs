@@ -45,6 +45,7 @@ public sealed partial class DrawModelItemViewModel : ViewModelBase<DrawModel>
         {
             Name = dialog.Model.DisplayName;
             Id = dialog.Model.Id;
+            Data.SupportSizes = dialog.Model.SupportSizes;
         }
     }
 
