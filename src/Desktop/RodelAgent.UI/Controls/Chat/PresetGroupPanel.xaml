@@ -233,11 +233,20 @@
                 <Grid
                     Grid.Row="1"
                     HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    Background="{ThemeResource LayerFillColorDefaultBrush}"
-                    CornerRadius="{StaticResource ControlCornerRadius}">
+                    VerticalAlignment="Stretch">
+                    <Grid
+                        Background="{ThemeResource LayerFillColorDefaultBrush}"
+                        CornerRadius="{StaticResource ControlCornerRadius}"
+                        Visibility="{x:Bind ViewModel.IsNoAgentSelected, Mode=OneWay}" />
+                    <Grid
+                        BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="{StaticResource ControlCornerRadius}"
+                        Visibility="{x:Bind ViewModel.IsNoAgentSelected, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
                     <ListView
                         Margin="-16,0,-12,0"
+                        Padding="0,2,0,4"
+                        VerticalAlignment="Top"
                         AllowDrop="True"
                         CanDragItems="True"
                         CanReorderItems="True"
@@ -249,7 +258,7 @@
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="items:ChatPresetItemViewModel">
                                 <itemcontrol:ChatSessionPresetItemControl
-                                    Margin="0,2"
+                                    Margin="4,2"
                                     DataContext="{x:Bind}"
                                     IsRightTapEnabled="True"
                                     RightTapped="OnAgentRightClick"
