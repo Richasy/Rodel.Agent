@@ -39,10 +39,16 @@ public class WinUIRenderer : RendererBase
         return FlowDocument ?? new();
     }
 
-    public void ReloadDocument()
+    public void Clear(bool removeRenderers = false)
     {
         _stack.Clear();
         FlowDocument.RichTextBlock.Blocks.Clear();
+        ObjectRenderers.Clear();
+    }
+
+    public void ReloadDocument()
+    {
+        Clear();
         _stack.Push(FlowDocument);
         LoadOverridenRenderers();
     }

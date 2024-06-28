@@ -66,6 +66,8 @@ public partial class MarkdownTextBlock : Control
             .UseTaskLists()
             .UsePipeTables()
             .Build();
+
+        Unloaded += OnUnloaded;
     }
 
     /// <inheritdoc/>
@@ -88,6 +90,12 @@ public partial class MarkdownTextBlock : Control
 
     private void ApplyText(string text, bool rerender)
     {
+        if (string.IsNullOrEmpty(text) && _renderer != null)
+        {
+            Clean();
+            return;
+        }
+
         var markdown = Markdig.Markdown.Parse(text, _pipeline);
         if (_renderer != null)
         {
@@ -98,6 +106,18 @@ public partial class MarkdownTextBlock : Control
 
             _renderer.Render(markdown);
         }
+    }
+
+    private void OnUnloaded(object sender, RoutedEventArgs e)
+    {
+        Clean();
+    }
+
+    private void Clean()
+    {
+        _document.RichTextBlock.Blocks.Clear();
+        _renderer.Clear();
+        GC.Collect();
     }
 
     private void Build()
