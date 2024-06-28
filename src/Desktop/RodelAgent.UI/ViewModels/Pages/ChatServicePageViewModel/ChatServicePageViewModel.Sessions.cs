@@ -276,7 +276,7 @@ public sealed partial class ChatServicePageViewModel
     {
         ExitGroupChat();
         CurrentSession?.SaveSessionToDatabaseCommand.ExecuteAsync(default);
-        var defaultModel = SettingsToolkit.ReadLocalSetting($"{serviceVM.ProviderType}DefaultModel", string.Empty);
+        var defaultModel = SettingsToolkit.ReadLocalSetting($"{serviceVM.ProviderType}DefaultChatModel", string.Empty);
         var hasModel = !string.IsNullOrEmpty(defaultModel) && (serviceVM.ServerModels.Any(p => p.Id == defaultModel) || serviceVM.CustomModels.Any(p => p.Id == defaultModel));
         if (!hasModel)
         {
