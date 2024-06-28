@@ -11,6 +11,7 @@
     xmlns:items="using:RodelAgent.UI.ViewModels.Items"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:local="using:RodelAgent.UI.Controls.Chat"
+    xmlns:markdown="using:RodelAgent.UI.Controls.Markdown"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
@@ -43,22 +44,27 @@
                         Margin="0,0,0,20"
                         HorizontalAlignment="Left"
                         Visibility="{x:Bind ViewModel.IsResponding, Mode=OneWay}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="0.2*" />
+                        </Grid.ColumnDefinitions>
                         <controls:ColorfulBorder
+                            MinWidth="240"
+                            MinHeight="40"
                             BorderThickness="1"
                             CornerRadius="{StaticResource ControlCornerRadius}"
                             IsLoading="{x:Bind ViewModel.IsResponding, Mode=OneWay}" />
                         <Grid
-                            MinWidth="200"
-                            MinHeight="40"
-                            MaxWidth="480"
                             Margin="1"
+                            HorizontalAlignment="Stretch"
                             Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                             CornerRadius="{StaticResource ControlCornerRadius}">
-                            <TextBlock
+                            <markdown:MarkdownTextBlock Margin="12,8" Text="{x:Bind ViewModel.TempMessage, Mode=OneWay}" />
+                            <!--<TextBlock
                                 Margin="12,8"
                                 IsTextSelectionEnabled="True"
                                 Text="{x:Bind ViewModel.TempMessage, Mode=OneWay}"
-                                TextWrapping="Wrap" />
+                                TextWrapping="Wrap" />-->
                         </Grid>
                     </Grid>
 
