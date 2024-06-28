@@ -255,6 +255,9 @@
   <data name="CancelDeletePlugin" xml:space="preserve">
     <value>保留插件</value>
   </data>
+  <data name="CanNotCreateGroupWithAgents" xml:space="preserve">
+    <value>您必须要有两个以上的助理才能创建群组</value>
+  </data>
   <data name="CanNotLoadAgentWarning" xml:space="preserve">
     <value>无法加载助理，其对应的服务可能已经注销，请检查后再试。</value>
   </data>
@@ -368,6 +371,9 @@
   </data>
   <data name="CreateCustomModel" xml:space="preserve">
     <value>创建自定义模型</value>
+  </data>
+  <data name="CreateGroup" xml:space="preserve">
+    <value>创建群组</value>
   </data>
   <data name="CreateNewSize" xml:space="preserve">
     <value>添加一个新的尺寸吧</value>
@@ -498,6 +504,18 @@
   <data name="GoogleTranslate" xml:space="preserve">
     <value>谷歌翻译</value>
   </data>
+  <data name="GroupName" xml:space="preserve">
+    <value>群组名称</value>
+  </data>
+  <data name="GroupNamePlaceholder" xml:space="preserve">
+    <value>一个易懂的名称</value>
+  </data>
+  <data name="GroupOptions" xml:space="preserve">
+    <value>群组选项</value>
+  </data>
+  <data name="Groups" xml:space="preserve">
+    <value>群组</value>
+  </data>
   <data name="Height" xml:space="preserve">
     <value>高度</value>
   </data>
@@ -564,6 +582,9 @@
   <data name="MaxOutputTokensDescription" xml:space="preserve">
     <value>要生成内容的最大值，中文下大约2个标记对应1个汉字</value>
   </data>
+  <data name="MaxRounds" xml:space="preserve">
+    <value>最大会话轮次</value>
+  </data>
   <data name="MaxTokens" xml:space="preserve">
     <value>最大标记数</value>
   </data>
@@ -622,6 +643,9 @@
   <data name="ModifyDefaultPreset" xml:space="preserve">
     <value>修改默认预设</value>
   </data>
+  <data name="ModifyGroup" xml:space="preserve">
+    <value>修改群组</value>
+  </data>
   <data name="ModifyModel" xml:space="preserve">
     <value>修改模型</value>
   </data>
@@ -634,8 +658,14 @@
   <data name="MoreOptions" xml:space="preserve">
     <value>更多选项</value>
   </data>
+  <data name="MustFillRequireFields" xml:space="preserve">
+    <value>请填写必要的配置项</value>
+  </data>
   <data name="MyChat" xml:space="preserve">
     <value>我的对话</value>
+  </data>
+  <data name="NeedAgents" xml:space="preserve">
+    <value>请添加助理</value>
   </data>
   <data name="NeedDrawImage" xml:space="preserve">
     <value>开始画图吧！</value>
@@ -1005,6 +1035,12 @@
   </data>
   <data name="TencentTranslate" xml:space="preserve">
     <value>腾讯云翻译</value>
+  </data>
+  <data name="TerminateText" xml:space="preserve">
+    <value>终止文本</value>
+  </data>
+  <data name="TerminateTextDescription" xml:space="preserve">
+    <value>一旦生成结果出现该文本，则立刻结束会话</value>
   </data>
   <data name="Tip" xml:space="preserve">
     <value>提醒</value>

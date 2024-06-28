@@ -116,6 +116,7 @@ public sealed partial class ChatPresetModuleViewModel : ViewModelBase<ChatPreset
             case ChatSessionPresetType.Agent:
                 await _storageService.AddOrUpdateChatAgentAsync(Data.Data);
                 pageVM.ResetAgentsCommand.Execute(default);
+                pageVM.ReloadGroupAgentsCommand.Execute(Data.Data.Id);
                 break;
             case ChatSessionPresetType.Session:
                 await _storageService.AddOrUpdateChatSessionPresetAsync(Data.Data);

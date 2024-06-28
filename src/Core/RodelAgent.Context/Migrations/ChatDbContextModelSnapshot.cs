@@ -27,7 +27,7 @@ namespace RodelAgent.Context.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sessions");
+                    b.ToTable("Metadata");
                 });
 #pragma warning restore 612, 618
         }

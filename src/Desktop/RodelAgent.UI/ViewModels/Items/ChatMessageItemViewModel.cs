@@ -30,6 +30,12 @@ public sealed partial class ChatMessageItemViewModel : ViewModelBase<ChatMessage
     [ObservableProperty]
     private bool _isEditing;
 
+    [ObservableProperty]
+    private string _author;
+
+    [ObservableProperty]
+    private string _agentId;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="ChatMessageItemViewModel"/> class.
     /// </summary>
@@ -39,6 +45,8 @@ public sealed partial class ChatMessageItemViewModel : ViewModelBase<ChatMessage
         Func<ChatMessage, Task> deleteFunc)
         : base(message)
     {
+        AgentId = message.AuthorId ?? string.Empty;
+        Author = message.Author ?? string.Empty;
         Content = message.Content.FirstOrDefault(p => p.Type == ChatContentType.Text)?.Text ?? string.Empty;
         IsAssistant = message.Role == MessageRole.Assistant;
         IsUser = message.Role == MessageRole.User;

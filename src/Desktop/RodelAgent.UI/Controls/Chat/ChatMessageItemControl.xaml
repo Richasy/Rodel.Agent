@@ -40,8 +40,24 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <controls:PresetAvatar
+                        x:Name="Avatar"
+                        Width="32"
+                        Height="32"
+                        Margin="0,0,8,0"
+                        VerticalAlignment="Top"
+                        CornerRadius="18"
+                        DefaultSymbol="Person"
+                        FontSize="16"
+                        PresetId="{x:Bind ViewModel.AgentId, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.AgentId, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}" />
                     <Rectangle
                         x:Name="MessageBackground"
+                        Grid.Column="1"
                         Fill="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                         RadiusX="4"
                         RadiusY="4"
@@ -49,6 +65,7 @@
                         StrokeThickness="1" />
                     <Grid
                         x:Name="TextContainer"
+                        Grid.Column="1"
                         Padding="12,8"
                         Visibility="{x:Bind ViewModel.IsEditing, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
                         <markdown:MarkdownTextBlock
@@ -60,6 +77,7 @@
 
                     <Grid
                         x:Name="EditContainer"
+                        Grid.Column="1"
                         Padding="12"
                         Background="{ThemeResource ControlSolidFillColorDefaultBrush}"
                         CornerRadius="{StaticResource ControlCornerRadius}"
@@ -110,15 +128,30 @@
                         </Grid>
                     </Grid>
 
-                    <TextBlock
-                        x:Name="TimeBlock"
+                    <StackPanel
                         Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="0,0,0,8"
                         HorizontalAlignment="Left"
-                        FontSize="10"
-                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                        Style="{StaticResource CaptionTextBlockStyle}"
-                        Text="{x:Bind ViewModel.Time, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.Time, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}" />
+                        Orientation="Horizontal">
+                        <TextBlock
+                            x:Name="SenderBlock"
+                            Margin="0,0,8,0"
+                            FontSize="12"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Style="{StaticResource CaptionTextBlockStyle}"
+                            Visibility="{x:Bind ViewModel.Author, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
+                            <Run Text="{x:Bind ViewModel.Author, Mode=OneWay}" />
+                        </TextBlock>
+                        <TextBlock
+                            x:Name="TimeBlock"
+                            FontSize="12"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Style="{StaticResource CaptionTextBlockStyle}"
+                            Text="{x:Bind ViewModel.Time, Mode=OneWay}"
+                            Visibility="{x:Bind ViewModel.Time, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}" />
+                    </StackPanel>
+
                 </Grid>
 
                 <StackPanel

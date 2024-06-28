@@ -27,6 +27,11 @@ public sealed class ChatDbContext : DbContext
     /// </summary>
     public DbSet<Metadata> Sessions { get; set; }
 
+    /// <summary>
+    /// 群组会话列表.
+    /// </summary>
+    public DbSet<Metadata> Groups { get; set; }
+
     /// <inheritdoc/>
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlite($"Data Source={_dbPath}");

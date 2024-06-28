@@ -48,6 +48,13 @@ public sealed partial class PresetModelPanel : ChatPresetControlBase
         await Cropper.SaveAsync(stream, CommunityToolkit.WinUI.Controls.BitmapFileFormat.Png, true);
     }
 
+    /// <summary>
+    /// 验证是否有效.
+    /// </summary>
+    /// <returns>是否有效.</returns>
+    public bool IsValid()
+        => !string.IsNullOrEmpty(ViewModel.Name);
+
     private async void OnLoadedAsync(object sender, RoutedEventArgs e)
     {
         if (!string.IsNullOrEmpty(ViewModel.Data.Data.Emoji))

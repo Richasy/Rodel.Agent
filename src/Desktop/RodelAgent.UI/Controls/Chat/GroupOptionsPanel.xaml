@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:ChatGroupControlBase
+    x:Class="RodelAgent.UI.Controls.Chat.GroupOptionsPanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:community="using:CommunityToolkit.WinUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:local="using:RodelAgent.UI.Controls.Chat"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid>
+        <ScrollViewer Padding="8,0" Style="{StaticResource PageScrollViewerStyle}">
+            <StackPanel Margin="0,8" Spacing="12">
+                <community:TokenizingTextBox
+                    x:Name="TerminateBox"
+                    Grid.Row="1"
+                    HorizontalAlignment="Stretch"
+                    Header="{ext:Locale Name=TerminateText}"
+                    HeaderTemplate="{StaticResource InputHeaderTemplate}"
+                    ItemsSource="{x:Bind ViewModel.TerminateText, Mode=OneWay}"
+                    MaximumTokens="10"
+                    PlaceholderText="{ext:Locale Name=AddToken}"
+                    QuerySubmitted="OnTerminateTextSubmitted"
+                    SelectionMode="None"
+                    ToolTipService.ToolTip="{ext:Locale Name=TerminateTextDescription}">
+                    <community:TokenizingTextBox.QueryIcon>
+                        <ic:SymbolIconSource Symbol="ArrowEnterLeft" />
+                    </community:TokenizingTextBox.QueryIcon>
+                    <community:TokenizingTextBox.ItemTemplate>
+                        <DataTemplate x:DataType="x:String">
+                            <TextBlock
+                                MaxWidth="120"
+                                MaxLines="1"
+                                Text="{x:Bind}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap" />
+                        </DataTemplate>
+                    </community:TokenizingTextBox.ItemTemplate>
+                </community:TokenizingTextBox>
+                <Slider
+                    x:Name="MaxRoundsSlider"
+                    Grid.Row="2"
+                    HorizontalAlignment="Stretch"
+                    Header="{ext:Locale Name=MaxRounds}"
+                    HeaderTemplate="{StaticResource InputHeaderTemplate}"
+                    Maximum="10"
+                    Minimum="1"
+                    TickFrequency="1"
+                    ValueChanged="OnMaxRoundsChanged"
+                    Value="{x:Bind ViewModel.MaxRounds, Mode=OneWay}" />
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</local:ChatGroupControlBase>

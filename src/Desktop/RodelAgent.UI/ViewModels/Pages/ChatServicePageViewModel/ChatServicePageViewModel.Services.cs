@@ -41,15 +41,16 @@ public sealed partial class ChatServicePageViewModel
         {
             SetSelectedAgentCommand.Execute(default);
             SetSelectedSessionPresetCommand.Execute(default);
-            HistorySessions.Clear();
+            SetSelectedGroupPresetCommand.Execute(default);
+            HistoryChatSessions.Clear();
             var sessions = await _storageService.GetChatSessionsAsync(chatVM.ProviderType);
             foreach (var session in sessions)
             {
-                HistorySessions.Add(new ChatSessionViewModel(session, _chatClient));
+                HistoryChatSessions.Add(new ChatSessionViewModel(session, _chatClient));
             }
 
             CheckHistorySessionStatus();
-            _chatClient.LoadSessions(sessions);
+            _chatClient.LoadChatSessions(sessions);
             SettingsToolkit.WriteLocalSetting(SettingNames.LastSelectedChatService, chatVM.ProviderType);
             CreateNewSession();
         }

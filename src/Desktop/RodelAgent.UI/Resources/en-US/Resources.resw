@@ -255,6 +255,9 @@
   <data name="CancelDeletePlugin" xml:space="preserve">
     <value>Keep plugin</value>
   </data>
+  <data name="CanNotCreateGroupWithAgents" xml:space="preserve">
+    <value>You must have two or more assistants to create a group</value>
+  </data>
   <data name="CanNotLoadAgentWarning" xml:space="preserve">
     <value>Unable to load the agent. The corresponding service may have been deregistered. Please check and try again.</value>
   </data>
@@ -368,6 +371,9 @@
   </data>
   <data name="CreateCustomModel" xml:space="preserve">
     <value>Create custom model</value>
+  </data>
+  <data name="CreateGroup" xml:space="preserve">
+    <value>Create group</value>
   </data>
   <data name="CreateNewSize" xml:space="preserve">
     <value>Add a new size</value>
@@ -498,6 +504,18 @@
   <data name="GoogleTranslate" xml:space="preserve">
     <value>Google Translate</value>
   </data>
+  <data name="GroupName" xml:space="preserve">
+    <value>Group name</value>
+  </data>
+  <data name="GroupNamePlaceholder" xml:space="preserve">
+    <value>An understandable name</value>
+  </data>
+  <data name="GroupOptions" xml:space="preserve">
+    <value>Group options</value>
+  </data>
+  <data name="Groups" xml:space="preserve">
+    <value>Groups</value>
+  </data>
   <data name="Height" xml:space="preserve">
     <value>Height</value>
   </data>
@@ -564,6 +582,9 @@
   <data name="MaxOutputTokensDescription" xml:space="preserve">
     <value>The maximum value for generating content, approximately 2 tokens correspond to 1 Chinese character</value>
   </data>
+  <data name="MaxRounds" xml:space="preserve">
+    <value>Max session rounds</value>
+  </data>
   <data name="MaxTokens" xml:space="preserve">
     <value>Max tokens</value>
   </data>
@@ -622,6 +643,9 @@ You can manually adjust the limit, and the application will capture the specifie
   <data name="ModifyDefaultPreset" xml:space="preserve">
     <value>Modify default preset</value>
   </data>
+  <data name="ModifyGroup" xml:space="preserve">
+    <value>Modify group</value>
+  </data>
   <data name="ModifyModel" xml:space="preserve">
     <value>Modify model</value>
   </data>
@@ -634,8 +658,14 @@ You can manually adjust the limit, and the application will capture the specifie
   <data name="MoreOptions" xml:space="preserve">
     <value>More options</value>
   </data>
+  <data name="MustFillRequireFields" xml:space="preserve">
+    <value>Please fill in the necessary configuration items</value>
+  </data>
   <data name="MyChat" xml:space="preserve">
     <value>My Chat</value>
+  </data>
+  <data name="NeedAgents" xml:space="preserve">
+    <value>Please add agent.</value>
   </data>
   <data name="NeedDrawImage" xml:space="preserve">
     <value>Start drawing!</value>
@@ -1006,6 +1036,12 @@ You can manually adjust the limit, and the application will capture the specifie
   <data name="TencentTranslate" xml:space="preserve">
     <value>Tencent Cloud Translate</value>
   </data>
+  <data name="TerminateText" xml:space="preserve">
+    <value>Termination text</value>
+  </data>
+  <data name="TerminateTextDescription" xml:space="preserve">
+    <value>Once the text appears in the generated result, the session ends immediately</value>
+  </data>
   <data name="Tip" xml:space="preserve">
     <value>Tip</value>
   </data>
@@ -1034,7 +1070,7 @@ You can manually adjust the limit, and the application will capture the specifie
     <value>When turned off, the application will not record new machine translation history</value>
   </data>
   <data name="TranslateServices" xml:space="preserve">
-    <value>Translation Services</value>
+    <value>Translation services</value>
   </data>
   <data name="TranslateService_Full" xml:space="preserve">
     <value>Translation Services</value>

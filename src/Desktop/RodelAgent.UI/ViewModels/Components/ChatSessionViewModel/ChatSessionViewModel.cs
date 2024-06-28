@@ -124,7 +124,7 @@ public sealed partial class ChatSessionViewModel : ViewModelBase<ChatSession>
         }
 
         var pageVM = GlobalDependencies.ServiceProvider.GetService<ChatServicePageViewModel>();
-        if (pageVM.HistorySessions.Any(p => p.SessionId == SessionId))
+        if (pageVM.HistoryChatSessions.Any(p => p.SessionId == SessionId))
         {
             await SaveSessionToDatabaseAsync(true);
         }
@@ -141,7 +141,7 @@ public sealed partial class ChatSessionViewModel : ViewModelBase<ChatSession>
             Data.MaxRounds = MaxRounds;
 
             var pageVM = GlobalDependencies.ServiceProvider.GetService<ChatServicePageViewModel>();
-            if (pageVM.HistorySessions.Any(p => p.SessionId == SessionId))
+            if (pageVM.HistoryChatSessions.Any(p => p.SessionId == SessionId))
             {
                 SaveSessionToDatabaseCommand.Execute(default);
             }

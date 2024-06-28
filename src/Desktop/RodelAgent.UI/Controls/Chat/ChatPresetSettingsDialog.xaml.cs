@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
+using RodelAgent.UI.Models.Constants;
+using RodelAgent.UI.ViewModels;
 using RodelAgent.UI.ViewModels.Components;
 
 namespace RodelAgent.UI.Controls.Chat;
@@ -48,6 +50,14 @@ public sealed partial class ChatPresetSettingsDialog : AppContentDialog
     {
         var btn = (Button)sender;
         btn.IsEnabled = false;
+        if (!ModelPanel.IsValid())
+        {
+            GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>()
+                .ShowTip(StringNames.MustFillRequireFields, InfoType.Warning);
+            btn.IsEnabled = true;
+            return;
+        }
+
         try
         {
             await ModelPanel.SaveAvatarAsync();

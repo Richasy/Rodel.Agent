@@ -49,12 +49,12 @@ public sealed partial class ChatServicePageViewModel
         };
 
         var vm = new ChatPresetItemViewModel(tempAgent);
-        _presetModuleVM.SetData(vm, ChatSessionPresetType.Agent);
+        _chatPresetModuleVM.SetData(vm, ChatSessionPresetType.Agent);
         var dialog = new ChatPresetSettingsDialog();
         await dialog.ShowAsync();
 
         var preset = dialog.ViewModel.Data;
-        if (preset is not null && !_presetModuleVM.IsManualClose)
+        if (preset is not null && !_chatPresetModuleVM.IsManualClose)
         {
             if (!AgentPresets.Any(p => p.Data.Id == preset.Data.Id))
             {
@@ -73,12 +73,12 @@ public sealed partial class ChatServicePageViewModel
         tempAgent.Id = Guid.NewGuid().ToString("N");
 
         var vm = new ChatPresetItemViewModel(tempAgent);
-        _presetModuleVM.SetData(vm, ChatSessionPresetType.Agent);
+        _chatPresetModuleVM.SetData(vm, ChatSessionPresetType.Agent);
         var dialog = new ChatPresetSettingsDialog();
         await dialog.ShowAsync();
 
         var preset = dialog.ViewModel.Data;
-        if (preset is not null && !_presetModuleVM.IsManualClose)
+        if (preset is not null && !_chatPresetModuleVM.IsManualClose)
         {
             if (!AgentPresets.Any(p => p.Data.Id == preset.Data.Id))
             {
@@ -102,7 +102,8 @@ public sealed partial class ChatServicePageViewModel
         {
             SetSelectedChatServiceCommand.Execute(default);
             SetSelectedSessionPresetCommand.Execute(default);
-            HistorySessions.Clear();
+            SetSelectedGroupPresetCommand.Execute(default);
+            HistoryChatSessions.Clear();
             var service = AvailableServices.FirstOrDefault(p => p.ProviderType == presetVM.Data.Provider);
             if (service == null)
             {
@@ -114,11 +115,11 @@ public sealed partial class ChatServicePageViewModel
             var sessions = await _storageService.GetChatSessionsAsync(presetVM.Data.Id);
             foreach (var session in sessions)
             {
-                HistorySessions.Add(new ChatSessionViewModel(session, _chatClient));
+                HistoryChatSessions.Add(new ChatSessionViewModel(session, _chatClient));
             }
 
             CheckHistorySessionStatus();
-            _chatClient.LoadSessions(sessions);
+            _chatClient.LoadChatSessions(sessions);
             SettingsToolkit.WriteLocalSetting(SettingNames.LastSelectedAgent, presetVM.Data.Id);
             CreateNewSession();
             return;
@@ -136,12 +137,12 @@ public sealed partial class ChatServicePageViewModel
         }
 
         var newVM = new ChatPresetItemViewModel(presetVM.Data);
-        _presetModuleVM.SetData(newVM, ChatSessionPresetType.Agent);
+        _chatPresetModuleVM.SetData(newVM, ChatSessionPresetType.Agent);
         var dialog = new ChatPresetSettingsDialog();
         await dialog.ShowAsync();
 
         var preset = dialog.ViewModel.Data;
-        if (preset is not null && !_presetModuleVM.IsManualClose)
+        if (preset is not null && !_chatPresetModuleVM.IsManualClose)
         {
             presetVM.Data = preset.Data;
             await _storageService.AddOrUpdateChatAgentAsync(preset.Data);

@@ -17,6 +17,9 @@
                 <ResourceDictionary Source="ms-appx:///Controls/Items/ChatServiceItemControl/ChatServiceItemControl.xaml" />
                 <ResourceDictionary Source="ms-appx:///Controls/Items/ChatSessionItemControl/ChatSessionItemControl.xaml" />
                 <ResourceDictionary Source="ms-appx:///Controls/Items/ChatPluginItemControl/ChatPluginItemControl.xaml" />
+                <ResourceDictionary Source="ms-appx:///Controls/Items/ChatSessionPresetItemControl/ChatSessionPresetItemControl.xaml" />
+                <ResourceDictionary Source="ms-appx:///Controls/Items/ChatGroupPresetItemControl/ChatGroupPresetItemControl.xaml" />
+                <ResourceDictionary Source="ms-appx:///Controls/Items/ChatGroupItemControl/ChatGroupItemControl.xaml" />
                 <ResourceDictionary Source="ms-appx:///Controls/Items/TranslateServiceItemControl/TranslateServiceItemControl" />
                 <ResourceDictionary Source="ms-appx:///Controls/Items/DrawModelCard/DrawModelCard.xaml" />
                 <ResourceDictionary Source="ms-appx:///Controls/Items/DrawServiceItemControl/DrawServiceItemControl.xaml" />

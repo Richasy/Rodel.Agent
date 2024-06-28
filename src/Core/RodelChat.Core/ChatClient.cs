@@ -5,6 +5,8 @@ using System.Reflection;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.Agents;
+using Microsoft.SemanticKernel.Agents.Chat;
 using Microsoft.SemanticKernel.ChatCompletion;
 using RodelAgent.Models.Abstractions;
 using RodelChat.Interfaces.Client;
@@ -27,16 +29,24 @@ public sealed partial class ChatClient : IChatClient
         ILogger<ChatClient> logger)
     {
         Sessions = new List<ChatSession>();
+        Groups = new List<ChatGroup>();
         _logger = logger;
         _providerFactory = providerFactory;
         _parameterFactory = parameterFactory;
     }
 
     /// <inheritdoc/>
-    public void LoadSessions(List<ChatSession> sessions)
+    public void LoadChatSessions(List<ChatSession> sessions)
     {
         Sessions.Clear();
         Sessions.AddRange(sessions);
+    }
+
+    /// <inheritdoc/>
+    public void LoadGroupSessions(List<ChatGroup> groups)
+    {
+        Groups.Clear();
+        Groups.AddRange(groups);
     }
 
     /// <inheritdoc/>
@@ -104,6 +114,18 @@ public sealed partial class ChatClient : IChatClient
     }
 
     /// <inheritdoc/>
+    public ChatGroup CreateSession(ChatGroupPreset preset)
+    {
+        var id = Guid.NewGuid().ToString("N");
+
+        var presetJson = JsonSerializer.Serialize(preset);
+        var newPreset = JsonSerializer.Deserialize<ChatGroupPreset>(presetJson);
+        var session = ChatGroup.CreateGroup(id, newPreset);
+        Groups.Add(session);
+        return session;
+    }
+
+    /// <inheritdoc/>
     public List<ChatModel> GetModels(ProviderType type)
         => GetProvider(type).GetModelList();
 
@@ -164,6 +186,63 @@ public sealed partial class ChatClient : IChatClient
         finally
         {
             AppDomain.CurrentDomain.AssemblyResolve -= OnAssemblyResolve;
+        }
+    }
+
+    /// <inheritdoc/>
+    public async Task SendGroupMessageAsync(string groupId, ChatMessage message, Action<ChatMessage> messageAction = null, List<ChatSessionPreset> agents = null, CancellationToken cancellationToken = default)
+    {
+        var group = Groups.FirstOrDefault(g => g.Id == groupId)
+            ?? throw new ArgumentException("Group not found.");
+        var chatAgents = new List<ChatCompletionAgent>();
+        foreach (var agentId in group.Agents)
+        {
+            var agent = agents.FirstOrDefault(p => p.Id == agentId)
+                ?? throw new ArgumentException("Agent not found.");
+            var provider = _providerFactory.GetOrCreateProvider(agent.Provider);
+            var kernel = FindKernelProvider(agent.Provider, agent.Model)
+                ?? throw new KernelException($"Parse {agent.Name} failed, because provider config invalid.");
+            var chatAgent = new ChatCompletionAgent
+            {
+                Instructions = agent.SystemInstruction,
+                ExecutionSettings = provider.ConvertExecutionSettings(agent),
+                Id = agent.Id,
+                Kernel = kernel,
+                Name = EncodeName(agent.Name),
+            };
+
+            chatAgents.Add(chatAgent);
+        }
+
+        var groupChat = new AgentGroupChat(chatAgents.ToArray())
+        {
+            ExecutionSettings =
+                    new()
+                    {
+                        TerminationStrategy = new CustomTerminationStrategy(group.MaxRounds, group.TerminateText),
+                    },
+        };
+
+        if (message.Role == MessageRole.User)
+        {
+            group.Messages.Add(message);
+        }
+
+        foreach (var item in group.Messages)
+        {
+            groupChat.AddChatMessage(ConvertToKernelMessage(item));
+        }
+
+        await foreach (var content in groupChat.InvokeAsync(cancellationToken))
+        {
+            var assistantName = DecodeName(content.AuthorName);
+            var agent = agents.FirstOrDefault(p => p.Name == assistantName);
+            var msg = ChatMessage.CreateAssistantMessage(content.Content);
+            msg.Time = DateTimeOffset.Now;
+            msg.Author = assistantName;
+            msg.AuthorId = agent?.Id ?? string.Empty;
+            group.Messages.Add(msg);
+            messageAction?.Invoke(msg);
         }
     }
 
@@ -274,5 +353,23 @@ public sealed partial class ChatClient : IChatClient
         }
 
         return !string.IsNullOrEmpty(assemblyPath) && File.Exists(assemblyPath) ? Assembly.LoadFile(assemblyPath) : default;
+    }
+
+    private sealed class CustomTerminationStrategy : TerminationStrategy
+    {
+        private readonly IList<string>? _terminateText;
+
+        public CustomTerminationStrategy(int maxRounds, IList<string>? terminateText = default)
+        {
+            MaximumIterations = maxRounds;
+            _terminateText = terminateText;
+        }
+
+        protected override Task<bool> ShouldAgentTerminateAsync(Agent agent, IReadOnlyList<Microsoft.SemanticKernel.ChatMessageContent> history, CancellationToken cancellationToken)
+        {
+            return _terminateText is null || _terminateText.Count == 0
+                ? Task.FromResult(false)
+                : Task.FromResult(_terminateText.Any(p => history[history.Count - 1].Content?.Contains(p, StringComparison.InvariantCultureIgnoreCase) ?? false));
+        }
     }
 }

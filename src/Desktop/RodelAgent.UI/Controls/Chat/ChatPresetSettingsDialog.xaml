@@ -58,14 +58,7 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <PipsPager
-                x:Name="Pager"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                IsEnabled="False"
-                MaxVisiblePips="10"
-                NumberOfPages="{x:Bind ViewModel.StepCount, Mode=OneWay}"
-                SelectedPageIndex="{x:Bind ViewModel.CurrentStep, Mode=TwoWay}" />
+
             <StackPanel
                 Grid.Column="1"
                 VerticalAlignment="Center"

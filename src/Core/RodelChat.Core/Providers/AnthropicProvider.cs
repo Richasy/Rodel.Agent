@@ -38,7 +38,7 @@ public sealed class AnthropicProvider : ProviderBase, IProvider
     }
 
     /// <inheritdoc/>
-    public override PromptExecutionSettings ConvertExecutionSettings(ChatSession sessionData)
+    public override PromptExecutionSettings ConvertExecutionSettings(ChatSessionPreset sessionData)
         => new AnthropicPromptExecutionSettings
         {
             MaxTokens = sessionData.Parameters.GetValueOrDefault<int>(nameof(AnthropicChatParameters.MaxTokens)),

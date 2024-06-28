@@ -135,6 +135,27 @@ public interface IStorageService
     Task RemoveChatSessionAsync(string sessionId);
 
     /// <summary>
+    /// 获取指定预设的群组会话.
+    /// </summary>
+    /// <param name="presetId">预设标识符.</param>
+    /// <returns>会话列表.</returns>
+    Task<List<ChatGroup>?> GetChatGroupSessionsAsync(string presetId);
+
+    /// <summary>
+    /// 添加或更新群组会话.
+    /// </summary>
+    /// <param name="session">会话.</param>
+    /// <returns><see cref="Task"/>.</returns>
+    Task AddOrUpdateChatGroupSessionAsync(ChatGroup session);
+
+    /// <summary>
+    /// 移除聊天群组会话.
+    /// </summary>
+    /// <param name="sessionId">会话标识符.</param>
+    /// <returns><see cref="Task"/>.</returns>
+    Task RemoveChatGroupSessionAsync(string sessionId);
+
+    /// <summary>
     /// 获取聊天会话预设.
     /// </summary>
     /// <returns>预设列表.</returns>
@@ -180,6 +201,33 @@ public interface IStorageService
     /// <param name="agentId">助理名称.</param>
     /// <returns><see cref="Task"/>.</returns>
     Task RemoveChatAgentAsync(string agentId);
+
+    /// <summary>
+    /// 移除群组.
+    /// </summary>
+    /// <param name="presetId">群组标识符.</param>
+    /// <returns><see cref="Task"/>.</returns>
+    Task RemoveChatGroupPresetAsync(string presetId);
+
+    /// <summary>
+    /// 获取会话群组预设列表.
+    /// </summary>
+    /// <returns>助理列表.</returns>
+    Task<List<ChatGroupPreset>> GetChatGroupPresetsAsync();
+
+    /// <summary>
+    /// 获取指定 ID 的群组会话预设.
+    /// </summary>
+    /// <param name="presetId">预设 ID.</param>
+    /// <returns><see cref="ChatGroupPreset"/>.</returns>
+    Task<ChatGroupPreset> GetChatGroupPresetByIdAsync(string presetId);
+
+    /// <summary>
+    /// 添加或更新群组预设.
+    /// </summary>
+    /// <param name="preset">群组信息.</param>
+    /// <returns><see cref="Task"/>.</returns>
+    Task AddOrUpdateChatGroupPresetAsync(ChatGroupPreset preset);
 
     /// <summary>
     /// 获取指定供应商的翻译会话.

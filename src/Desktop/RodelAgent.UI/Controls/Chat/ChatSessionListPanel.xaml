@@ -55,8 +55,8 @@
             Grid.Row="1"
             Padding="8,0"
             Style="{StaticResource PageScrollViewerStyle}"
-            Visibility="{x:Bind ViewModel.IsHistorySessionsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
-            <ItemsRepeater Margin="0,0,0,12" ItemsSource="{x:Bind ViewModel.HistorySessions}">
+            Visibility="{x:Bind ViewModel.IsChatHistorySessionsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+            <ItemsRepeater Margin="0,0,0,12" ItemsSource="{x:Bind ViewModel.HistoryChatSessions}">
                 <ItemsRepeater.ItemTemplate>
                     <DataTemplate x:DataType="components:ChatSessionViewModel">
                         <items:ChatSessionItemControl
@@ -110,7 +110,7 @@
             VerticalAlignment="Center"
             Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
             CornerRadius="{StaticResource ControlCornerRadius}"
-            Visibility="{x:Bind ViewModel.IsHistorySessionsEmpty, Mode=OneWay}">
+            Visibility="{x:Bind ViewModel.IsChatHistorySessionsEmpty, Mode=OneWay}">
             <TextBlock
                 Foreground="{ThemeResource TextFillColorTertiaryBrush}"
                 Style="{StaticResource CaptionTextBlockStyle}"

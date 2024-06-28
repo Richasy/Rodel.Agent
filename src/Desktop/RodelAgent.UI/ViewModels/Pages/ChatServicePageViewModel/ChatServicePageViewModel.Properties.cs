@@ -18,7 +18,8 @@ public sealed partial class ChatServicePageViewModel
     private readonly IStorageService _storageService;
     private readonly IChatClient _chatClient;
     private readonly ILogger<ChatServicePageViewModel> _logger;
-    private readonly ChatPresetModuleViewModel _presetModuleVM;
+    private readonly ChatPresetModuleViewModel _chatPresetModuleVM;
+    private readonly GroupPresetModuleViewModel _groupPresetModuleVM;
     private bool _isPluginInitialized;
 
     [ObservableProperty]
@@ -37,7 +38,10 @@ public sealed partial class ChatServicePageViewModel
     private bool _isAvailableServicesEmpty;
 
     [ObservableProperty]
-    private bool _isHistorySessionsEmpty;
+    private bool _isChatHistorySessionsEmpty;
+
+    [ObservableProperty]
+    private bool _isGroupHistorySessionsEmpty;
 
     [ObservableProperty]
     private bool _isServiceSectionVisible;
@@ -52,7 +56,10 @@ public sealed partial class ChatServicePageViewModel
     private bool _isSessionOptionsVisible;
 
     [ObservableProperty]
-    private bool _isLocalModelsEmpty;
+    private bool _isAgentsSectionVisible;
+
+    [ObservableProperty]
+    private bool _isGroupOptionsVisible;
 
     [ObservableProperty]
     private bool _isAgentsEmpty;
@@ -61,19 +68,31 @@ public sealed partial class ChatServicePageViewModel
     private bool _isSessionPresetsEmpty;
 
     [ObservableProperty]
+    private bool _isGroupsEmpty;
+
+    [ObservableProperty]
     private bool _isPluginLoading;
 
     [ObservableProperty]
     private bool _isPluginEmpty;
 
     [ObservableProperty]
-    private ChatSessionPanelType _panelType;
+    private ChatSessionPanelType _sessionPanelType;
+
+    [ObservableProperty]
+    private ChatGroupPanelType _groupPanelType;
 
     [ObservableProperty]
     private ChatSessionViewModel _currentSession;
 
     [ObservableProperty]
+    private ChatGroupViewModel _currentGroup;
+
+    [ObservableProperty]
     private bool _isDeletingPluginsNotEmpty;
+
+    [ObservableProperty]
+    private bool _isGroupChat;
 
     /// <summary>
     /// 可用的聊天服务.
@@ -81,14 +100,14 @@ public sealed partial class ChatServicePageViewModel
     public ObservableCollection<ChatServiceItemViewModel> AvailableServices { get; } = new();
 
     /// <summary>
-    /// 历史会话.
+    /// 聊天历史会话.
     /// </summary>
-    public ObservableCollection<ChatSessionViewModel> HistorySessions { get; } = new();
+    public ObservableCollection<ChatSessionViewModel> HistoryChatSessions { get; } = new();
 
     /// <summary>
-    /// 本地模型.
+    /// 群组历史会话.
     /// </summary>
-    public ObservableCollection<ChatModelItemViewModel> LocalModels { get; } = new();
+    public ObservableCollection<ChatGroupViewModel> HistoryGroupSessions { get; } = new();
 
     /// <summary>
     /// 会话预设.
@@ -96,14 +115,14 @@ public sealed partial class ChatServicePageViewModel
     public ObservableCollection<ChatPresetItemViewModel> SessionPresets { get; } = new();
 
     /// <summary>
-    /// 本地模型预设.
-    /// </summary>
-    public ObservableCollection<ChatPresetItemViewModel> LocalModelPresets { get; } = new();
-
-    /// <summary>
     /// 助理列表.
     /// </summary>
     public ObservableCollection<ChatPresetItemViewModel> AgentPresets { get; } = new();
+
+    /// <summary>
+    /// 群组列表.
+    /// </summary>
+    public ObservableCollection<GroupPresetItemViewModel> GroupPresets { get; } = new();
 
     /// <summary>
     /// 聊天插件.

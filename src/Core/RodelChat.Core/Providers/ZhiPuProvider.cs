@@ -38,7 +38,7 @@ public sealed class ZhiPuProvider : ProviderBase, IProvider
     }
 
     /// <inheritdoc/>
-    public override PromptExecutionSettings ConvertExecutionSettings(ChatSession sessionData)
+    public override PromptExecutionSettings ConvertExecutionSettings(ChatSessionPreset sessionData)
         => new OpenAIPromptExecutionSettings
         {
             MaxTokens = sessionData.Parameters.GetValueOrDefault<int>(nameof(ZhiPuChatParameters.MaxTokens)),

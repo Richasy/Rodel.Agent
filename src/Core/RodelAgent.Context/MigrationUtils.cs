@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
+using Microsoft.EntityFrameworkCore;
+
 namespace RodelAgent.Context;
 
 /// <summary>
@@ -26,7 +28,9 @@ internal static class MigrationUtils
     public static async Task<ChatDbContext> GetChatDbAsync(string workDir)
     {
         await CheckDatabaseExistInternalAsync("chat.db", workDir);
-        return new ChatDbContext(Path.Combine(workDir, "chat.db"));
+        var chatDbContext = new ChatDbContext(Path.Combine(workDir, "chat.db"));
+        await chatDbContext.Database.MigrateAsync();
+        return chatDbContext;
     }
 
     /// <summary>

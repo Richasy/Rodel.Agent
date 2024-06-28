@@ -87,37 +87,167 @@ public sealed partial class StorageService
     public Task RemoveChatAgentAsync(string agentId)
         => RemovePresetInternalAsync(chatConstants.ChatSessionPresetType.Agent, agentId);
 
+    /// <inheritdoc/>
+    public async Task<List<ChatGroup>> GetChatGroupSessionsAsync(string presetId)
+    {
+        await InitializeChatGroupSessionsAsync();
+        var sessions = _chatGroups.Where(s => s.PresetId == presetId).ToList();
+        return sessions;
+    }
+
+    /// <inheritdoc/>
+    public async Task AddOrUpdateChatGroupSessionAsync(ChatGroup session)
+    {
+        await InitializeChatGroupSessionsAsync();
+        if (_chatGroups.Any(s => s.Id == session.Id))
+        {
+            _chatGroups.Remove(_chatGroups.First(s => s.Id == session.Id));
+        }
+
+        _chatGroups.Add(session);
+        var id = session.Id;
+        var v = JsonSerializer.Serialize(session);
+        await _dbService.AddOrUpdateChatDataAsync(id, v, isGroup: true);
+    }
+
+    /// <inheritdoc/>
+    public async Task RemoveChatGroupSessionAsync(string sessionId)
+    {
+        _chatGroups.RemoveAll(p => p.Id == sessionId);
+        await _dbService.RemoveChatDataAsync(sessionId, isGroup: true);
+    }
+
+    /// <inheritdoc/>
+    public async Task<List<ChatGroupPreset>> GetChatGroupPresetsAsync()
+    {
+        await InitializeChatGroupPresetsAsync();
+        return _chatGroupPresets;
+    }
+
+    /// <inheritdoc/>
+    public async Task<ChatGroupPreset> GetChatGroupPresetByIdAsync(string presetId)
+    {
+        await InitializeChatGroupPresetsAsync();
+        return _chatGroupPresets.FirstOrDefault(p => p.Id == presetId);
+    }
+
+    /// <inheritdoc/>
+    public async Task AddOrUpdateChatGroupPresetAsync(ChatGroupPreset preset)
+    {
+        await InitializeChatGroupPresetsAsync();
+        if (_chatGroupPresets.Any(p => p.Id == preset.Id))
+        {
+            _chatGroupPresets.Remove(_chatGroupPresets.First(p => p.Id == preset.Id));
+        }
+
+        _chatGroupPresets.Add(preset);
+        var v = JsonSerializer.Serialize(preset);
+        var folder = GetChatGroupPresetFolderInternal();
+        var filePath = Path.Combine(folder, $"{preset.Id}.json");
+        await File.WriteAllTextAsync(filePath, v);
+    }
+
+    /// <inheritdoc/>
+    public async Task RemoveChatGroupPresetAsync(string presetId)
+    {
+        await InitializeChatGroupPresetsAsync();
+        _chatGroupPresets.RemoveAll(p => p.Id == presetId);
+        var folder = GetChatGroupPresetFolderInternal();
+        var filePath = Path.Combine(folder, $"{presetId}.json");
+        if (File.Exists(filePath))
+        {
+            await Task.Run(() => File.Delete(filePath));
+        }
+    }
+
     private async Task InitializeChatSessionsAsync()
     {
-        if (_chatSessions == null)
+        if (_chatSessions != null)
         {
-            var chatSessions = new List<ChatSession>();
-            var allSessions = await _dbService.GetAllChatSessionAsync();
-            foreach (var session in allSessions)
+            return;
+        }
+
+        var chatSessions = new List<ChatSession>();
+        var allSessions = await _dbService.GetAllChatSessionAsync();
+        foreach (var session in allSessions)
+        {
+            try
             {
-                try
+                var sessionObj = JsonSerializer.Deserialize<ChatSession>(session);
+                var parameters = _chatParametersFactory.CreateChatParameters(sessionObj.Provider);
+                if (sessionObj.Parameters == null)
                 {
-                    var sessionObj = JsonSerializer.Deserialize<ChatSession>(session);
-                    var parameters = _chatParametersFactory.CreateChatParameters(sessionObj.Provider);
-                    if (sessionObj.Parameters == null)
-                    {
-                        sessionObj.Parameters = parameters;
-                    }
-                    else
-                    {
-                        parameters.SetDictionary(sessionObj.Parameters.ToDictionary());
-                        sessionObj.Parameters = parameters;
-                    }
+                    sessionObj.Parameters = parameters;
+                }
+                else
+                {
+                    parameters.SetDictionary(sessionObj.Parameters.ToDictionary());
+                    sessionObj.Parameters = parameters;
+                }
 
-                    chatSessions.Add(sessionObj);
-                }
-                catch (Exception)
-                {
-                    continue;
-                }
+                chatSessions.Add(sessionObj);
             }
+            catch (Exception)
+            {
+                continue;
+            }
+        }
 
-            _chatSessions = chatSessions.OrderByDescending(p => p.Messages?.LastOrDefault()?.Time ?? DateTimeOffset.MinValue).ToList();
+        _chatSessions = chatSessions.OrderByDescending(p => p.Messages?.LastOrDefault()?.Time ?? DateTimeOffset.MinValue).ToList();
+    }
+
+    private async Task InitializeChatGroupSessionsAsync()
+    {
+        if (_chatGroups != null)
+        {
+            return;
+        }
+
+        var chatGroups = new List<ChatGroup>();
+        var allGroups = await _dbService.GetAllChatGroupAsync();
+        foreach (var group in allGroups)
+        {
+            try
+            {
+                var groupObj = JsonSerializer.Deserialize<ChatGroup>(group);
+                chatGroups.Add(groupObj);
+            }
+            catch (Exception)
+            {
+                continue;
+            }
+        }
+
+        _chatGroups = chatGroups.OrderByDescending(p => p.Messages?.LastOrDefault()?.Time ?? DateTimeOffset.MinValue).ToList();
+    }
+
+    private async Task InitializeChatGroupPresetsAsync()
+    {
+        if (_chatGroupPresets != null)
+        {
+            return;
+        }
+
+        _chatGroupPresets = new List<ChatGroupPreset>();
+        var folder = GetChatGroupPresetFolderInternal();
+        if (!Directory.Exists(folder))
+        {
+            Directory.CreateDirectory(folder);
+        }
+
+        var presetFiles = Directory.GetFiles(folder, "*.json");
+        foreach (var file in presetFiles)
+        {
+            try
+            {
+                var preset = await File.ReadAllTextAsync(file);
+                var presetObj = JsonSerializer.Deserialize<ChatGroupPreset>(preset);
+                _chatGroupPresets.Add(presetObj);
+            }
+            catch (Exception)
+            {
+                continue;
+            }
         }
     }
 
@@ -125,40 +255,42 @@ public sealed partial class StorageService
     {
         var set = GetPresetListInternal(type);
 
-        if (set == null || force)
+        if (set != null && !force)
         {
-            if (type == chatConstants.ChatSessionPresetType.Session)
-            {
-                _chatSessionPresets = new List<ChatSessionPreset>();
-            }
-            else if (type == chatConstants.ChatSessionPresetType.Agent)
-            {
-                _chatAgents = new List<ChatSessionPreset>();
-            }
+            return;
+        }
 
-            set = GetPresetListInternal(type);
-            var folder = GetPresetFolderInternal(type);
-            if (!Directory.Exists(folder))
-            {
-                Directory.CreateDirectory(folder);
-            }
+        if (type == chatConstants.ChatSessionPresetType.Session)
+        {
+            _chatSessionPresets = new List<ChatSessionPreset>();
+        }
+        else if (type == chatConstants.ChatSessionPresetType.Agent)
+        {
+            _chatAgents = new List<ChatSessionPreset>();
+        }
 
-            var presetFiles = Directory.GetFiles(folder, "*.json");
-            foreach (var file in presetFiles)
+        set = GetPresetListInternal(type);
+        var folder = GetPresetFolderInternal(type);
+        if (!Directory.Exists(folder))
+        {
+            Directory.CreateDirectory(folder);
+        }
+
+        var presetFiles = Directory.GetFiles(folder, "*.json");
+        foreach (var file in presetFiles)
+        {
+            try
             {
-                try
-                {
-                    var preset = await File.ReadAllTextAsync(file);
-                    var presetObj = JsonSerializer.Deserialize<ChatSessionPreset>(preset);
-                    var parameters = _chatParametersFactory.CreateChatParameters(presetObj.Provider);
-                    parameters.SetDictionary(presetObj.Parameters.ToDictionary());
-                    presetObj.Parameters = parameters;
-                    set.Add(presetObj);
-                }
-                catch (Exception)
-                {
-                    continue;
-                }
+                var preset = await File.ReadAllTextAsync(file);
+                var presetObj = JsonSerializer.Deserialize<ChatSessionPreset>(preset);
+                var parameters = _chatParametersFactory.CreateChatParameters(presetObj.Provider);
+                parameters.SetDictionary(presetObj.Parameters.ToDictionary());
+                presetObj.Parameters = parameters;
+                set.Add(presetObj);
+            }
+            catch (Exception)
+            {
+                continue;
             }
         }
     }
@@ -188,9 +320,12 @@ public sealed partial class StorageService
         var filePath = Path.Combine(folder, $"{presetId}.json");
         if (File.Exists(filePath))
         {
-            File.Delete(filePath);
+            await Task.Run(() => File.Delete(filePath));
         }
     }
+
+    private string GetChatGroupPresetFolderInternal()
+        => Path.Combine(GetWorkingDirectory(), "Groups");
 
     private string GetPresetFolderInternal(chatConstants.ChatSessionPresetType type)
         => type switch

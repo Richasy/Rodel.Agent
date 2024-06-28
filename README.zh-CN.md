@@ -8,6 +8,8 @@
 
 集聊天、文生图、文本转语音、机器翻译于一身的 Windows 桌面应用，支持目前主流的 AI 服务，提供优秀的桌面 AI 体验。
 
+<a title="从Microsoft获取" href="https://www.microsoft.com/store/apps/9NB0NB3MLQTM?launch=true&amp;mode=full" target="_blank"><picture><source srcset="https://get.microsoft.com/images/zh-CN%20light.svg" media="(prefers-color-scheme: dark)"><source srcset="https://get.microsoft.com/images/zh-CN%20dark.svg" media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)"><img src="https://get.microsoft.com/images/zh-CN%20dark.svg" width="144"></picture></a>
+
 [English](./README.md) · 简体中文
 
 <!-- SHIELD GROUP -->

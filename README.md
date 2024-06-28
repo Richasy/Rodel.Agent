@@ -8,6 +8,8 @@
 
 A Windows desktop application that integrates chat, text-to-image, text-to-speech, and machine translation, supports the current mainstream AI services, and offers an excellent desktop AI experience.
 
+<a title="Get from Microsoft" href="https://www.microsoft.com/store/apps/9NB0NB3MLQTM?launch=true&amp;mode=full" target="_blank"><picture><source srcset="https://get.microsoft.com/images/en-US%20light.svg" media="(prefers-color-scheme: dark)"><source srcset="https://get.microsoft.com/images/en-US%20dark.svg" media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)"><img src="https://get.microsoft.com/images/en-US%20dark.svg" width="144"></picture></a>
+
 English · [简体中文](./README.zh-CN.md)
 
 <!-- SHIELD GROUP -->

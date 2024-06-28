@@ -61,6 +61,8 @@ public sealed class ChatSession : ChatSessionPreset
             SystemInstruction = preset.SystemInstruction,
             StopSequences = preset.StopSequences,
             FilterCharacters = preset.FilterCharacters,
+            Emoji = preset.Emoji,
+            Plugins = preset.Plugins,
         };
     }
 }
