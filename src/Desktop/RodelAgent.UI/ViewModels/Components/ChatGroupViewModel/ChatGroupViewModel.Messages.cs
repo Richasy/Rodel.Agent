@@ -153,7 +153,7 @@ public sealed partial class ChatGroupViewModel
                             }
                             else
                             {
-                                index++;
+                                index = IsResponding ? index + 1 : _currentGeneratingIndex;
                             }
 
                             _currentGeneratingIndex = index;
@@ -167,8 +167,6 @@ public sealed partial class ChatGroupViewModel
                                 response,
                                 EditMessageAsync,
                                 DeleteMessageAsync);
-                            msg.Author = name;
-                            msg.AgentId = agent?.Data.Id;
                             Messages.Add(msg);
                         }
                         else if (response.Role == MessageRole.Client)
@@ -181,14 +179,13 @@ public sealed partial class ChatGroupViewModel
                 selectedAgents,
                 _cancellationTokenSource.Token);
 
-        ResetAgentSelection();
         if (_cancellationTokenSource is null || _cancellationTokenSource.IsCancellationRequested)
         {
             return;
         }
 
         await SaveSessionToDatabaseAsync();
-
+        ResetAgentSelection();
         RequestFocusInput?.Invoke(this, EventArgs.Empty);
         _cancellationTokenSource = null;
     }

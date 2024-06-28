@@ -45,6 +45,8 @@ public sealed partial class ChatMessageItemViewModel : ViewModelBase<ChatMessage
         Func<ChatMessage, Task> deleteFunc)
         : base(message)
     {
+        AgentId = message.AuthorId ?? string.Empty;
+        Author = message.Author ?? string.Empty;
         Content = message.Content.FirstOrDefault(p => p.Type == ChatContentType.Text)?.Text ?? string.Empty;
         IsAssistant = message.Role == MessageRole.Assistant;
         IsUser = message.Role == MessageRole.User;

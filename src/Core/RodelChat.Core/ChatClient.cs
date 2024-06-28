@@ -236,9 +236,11 @@ public sealed partial class ChatClient : IChatClient
         await foreach (var content in groupChat.InvokeAsync(cancellationToken))
         {
             var assistantName = DecodeName(content.AuthorName);
+            var agent = agents.FirstOrDefault(p => p.Name == assistantName);
             var msg = ChatMessage.CreateAssistantMessage(content.Content);
             msg.Time = DateTimeOffset.Now;
             msg.Author = assistantName;
+            msg.AuthorId = agent?.Id ?? string.Empty;
             group.Messages.Add(msg);
             messageAction?.Invoke(msg);
         }

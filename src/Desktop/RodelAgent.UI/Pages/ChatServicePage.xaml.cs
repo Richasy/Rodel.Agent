@@ -23,7 +23,7 @@ public sealed partial class ChatServicePage : ChatServicePageBase
     }
 
     /// <inheritdoc/>
-    protected override void OnPageLoaded()
+    protected override async void OnPageLoaded()
     {
         if (ViewModel.IsAvailableServicesEmpty)
         {
@@ -32,7 +32,7 @@ public sealed partial class ChatServicePage : ChatServicePageBase
 
         if (ViewModel.IsAgentsEmpty)
         {
-            ViewModel.ResetAgentsCommand.Execute(default);
+            await ViewModel.ResetAgentsCommand.ExecuteAsync(default);
         }
 
         if (ViewModel.IsSessionPresetsEmpty)

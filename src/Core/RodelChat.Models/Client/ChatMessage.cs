@@ -24,7 +24,13 @@ public sealed class ChatMessage
     /// 发送者名称.
     /// </summary>
     [JsonPropertyName("author")]
-    public string Author { get; set; }
+    public string? Author { get; set; }
+
+    /// <summary>
+    /// 发送者 ID.
+    /// </summary>
+    [JsonPropertyName("author_id")]
+    public string? AuthorId { get; set; }
 
     /// <summary>
     /// 消息内容.

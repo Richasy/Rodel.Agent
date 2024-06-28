@@ -63,11 +63,10 @@ public sealed partial class ChatGroupViewModel : ViewModelBase<ChatGroup>
 
                 var vm = new ChatMessageItemViewModel(message, EditMessageAsync, DeleteMessageAsync);
 
-                var agent = Agents.FirstOrDefault(p => p.Name == message.Author);
-                if (agent is not null)
+                var agent = Agents.FirstOrDefault(p => p.Data.Id == message.AuthorId);
+                if (agent is not null && agent.Name != vm.Author)
                 {
                     vm.Author = agent.Name;
-                    vm.AgentId = agent.Data.Id;
                 }
 
                 Messages.Add(vm);
@@ -138,7 +137,6 @@ public sealed partial class ChatGroupViewModel : ViewModelBase<ChatGroup>
     {
         Agents.Clear();
         var storageService = GlobalDependencies.ServiceProvider.GetRequiredService<IStorageService>();
-        await Task.Delay(500);
         var agents = await storageService.GetChatAgentsAsync();
         foreach (var agentId in Data.Agents)
         {

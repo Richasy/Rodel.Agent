@@ -43,7 +43,7 @@ When creating agents, you can set their models freely as long as the models meet
 
 <div style="max-width:300px">
 
-![Creating a Group](./assets/en/create-group-item.png)
+![Creating a Group](../assets/en/create-group-item.png)
 
 </div>
 
@@ -51,7 +51,7 @@ Select `Create Group` from the overflow menu at the top of the left panel in the
 
 Configure the basic settings in the group panel that pops up.
 
-![Group Panel](./assets/en/group-dialog.png)
+![Group Panel](../assets/en/group-dialog.png)
 
 Besides choosing agents, you'll notice two other parameters:
 
