@@ -27,6 +27,17 @@
                     PasswordChanged="OnKeyBoxPasswordChanged" />
             </community:SettingsCard>
             <community:SettingsCard
+                x:Name="EndpointCard"
+                Description="{ext:Locale Name=EndpointDescription}"
+                Header="{ext:Locale Name=Endpoint}">
+                <TextBox
+                    x:Name="EndpointBox"
+                    Width="200"
+                    AutomationProperties.Name="{ext:Locale Name=Endpoint}"
+                    PlaceholderText="{ext:Locale Name=EndpointPlaceholder}"
+                    TextChanged="OnEndpointBoxTextChanged" />
+            </community:SettingsCard>
+            <community:SettingsCard
                 x:Name="OrganizationCard"
                 Description="{ext:Locale Name=OptionalPlaceholder}"
                 Header="{ext:Locale Name=Organization_Optional}">
