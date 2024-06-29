@@ -29,6 +29,7 @@ public sealed partial class AudioServicePageViewModel : ViewModelBase
         IsAvailableServicesEmpty = AvailableServices.Count == 0;
         IsHistoryEmpty = History.Count == 0;
         HistoryColumnWidth = SettingsToolkit.ReadLocalSetting(Models.Constants.SettingNames.AudioHistoryColumnWidth, 250d);
+        IsHistoryColumnManualHide = SettingsToolkit.ReadLocalSetting(Models.Constants.SettingNames.IsAudioHistoryColumnManualHide, false);
 
         History.CollectionChanged += OnHistoryCollectionChanged;
     }
@@ -53,5 +54,10 @@ public sealed partial class AudioServicePageViewModel : ViewModelBase
         {
             SettingsToolkit.WriteLocalSetting(Models.Constants.SettingNames.AudioHistoryColumnWidth, value);
         }
+    }
+
+    partial void OnIsHistoryColumnManualHideChanged(bool value)
+    {
+        SettingsToolkit.WriteLocalSetting(Models.Constants.SettingNames.IsAudioHistoryColumnManualHide, value);
     }
 }

@@ -42,4 +42,8 @@ public enum SettingNames
     LastSelectedGroup,
     ChatGroupPanelType,
     AppLanguage,
+    IsChatServicePageServiceColumnManualHide,
+    IsChatServicePageExtraColumnManualHide,
+    IsDrawHistoryColumnManualHide,
+    IsAudioHistoryColumnManualHide,
 }

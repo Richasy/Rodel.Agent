@@ -29,6 +29,7 @@ public sealed partial class DrawServicePageViewModel : ViewModelBase
         IsAvailableServicesEmpty = AvailableServices.Count == 0;
         IsHistoryEmpty = History.Count == 0;
         HistoryColumnWidth = SettingsToolkit.ReadLocalSetting(Models.Constants.SettingNames.DrawHistoryColumnWidth, 250d);
+        IsHistoryColumnManualHide = SettingsToolkit.ReadLocalSetting(Models.Constants.SettingNames.IsDrawHistoryColumnManualHide, false);
 
         History.CollectionChanged += OnHistoryCollectionChanged;
     }
@@ -53,5 +54,10 @@ public sealed partial class DrawServicePageViewModel : ViewModelBase
         {
             SettingsToolkit.WriteLocalSetting(Models.Constants.SettingNames.DrawHistoryColumnWidth, value);
         }
+    }
+
+    partial void OnIsHistoryColumnManualHideChanged(bool value)
+    {
+        SettingsToolkit.WriteLocalSetting(Models.Constants.SettingNames.IsDrawHistoryColumnManualHide, value);
     }
 }

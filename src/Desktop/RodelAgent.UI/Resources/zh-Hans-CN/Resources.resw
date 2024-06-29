@@ -955,6 +955,9 @@
   <data name="Share" xml:space="preserve">
     <value>分享</value>
   </data>
+  <data name="Show" xml:space="preserve">
+    <value>显示</value>
+  </data>
   <data name="ShowInformation" xml:space="preserve">
     <value>查看说明</value>
   </data>

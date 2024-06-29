@@ -26,6 +26,9 @@ public sealed partial class DrawServicePage : DrawServicePageBase
             ViewModel.ResetAvailableDrawServicesCommand.Execute(default);
         }
     }
+
+    private void OnHistoryVisibilityButtonClick(object sender, EventArgs e)
+        => ViewModel.IsHistoryColumnManualHide = !ViewModel.IsHistoryColumnManualHide;
 }
 
 /// <summary>

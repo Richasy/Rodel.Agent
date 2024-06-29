@@ -27,6 +27,9 @@ public sealed partial class DrawServicePageViewModel
     [ObservableProperty]
     private int _historyCount;
 
+    [ObservableProperty]
+    private bool _isHistoryColumnManualHide;
+
     /// <summary>
     /// 会话模型.
     /// </summary>

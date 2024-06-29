@@ -7,8 +7,16 @@ namespace RodelAgent.Context;
 /// <summary>
 /// 数据库迁移工具.
 /// </summary>
-internal static class MigrationUtils
+public static class MigrationUtils
 {
+    private static string _rootPath;
+
+    /// <summary>
+    /// 设置根目录.
+    /// </summary>
+    /// <param name="rootPath">应用安装目录.</param>
+    public static void SetRootPath(string rootPath) => _rootPath = rootPath;
+
     /// <summary>
     /// 获取密钥数据库.
     /// </summary>
@@ -71,7 +79,8 @@ internal static class MigrationUtils
         var targetDbPath = Path.Combine(workDir, dbName);
         if (!File.Exists(targetDbPath))
         {
-            var emptyDb = Path.Combine(AppContext.BaseDirectory, "Assets", dbName);
+            var rootPath = string.IsNullOrEmpty(_rootPath) ? AppContext.BaseDirectory : _rootPath;
+            var emptyDb = Path.Combine(rootPath, "Assets", dbName);
             await Task.Run(() => File.Copy(emptyDb, targetDbPath));
         }
     }

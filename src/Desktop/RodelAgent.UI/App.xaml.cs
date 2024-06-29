@@ -30,6 +30,7 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
+        RodelAgent.Context.MigrationUtils.SetRootPath(Windows.ApplicationModel.Package.Current.InstalledPath);
         var language = SettingsToolkit.ReadLocalSetting(SettingNames.AppLanguage, "default");
         ApplicationLanguages.PrimaryLanguageOverride = language != "default"
             ? language
