@@ -79,7 +79,8 @@ public static class MigrationUtils
         var targetDbPath = Path.Combine(workDir, dbName);
         if (!File.Exists(targetDbPath))
         {
-            var emptyDb = Path.Combine(_rootPath, "Assets", dbName);
+            var rootPath = string.IsNullOrEmpty(_rootPath) ? AppContext.BaseDirectory : _rootPath;
+            var emptyDb = Path.Combine(rootPath, "Assets", dbName);
             await Task.Run(() => File.Copy(emptyDb, targetDbPath));
         }
     }
