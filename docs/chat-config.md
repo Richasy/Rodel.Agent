@@ -169,7 +169,7 @@ ChatGLM 即出于此。
 
 文心一言是百度提供的大语言模型，它托管在百度云的千帆大模型平台。它有着自己的托管步骤，甚至对于不同的模型需要单独开通服务，这一点请在其文档中查阅。
 
-在千帆大模型平台创建应用后，将 `API Key` 填入 `访问密钥`，将 `Secret Key` 填入 `密文（Secret）` 即可。
+在千帆大模型平台创建应用后，将 `API Key` 填入 `API 密钥（API Key）`，将 `Secret Key` 填入 `密文密钥（Secret Key）` 即可。
 
 ### 自定义模型
 
@@ -204,8 +204,8 @@ ChatGLM 即出于此。
 
 在应用中，设置项的对应关系是：
 
-- `Secret Key` -> `访问密钥`
-- `Secret Id` -> `密文（Secret）`
+- `Secret Key` -> `密文密钥（Secret Key）`
+- `Secret Id` -> `密文 ID（Secret ID）`
 
 ## 讯飞星火
 
@@ -222,7 +222,16 @@ ChatGLM 即出于此。
 
 - `APPID` -> `应用 ID`
 - `APISecret` -> `密文（Secret）`
-- `APIKey` -> `访问密钥`
+- `APIKey` -> `API 密钥（API Key）`
+
+## Silicon Flow
+
+|||
+|-|-|
+|文档|https://openrouter.ai/docs/quick-start|
+|API 令牌|https://docs.siliconflow.cn/docs/4-api%E8%B0%83%E7%94%A8|
+
+和 [Open AI](#open-ai) 类似，获取访问密钥后，将其填入 `访问密钥` 中即可。
 
 ## OpenRouter
 

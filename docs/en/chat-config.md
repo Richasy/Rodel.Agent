@@ -160,7 +160,7 @@ Therefore, it supports limited models. Refer to this document for specifics: [Op
 
 Wenxin Yiyan is a large language model provided by Baidu, hosted on Baidu Cloud's Qianfan platform. It has its own hosting steps, and different models may require separate service activations, as detailed in its documentation.
 
-After creating an application on the Qianfan platform, fill in the `API Key` in the `Access Key` field and the `Secret Key` in the `Secret` field.
+After creating an application on the Qianfan platform, fill in the `API Key` in the `API Key` field and the `Secret Key` in the `Secret Key` field.
 
 ### Custom Models
 
@@ -193,11 +193,6 @@ HunYuan models are hosted on Tencent Cloud. You need to create a key in the [API
 
 Note that due to security restrictions, the `Secret Key` is only visible when creating the key.
 
-In the application, the corresponding relationship is:
-
-- `Secret Key` -> `Access Key`
-- `Secret Id` -> `Secret`
-
 ## iFLYTEK Spark
 
 |||  
@@ -209,11 +204,16 @@ iFLYTEK Spark is a large language model launched by iFLYTEK. Before using this m
 
 Unactivated models cannot be used.
 
-After registration, you can find the `Service Interface Authentication Information` on the model page of `iFLYTEK Spark`. Fill in the application settings as follows:
+After registration, you can find the `Service Interface Authentication Information` on the model page of `iFLYTEK Spark`.
 
-- `APPID` -> `Application ID`
-- `APISecret` -> `Secret`
-- `APIKey` -> `Access Key`
+## Silicon Flow
+
+|||
+|-|-|
+|Documentation|https://openrouter.ai/docs/quick-start|
+|API Token|https://docs.siliconflow.cn/docs/4-api%E8%B0%83%E7%94%A8|
+
+Similar to [OpenAI](#open-ai), after obtaining the access key, fill it in the `Access Key` field.
 
 ## OpenRouter
 
