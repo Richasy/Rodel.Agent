@@ -94,6 +94,12 @@ public sealed partial class ChatServicePageViewModel
     [ObservableProperty]
     private bool _isGroupChat;
 
+    [ObservableProperty]
+    private bool _isServiceColumnManualHide;
+
+    [ObservableProperty]
+    private bool _isExtraColumnManualHide;
+
     /// <summary>
     /// 可用的聊天服务.
     /// </summary>

@@ -94,7 +94,8 @@
                 Grid.Column="2"
                 Width="{x:Bind ViewModel.HistoryColumnWidth, Mode=OneWay}"
                 Margin="-6,0,0,0"
-                Background="{ThemeResource LayerFillColorDefaultBrush}">
+                Background="{ThemeResource LayerFillColorDefaultBrush}"
+                Visibility="{x:Bind ViewModel.IsHistoryColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
                 <draw:DrawHistorySection />
             </Grid>
 
@@ -104,13 +105,22 @@
                     Width="1"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Stretch"
-                    Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
+                    Background="{ThemeResource DividerStrokeColorDefaultBrush}"
+                    Visibility="{x:Bind ViewModel.IsHistoryColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
                 <community:PropertySizer
-                    HorizontalAlignment="Left"
+                    HorizontalAlignment="Center"
                     Binding="{x:Bind ViewModel.HistoryColumnWidth, Mode=TwoWay}"
                     IsDragInverted="True"
                     Maximum="360"
-                    Minimum="240" />
+                    Minimum="240"
+                    Visibility="{x:Bind ViewModel.IsHistoryColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
+                <controls:VisibilityToggleButton
+                    Margin="-20,0,0,0"
+                    VerticalAlignment="Stretch"
+                    Click="OnHistoryVisibilityButtonClick"
+                    CornerRadius="4,0,0,4"
+                    Direction="RightToLeftVisible"
+                    IsHide="{x:Bind ViewModel.IsHistoryColumnManualHide, Mode=OneWay}" />
             </Grid>
         </Grid>
     </Grid>

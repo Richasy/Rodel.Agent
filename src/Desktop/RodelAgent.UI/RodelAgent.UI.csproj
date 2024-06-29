@@ -15,6 +15,13 @@
     <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Assets\Emoji\**" />
+    <Content Remove="Assets\Emoji\**" />
+    <EmbeddedResource Remove="Assets\Emoji\**" />
+    <None Remove="Assets\Emoji\**" />
+    <Page Remove="Assets\Emoji\**" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Assets\logo.ico" />
     <None Remove="Assets\party_popper_3d.png" />
     <None Remove="Assets\Providers\anthropic-avatar.png" />
@@ -48,6 +55,7 @@
     <None Remove="Controls\Base\PluginAvatar.xaml" />
     <None Remove="Controls\Base\PresetAvatar.xaml" />
     <None Remove="Controls\Base\TipDialog.xaml" />
+    <None Remove="Controls\Base\VisibilityToggleButton.xaml" />
     <None Remove="Controls\Base\WavePanel\WavePanel.xaml" />
     <None Remove="Controls\Chat\AgentsSection.xaml" />
     <None Remove="Controls\Chat\ChatGroupHeader.xaml" />
@@ -608,6 +616,9 @@
     <Page Update="Controls\Settings\LanguageSettingSection.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Update="Controls\Base\VisibilityToggleButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <None Update="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -846,7 +857,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Assets\Emoji\" />
     <Folder Include="Controls\Startup\Chat\" />
     <Folder Include="Controls\Startup\Translate\" />
   </ItemGroup>
@@ -861,5 +871,8 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Remove="Controls\Chat\GroupAgentsPanel.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Remove="Assets\Emoji\**" />
   </ItemGroup>
 </Project>

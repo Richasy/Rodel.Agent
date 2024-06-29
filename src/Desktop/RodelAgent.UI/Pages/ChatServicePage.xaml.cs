@@ -127,6 +127,12 @@ public sealed partial class ChatServicePage : ChatServicePageBase
         var currentType = (ChatGroupPanelType)GroupPanelTypeSelector.SelectedItem.Tag;
         ViewModel.GroupPanelType = currentType;
     }
+
+    private void OnExtraVisibilityButtonClick(object sender, EventArgs e)
+        => ViewModel.IsExtraColumnManualHide = !ViewModel.IsExtraColumnManualHide;
+
+    private void OnServiceVisibilityButtonClick(object sender, EventArgs e)
+        => ViewModel.IsServiceColumnManualHide = !ViewModel.IsServiceColumnManualHide;
 }
 
 /// <summary>

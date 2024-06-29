@@ -37,6 +37,8 @@ public sealed partial class ChatServicePageViewModel : ViewModelBase
         ExtraRowHeight = SettingsToolkit.ReadLocalSetting(SettingNames.ChatServicePageExtraRowHeight, 400d);
         SessionPanelType = SettingsToolkit.ReadLocalSetting(SettingNames.ChatSessionPanelType, ChatSessionPanelType.SystemInstruction);
         GroupPanelType = SettingsToolkit.ReadLocalSetting(SettingNames.ChatGroupPanelType, ChatGroupPanelType.Agents);
+        IsServiceColumnManualHide = SettingsToolkit.ReadLocalSetting(SettingNames.IsChatServicePageServiceColumnManualHide, false);
+        IsExtraColumnManualHide = SettingsToolkit.ReadLocalSetting(SettingNames.IsChatServicePageExtraColumnManualHide, false);
         CheckSessionPanelType();
         CheckGroupPanelType();
         IsServiceSectionVisible = true;
@@ -129,4 +131,10 @@ public sealed partial class ChatServicePageViewModel : ViewModelBase
         SettingsToolkit.WriteLocalSetting(SettingNames.ChatGroupPanelType, value);
         CheckGroupPanelType();
     }
+
+    partial void OnIsServiceColumnManualHideChanged(bool value)
+        => SettingsToolkit.WriteLocalSetting(SettingNames.IsChatServicePageServiceColumnManualHide, value);
+
+    partial void OnIsExtraColumnManualHideChanged(bool value)
+        => SettingsToolkit.WriteLocalSetting(SettingNames.IsChatServicePageExtraColumnManualHide, value);
 }

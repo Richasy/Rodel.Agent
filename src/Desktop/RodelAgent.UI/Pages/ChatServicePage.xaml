@@ -29,7 +29,10 @@
             </Grid.ColumnDefinitions>
 
             <!--  助手及服务列表  -->
-            <Grid Width="{x:Bind ViewModel.ServiceColumnWidth, Mode=OneWay}" Margin="0,0,-6,0">
+            <Grid
+                Width="{x:Bind ViewModel.ServiceColumnWidth, Mode=OneWay}"
+                Margin="0,0,-6,0"
+                Visibility="{x:Bind ViewModel.IsServiceColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
@@ -91,134 +94,143 @@
                 <chat:ChatSessionPanel ViewModel="{x:Bind ViewModel.CurrentSession, Mode=OneWay}" Visibility="{x:Bind ViewModel.CurrentSession, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}" />
             </Grid>
 
-            <!--  聊天附加面板  -->
-            <Grid
-                Grid.Column="4"
-                Width="{x:Bind ViewModel.ExtraColumnWidth, Mode=OneWay}"
-                Margin="-6,0,0,0"
-                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                Visibility="{x:Bind ViewModel.CurrentSession, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Grid Height="{x:Bind ViewModel.ExtraRowHeight, Mode=OneWay}" Visibility="{x:Bind ViewModel.IsGroupChat, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+            <Grid Grid.Column="4" Visibility="{x:Bind ViewModel.IsExtraColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+                <!--  聊天附加面板  -->
+                <Grid
+                    Width="{x:Bind ViewModel.ExtraColumnWidth, Mode=OneWay}"
+                    Margin="-6,0,0,0"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    Visibility="{x:Bind ViewModel.CurrentSession, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="53" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <SelectorBar
-                        x:Name="SessionPanelTypeSelector"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        SelectionChanged="OnSessionPanelTypeChanged" />
+                    <Grid Height="{x:Bind ViewModel.ExtraRowHeight, Mode=OneWay}" Visibility="{x:Bind ViewModel.IsGroupChat, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="53" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <SelectorBar
+                            x:Name="SessionPanelTypeSelector"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            SelectionChanged="OnSessionPanelTypeChanged" />
+                        <Border
+                            Grid.Row="1"
+                            Height="1"
+                            HorizontalAlignment="Stretch"
+                            Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
+                        <chat:ChatProviderOptionPanel
+                            Grid.Row="2"
+                            PropertyChanged="OnSessionParameterChanged"
+                            ViewModel="{x:Bind ViewModel.CurrentSession.Data, Mode=OneWay}"
+                            Visibility="{x:Bind ViewModel.IsSessionOptionsVisible, Mode=OneWay}" />
+                        <chat:SystemInstructionPanel
+                            Grid.Row="2"
+                            ViewModel="{x:Bind ViewModel.CurrentSession, Mode=OneWay}"
+                            Visibility="{x:Bind ViewModel.IsSystemInstructionVisible, Mode=OneWay}" />
+                    </Grid>
+                    <chat:ChatSessionListPanel
+                        Grid.Row="2"
+                        ViewModel="{x:Bind ViewModel}"
+                        Visibility="{x:Bind ViewModel.IsGroupChat, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
+                    <!--  分栏大小控制器  -->
                     <Border
                         Grid.Row="1"
                         Height="1"
                         HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
                         Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
-                    <chat:ChatProviderOptionPanel
-                        Grid.Row="2"
-                        PropertyChanged="OnSessionParameterChanged"
-                        ViewModel="{x:Bind ViewModel.CurrentSession.Data, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.IsSessionOptionsVisible, Mode=OneWay}" />
-                    <chat:SystemInstructionPanel
-                        Grid.Row="2"
-                        ViewModel="{x:Bind ViewModel.CurrentSession, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.IsSystemInstructionVisible, Mode=OneWay}" />
+                    <community:PropertySizer
+                        x:Name="ExtraSizer"
+                        Grid.Row="1"
+                        HorizontalAlignment="Stretch"
+                        Binding="{x:Bind ViewModel.ExtraRowHeight, Mode=TwoWay}"
+                        Minimum="200"
+                        Orientation="Horizontal" />
                 </Grid>
-                <chat:ChatSessionListPanel
-                    Grid.Row="2"
-                    ViewModel="{x:Bind ViewModel}"
-                    Visibility="{x:Bind ViewModel.IsGroupChat, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
-                <!--  分栏大小控制器  -->
-                <Border
-                    Grid.Row="1"
-                    Height="1"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Center"
-                    Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
-                <community:PropertySizer
-                    x:Name="ExtraSizer"
-                    Grid.Row="1"
-                    HorizontalAlignment="Stretch"
-                    Binding="{x:Bind ViewModel.ExtraRowHeight, Mode=TwoWay}"
-                    Minimum="200"
-                    Orientation="Horizontal" />
+
+                <!--  群组附加面板  -->
+                <Grid
+                    Width="{x:Bind ViewModel.ExtraColumnWidth, Mode=OneWay}"
+                    Margin="-6,0,0,0"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    Visibility="{x:Bind ViewModel.CurrentGroup, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid Height="{x:Bind ViewModel.ExtraRowHeight, Mode=OneWay}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="53" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <SelectorBar
+                            x:Name="GroupPanelTypeSelector"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            SelectionChanged="OnGroupPanelTypeChanged" />
+                        <Border
+                            Grid.Row="1"
+                            Height="1"
+                            HorizontalAlignment="Stretch"
+                            Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
+                        <chat:GroupOptionsPanel
+                            Grid.Row="2"
+                            ViewModel="{x:Bind ViewModel.CurrentGroup, Mode=OneWay}"
+                            Visibility="{x:Bind ViewModel.IsGroupOptionsVisible, Mode=OneWay}" />
+                        <chat:GroupAgentsPanel
+                            Grid.Row="2"
+                            ViewModel="{x:Bind ViewModel.CurrentGroup, Mode=OneWay}"
+                            Visibility="{x:Bind ViewModel.IsAgentsSectionVisible, Mode=OneWay}" />
+                    </Grid>
+                    <chat:ChatGroupListPanel
+                        Grid.Row="2"
+                        ViewModel="{x:Bind ViewModel}"
+                        Visibility="{x:Bind ViewModel.IsGroupChat, Mode=OneWay}" />
+                    <!--  分栏大小控制器  -->
+                    <Border
+                        Grid.Row="1"
+                        Height="1"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
+                    <community:PropertySizer
+                        x:Name="ExtraSizer2"
+                        Grid.Row="1"
+                        HorizontalAlignment="Stretch"
+                        Binding="{x:Bind ViewModel.ExtraRowHeight, Mode=TwoWay}"
+                        Minimum="200"
+                        Orientation="Horizontal" />
+                </Grid>
             </Grid>
 
-            <!--  群组附加面板  -->
-            <Grid
-                Grid.Column="4"
-                Width="{x:Bind ViewModel.ExtraColumnWidth, Mode=OneWay}"
-                Margin="-6,0,0,0"
-                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                Visibility="{x:Bind ViewModel.CurrentGroup, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Grid Height="{x:Bind ViewModel.ExtraRowHeight, Mode=OneWay}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="53" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <SelectorBar
-                        x:Name="GroupPanelTypeSelector"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        SelectionChanged="OnGroupPanelTypeChanged" />
-                    <Border
-                        Grid.Row="1"
-                        Height="1"
-                        HorizontalAlignment="Stretch"
-                        Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
-                    <chat:GroupOptionsPanel
-                        Grid.Row="2"
-                        ViewModel="{x:Bind ViewModel.CurrentGroup, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.IsGroupOptionsVisible, Mode=OneWay}" />
-                    <chat:GroupAgentsPanel
-                        Grid.Row="2"
-                        ViewModel="{x:Bind ViewModel.CurrentGroup, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.IsAgentsSectionVisible, Mode=OneWay}" />
-                </Grid>
-                <chat:ChatGroupListPanel
-                    Grid.Row="2"
-                    ViewModel="{x:Bind ViewModel}"
-                    Visibility="{x:Bind ViewModel.IsGroupChat, Mode=OneWay}" />
-                <!--  分栏大小控制器  -->
-                <Border
-                    Grid.Row="1"
-                    Height="1"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Center"
-                    Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
-                <community:PropertySizer
-                    x:Name="ExtraSizer2"
-                    Grid.Row="1"
-                    HorizontalAlignment="Stretch"
-                    Binding="{x:Bind ViewModel.ExtraRowHeight, Mode=TwoWay}"
-                    Minimum="200"
-                    Orientation="Horizontal" />
-            </Grid>
 
             <!--  左侧分栏大小控制器  -->
-            <Border
-                Grid.Column="1"
-                Width="1"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Stretch"
-                Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
-            <community:PropertySizer
-                Grid.Column="1"
-                HorizontalAlignment="Left"
-                Binding="{x:Bind ViewModel.ServiceColumnWidth, Mode=TwoWay}"
-                Maximum="360"
-                Minimum="220" />
+            <Grid Grid.Column="1">
+                <Border
+                    Width="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Stretch"
+                    Background="{ThemeResource DividerStrokeColorDefaultBrush}"
+                    Visibility="{x:Bind ViewModel.IsServiceColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
+                <community:PropertySizer
+                    HorizontalAlignment="Center"
+                    Binding="{x:Bind ViewModel.ServiceColumnWidth, Mode=TwoWay}"
+                    Maximum="360"
+                    Minimum="220"
+                    Visibility="{x:Bind ViewModel.IsServiceColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
+                <controls:VisibilityToggleButton
+                    Margin="0,0,-20,0"
+                    VerticalAlignment="Stretch"
+                    Click="OnServiceVisibilityButtonClick"
+                    CornerRadius="0,4,4,0"
+                    IsHide="{x:Bind ViewModel.IsServiceColumnManualHide, Mode=OneWay}" />
+            </Grid>
 
 
             <!--  右侧分栏大小控制器  -->
@@ -227,13 +239,22 @@
                     Width="1"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Stretch"
-                    Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
+                    Background="{ThemeResource DividerStrokeColorDefaultBrush}"
+                    Visibility="{x:Bind ViewModel.IsExtraColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
                 <community:PropertySizer
-                    HorizontalAlignment="Left"
+                    HorizontalAlignment="Center"
                     Binding="{x:Bind ViewModel.ExtraColumnWidth, Mode=TwoWay}"
                     IsDragInverted="True"
                     Maximum="360"
-                    Minimum="220" />
+                    Minimum="220"
+                    Visibility="{x:Bind ViewModel.IsExtraColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
+                <controls:VisibilityToggleButton
+                    Margin="-20,0,0,0"
+                    VerticalAlignment="Stretch"
+                    Click="OnExtraVisibilityButtonClick"
+                    CornerRadius="4,0,0,4"
+                    Direction="RightToLeftVisible"
+                    IsHide="{x:Bind ViewModel.IsExtraColumnManualHide, Mode=OneWay}" />
             </Grid>
 
             <!--  右侧分栏大小控制器  -->
@@ -242,13 +263,22 @@
                     Width="1"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Stretch"
-                    Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
+                    Background="{ThemeResource DividerStrokeColorDefaultBrush}"
+                    Visibility="{x:Bind ViewModel.IsExtraColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
                 <community:PropertySizer
-                    HorizontalAlignment="Left"
+                    HorizontalAlignment="Center"
                     Binding="{x:Bind ViewModel.ExtraColumnWidth, Mode=TwoWay}"
                     IsDragInverted="True"
                     Maximum="360"
-                    Minimum="220" />
+                    Minimum="220"
+                    Visibility="{x:Bind ViewModel.IsExtraColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
+                <controls:VisibilityToggleButton
+                    Margin="-20,0,0,0"
+                    VerticalAlignment="Stretch"
+                    Click="OnExtraVisibilityButtonClick"
+                    CornerRadius="4,0,0,4"
+                    Direction="RightToLeftVisible"
+                    IsHide="{x:Bind ViewModel.IsExtraColumnManualHide, Mode=OneWay}" />
             </Grid>
         </Grid>
     </Grid>
