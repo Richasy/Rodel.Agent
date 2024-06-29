@@ -30,13 +30,19 @@ public sealed partial class OpenAIAudioConfigSettingSection : AudioServiceConfig
         KeyBox.PlaceholderText = string.Format(ResourceToolkit.GetLocalizedString(Models.Constants.StringNames.AccessKeyPlaceholder), newVM.Name);
         PredefinedCard.Description = string.Format(ResourceToolkit.GetLocalizedString(Models.Constants.StringNames.PredefinedModelsDescription), newVM.Name);
 
-        newVM.Config ??= new OpenAIClientConfig();
+        newVM.Config ??= new OpenAIClientConfig() { Endpoint = ProviderConstants.OpenAIApi };
+        if (newVM.Config is OpenAIClientConfig config && string.IsNullOrEmpty(config.Endpoint))
+        {
+            config.Endpoint = ProviderConstants.OpenAIApi;
+        }
+
         ViewModel.CheckCurrentConfig();
     }
 
     private void OnKeyBoxLoaded(object sender, RoutedEventArgs e)
     {
         KeyBox.Password = ViewModel.Config?.Key ?? string.Empty;
+        EndpointBox.Text = (ViewModel.Config as ClientEndpointConfigBase)?.Endpoint ?? string.Empty;
         OrganizationBox.Text = (ViewModel.Config as OpenAIClientConfig)?.OrganizationId ?? string.Empty;
         KeyBox.Focus(FocusState.Programmatic);
     }
@@ -44,6 +50,12 @@ public sealed partial class OpenAIAudioConfigSettingSection : AudioServiceConfig
     private void OnKeyBoxPasswordChanged(object sender, RoutedEventArgs e)
     {
         ViewModel.Config.Key = KeyBox.Password;
+        ViewModel.CheckCurrentConfig();
+    }
+
+    private void OnEndpointBoxTextChanged(object sender, TextChangedEventArgs e)
+    {
+        ((ClientEndpointConfigBase)ViewModel.Config).Endpoint = EndpointBox.Text;
         ViewModel.CheckCurrentConfig();
     }
 
