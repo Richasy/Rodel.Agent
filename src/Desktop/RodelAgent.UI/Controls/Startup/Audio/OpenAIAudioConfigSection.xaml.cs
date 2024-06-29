@@ -30,6 +30,11 @@ public sealed partial class OpenAIAudioConfigSection : AudioServiceConfigControl
         }
 
         newVM.Config ??= CreateCurrentConfig();
+        if (newVM.Config is OpenAIClientConfig config && string.IsNullOrEmpty(config.Endpoint))
+        {
+            config.Endpoint = ProviderConstants.OpenAIApi;
+        }
+
         Debug.Assert(ViewModel.Config != null, "ViewModel.Config should not be null.");
         ViewModel.CheckCurrentConfig();
     }
