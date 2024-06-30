@@ -6,9 +6,8 @@
 
 ## Open AI
 
-|||
-|-|-|
 |文档|https://platform.openai.com/docs/api-reference/chat/create|
+|-|-| 
 |API 令牌|https://platform.openai.com/account/api-keys|
 
 Open AI 的配置相对来说很简单，只要你将 API Key 填入设置中的 `访问密钥` 即可。
@@ -36,9 +35,8 @@ Open AI 的配置相对来说很简单，只要你将 API Key 填入设置中的
 
 ## Azure Open AI
 
-|||
-|-|-|
 |文档|https://learn.microsoft.com/azure/ai-services/openai/overview|
+|-|-| 
 |Azure 服务|https://azure.microsoft.com/en-us/products/ai-services/openai-service|
 
 Microsoft 与 Open AI 的关系较为特殊，有种 Open AI 特许经销商的感觉，所以你能够在 Azure 这个云服务平台创建 Open AI 资源，并按需部署 `GPT 3.5` , `GPT 4o` 等 Open AI 模型。
@@ -85,9 +83,8 @@ Azure Open AI 相较于 Open AI，最大的不同在于你需要手动部署需�
 
 ## Gemini
 
-|||
-|-|-|
 |文档|https://ai.google.dev/gemini-api/docs|
+|-|-| 
 |API 令牌|https://ai.google.dev/gemini-api/docs/api-key|
 
 和 [Open AI](#open-ai) 类似，获取访问密钥后，将其填入 `访问密钥` 中即可。
@@ -98,9 +95,8 @@ Gemini 作为谷歌提供的 AI 服务，国内用户如果要访问，也可能
 
 ## Anthropic
 
-|||
-|-|-|
 |文档|https://docs.anthropic.com/zh-CN/docs/intro-to-claude|
+|-|-| 
 |API 令牌|https://console.anthropic.com/account/keys|
 
 和 [Open AI](#open-ai) 类似，获取访问密钥后，将其填入 `访问密钥` 中即可。
@@ -109,9 +105,8 @@ Gemini 作为谷歌提供的 AI 服务，国内用户如果要访问，也可能
 
 即 Moonshot。
 
-|||
-|-|-|
 |文档|https://platform.moonshot.cn/docs/api/chat#api-%E8%AF%B4%E6%98%8E|
+|-|-| 
 |API 令牌|https://platform.moonshot.cn/console/api-keys|
 
 和 [Open AI](#open-ai) 类似，获取访问密钥后，将其填入 `访问密钥` 中即可。
@@ -120,36 +115,32 @@ Gemini 作为谷歌提供的 AI 服务，国内用户如果要访问，也可能
 
 ChatGLM 即出于此。
 
-|||
-|-|-|
 |文档|https://open.bigmodel.cn/dev/howuse/introduction|
+|-|-| 
 |API 令牌|https://open.bigmodel.cn/usercenter/apikeys|
 
 和 [Open AI](#open-ai) 类似，获取访问密钥后，将其填入 `访问密钥` 中即可。
 
 ## 零一万物
 
-|||
-|-|-|
 |文档|https://platform.lingyiwanwu.com/docs|
+|-|-| 
 |API 令牌|https://platform.lingyiwanwu.com/apikeys|
 
 和 [Open AI](#open-ai) 类似，获取访问密钥后，将其填入 `访问密钥` 中即可。
 
 ## DeepSeek
 
-|||
-|-|-|
 |文档|https://platform.deepseek.com/api-docs/zh-cn|
+|-|-| 
 |API 令牌|https://platform.deepseek.com/api_keys|
 
 和 [Open AI](#open-ai) 类似，获取访问密钥后，将其填入 `访问密钥` 中即可。
 
 ## 通义千问
 
-|||
-|-|-|
 |文档|https://help.aliyun.com/zh/dashscope/developer-reference/activate-dashscope-and-create-an-api-key|
+|-|-| 
 |API 令牌|https://dashscope.console.aliyun.com/apiKey|
 
 通义千问是阿里公开的大语言模型，它托管在阿里云的灵积平台，所以这要求你注册并开通阿里灵积服务。
@@ -162,9 +153,8 @@ ChatGLM 即出于此。
 
 ## 文心一言
 
-|||
-|-|-|
 |文档|https://cloud.baidu.com/doc/WENXINWORKSHOP/s/flfmc9do2|
+|-|-| 
 |API 令牌|https://console.bce.baidu.com/qianfan/ais/console/applicationConsole/application|
 
 文心一言是百度提供的大语言模型，它托管在百度云的千帆大模型平台。它有着自己的托管步骤，甚至对于不同的模型需要单独开通服务，这一点请在其文档中查阅。
@@ -193,9 +183,8 @@ ChatGLM 即出于此。
 
 ## 腾讯混元
 
-|||
-|-|-|
 |文档|https://cloud.tencent.com/document/product/1729/105701|
+|-|-| 
 |API 令牌|https://console.cloud.tencent.com/cam/capi|
 
 混元大模型托管在腾讯云上，你需要在 [API 密钥管理](https://console.cloud.tencent.com/cam/capi) 中创建一个密钥。
@@ -209,9 +198,8 @@ ChatGLM 即出于此。
 
 ## 讯飞星火
 
-|||
-|-|-|
 |文档|https://www.xfyun.cn/doc/spark/Web.html|
+|-|-| 
 |API 令牌|https://console.xfyun.cn/services/bm35|
 
 星火大模型是科大讯飞推出的大语言模型，在使用该模型家族前，你需要在 [讯飞开放平台](https://www.xfyun.cn/) 先注册一个应用，然后开通对应的模型服务。
@@ -224,65 +212,76 @@ ChatGLM 即出于此。
 - `APISecret` -> `密文（Secret）`
 - `APIKey` -> `API 密钥（API Key）`
 
+## 字节豆包
+
+|文档|https://www.volcengine.com/docs/82379/1263482|
+|-|-|
+|API 令牌|https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey|
+
+豆包大模型是字节跳动推出的大语言模型，在使用该模型前，你需要在 [火山引擎](https://www.volcengine.com/) 注册账户，然后在火山方舟的模型推理页面 [创建推理接入点](https://www.volcengine.com/docs/82379/1099522).
+
+你必须手动部署模型接入点，火山引擎没有提供预设的推理接入点。
+
+之后，你需要在 [API Key 管理](https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey) 中创建一个 API Key，将其填入应用中的设置项。
+
+### 自定义模型
+
+请参照 [创建推理接入点](https://www.volcengine.com/docs/82379/1099522) 先部署模型。
+
+然后在应用中点击创建自定义模型，将推理接入点 ID（ep-xxxxxxx）粘贴进模型 ID，然后给自定义模型取一个易读的名称，这样就创建好了一个自定义模型，然后就可以开始和这个模型聊天了。
+
 ## Silicon Flow
 
-|||
-|-|-|
 |文档|https://openrouter.ai/docs/quick-start|
+|-|-| 
 |API 令牌|https://docs.siliconflow.cn/docs/4-api%E8%B0%83%E7%94%A8|
 
 和 [Open AI](#open-ai) 类似，获取访问密钥后，将其填入 `访问密钥` 中即可。
 
 ## OpenRouter
 
-|||
-|-|-|
 |文档|https://openrouter.ai/docs/quick-start|
+|-|-| 
 |API 令牌|https://openrouter.ai/keys|
 
 和 [Open AI](#open-ai) 类似，获取访问密钥后，将其填入 `访问密钥` 中即可。
 
 ## Together AI
 
-|||
-|-|-|
 |文档|https://docs.together.ai/docs/quickstart|
+|-|-| 
 |API 令牌|https://api.together.xyz/settings/api-keys|
 
 和 [Open AI](#open-ai) 类似，获取访问密钥后，将其填入 `访问密钥` 中即可。
 
 ## Groq
 
-|||
-|-|-|
 |文档|https://console.groq.com/docs/quickstart|
+|-|-| 
 |API 令牌|https://console.groq.com/keys|
 
 和 [Open AI](#open-ai) 类似，获取访问密钥后，将其填入 `访问密钥` 中即可。
 
 ## Perplexity
 
-|||
-|-|-|
 |文档|https://docs.perplexity.ai/docs/getting-started|
+|-|-| 
 |API 令牌|https://www.perplexity.ai/settings/api|
 
 和 [Open AI](#open-ai) 类似，获取访问密钥后，将其填入 `访问密钥` 中即可。
 
 ## Mistral AI
 
-|||
-|-|-|
 |文档|https://docs.mistral.ai/|
+|-|-| 
 |API 令牌|https://console.mistral.ai/api-keys/|
 
 和 [Open AI](#open-ai) 类似，获取访问密钥后，将其填入 `访问密钥` 中即可。
 
 ## Ollama
 
-|||
-|-|-|
 |文档|https://github.com/ollama/ollama/blob/main/README.md#quickstart|
+|-|-| 
 |服务地址|默认为 `http://localhost:11434/v1`|
 |API 令牌|默认为 `ollama`|
 
