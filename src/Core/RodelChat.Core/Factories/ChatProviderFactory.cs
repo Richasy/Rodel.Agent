@@ -87,6 +87,7 @@ public sealed partial class ChatProviderFactory : IChatProviderFactory
         InjectHunYuan(config.HunYuan);
         InjectOllama(config.Ollama);
         InjectSiliconFlow(config.SiliconFlow);
+        InjectDouBao(config.DouBao);
     }
 
     private void RemoveProvider(ProviderType type)

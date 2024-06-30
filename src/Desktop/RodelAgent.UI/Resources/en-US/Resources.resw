@@ -396,6 +396,9 @@
   <data name="DisableSearch" xml:space="preserve">
     <value>Disable real-time search</value>
   </data>
+  <data name="DouBao" xml:space="preserve">
+    <value>ByteDance Doubao</value>
+  </data>
   <data name="DrawCount" xml:space="preserve">
     <value>Number of drawings</value>
   </data>

@@ -106,6 +106,11 @@ public enum ProviderType
     /// Silicon Flow.
     /// </summary>
     SiliconFlow,
+
+    /// <summary>
+    /// 豆包.
+    /// </summary>
+    DouBao,
 }
 
 /// <summary>
@@ -137,6 +142,7 @@ public sealed class ProviderTypeConverter : JsonConverter<ProviderType>
             "hunyuan" => ProviderType.HunYuan,
             "ollama" => ProviderType.Ollama,
             "silicon_flow" or "siliconflow" => ProviderType.SiliconFlow,
+            "doubao" => ProviderType.DouBao,
             _ => throw new JsonException(),
         };
     }
@@ -165,6 +171,7 @@ public sealed class ProviderTypeConverter : JsonConverter<ProviderType>
             ProviderType.HunYuan => "hunyuan",
             ProviderType.Ollama => "ollama",
             ProviderType.SiliconFlow => "silicon_flow",
+            ProviderType.DouBao => "doubao",
             _ => throw new JsonException(),
         };
 

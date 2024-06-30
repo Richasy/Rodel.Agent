@@ -168,4 +168,12 @@ public sealed partial class ChatProviderFactory
             AddCreateMethod(ProviderType.SiliconFlow, () => new SiliconFlowProvider(config));
         }
     }
+
+    private void InjectDouBao(DouBaoClientConfig? config)
+    {
+        if (!string.IsNullOrEmpty(config?.Key))
+        {
+            AddCreateMethod(ProviderType.DouBao, () => new DouBaoProvider(config));
+        }
+    }
 }

@@ -23,6 +23,7 @@ public sealed class ChatParametersFactory : IChatParametersFactory
             ProviderType.QianFan => new QianFanProvider.QianFanChatParameters(),
             ProviderType.HunYuan => new HunYuanProvider.HunYuanChatParameters(),
             ProviderType.ZhiPu => new ZhiPuProvider.ZhiPuChatParameters(),
+            ProviderType.DouBao => new DouBaoProvider.DouBaoChatParameters(),
             _ => new ProviderBase.OpenAIChatParameters(),
         };
     }

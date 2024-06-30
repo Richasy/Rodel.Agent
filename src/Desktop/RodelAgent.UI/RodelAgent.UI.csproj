@@ -131,6 +131,7 @@
     <None Remove="Controls\Settings\AzureOpenAIDrawConfigSettingSection.xaml" />
     <None Remove="Controls\Settings\AzureSpeechConfigSettingSection.xaml" />
     <None Remove="Controls\Settings\AzureTranslateConfigSettingSection.xaml" />
+    <None Remove="Controls\Settings\DouBaoChatConfigSettingSection.xaml" />
     <None Remove="Controls\Settings\HunYuanChatConfigSettingSection.xaml" />
     <None Remove="Controls\Settings\HunYuanDrawConfigSettingSection.xaml" />
     <None Remove="Controls\Settings\LanguageSettingSection.xaml" />
@@ -158,6 +159,7 @@
     <None Remove="Controls\Startup\Audio\OpenAIAudioConfigSection.xaml" />
     <None Remove="Controls\Startup\Audio\PredefinedAudioModelSection.xaml" />
     <None Remove="Controls\Startup\AzureTranslateConfigSection.xaml" />
+    <None Remove="Controls\Startup\Chat\DouBaoChatConfigSection.xaml" />
     <None Remove="Controls\Startup\CustomDrawModelDialog.xaml" />
     <None Remove="Controls\Startup\DrawClientConfigSection.xaml" />
     <None Remove="Controls\Startup\Draw\AzureOpenAIDrawConfigSection.xaml" />
@@ -619,6 +621,12 @@
     <Page Update="Controls\Base\VisibilityToggleButton.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Update="Controls\Settings\DouBaoChatConfigSettingSection.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Controls\Startup\Chat\DouBaoChatConfigSection.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <None Update="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -857,7 +865,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controls\Startup\Chat\" />
     <Folder Include="Controls\Startup\Translate\" />
   </ItemGroup>
   <ItemGroup>

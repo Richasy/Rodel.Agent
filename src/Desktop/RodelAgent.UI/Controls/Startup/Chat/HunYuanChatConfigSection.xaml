@@ -11,7 +11,7 @@
     mc:Ignorable="d">
 
     <StackPanel Spacing="8">
-        <local:ChatClientConfigSection ViewModel="{x:Bind ViewModel}" />
+        <local:ChatClientConfigSection CustomHeaderText="{ext:Locale Name=SecretKey}" ViewModel="{x:Bind ViewModel}" />
         <PasswordBox
             x:Name="SecretBox"
             HorizontalAlignment="Stretch"

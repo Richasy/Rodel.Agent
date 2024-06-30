@@ -123,6 +123,9 @@
   <data name="DashScope" xml:space="preserve">
     <value>阿里灵积</value>
   </data>
+  <data name="DouBao" xml:space="preserve">
+    <value>字节豆包</value>
+  </data>
   <data name="HunYuan" xml:space="preserve">
     <value>腾讯混元</value>
   </data>

@@ -99,6 +99,7 @@
                 <GradientStop Offset="1" Color="#3F30FF" />
             </LinearGradientBrush>
             <SolidColorBrush x:Key="SiliconFlowColor" Color="#7C3AED" />
+            <SolidColorBrush x:Key="DouBaoColor" Color="White" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
