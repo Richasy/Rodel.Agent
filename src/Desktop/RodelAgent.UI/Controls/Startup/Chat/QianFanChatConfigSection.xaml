@@ -11,12 +11,12 @@
     mc:Ignorable="d">
 
     <StackPanel Spacing="8">
-        <local:ChatClientConfigSection ViewModel="{x:Bind ViewModel}" />
+        <local:ChatClientConfigSection CustomHeaderText="{ext:Locale Name=ApiKey}" ViewModel="{x:Bind ViewModel}" />
         <PasswordBox
             x:Name="SecretBox"
             HorizontalAlignment="Stretch"
-            AutomationProperties.Name="{ext:Locale Name=Secret}"
-            Header="{ext:Locale Name=Secret}"
+            AutomationProperties.Name="{ext:Locale Name=SecretKey}"
+            Header="{ext:Locale Name=SecretKey}"
             HeaderTemplate="{StaticResource InputHeaderTemplate}"
             PasswordChanged="OnSecretBoxTextChanged" />
     </StackPanel>

@@ -114,12 +114,12 @@ public sealed partial class ChatSessionViewModel
         }
 
         UserInput = lastUserMessage.Content;
+        TempMessage = string.Empty;
         Data.Messages.RemoveAt(Data.Messages.Count - 1);
         Data.Messages.Remove(lastUserMessage.Data);
         Messages.RemoveAt(Messages.Count - 1);
-        Messages.Remove(lastUserMessage);
         await SaveSessionToDatabaseAsync();
-        await SendMessageInternalAsync();
+        await SendMessageInternalAsync(false);
     }
 
     private ChatMessage CreateUserMessage()

@@ -48,6 +48,7 @@ public sealed partial class ChatConfigurationSection : ChatServiceConfigControlB
             ProviderType.QianFan => CreateForm<QianFanChatConfigSection>(),
             ProviderType.HunYuan => CreateForm<HunYuanChatConfigSection>(),
             ProviderType.SparkDesk => CreateForm<SparkDeskChatConfigSection>(),
+            ProviderType.DouBao => CreateForm<DouBaoChatConfigSection>(),
             _ => throw new NotImplementedException(),
         };
 

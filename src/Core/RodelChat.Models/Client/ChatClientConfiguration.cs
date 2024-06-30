@@ -124,6 +124,12 @@ public sealed class ChatClientConfiguration
     /// </summary>
     [JsonPropertyName("silicon_flow")]
     public SiliconFlowClientConfig? SiliconFlow { get; set; }
+
+    /// <summary>
+    /// 豆包客户端配置.
+    /// </summary>
+    [JsonPropertyName("doubao")]
+    public DouBaoClientConfig? DouBao { get; set; }
 }
 
 /// <summary>
@@ -205,6 +211,16 @@ public sealed class HunYuanClientConfig : ClientConfigBase
     /// <inheritdoc/>
     public override bool IsValid()
         => base.IsValid() && !string.IsNullOrEmpty(SecretId);
+}
+
+/// <summary>
+/// 豆包大模型配置.
+/// </summary>
+public sealed class DouBaoClientConfig : ClientConfigBase
+{
+    /// <inheritdoc/>
+    public override bool IsValid()
+        => base.IsValid() && IsCustomModelNotEmpty();
 }
 
 /// <summary>

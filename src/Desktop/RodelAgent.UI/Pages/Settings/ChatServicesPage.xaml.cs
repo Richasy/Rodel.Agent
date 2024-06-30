@@ -44,6 +44,7 @@ public sealed partial class ChatServicesPage : SettingsPageBase
                 ProviderType.QianFan => CreateForm<QianFanChatConfigSettingSection>(item),
                 ProviderType.HunYuan => CreateForm<HunYuanChatConfigSettingSection>(item),
                 ProviderType.SparkDesk => CreateForm<SparkDeskChatConfigSettingSection>(item),
+                ProviderType.DouBao => CreateForm<DouBaoChatConfigSettingSection>(item),
                 _ => throw new NotImplementedException(),
             };
 

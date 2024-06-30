@@ -14,8 +14,8 @@
         <PasswordBox
             x:Name="KeyBox"
             HorizontalAlignment="Stretch"
-            AutomationProperties.Name="{ext:Locale Name=AccessKey}"
-            Header="{ext:Locale Name=AccessKey}"
+            AutomationProperties.Name="{x:Bind CustomHeaderText, Mode=OneWay}"
+            Header="{x:Bind CustomHeaderText, Mode=OneWay}"
             HeaderTemplate="{StaticResource InputHeaderTemplate}"
             PasswordChanged="OnKeyBoxPasswordChanged" />
     </StackPanel>

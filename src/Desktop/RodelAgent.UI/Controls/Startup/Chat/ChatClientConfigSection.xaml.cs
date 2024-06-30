@@ -2,6 +2,8 @@
 
 using System.Diagnostics;
 using System.Reflection;
+using RodelAgent.UI.Models.Constants;
+using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels.Items;
 using RodelChat.Models.Client;
 
@@ -13,12 +15,27 @@ namespace RodelAgent.UI.Controls.Startup;
 public sealed partial class ChatClientConfigSection : ChatServiceConfigControlBase
 {
     /// <summary>
+    /// <see cref="CustomHeaderText"/> 的依赖属性.
+    /// </summary>
+    public static readonly DependencyProperty CustomHeaderTextProperty =
+        DependencyProperty.Register(nameof(CustomHeaderText), typeof(string), typeof(ChatClientConfigSection), new PropertyMetadata(default));
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="ChatClientConfigSection"/> class.
     /// </summary>
     public ChatClientConfigSection()
     {
         InitializeComponent();
         Loaded += OnLoaded;
+    }
+
+    /// <summary>
+    /// 自定义密钥标题文本.
+    /// </summary>
+    public string CustomHeaderText
+    {
+        get => (string)GetValue(CustomHeaderTextProperty);
+        set => SetValue(CustomHeaderTextProperty, value);
     }
 
     /// <inheritdoc/>
@@ -37,6 +54,11 @@ public sealed partial class ChatClientConfigSection : ChatServiceConfigControlBa
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
+        if(string.IsNullOrEmpty(CustomHeaderText))
+        {
+            CustomHeaderText = ResourceToolkit.GetLocalizedString(StringNames.AccessKey);
+        }
+
         KeyBox.Password = ViewModel.Config?.Key ?? string.Empty;
         KeyBox.Focus(FocusState.Programmatic);
     }

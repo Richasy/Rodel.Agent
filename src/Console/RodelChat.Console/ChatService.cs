@@ -1,7 +1,5 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
-#define USE_GROUP
-
 using Microsoft.Extensions.Hosting;
 using RodelAgent.Interfaces;
 using RodelAgent.Statics;

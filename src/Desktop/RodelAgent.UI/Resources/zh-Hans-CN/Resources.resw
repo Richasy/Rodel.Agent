@@ -396,6 +396,9 @@
   <data name="DisableSearch" xml:space="preserve">
     <value>禁用实时搜索功能</value>
   </data>
+  <data name="DouBao" xml:space="preserve">
+    <value>字节豆包</value>
+  </data>
   <data name="DrawCount" xml:space="preserve">
     <value>绘图张数</value>
   </data>
