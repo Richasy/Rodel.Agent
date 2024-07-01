@@ -32,6 +32,7 @@ export const en = defineConfig({
             { text: 'Service config', link: '/en/chat-config' },
             { text: 'Quick chat', link: '/en/chat-simple' },
             { text: 'Agents & Presets', link: '/en/agent-preset' },
+            { text: 'Group chat', link: '/en/group-chat'},
             { text: 'Tool invocation', link: '/en/chat-tools' },
             { text: 'Tool development', link: '/en/tool-dev' }
           ]

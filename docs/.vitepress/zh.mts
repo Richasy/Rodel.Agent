@@ -32,6 +32,7 @@ export const zh = defineConfig({
               { text: '服务配置', link: '/chat-config' },
               { text: '简单对话', link: '/chat-simple' },
               { text: '助理与预设', link: '/agent-preset' },
+              { text: '群组聊天', link: '/group-chat'},
               { text: '工具调用', link: '/chat-tools' },
               { text: '插件开发', link: '/tool-dev' }
             ]
