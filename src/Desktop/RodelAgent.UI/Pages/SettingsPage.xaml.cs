@@ -85,7 +85,7 @@ public sealed partial class SettingsPage : SettingsPageBase
 
         var workDir = SettingsToolkit.ReadLocalSetting(SettingNames.WorkingDirectory, string.Empty);
         _isDatabaseVerified = File.Exists(Path.Combine(workDir, "secret.db"));
-        if (_isDatabaseVerified)
+        if (!_isDatabaseVerified)
         {
             var dialog = new ContentDialog
             {
