@@ -390,6 +390,12 @@
   <data name="DashScope" xml:space="preserve">
     <value>阿里灵积</value>
   </data>
+  <data name="DatabaseMissed" xml:space="preserve">
+    <value>数据库缺失</value>
+  </data>
+  <data name="DatabaseMissedDescription" xml:space="preserve">
+    <value>看上去在数据库初始化的过程中出现了问题，未在你的工作目录中检测到必须的数据库。请点击下方的按钮查看如何修复这个问题</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>删除</value>
   </data>
@@ -966,6 +972,9 @@
   </data>
   <data name="SmartRename" xml:space="preserve">
     <value>智能重命名</value>
+  </data>
+  <data name="Solution" xml:space="preserve">
+    <value>解决方案</value>
   </data>
   <data name="SourceLanguage" xml:space="preserve">
     <value>源语言</value>

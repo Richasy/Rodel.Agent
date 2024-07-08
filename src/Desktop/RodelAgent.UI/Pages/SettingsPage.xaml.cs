@@ -3,7 +3,9 @@
 using Microsoft.UI.Xaml.Media.Animation;
 using RodelAgent.Interfaces;
 using RodelAgent.UI.Models.Constants;
+using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels.Pages;
+using Windows.System;
 
 namespace RodelAgent.UI.Pages;
 
@@ -13,6 +15,7 @@ namespace RodelAgent.UI.Pages;
 public sealed partial class SettingsPage : SettingsPageBase
 {
     private SettingSectionType? _previousSection;
+    private bool _isDatabaseVerified;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SettingsPage"/> class.
@@ -26,6 +29,10 @@ public sealed partial class SettingsPage : SettingsPageBase
     /// <inheritdoc/>
     protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         => SaveSettings();
+
+    /// <inheritdoc/>
+    protected override async void OnPageLoaded()
+        => await VerifyDatabaseAsync();
 
     /// <inheritdoc/>
     protected override void OnPageUnloaded()
@@ -66,6 +73,35 @@ public sealed partial class SettingsPage : SettingsPageBase
         if (pageType is not null)
         {
             SectionFrame.Navigate(pageType, default, new SlideNavigationTransitionInfo { Effect = animationType });
+        }
+    }
+
+    private async Task VerifyDatabaseAsync()
+    {
+        if (_isDatabaseVerified)
+        {
+            return;
+        }
+
+        var workDir = SettingsToolkit.ReadLocalSetting(SettingNames.WorkingDirectory, string.Empty);
+        _isDatabaseVerified = File.Exists(Path.Combine(workDir, "secret.db"));
+        if (_isDatabaseVerified)
+        {
+            var dialog = new ContentDialog
+            {
+                Title = ResourceToolkit.GetLocalizedString(StringNames.DatabaseMissed),
+                Content = ResourceToolkit.GetLocalizedString(StringNames.DatabaseMissedDescription),
+                PrimaryButtonText = ResourceToolkit.GetLocalizedString(StringNames.Solution),
+                CloseButtonText = ResourceToolkit.GetLocalizedString(StringNames.Cancel),
+                DefaultButton = ContentDialogButton.Primary,
+                XamlRoot = XamlRoot,
+            };
+
+            var result = await dialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                await Launcher.LaunchUriAsync(new Uri("https://agent.richasy.net/faq"));
+            }
         }
     }
 }

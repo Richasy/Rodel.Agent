@@ -22,6 +22,7 @@ export const zh = defineConfig({
               { text: '安装应用', link: '/install' },
               { text: '支持的服务', link: '/services' },
               { text: '工作目录与数据同步', link: '/work-directory' },
+              { text: '常见问题', link: './faq' },
               { text: 'V1 数据迁移', link: '/v1-migration' },
               { text: '隐私策略', link: '/privacy' }
             ]
