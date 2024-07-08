@@ -22,6 +22,7 @@ export const en = defineConfig({
             { text: 'Installation', link: '/en/install' },
             { text: 'Supported services', link: '/en/services' },
             { text: 'Work directory & Data sync', link: '/en/work-directory' },
+            { text: 'FAQ', link: './faq' },
             { text: 'V1 data migration', link: '/en/v1-migration' },
             { text: 'Privacy Policy', link: '/en/privacy' }
           ]

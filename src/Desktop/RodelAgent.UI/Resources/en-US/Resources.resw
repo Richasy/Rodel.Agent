@@ -390,6 +390,12 @@
   <data name="DashScope" xml:space="preserve">
     <value>Dash Scope</value>
   </data>
+  <data name="DatabaseMissed" xml:space="preserve">
+    <value>Database Missing</value>
+  </data>
+  <data name="DatabaseMissedDescription" xml:space="preserve">
+    <value>It appears that there was a problem during database initialization. The necessary database was not detected in your working directory. Please click the button below to see how to fix this problem.</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
@@ -966,6 +972,9 @@ You can manually adjust the limit, and the application will capture the specifie
   </data>
   <data name="SmartRename" xml:space="preserve">
     <value>Smart rename</value>
+  </data>
+  <data name="Solution" xml:space="preserve">
+    <value>Solution</value>
   </data>
   <data name="SourceLanguage" xml:space="preserve">
     <value>Source language</value>
