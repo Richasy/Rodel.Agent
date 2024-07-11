@@ -19,6 +19,8 @@ public sealed partial class ChatSessionViewModel
     private readonly ILogger<ChatSessionViewModel> _logger;
     private CancellationTokenSource _cancellationTokenSource;
 
+    private int _baseTokenCount;
+
     [ObservableProperty]
     private ChatServiceItemViewModel _chatService;
 
@@ -75,6 +77,24 @@ public sealed partial class ChatSessionViewModel
 
     [ObservableProperty]
     private string _generatingTipText;
+
+    [ObservableProperty]
+    private int _totalTokenUsage;
+
+    [ObservableProperty]
+    private int _remainderTokenCount;
+
+    [ObservableProperty]
+    private int _systemTokenCount;
+
+    [ObservableProperty]
+    private int _userInputWordCount;
+
+    [ObservableProperty]
+    private int _userInputTokenCount;
+
+    [ObservableProperty]
+    private int _totalTokenCount;
 
     /// <summary>
     /// 请求滚动到底部.

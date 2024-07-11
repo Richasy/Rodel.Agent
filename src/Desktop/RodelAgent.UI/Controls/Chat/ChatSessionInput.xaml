@@ -141,6 +141,9 @@
                         Duration="0:0:0.5" />
                 </animations:Implicit.HideAnimations>
             </StackPanel>
+            <Grid Visibility="{x:Bind ViewModel.IsResponding, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+                <local:ChatSessionTokenUsageControl HorizontalAlignment="Left" ViewModel="{x:Bind ViewModel, Mode=OneWay}" />
+            </Grid>
             <StackPanel
                 Grid.Column="1"
                 Orientation="Horizontal"

@@ -281,5 +281,6 @@
                     IsHide="{x:Bind ViewModel.IsExtraColumnManualHide, Mode=OneWay}" />
             </Grid>
         </Grid>
+        <ProgressRing x:Name="InitialRing" Style="{StaticResource PageProgressRingStyle}" />
     </Grid>
 </local:ChatServicePageBase>
