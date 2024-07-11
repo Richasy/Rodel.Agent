@@ -558,6 +558,12 @@
   <data name="ImportPlugin" xml:space="preserve">
     <value>Import plugin</value>
   </data>
+  <data name="InputToken" xml:space="preserve">
+    <value>Input tokens</value>
+  </data>
+  <data name="InputWordCount" xml:space="preserve">
+    <value>Input words</value>
+  </data>
   <data name="InsertImage" xml:space="preserve">
     <value>Insert image</value>
   </data>
@@ -874,6 +880,9 @@ You can manually adjust the limit, and the application will capture the specifie
   <data name="Region" xml:space="preserve">
     <value>Region</value>
   </data>
+  <data name="RemainderUsage" xml:space="preserve">
+    <value>Remainder</value>
+  </data>
   <data name="RemoveAllSessions" xml:space="preserve">
     <value>Remove all sessions</value>
   </data>
@@ -1069,6 +1078,12 @@ You can manually adjust the limit, and the application will capture the specifie
   <data name="Tip" xml:space="preserve">
     <value>Tip</value>
   </data>
+  <data name="Token" xml:space="preserve">
+    <value>TOKEN</value>
+  </data>
+  <data name="TokenUsage" xml:space="preserve">
+    <value>Token usage</value>
+  </data>
   <data name="Tools" xml:space="preserve">
     <value>Tools</value>
   </data>
@@ -1083,6 +1098,9 @@ You can manually adjust the limit, and the application will capture the specifie
   </data>
   <data name="TopPDescription" xml:space="preserve">
     <value>Only consider higher quality token results, for example, at 0.1, the model only considers tokens within the top 10% of probability mass (usually not mixed with sampling temperature)</value>
+  </data>
+  <data name="TotalUsage" xml:space="preserve">
+    <value>Total usage</value>
   </data>
   <data name="Translate" xml:space="preserve">
     <value>Translate</value>

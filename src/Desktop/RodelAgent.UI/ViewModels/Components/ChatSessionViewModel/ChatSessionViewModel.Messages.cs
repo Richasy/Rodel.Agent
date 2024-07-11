@@ -6,6 +6,7 @@ using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels.Items;
 using RodelChat.Models.Client;
 using RodelChat.Models.Constants;
+using Tiktoken;
 
 namespace RodelAgent.UI.ViewModels.Components;
 
@@ -217,14 +218,17 @@ public sealed partial class ChatSessionViewModel
     }
 
     private Task EditMessageAsync(ChatMessage msg)
-        => SaveSessionToDatabaseAsync();
+    {
+        CalcTotalTokenCount();
+        return SaveSessionToDatabaseAsync();
+    }
 
     private async Task DeleteMessageAsync(ChatMessage msg)
     {
         var source = Messages.FirstOrDefault(p => p.Data.Equals(msg));
         Messages.Remove(source);
         Data.Messages.Remove(msg);
-
+        CalcTotalTokenCount();
         await SaveSessionToDatabaseAsync();
     }
 
@@ -233,5 +237,36 @@ public sealed partial class ChatSessionViewModel
         ErrorText = ex.Message;
         _logger.LogDebug(ex, "Failed to send message.");
         CancelMessage();
+    }
+
+    private void CalcBaseTokenCount()
+    {
+        if (Data.Messages.Count == 0 && string.IsNullOrEmpty(Data.SystemInstruction))
+        {
+            _baseTokenCount = 0;
+            return;
+        }
+
+        var encoder = ModelToEncoder.For("gpt-4o");
+        var messages = string.Join("\n\n", Data.Messages.Select(p => p.GetFirstTextContent()));
+        SystemTokenCount = !string.IsNullOrEmpty(Data.SystemInstruction) ? encoder.CountTokens(Data.SystemInstruction) : 0;
+        _baseTokenCount = encoder.CountTokens(messages) + SystemTokenCount;
+    }
+
+    private void CalcUserInputTokenCount()
+    {
+        UserInputWordCount = UserInput?.Length ?? 0;
+        if (!string.IsNullOrEmpty(UserInput))
+        {
+            var encoder = ModelToEncoder.For("gpt-4o");
+            UserInputTokenCount = encoder.CountTokens(UserInput);
+        }
+        else
+        {
+            UserInputTokenCount = 0;
+        }
+
+        TotalTokenUsage = _baseTokenCount + UserInputTokenCount;
+        RemainderTokenCount = TotalTokenCount == 0 ? -1 : TotalTokenCount - TotalTokenUsage;
     }
 }

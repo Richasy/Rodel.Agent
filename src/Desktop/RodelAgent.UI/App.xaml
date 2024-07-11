@@ -48,6 +48,7 @@
             <converters:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
             <converters:ObjectToVisibilityConverter x:Key="ObjectToVisibilityReverseConverter" IsReverse="True" />
             <converters:SecondsToTimeConverter x:Key="SecondsToTimeConverter" />
+            <converters:TokenCountConverter x:Key="TokenCountConverter" />
 
             <SolidColorBrush x:Key="AnthropicColor" Color="#F1F0E8" />
             <SolidColorBrush x:Key="AzureOpenAIColor" Color="#FFFFFF" />

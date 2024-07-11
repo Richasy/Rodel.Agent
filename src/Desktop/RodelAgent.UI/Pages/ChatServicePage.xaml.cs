@@ -25,9 +25,10 @@ public sealed partial class ChatServicePage : ChatServicePageBase
     /// <inheritdoc/>
     protected override async void OnPageLoaded()
     {
+        InitialRing.IsActive = true;
         if (ViewModel.IsAvailableServicesEmpty)
         {
-            ViewModel.ResetAvailableChatServicesCommand.Execute(default);
+            await ViewModel.ResetAvailableChatServicesCommand.ExecuteAsync(default);
         }
 
         if (ViewModel.IsAgentsEmpty)
@@ -37,17 +38,18 @@ public sealed partial class ChatServicePage : ChatServicePageBase
 
         if (ViewModel.IsSessionPresetsEmpty)
         {
-            ViewModel.ResetSessionPresetsCommand.Execute(default);
+            await ViewModel.ResetSessionPresetsCommand.ExecuteAsync(default);
         }
 
         if (ViewModel.IsGroupsEmpty)
         {
-            ViewModel.ResetGroupsCommand.Execute(default);
+            await ViewModel.ResetGroupsCommand.ExecuteAsync(default);
         }
 
         InitializeSessionPanelType();
         InitializeGroupPanelType();
         UpdateExtraSizer();
+        InitialRing.IsActive = false;
     }
 
     private void OnSizeChanged(object sender, SizeChangedEventArgs e)

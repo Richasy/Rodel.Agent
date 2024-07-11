@@ -65,6 +65,7 @@
     <None Remove="Controls\Chat\ChatGroupPanel.xaml" />
     <None Remove="Controls\Chat\ChatPluginSection.xaml" />
     <None Remove="Controls\Chat\ChatPluginSelection.xaml" />
+    <None Remove="Controls\Chat\ChatSessionTokenUsageControl.xaml" />
     <None Remove="Controls\Chat\GroupAgentsPanel.xaml" />
     <None Remove="Controls\Chat\GroupOptionsPanel.xaml" />
     <None Remove="Controls\Chat\GroupPresetSettingsDialog.xaml" />
@@ -234,6 +235,7 @@
     <PackageReference Include="NAudio" Version="2.2.1" />
     <PackageReference Include="NLog.Extensions.Logging" Version="5.3.11" />
     <PackageReference Include="Roman-Numerals" Version="2.0.0" />
+    <PackageReference Include="Tiktoken" Version="2.0.3" />
     <PackageReference Include="WinUIEx" Version="2.3.4" />
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
@@ -625,6 +627,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Controls\Startup\Chat\DouBaoChatConfigSection.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Controls\Chat\ChatSessionTokenUsageControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <None Update="NLog.config">

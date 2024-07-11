@@ -558,6 +558,12 @@
   <data name="ImportPlugin" xml:space="preserve">
     <value>导入插件</value>
   </data>
+  <data name="InputToken" xml:space="preserve">
+    <value>输入标记</value>
+  </data>
+  <data name="InputWordCount" xml:space="preserve">
+    <value>输入字数</value>
+  </data>
   <data name="InsertImage" xml:space="preserve">
     <value>插入图片</value>
   </data>
@@ -874,6 +880,9 @@
   <data name="Region" xml:space="preserve">
     <value>位置/区域</value>
   </data>
+  <data name="RemainderUsage" xml:space="preserve">
+    <value>剩余可用</value>
+  </data>
   <data name="RemoveAllSessions" xml:space="preserve">
     <value>清除所有会话</value>
   </data>
@@ -1069,6 +1078,12 @@
   <data name="Tip" xml:space="preserve">
     <value>提醒</value>
   </data>
+  <data name="Token" xml:space="preserve">
+    <value>标记</value>
+  </data>
+  <data name="TokenUsage" xml:space="preserve">
+    <value>标记记录</value>
+  </data>
   <data name="Tools" xml:space="preserve">
     <value>工具</value>
   </data>
@@ -1083,6 +1098,9 @@
   </data>
   <data name="TopPDescription" xml:space="preserve">
     <value>只考虑较高质量的标记结果，例如 0.1 时，模型仅考虑包含概率质量前 10% 的标记（通常不与采样温度混用）</value>
+  </data>
+  <data name="TotalUsage" xml:space="preserve">
+    <value>总计使用</value>
   </data>
   <data name="Translate" xml:space="preserve">
     <value>翻译</value>

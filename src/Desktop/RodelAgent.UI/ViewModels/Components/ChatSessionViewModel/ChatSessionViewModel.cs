@@ -69,6 +69,7 @@ public sealed partial class ChatSessionViewModel : ViewModelBase<ChatSession>
         CheckChatEmpty();
         CheckLastMessageTime();
         CheckRegenerateButtonShown();
+        CalcTotalTokenCount();
         RequestFocusInput?.Invoke(this, EventArgs.Empty);
     }
 
@@ -111,6 +112,7 @@ public sealed partial class ChatSessionViewModel : ViewModelBase<ChatSession>
     [RelayCommand]
     private async Task ChangeModelAsync(ChatModelItemViewModel model)
     {
+        TotalTokenCount = 0;
         if (model is null)
         {
             return;
@@ -118,6 +120,7 @@ public sealed partial class ChatSessionViewModel : ViewModelBase<ChatSession>
 
         Data.Model = model.Id;
         Model = model.Name;
+        TotalTokenCount = Convert.ToInt32(model.ContextLength);
         foreach (var item in Models)
         {
             item.IsSelected = item.Equals(model);
@@ -152,6 +155,13 @@ public sealed partial class ChatSessionViewModel : ViewModelBase<ChatSession>
     private void CheckRegenerateButtonShown()
         => IsRegenerateButtonShown = !IsChatEmpty && !IsResponding && Messages.Last().IsAssistant;
 
+    [RelayCommand]
+    private void CalcTotalTokenCount()
+    {
+        CalcBaseTokenCount();
+        CalcUserInputTokenCount();
+    }
+
     private void InitializeModels()
     {
         Models.Clear();
@@ -184,6 +194,7 @@ public sealed partial class ChatSessionViewModel : ViewModelBase<ChatSession>
         {
             selectedModel.IsSelected = true;
             Model = selectedModel.Name;
+            TotalTokenCount = Convert.ToInt32(selectedModel.ContextLength);
         }
     }
 
@@ -218,6 +229,7 @@ public sealed partial class ChatSessionViewModel : ViewModelBase<ChatSession>
         CheckChatEmpty();
         CheckRegenerateButtonShown();
         CheckLastMessageTime();
+        CalcTotalTokenCount();
     }
 
     partial void OnIsEnterSendChanged(bool value)
@@ -225,4 +237,7 @@ public sealed partial class ChatSessionViewModel : ViewModelBase<ChatSession>
 
     partial void OnModelChanged(string value)
         => CheckCurrentModelStatus();
+
+    partial void OnUserInputChanged(string value)
+        => CalcUserInputTokenCount();
 }
