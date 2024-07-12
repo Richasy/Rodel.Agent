@@ -72,7 +72,7 @@
                         ToolTipService.ToolTip="{ext:Locale Name=ChangeDirectory}">
                         <ic:SymbolIcon
                             FontSize="14"
-                            IsFilled="True"
+                            IconVariant="Filled"
                             Symbol="Edit" />
                     </Button>
                 </Grid>

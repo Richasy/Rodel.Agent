@@ -49,7 +49,7 @@
                     <ic:SymbolIcon
                         FontSize="14"
                         Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                        IsFilled="True"
+                        IconVariant="Filled"
                         Symbol="BotAdd" />
                 </Button>
                 <Button
@@ -58,7 +58,7 @@
                     ToolTipService.ToolTip="{ext:Locale Name=MoreOptions}">
                     <ic:SymbolIcon
                         FontSize="14"
-                        IsFilled="True"
+                        IconVariant="Filled"
                         Symbol="MoreHorizontal" />
                     <Button.Flyout>
                         <MenuFlyout Placement="Bottom">
@@ -113,7 +113,7 @@
                         <ic:SymbolIcon
                             VerticalAlignment="Center"
                             FontSize="12"
-                            IsFilled="{x:Bind ViewModel.IsServiceSectionVisible, Mode=OneWay}"
+                            IconVariant="{x:Bind GetIconVariant(ViewModel.IsServiceSectionVisible), Mode=OneWay}"
                             Symbol="BotSparkle" />
                         <TextBlock
                             x:Name="ServiceBlock"
@@ -140,7 +140,7 @@
                         <ic:SymbolIcon
                             VerticalAlignment="Center"
                             FontSize="12"
-                            IsFilled="{x:Bind ViewModel.IsPluginSectionVisible, Mode=OneWay}"
+                            IconVariant="{x:Bind GetIconVariant(ViewModel.IsPluginSectionVisible), Mode=OneWay}"
                             Symbol="FlashSparkle" />
                         <TextBlock
                             x:Name="PresetBlock"

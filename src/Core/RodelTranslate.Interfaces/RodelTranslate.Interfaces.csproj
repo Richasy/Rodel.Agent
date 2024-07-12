@@ -14,5 +14,4 @@
     <ProjectReference Include="..\..\Libs\semantic-kernel\dotnet\src\SemanticKernel.Abstractions\SemanticKernel.Abstractions.csproj" />
     <ProjectReference Include="..\RodelTranslate.Models\RodelTranslate.Models.csproj" />
   </ItemGroup>
-
 </Project>

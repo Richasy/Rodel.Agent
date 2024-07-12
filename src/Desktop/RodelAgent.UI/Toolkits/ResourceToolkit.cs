@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
-using System.Collections.Generic;
 using RodelAgent.Interfaces;
 using RodelAgent.UI.Models.Constants;
 using Windows.ApplicationModel.Resources.Core;

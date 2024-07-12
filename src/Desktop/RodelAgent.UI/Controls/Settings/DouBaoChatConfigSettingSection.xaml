@@ -39,7 +39,7 @@
         <ic:SymbolIcon
             FontSize="14"
             Foreground="{ThemeResource SystemFillColorSuccessBrush}"
-            IsFilled="True"
+            IconVariant="Filled"
             Symbol="CheckmarkCircle"
             Visibility="{x:Bind ViewModel.IsCompleted, Mode=OneWay}" />
     </community:SettingsExpander>
