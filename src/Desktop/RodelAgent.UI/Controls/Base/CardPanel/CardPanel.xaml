@@ -7,9 +7,21 @@
         <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
     </ResourceDictionary.MergedDictionaries>
 
+    <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Light">
+            <x:Double x:Key="CardPanelStrokeThickness">0</x:Double>
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Dark">
+            <x:Double x:Key="CardPanelStrokeThickness">0</x:Double>
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="HighContrast">
+            <x:Double x:Key="CardPanelStrokeThickness">1</x:Double>
+        </ResourceDictionary>
+    </ResourceDictionary.ThemeDictionaries>
+
     <Style x:Key="DefaultCardPanelStyle" TargetType="local:CardPanel">
         <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}" />
-        <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="StrokeThickness" Value="{ThemeResource CardPanelStrokeThickness}" />
         <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}" />
         <Setter Property="Padding" Value="0" />
         <Setter Property="Foreground" Value="{ThemeResource TextFillColorSecondaryBrush}" />
@@ -20,17 +32,17 @@
         <Setter Property="PressedBorderBrush" Value="{ThemeResource SubtleFillColorTransparentBrush}" />
         <Setter Property="DisabledBackground" Value="{ThemeResource ControlFillColorDisabledBrush}" />
         <Setter Property="DisabledBorderBrush" Value="{ThemeResource ControlStrokeColorSecondaryBrush}" />
-        <Setter Property="CheckedBorderBrush" Value="{ThemeResource AccentFillColorDefaultBrush}" />
+        <Setter Property="CheckedBorderBrush" Value="{ThemeResource AccentButtonBorderBrush}" />
         <Setter Property="CheckedBackground" Value="{ThemeResource SubtleFillColorSecondaryBrush}" />
         <Setter Property="CheckedForeground" Value="{ThemeResource TextFillColorPrimaryBrush}" />
         <Setter Property="CheckedPointerOverBackground" Value="{ThemeResource SubtleFillColorTertiaryBrush}" />
-        <Setter Property="CheckedPointerOverBorderBrush" Value="{ThemeResource AccentFillColorDefaultBrush}" />
+        <Setter Property="CheckedPointerOverBorderBrush" Value="{ThemeResource AccentButtonBorderBrushPointerOver}" />
         <Setter Property="CheckedPointerOverForeground" Value="{ThemeResource TextFillColorPrimaryBrush}" />
         <Setter Property="CheckedPressedBackground" Value="{ThemeResource SubtleFillColorSecondaryBrush}" />
-        <Setter Property="CheckedPressedBorderBrush" Value="{ThemeResource AccentFillColorDefaultBrush}" />
+        <Setter Property="CheckedPressedBorderBrush" Value="{ThemeResource AccentButtonBorderBrushPressed}" />
         <Setter Property="CheckedPressedForeground" Value="{ThemeResource TextFillColorPrimaryBrush}" />
         <Setter Property="CheckedDisabledBackground" Value="{ThemeResource ControlFillColorDisabledBrush}" />
-        <Setter Property="CheckedDisabledBorderBrush" Value="{ThemeResource ControlStrokeColorSecondaryBrush}" />
+        <Setter Property="CheckedDisabledBorderBrush" Value="{ThemeResource AccentButtonBorderBrushDisabled}" />
         <Setter Property="CheckedDisabledForeground" Value="{ThemeResource TextFillColorDisabledBrush}" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />

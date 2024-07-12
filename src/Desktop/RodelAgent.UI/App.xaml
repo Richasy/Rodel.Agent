@@ -32,12 +32,24 @@
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Light">
                     <BitmapImage x:Key="QQGroup" UriSource="ms-appx:///Assets/qq_group_light.jpg" />
+                    <SolidColorBrush x:Key="HighContrastDividerBrush" Color="Transparent" />
+                    <SolidColorBrush x:Key="SelectorCardCheckedBackgroundBrsuh" Color="{StaticResource SolidBackgroundFillColorBase}" />
+                    <SolidColorBrush x:Key="SelectorCardCheckedPointerOverBackgroundBrsuh" Color="{StaticResource SolidBackgroundFillColorBase}" />
+                    <SolidColorBrush x:Key="SelectorCardCheckedPressedBackgroundBrsuh" Color="{StaticResource SolidBackgroundFillColorQuarternary}" />
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
                     <BitmapImage x:Key="QQGroup" UriSource="ms-appx:///Assets/qq_group_dark.jpg" />
+                    <SolidColorBrush x:Key="HighContrastDividerBrush" Color="Transparent" />
+                    <SolidColorBrush x:Key="SelectorCardCheckedBackgroundBrsuh" Color="{StaticResource SolidBackgroundFillColorBase}" />
+                    <SolidColorBrush x:Key="SelectorCardCheckedPointerOverBackgroundBrsuh" Color="{StaticResource SolidBackgroundFillColorBase}" />
+                    <SolidColorBrush x:Key="SelectorCardCheckedPressedBackgroundBrsuh" Color="{StaticResource SolidBackgroundFillColorQuarternary}" />
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="HighContrast">
                     <BitmapImage x:Key="QQGroup" UriSource="ms-appx:///Assets/qq_group_dark.jpg" />
+                    <SolidColorBrush x:Key="HighContrastDividerBrush" Color="{ThemeResource SystemColorWindowTextColor}" />
+                    <StaticResource x:Key="SelectorCardCheckedBackgroundBrsuh" ResourceKey="SystemControlHighlightAccentBrush" />
+                    <StaticResource x:Key="SelectorCardCheckedPointerOverBackgroundBrsuh" ResourceKey="SystemControlForegroundAccentBrush" />
+                    <StaticResource x:Key="SelectorCardCheckedPressedBackgroundBrsuh" ResourceKey="SystemControlBackgroundBaseMediumLowBrush" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
 

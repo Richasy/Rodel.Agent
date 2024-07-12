@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml.Shapes;
 using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels.Components;
 using Windows.UI;
+using Windows.UI.ViewManagement;
 
 namespace RodelAgent.UI.Controls;
 
@@ -87,11 +88,16 @@ public sealed class WavePanel : ReactiveControl<AudioWaveModuleViewModel>
         return theme == ElementTheme.Default ? Application.Current.RequestedTheme == ApplicationTheme.Dark : theme == ElementTheme.Dark;
     }
 
+    private static bool IsHighContrast()
+        => new AccessibilitySettings().HighContrast;
+
     private static Color GetRectColor(bool isHighlight)
     {
-        return isHighlight
-            ? IsDark() ? ColorHelper.FromArgb(168, 255, 255, 255) : ColorHelper.FromArgb(168, 0, 0, 0)
-            : IsDark() ? ColorHelper.FromArgb(52, 255, 255, 255) : ColorHelper.FromArgb(40, 0, 0, 0);
+        return IsHighContrast()
+            ? ColorHelper.FromArgb(255, 200, 200, 200)
+            : isHighlight
+                ? IsDark() ? ColorHelper.FromArgb(168, 255, 255, 255) : ColorHelper.FromArgb(168, 0, 0, 0)
+                : IsDark() ? ColorHelper.FromArgb(52, 255, 255, 255) : ColorHelper.FromArgb(40, 0, 0, 0);
     }
 
     private void RepositionHoverHolder(PointerRoutedEventArgs e)

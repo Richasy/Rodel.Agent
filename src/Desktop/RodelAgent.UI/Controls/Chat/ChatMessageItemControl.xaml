@@ -20,8 +20,7 @@
             Background="Transparent"
             DisabledBackground="Transparent"
             PointerOverBackground="Transparent"
-            PressedBackground="Transparent"
-            StrokeThickness="0">
+            PressedBackground="Transparent">
             <Grid
                 Background="{ThemeResource ControlFillColorTransparentBrush}"
                 PointerEntered="OnCardPointerEntered"

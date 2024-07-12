@@ -15,8 +15,7 @@
         Background="Transparent"
         Click="OnNavItemClick"
         IsChecked="{x:Bind ViewModel.IsSelected, Mode=OneWay}"
-        IsEnableCheck="False"
-        StrokeThickness="0">
+        IsEnableCheck="False">
         <ToolTipService.ToolTip>
             <ToolTip Content="{x:Bind ViewModel.Tip, Mode=OneWay}" IsEnabled="{x:Bind ViewModel.IsSelected, Mode=OneWay}" />
         </ToolTipService.ToolTip>

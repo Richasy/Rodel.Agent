@@ -16,8 +16,7 @@
                     <controls:CardPanel
                         x:Name="RootCard"
                         AutomationProperties.Name="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ViewModel.Name}"
-                        Background="Transparent"
-                        StrokeThickness="0">
+                        Background="Transparent">
 
                         <controls:CardPanel.ContextFlyout>
                             <MenuFlyout>
@@ -117,8 +116,7 @@
                         AutomationProperties.Name="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ViewModel.Name}"
                         Background="Transparent"
                         IsChecked="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ViewModel.IsSelected, Mode=TwoWay}"
-                        IsEnableCheck="True"
-                        StrokeThickness="0">
+                        IsEnableCheck="True">
 
                         <Grid Margin="12,8" ColumnSpacing="8">
                             <Grid.ColumnDefinitions>

@@ -3,6 +3,7 @@
 using Microsoft.UI.Xaml.Media;
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Toolkits;
+using Windows.UI.ViewManagement;
 
 namespace RodelAgent.UI.Controls;
 
@@ -82,9 +83,12 @@ public sealed partial class ProviderLogo : UserControl
     private void ResetLogo()
     {
         var localTheme = SettingsToolkit.ReadLocalSetting(SettingNames.AppTheme, ElementTheme.Default);
-        var themeText = localTheme == ElementTheme.Default
-            ? App.Current.RequestedTheme.ToString().ToLower()
-            : localTheme.ToString().ToLower();
+        var highContrast = new AccessibilitySettings().HighContrast;
+        var themeText = highContrast
+            ? "dark"
+            : localTheme == ElementTheme.Default
+                ? App.Current.RequestedTheme.ToString().ToLower()
+                : localTheme.ToString().ToLower();
 
         var logoFileName = IsAvatar
             ? $"ms-appx:///Assets/Providers/{Provider.ToLower()}-avatar.png"

@@ -18,11 +18,11 @@
             BasedOn="{StaticResource DefaultCardPanelStyle}"
             TargetType="controls:CardPanel">
             <Setter Property="Background" Value="Transparent" />
-            <Setter Property="CheckedBackground" Value="{ThemeResource SolidBackgroundFillColorBaseBrush}" />
+            <Setter Property="CheckedBackground" Value="{ThemeResource SelectorCardCheckedBackgroundBrsuh}" />
             <Setter Property="CheckedForeground" Value="{ThemeResource AccentTextFillColorPrimaryBrush}" />
-            <Setter Property="CheckedPointerOverBackground" Value="{ThemeResource SolidBackgroundFillColorBaseBrush}" />
+            <Setter Property="CheckedPointerOverBackground" Value="{ThemeResource SelectorCardCheckedPointerOverBackgroundBrsuh}" />
             <Setter Property="CheckedPointerOverForeground" Value="{ThemeResource AccentTextFillColorSecondaryBrush}" />
-            <Setter Property="CheckedPressedBackground" Value="{ThemeResource SolidBackgroundFillColorQuarternaryBrush}" />
+            <Setter Property="CheckedPressedBackground" Value="{ThemeResource SelectorCardCheckedPressedBackgroundBrsuh}" />
             <Setter Property="CheckedPressedForeground" Value="{ThemeResource AccentTextFillColorTertiaryBrush}" />
             <Setter Property="StrokeThickness" Value="0" />
         </Style>
