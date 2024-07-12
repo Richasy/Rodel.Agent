@@ -13,8 +13,9 @@
 
     <Grid
         Width="20"
-        VerticalAlignment="Stretch"
-        Background="{ThemeResource SubtleFillColorTransparent}">
+        Height="100"
+        VerticalAlignment="Center"
+        Background="{ThemeResource ControlAltFillColorTransparentBrush}">
         <Grid
             x:Name="BackGrid"
             Width="20"

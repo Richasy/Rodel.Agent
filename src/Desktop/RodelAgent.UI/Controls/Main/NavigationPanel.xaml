@@ -10,7 +10,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Padding="4,0,4,8" RowSpacing="8">
+    <Grid
+        Padding="4,0,4,8"
+        BorderBrush="{ThemeResource HighContrastDividerBrush}"
+        BorderThickness="0,0,1,0"
+        RowSpacing="8">
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="Auto" />

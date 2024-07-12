@@ -177,6 +177,7 @@
                             VerticalAlignment="Bottom"
                             Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
                             BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
+                            BorderThickness="1"
                             CornerRadius="{StaticResource OverlayCornerRadius}"
                             Orientation="Horizontal"
                             Spacing="8">

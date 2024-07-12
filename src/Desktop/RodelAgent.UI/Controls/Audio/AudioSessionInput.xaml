@@ -91,8 +91,7 @@
                                             Background="Transparent"
                                             Click="OnLanguageItemClick"
                                             DataContext="{x:Bind}"
-                                            IsChecked="{x:Bind IsSelected, Mode=OneWay}"
-                                            StrokeThickness="0">
+                                            IsChecked="{x:Bind IsSelected, Mode=OneWay}">
                                             <Grid Margin="12,8" ColumnSpacing="8">
                                                 <TextBlock
                                                     HorizontalAlignment="Left"
@@ -130,8 +129,7 @@
                                             Background="Transparent"
                                             Click="OnVoiceItemClick"
                                             DataContext="{x:Bind}"
-                                            IsChecked="{x:Bind IsSelected, Mode=OneWay}"
-                                            StrokeThickness="0">
+                                            IsChecked="{x:Bind IsSelected, Mode=OneWay}">
                                             <Grid Margin="12,8" ColumnSpacing="8">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition />
