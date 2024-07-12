@@ -193,12 +193,12 @@
                                 <Grid>
                                     <ic:SymbolIcon
                                         FontSize="16"
-                                        IsFilled="True"
+                                        IconVariant="Filled"
                                         Symbol="Play"
                                         Visibility="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ViewModel.IsPlaying, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
                                     <ic:SymbolIcon
                                         FontSize="16"
-                                        IsFilled="True"
+                                        IconVariant="Filled"
                                         Symbol="Pause"
                                         Visibility="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ViewModel.IsPlaying}" />
                                 </Grid>

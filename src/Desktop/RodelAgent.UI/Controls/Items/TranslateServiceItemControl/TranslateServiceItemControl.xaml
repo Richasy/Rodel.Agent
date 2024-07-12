@@ -33,7 +33,7 @@
                                 VerticalAlignment="Center"
                                 FontSize="14"
                                 Foreground="{ThemeResource SystemFillColorSuccessBrush}"
-                                IsFilled="True"
+                                IconVariant="Filled"
                                 Symbol="CheckmarkCircle"
                                 Visibility="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ViewModel.IsCompleted}" />
                         </Grid>

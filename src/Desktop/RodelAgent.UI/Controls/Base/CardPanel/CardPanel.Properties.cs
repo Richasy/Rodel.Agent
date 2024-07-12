@@ -9,6 +9,7 @@ namespace RodelAgent.UI.Controls;
 /// </summary>
 public partial class CardPanel
 {
+#pragma warning disable CS1591
 #pragma warning disable SA1600 // Elements should be documented
     public static readonly DependencyProperty IsEnableCheckProperty =
         DependencyProperty.Register(nameof(IsEnableCheck), typeof(bool), typeof(CardPanel), new PropertyMetadata(false));

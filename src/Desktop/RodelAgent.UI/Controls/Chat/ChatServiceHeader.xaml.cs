@@ -12,6 +12,12 @@ public sealed partial class ChatServiceHeader : ChatServicePageControlBase
     /// </summary>
     public ChatServiceHeader() => InitializeComponent();
 
+    private FluentIcons.Common.IconVariant GetIconVariant(bool isSelected)
+    {
+        _ = this;
+        return isSelected ? FluentIcons.Common.IconVariant.Filled : FluentIcons.Common.IconVariant.Regular;
+    }
+
     private void OnServiceButtonClick(object sender, RoutedEventArgs e)
         => ViewModel.IsServiceSectionVisible = true;
 

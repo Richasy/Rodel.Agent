@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
 using System.Diagnostics;
-using System.Text.Json;
-using RodelAgent.Models.Constants;
 using RodelAgent.UI.ViewModels.Items;
 using RodelAudio.Models.Client;
 
@@ -24,8 +22,7 @@ public sealed partial class AzureOpenAIAudioConfigSettingSection : AudioServiceC
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as AudioServiceItemViewModel;
-        if (newVM == null)
+        if (e.NewValue is not AudioServiceItemViewModel newVM)
         {
             return;
         }

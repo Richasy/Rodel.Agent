@@ -13,6 +13,8 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <ApplicationIcon>Assets\logo.ico</ApplicationIcon>
     <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <NoWarn>CS1591;CS1574;CS1573</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Assets\Emoji\**" />
@@ -220,8 +222,8 @@
     <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.1.240606-rc" />
     <PackageReference Include="CommunityToolkit.WinUI.Controls.Sizers" Version="8.1.240606-rc" />
     <PackageReference Include="CommunityToolkit.WinUI.Controls.TokenizingTextBox" Version="8.1.240606-rc" />
-    <PackageReference Include="FluentIcons.WinUI" Version="1.1.245-ci" />
-    <PackageReference Include="H.NotifyIcon.WinUI" Version="2.0.131" />
+    <PackageReference Include="FluentIcons.WinUI" Version="1.1.247" />
+    <PackageReference Include="H.NotifyIcon.WinUI" Version="2.1.0" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.61" />
     <PackageReference Include="Markdig" Version="0.37.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
@@ -230,7 +232,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240607001" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240627000" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.3233" />
     <PackageReference Include="NAudio" Version="2.2.1" />
     <PackageReference Include="NLog.Extensions.Logging" Version="5.3.11" />

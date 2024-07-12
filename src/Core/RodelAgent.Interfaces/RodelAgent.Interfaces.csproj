@@ -13,5 +13,4 @@
       <ProjectReference Include="..\RodelDraw.Models\RodelDraw.Models.csproj" />
       <ProjectReference Include="..\RodelTranslate.Models\RodelTranslate.Models.csproj" />
     </ItemGroup>
-
 </Project>
