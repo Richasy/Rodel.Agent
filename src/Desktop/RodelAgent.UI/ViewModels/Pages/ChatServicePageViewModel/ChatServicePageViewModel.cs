@@ -132,6 +132,16 @@ public sealed partial class ChatServicePageViewModel : ViewModelBase
         CheckGroupPanelType();
     }
 
+    partial void OnCurrentSessionChanged(ChatSessionViewModel value)
+    {
+        if (value is null)
+        {
+            return;
+        }
+
+        value.EnterViewCommand.Execute(default);
+    }
+
     partial void OnIsServiceColumnManualHideChanged(bool value)
         => SettingsToolkit.WriteLocalSetting(SettingNames.IsChatServicePageServiceColumnManualHide, value);
 
