@@ -69,8 +69,16 @@ public sealed partial class ChatSessionViewModel : ViewModelBase<ChatSession>
         CheckChatEmpty();
         CheckLastMessageTime();
         CheckRegenerateButtonShown();
-        CalcTotalTokenCount();
         RequestFocusInput?.Invoke(this, EventArgs.Empty);
+    }
+
+    /// <summary>
+    /// 在进入视图开始显示时执行.
+    /// </summary>
+    [RelayCommand]
+    private void EnterView()
+    {
+        CalcTotalTokenCount();
     }
 
     [RelayCommand]
@@ -158,6 +166,12 @@ public sealed partial class ChatSessionViewModel : ViewModelBase<ChatSession>
     [RelayCommand]
     private void CalcTotalTokenCount()
     {
+        var pageVM = GlobalDependencies.ServiceProvider.GetService<ChatServicePageViewModel>();
+        if (pageVM.CurrentSession != this)
+        {
+            return;
+        }
+
         CalcBaseTokenCount();
         CalcUserInputTokenCount();
     }
