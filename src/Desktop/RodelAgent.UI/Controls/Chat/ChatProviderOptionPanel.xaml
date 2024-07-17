@@ -100,6 +100,7 @@
                         MinWidth="120"
                         HorizontalAlignment="Stretch"
                         AutomationProperties.Name="{ext:Locale Name=ChatTurn}"
+                        IsEnabled="{x:Bind IsMaxRoundEnabled, Mode=OneWay}"
                         Maximum="10"
                         Minimum="0"
                         StepFrequency="1"

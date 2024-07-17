@@ -13,6 +13,12 @@ namespace RodelAgent.UI.Controls.Chat;
 /// </summary>
 public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBase
 {
+    /// <summary>
+    /// <see cref="IsMaxRoundEnabled"/> 的依赖属性.
+    /// </summary>
+    public static readonly DependencyProperty IsMaxRoundEnabledProperty =
+        DependencyProperty.Register(nameof(IsMaxRoundEnabled), typeof(bool), typeof(ChatProviderOptionPanel), new PropertyMetadata(true));
+
     private bool _isInitialized;
 
     /// <summary>
@@ -28,6 +34,15 @@ public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBas
     /// 属性改变事件.
     /// </summary>
     public event EventHandler PropertyChanged;
+
+    /// <summary>
+    /// 获取或设置是否启用最大轮数.
+    /// </summary>
+    public bool IsMaxRoundEnabled
+    {
+        get => (bool)GetValue(IsMaxRoundEnabledProperty);
+        set => SetValue(IsMaxRoundEnabledProperty, value);
+    }
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)

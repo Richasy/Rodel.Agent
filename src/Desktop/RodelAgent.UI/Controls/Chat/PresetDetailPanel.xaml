@@ -23,7 +23,7 @@
                 <RowDefinition />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <local:ChatProviderOptionPanel ViewModel="{x:Bind ViewModel.Data.Data, Mode=OneWay}" />
+            <local:ChatProviderOptionPanel IsMaxRoundEnabled="{x:Bind ViewModel.IsMaxRoundEnabled, Mode=OneWay}" ViewModel="{x:Bind ViewModel.Data.Data, Mode=OneWay}" />
             <StackPanel
                 Grid.Row="1"
                 Margin="0,-4,0,0"
