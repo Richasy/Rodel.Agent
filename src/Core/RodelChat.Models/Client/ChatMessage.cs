@@ -140,7 +140,15 @@ public sealed class ChatMessage
         => Content.FirstOrDefault()?.Text ?? string.Empty;
 
     /// <inheritdoc/>
-    public override bool Equals(object? obj) => obj is ChatMessage message && EqualityComparer<DateTimeOffset?>.Default.Equals(Time, message.Time);
+    public override bool Equals(object? obj)
+    {
+        if (obj is not ChatMessage message)
+        {
+            return false;
+        }
+
+        return Time == message.Time && GetFirstTextContent() == message.GetFirstTextContent() && Role == message.Role;
+    }
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Time);
