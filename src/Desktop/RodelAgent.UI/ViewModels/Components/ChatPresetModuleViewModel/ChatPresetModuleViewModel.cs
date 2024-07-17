@@ -79,6 +79,7 @@ public sealed partial class ChatPresetModuleViewModel : ViewModelBase<ChatPreset
             AvailableServices.Add(new ChatServiceItemViewModel(item.ProviderType, item.Name));
         }
 
+        CheckMaxTurnEnabled();
         SelectedService = AvailableServices.FirstOrDefault(x => x.ProviderType == data.Data.Provider);
     }
 
@@ -148,6 +149,11 @@ public sealed partial class ChatPresetModuleViewModel : ViewModelBase<ChatPreset
 
     private void UpdatePresetData()
     {
+        if (!IsMaxRoundEnabled)
+        {
+            Data.Data.MaxRounds = 0;
+        }
+
         Data.Data.Name = Name;
         Data.Data.SystemInstruction = Instruction;
         Data.Data.Provider = SelectedService.ProviderType;
@@ -171,7 +177,22 @@ public sealed partial class ChatPresetModuleViewModel : ViewModelBase<ChatPreset
     }
 
     private void CheckMessageCount()
-        => IsMessageEmpty = Messages.Count == 0;
+    {
+        IsMessageEmpty = Messages.Count == 0;
+        CheckMaxTurnEnabled();
+    }
+
+    private void CheckMaxTurnEnabled()
+    {
+        if (!IsMessageEmpty && IsMaxRoundEnabled)
+        {
+            IsMaxRoundEnabled = false;
+        }
+        else if (IsMessageEmpty && !IsMaxRoundEnabled)
+        {
+            IsMaxRoundEnabled = true;
+        }
+    }
 
     private void ReloadModels()
     {
@@ -191,7 +212,7 @@ public sealed partial class ChatPresetModuleViewModel : ViewModelBase<ChatPreset
 
         IsModelsEmpty = Models.Count == 0;
 
-        if(!IsModelsEmpty)
+        if (!IsModelsEmpty)
         {
             SelectedModel = Models.FirstOrDefault(x => x.Data.Id == Data.Data.Model) ?? Models.First();
         }

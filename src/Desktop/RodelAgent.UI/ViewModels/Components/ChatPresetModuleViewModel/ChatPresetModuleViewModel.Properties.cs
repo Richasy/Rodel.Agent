@@ -63,6 +63,9 @@ public sealed partial class ChatPresetModuleViewModel
     [ObservableProperty]
     private bool _isModelsEmpty;
 
+    [ObservableProperty]
+    private bool _isMaxRoundEnabled;
+
     /// <summary>
     /// 关闭请求事件.
     /// </summary>
