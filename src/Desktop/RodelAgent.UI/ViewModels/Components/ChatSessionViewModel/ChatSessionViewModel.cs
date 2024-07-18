@@ -76,9 +76,9 @@ public sealed partial class ChatSessionViewModel : ViewModelBase<ChatSession>
     /// 在进入视图开始显示时执行.
     /// </summary>
     [RelayCommand]
-    private void EnterView()
+    private async Task EnterViewAsync()
     {
-        CalcTotalTokenCount();
+        await CalcTotalTokenCountAsync();
     }
 
     [RelayCommand]
@@ -164,7 +164,7 @@ public sealed partial class ChatSessionViewModel : ViewModelBase<ChatSession>
         => IsRegenerateButtonShown = !IsChatEmpty && !IsResponding && Messages.Last().IsAssistant;
 
     [RelayCommand]
-    private void CalcTotalTokenCount()
+    private async Task CalcTotalTokenCountAsync()
     {
         var pageVM = GlobalDependencies.ServiceProvider.GetService<ChatServicePageViewModel>();
         if (pageVM.CurrentSession != this)
@@ -172,8 +172,8 @@ public sealed partial class ChatSessionViewModel : ViewModelBase<ChatSession>
             return;
         }
 
-        CalcBaseTokenCount();
-        CalcUserInputTokenCount();
+        await CalcBaseTokenCountAsync();
+        await CalcUserInputTokenCountAsync();
     }
 
     private void InitializeModels()
@@ -243,7 +243,7 @@ public sealed partial class ChatSessionViewModel : ViewModelBase<ChatSession>
         CheckChatEmpty();
         CheckRegenerateButtonShown();
         CheckLastMessageTime();
-        CalcTotalTokenCount();
+        CalcTotalTokenCountCommand.Execute(default);
     }
 
     partial void OnIsEnterSendChanged(bool value)
@@ -253,5 +253,5 @@ public sealed partial class ChatSessionViewModel : ViewModelBase<ChatSession>
         => CheckCurrentModelStatus();
 
     partial void OnUserInputChanged(string value)
-        => CalcUserInputTokenCount();
+        => CalcUserInputTokenCountCommand.Execute(default);
 }

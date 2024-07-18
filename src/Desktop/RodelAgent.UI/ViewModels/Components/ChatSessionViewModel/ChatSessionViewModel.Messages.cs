@@ -219,7 +219,7 @@ public sealed partial class ChatSessionViewModel
 
     private Task EditMessageAsync(ChatMessage msg)
     {
-        CalcTotalTokenCount();
+        CalcTotalTokenCountCommand.Execute(default);
         return SaveSessionToDatabaseAsync();
     }
 
@@ -228,7 +228,6 @@ public sealed partial class ChatSessionViewModel
         var source = Messages.FirstOrDefault(p => p.Data.Equals(msg));
         Messages.Remove(source);
         Data.Messages.Remove(msg);
-        CalcTotalTokenCount();
         await SaveSessionToDatabaseAsync();
     }
 
@@ -239,7 +238,8 @@ public sealed partial class ChatSessionViewModel
         CancelMessage();
     }
 
-    private void CalcBaseTokenCount()
+    [RelayCommand]
+    private async Task CalcBaseTokenCountAsync()
     {
         if (Data.Messages.Count == 0 && string.IsNullOrEmpty(Data.SystemInstruction))
         {
@@ -247,26 +247,46 @@ public sealed partial class ChatSessionViewModel
             return;
         }
 
-        var encoder = ModelToEncoder.For("gpt-4o");
-        var messages = string.Join("\n\n", Data.Messages.Select(p => p.GetFirstTextContent()));
-        SystemTokenCount = !string.IsNullOrEmpty(Data.SystemInstruction) ? encoder.CountTokens(Data.SystemInstruction) : 0;
-        _baseTokenCount = encoder.CountTokens(messages) + SystemTokenCount;
-    }
-
-    private void CalcUserInputTokenCount()
-    {
-        UserInputWordCount = UserInput?.Length ?? 0;
-        if (!string.IsNullOrEmpty(UserInput))
+        await Task.Run(() =>
         {
             var encoder = ModelToEncoder.For("gpt-4o");
-            UserInputTokenCount = encoder.CountTokens(UserInput);
-        }
-        else
-        {
-            UserInputTokenCount = 0;
-        }
+            var messages = string.Join("\n\n", Data.Messages.Select(p => p.GetFirstTextContent()));
+            _dispatcherQueue.TryEnqueue(() =>
+            {
+                SystemTokenCount = !string.IsNullOrEmpty(Data.SystemInstruction) ? encoder.CountTokens(Data.SystemInstruction) : 0;
+                _baseTokenCount = encoder.CountTokens(messages) + SystemTokenCount;
+            });
+        });
+    }
 
-        TotalTokenUsage = _baseTokenCount + UserInputTokenCount;
-        RemainderTokenCount = TotalTokenCount == 0 ? -1 : TotalTokenCount - TotalTokenUsage;
+    [RelayCommand]
+    private async Task CalcUserInputTokenCountAsync()
+    {
+        UserInputWordCount = UserInput?.Length ?? 0;
+        await Task.Run(() =>
+        {
+            if (!string.IsNullOrEmpty(UserInput))
+            {
+                var encoder = ModelToEncoder.For("gpt-4o");
+
+                _dispatcherQueue.TryEnqueue(() =>
+                {
+                    UserInputTokenCount = encoder.CountTokens(UserInput);
+                });
+            }
+            else
+            {
+                _dispatcherQueue.TryEnqueue(() =>
+                {
+                    UserInputTokenCount = 0;
+                });
+            }
+
+            _dispatcherQueue.TryEnqueue(() =>
+            {
+                TotalTokenUsage = _baseTokenCount + UserInputTokenCount;
+                RemainderTokenCount = TotalTokenCount == 0 ? -1 : TotalTokenCount - TotalTokenUsage;
+            });
+        });
     }
 }
