@@ -54,5 +54,13 @@ internal static partial class PredefinedModels
             IsSupportVision = true,
             IsSupportBase64Image = true,
         },
+        new ChatModel
+        {
+            DisplayName = "GPT-4o mini",
+            Id = "gpt-4o-mini",
+            ContextLength = 128_000,
+            IsSupportVision = true,
+            IsSupportBase64Image = true,
+        },
     };
 }
