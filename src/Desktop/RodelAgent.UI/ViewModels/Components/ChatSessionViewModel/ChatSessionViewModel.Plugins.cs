@@ -16,7 +16,7 @@ public sealed partial class ChatSessionViewModel
     [RelayCommand]
     private async Task ResetPluginsAsync()
     {
-        var pageVM = GlobalDependencies.ServiceProvider.GetRequiredService<ChatServicePageViewModel>();
+        var pageVM = this.Get<ChatServicePageViewModel>();
         await pageVM.ResetPluginsCommand.ExecuteAsync(default);
         Plugins.Clear();
         foreach (var item in pageVM.Plugins)

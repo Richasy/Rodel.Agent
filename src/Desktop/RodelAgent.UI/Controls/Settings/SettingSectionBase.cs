@@ -15,6 +15,6 @@ public abstract class SettingSectionBase : ReactiveUserControl<SettingsPageViewM
     public SettingSectionBase()
     {
         IsTabStop = false;
-        ViewModel = ServiceProvider.GetRequiredService<SettingsPageViewModel>();
+        ViewModel = this.Get<SettingsPageViewModel>();
     }
 }

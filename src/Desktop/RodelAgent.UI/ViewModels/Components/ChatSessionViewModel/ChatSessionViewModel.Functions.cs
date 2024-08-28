@@ -63,7 +63,7 @@ public sealed partial class ChatSessionViewModel
 
         if (string.IsNullOrEmpty(response))
         {
-            GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>()
+            this.Get<AppViewModel>()
                 .ShowTip(UI.Models.Constants.StringNames.GenerateTitleFailed, UI.Models.Constants.InfoType.Error);
             return;
         }

@@ -15,7 +15,7 @@ public sealed partial class TranslateServicePage : TranslateServicePageBase
     public TranslateServicePage()
     {
         InitializeComponent();
-        ViewModel = ServiceProvider.GetRequiredService<TranslateServicePageViewModel>();
+        ViewModel = this.Get<TranslateServicePageViewModel>();
     }
 
     /// <inheritdoc/>
@@ -32,6 +32,6 @@ public sealed partial class TranslateServicePage : TranslateServicePageBase
 /// <summary>
 /// 翻译页面基类.
 /// </summary>
-public abstract class TranslateServicePageBase : PageBase<TranslateServicePageViewModel>
+public abstract class TranslateServicePageBase : LayoutPageBase<TranslateServicePageViewModel>
 {
 }

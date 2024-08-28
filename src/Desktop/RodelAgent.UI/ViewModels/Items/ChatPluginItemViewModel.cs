@@ -48,7 +48,7 @@ public sealed partial class ChatPluginItemViewModel : ViewModelBase<KernelPlugin
         Description = data.Description;
         Id = id;
         _deleteCheckAction = deleteCheckAction;
-        _logger = GlobalDependencies.ServiceProvider.GetRequiredService<ILogger<ChatPluginItemViewModel>>();
+        _logger = this.Get<ILogger<ChatPluginItemViewModel>>();
 
         foreach (var func in data)
         {
@@ -73,7 +73,7 @@ public sealed partial class ChatPluginItemViewModel : ViewModelBase<KernelPlugin
         var destFolder = GetCurrentPluginFolder();
         if (!Directory.Exists(destFolder))
         {
-            await GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>().ShowMessageDialogAsync(StringNames.PluginFolderNotFound);
+            await this.Get<AppViewModel>().ShowMessageDialogAsync(StringNames.PluginFolderNotFound);
             return;
         }
 

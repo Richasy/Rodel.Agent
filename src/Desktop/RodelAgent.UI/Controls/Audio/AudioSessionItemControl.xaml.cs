@@ -26,7 +26,7 @@ public sealed partial class AudioSessionItemControl : AudioSessionItemControlBas
         => Initialize();
 
     private AudioSessionViewModel GetSessionViewModel()
-        => ServiceProvider.GetRequiredService<AudioServicePageViewModel>().Session;
+        => this.Get<AudioServicePageViewModel>().Session;
 
     private void OnLoaded(object sender, RoutedEventArgs e)
         => Initialize();
@@ -52,7 +52,7 @@ public sealed partial class AudioSessionItemControl : AudioSessionItemControlBas
 
     private void OnDeleteItemClick(object sender, RoutedEventArgs e)
     {
-        var pageVM = ServiceProvider.GetRequiredService<AudioServicePageViewModel>();
+        var pageVM = this.Get<AudioServicePageViewModel>();
         pageVM.DeleteHistoryItemCommand.Execute(ViewModel);
     }
 }

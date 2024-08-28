@@ -12,5 +12,5 @@ public abstract class ChatServicePageControlBase : ReactiveUserControl<ChatServi
     /// <summary>
     /// Initializes a new instance of the <see cref="ChatServicePageControlBase"/> class.
     /// </summary>
-    protected ChatServicePageControlBase() => ViewModel = ServiceProvider.GetRequiredService<ChatServicePageViewModel>();
+    protected ChatServicePageControlBase() => ViewModel = this.Get<ChatServicePageViewModel>();
 }

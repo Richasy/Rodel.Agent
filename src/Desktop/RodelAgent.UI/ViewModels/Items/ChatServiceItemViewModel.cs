@@ -43,7 +43,7 @@ public sealed partial class ChatServiceItemViewModel : ViewModelBase
         ProviderType = providerType;
         Name = name;
 
-        var serverModels = GlobalDependencies.ServiceProvider.GetRequiredService<IChatClient>()
+        var serverModels = this.Get<IChatClient>()
             .GetPredefinedModels(ProviderType);
         ServerModels.Clear();
         serverModels.ForEach(p => ServerModels.Add(new ChatModelItemViewModel(p)));
@@ -130,7 +130,7 @@ public sealed partial class ChatServiceItemViewModel : ViewModelBase
 
             if (IsModelExist(model))
             {
-                GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>()
+                this.Get<AppViewModel>()
                     .ShowTip(Models.Constants.StringNames.ModelAlreadyExist, Models.Constants.InfoType.Error);
                 return;
             }

@@ -26,7 +26,7 @@ public sealed class WavePanel : ReactiveControl<AudioWaveModuleViewModel>
     public WavePanel()
     {
         DefaultStyleKey = typeof(WavePanel);
-        ViewModel = ServiceProvider.GetRequiredService<AudioWaveModuleViewModel>();
+        ViewModel = this.Get<AudioWaveModuleViewModel>();
         SizeChanged += OnSizeChanged;
         Loaded += OnLoaded;
         Unloaded += OnUnloaded;

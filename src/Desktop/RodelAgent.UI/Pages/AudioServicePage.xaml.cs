@@ -12,11 +12,7 @@ public sealed partial class AudioServicePage : AudioServicePageBase
     /// <summary>
     /// Initializes a new instance of the <see cref="AudioServicePage"/> class.
     /// </summary>
-    public AudioServicePage()
-    {
-        InitializeComponent();
-        ViewModel = ServiceProvider.GetRequiredService<AudioServicePageViewModel>();
-    }
+    public AudioServicePage() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnPageLoaded()
@@ -34,6 +30,10 @@ public sealed partial class AudioServicePage : AudioServicePageBase
 /// <summary>
 /// 音频服务页面基类.
 /// </summary>
-public abstract class AudioServicePageBase : PageBase<AudioServicePageViewModel>
+public abstract class AudioServicePageBase : LayoutPageBase<AudioServicePageViewModel>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AudioServicePageBase"/> class.
+    /// </summary>
+    protected AudioServicePageBase() => ViewModel = this.Get<AudioServicePageViewModel>();
 }

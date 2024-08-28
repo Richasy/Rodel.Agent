@@ -29,7 +29,7 @@ public sealed partial class ChatServicePageViewModel
             }
         }
 
-        var chatProviderFactory = GlobalDependencies.ServiceProvider.GetRequiredService<IChatProviderFactory>();
+        var chatProviderFactory = this.Get<IChatProviderFactory>();
         chatProviderFactory.ResetConfiguration(config);
     }
 }

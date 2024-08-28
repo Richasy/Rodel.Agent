@@ -32,12 +32,9 @@ public sealed partial class DrawSessionViewModel : ViewModelBase
         _logger = logger;
         _storageService = storageService;
         IsEnterSend = SettingsToolkit.ReadLocalSetting(SettingNames.DrawServicePageIsEnterSend, true);
-
-        AttachIsRunningToAsyncCommand(p => IsDrawing = p, DrawCommand);
-        AttachExceptionHandlerToAsyncCommand(HandleDrawException, DrawCommand);
     }
 
-    private static bool IsImageValid(string imagePath)
+    private bool IsImageValid(string imagePath)
     {
         if (string.IsNullOrEmpty(imagePath))
         {
@@ -46,7 +43,7 @@ public sealed partial class DrawSessionViewModel : ViewModelBase
 
         if (!File.Exists(imagePath))
         {
-            var appVM = GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>();
+            var appVM = this.Get<AppViewModel>();
             appVM.ShowTip(StringNames.ImageNotFound, InfoType.Error);
             return false;
         }
@@ -85,7 +82,7 @@ public sealed partial class DrawSessionViewModel : ViewModelBase
     [RelayCommand]
     private void Initialize(ProviderType providerType)
     {
-        var pageVM = GlobalDependencies.ServiceProvider.GetRequiredService<DrawServicePageViewModel>();
+        var pageVM = this.Get<DrawServicePageViewModel>();
         var serviceVM = pageVM.AvailableServices.FirstOrDefault(p => p.ProviderType == providerType);
         DrawService = serviceVM;
         ImagePath = string.Empty;
@@ -144,46 +141,58 @@ public sealed partial class DrawSessionViewModel : ViewModelBase
     [RelayCommand]
     private async Task DrawAsync()
     {
-        if (string.IsNullOrEmpty(Prompt))
+        if (string.IsNullOrEmpty(Prompt) || IsDrawing)
         {
             return;
         }
 
-        ErrorText = string.Empty;
-        var sessionData = new DrawSession
+        try
         {
-            Id = Guid.NewGuid().ToString("N"),
-            Model = Models.FirstOrDefault(p => p.IsSelected)?.Id,
-            Provider = DrawService.ProviderType,
-            Request = new DrawRequest
+            IsDrawing = true;
+            ErrorText = string.Empty;
+            var sessionData = new DrawSession
             {
-                Size = Size,
-                NegativePrompt = NegativePrompt,
-                Prompt = Prompt,
-            },
-        };
+                Id = Guid.NewGuid().ToString("N"),
+                Model = Models.FirstOrDefault(p => p.IsSelected)?.Id,
+                Provider = DrawService.ProviderType,
+                Request = new DrawRequest
+                {
+                    Size = Size,
+                    NegativePrompt = NegativePrompt,
+                    Prompt = Prompt,
+                },
+            };
 
-        CancelDraw();
-        ImagePath = string.Empty;
-        LastGenerateTime = string.Empty;
-        _cancellationTokenSource = new CancellationTokenSource();
-        var dispatcherQueue = GlobalDependencies.ServiceProvider.GetRequiredService<Microsoft.UI.Dispatching.DispatcherQueue>();
-        var result = await _drawClient.DrawAsync(sessionData, _cancellationTokenSource.Token).ConfigureAwait(false);
-        dispatcherQueue.TryEnqueue(async () =>
+            CancelDraw();
+            ImagePath = string.Empty;
+            LastGenerateTime = string.Empty;
+            _cancellationTokenSource = new CancellationTokenSource();
+            var dispatcherQueue = this.Get<Microsoft.UI.Dispatching.DispatcherQueue>();
+            var result = await _drawClient.DrawAsync(sessionData, _cancellationTokenSource.Token).ConfigureAwait(false);
+            dispatcherQueue.TryEnqueue(async () =>
+            {
+                if (_cancellationTokenSource.IsCancellationRequested)
+                {
+                    return;
+                }
+
+                var bytes = Convert.FromBase64String(result);
+                await _storageService.AddOrUpdateDrawSessionAsync(sessionData, bytes);
+                var pageVM = this.Get<DrawServicePageViewModel>();
+                pageVM.UpdateHistoryCommand.Execute(default);
+                LastGenerateTime = sessionData.Time!.Value.ToString("yyyy-MM-dd HH:mm:ss");
+                ImagePath = AppToolkit.GetDrawPicturePath(sessionData.Id);
+                DataChanged?.Invoke(this, sessionData);
+            });
+        }
+        catch (Exception ex)
         {
-            if (_cancellationTokenSource.IsCancellationRequested)
-            {
-                return;
-            }
-
-            var bytes = Convert.FromBase64String(result);
-            await _storageService.AddOrUpdateDrawSessionAsync(sessionData, bytes);
-            var pageVM = GlobalDependencies.ServiceProvider.GetRequiredService<DrawServicePageViewModel>();
-            pageVM.UpdateHistoryCommand.Execute(default);
-            LastGenerateTime = sessionData.Time!.Value.ToString("yyyy-MM-dd HH:mm:ss");
-            ImagePath = AppToolkit.GetDrawPicturePath(sessionData.Id);
-            DataChanged?.Invoke(this, sessionData);
-        });
+            HandleDrawException(ex);
+        }
+        finally
+        {
+            IsDrawing = false;
+        }
     }
 
     [RelayCommand]
@@ -224,7 +233,7 @@ public sealed partial class DrawSessionViewModel : ViewModelBase
         var dataPackage = new DataPackage();
         dataPackage.SetStorageItems(new[] { file });
         Clipboard.SetContent(dataPackage);
-        var appVM = GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>();
+        var appVM = this.Get<AppViewModel>();
         appVM.ShowTip(StringNames.Copied, InfoType.Success);
     }
 
@@ -237,7 +246,7 @@ public sealed partial class DrawSessionViewModel : ViewModelBase
             return;
         }
 
-        var appVM = GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>();
+        var appVM = this.Get<AppViewModel>();
         var targetImage = await FileToolkit.SaveFileAsync(".png", appVM.ActivatedWindow);
         if (targetImage == null)
         {

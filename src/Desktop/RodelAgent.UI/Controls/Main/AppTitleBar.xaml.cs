@@ -2,7 +2,6 @@
 
 using Microsoft.UI.Input;
 using Microsoft.UI.Windowing;
-using RodelAgent.UI.Forms;
 using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels;
 using Windows.Graphics;
@@ -26,7 +25,7 @@ public sealed partial class AppTitleBar : AppTitleBarBase
     public AppTitleBar()
     {
         InitializeComponent();
-        ViewModel = ServiceProvider.GetRequiredService<AppViewModel>();
+        ViewModel = this.Get<AppViewModel>();
         Loaded += OnLoaded;
         SizeChanged += OnSizeChanged;
 

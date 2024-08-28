@@ -15,7 +15,7 @@ public sealed partial class NavigationPanel : NavigationPanelBase
     public NavigationPanel()
     {
         InitializeComponent();
-        ViewModel = ServiceProvider.GetRequiredService<AppViewModel>();
+        ViewModel = this.Get<AppViewModel>();
     }
 }
 

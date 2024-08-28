@@ -31,9 +31,6 @@ public sealed partial class ChatGroupViewModel : ViewModelBase<ChatGroup>
         IsEnterSend = SettingsToolkit.ReadLocalSetting(SettingNames.ChatServicePageIsEnterSend, true);
         Messages.CollectionChanged += OnMessageCountChanged;
         InitializeCommand.Execute(data);
-
-        AttachIsRunningToAsyncCommand(p => IsResponding = p, SendCommand);
-        AttachExceptionHandlerToAsyncCommand(HandleSendMessageException, SendCommand);
     }
 
     [RelayCommand]
@@ -136,7 +133,7 @@ public sealed partial class ChatGroupViewModel : ViewModelBase<ChatGroup>
     private async Task InitializeAgentsAsync()
     {
         Agents.Clear();
-        var storageService = GlobalDependencies.ServiceProvider.GetRequiredService<IStorageService>();
+        var storageService = this.Get<IStorageService>();
         var agents = await storageService.GetChatAgentsAsync();
         foreach (var agentId in Data.Agents)
         {

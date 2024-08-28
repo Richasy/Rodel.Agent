@@ -220,7 +220,7 @@ public partial class App : Application
 
     private void OnUnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
     {
-        var logger = ServiceProvider.GetRequiredService<ILogger<App>>();
+        var logger = this.Get<ILogger<App>>();
         logger.LogError(e.Exception, "An exception occurred while the application was running");
         e.Handled = true;
     }

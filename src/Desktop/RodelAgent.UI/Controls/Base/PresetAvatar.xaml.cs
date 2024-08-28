@@ -68,11 +68,11 @@ public sealed partial class PresetAvatar : UserControl
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
         CheckAvatarAsync();
-        GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>().PresetAvatarUpdateRequested += OnPresetAvatarUpdateRequested;
+        this.Get<AppViewModel>().PresetAvatarUpdateRequested += OnPresetAvatarUpdateRequested;
     }
 
     private void OnUnloaded(object sender, RoutedEventArgs e)
-        => GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>().PresetAvatarUpdateRequested -= OnPresetAvatarUpdateRequested;
+        => this.Get<AppViewModel>().PresetAvatarUpdateRequested -= OnPresetAvatarUpdateRequested;
 
     private void OnPresetAvatarUpdateRequested(object sender, string e)
     {
@@ -90,7 +90,7 @@ public sealed partial class PresetAvatar : UserControl
         }
 
         var emojiText = string.Empty;
-        var storageService = GlobalDependencies.ServiceProvider.GetRequiredService<IStorageService>();
+        var storageService = this.Get<IStorageService>();
         if (IsChatPreset)
         {
             var preset = await storageService.GetChatSessionPresetByIdAsync(PresetId);

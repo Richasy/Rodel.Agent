@@ -29,7 +29,7 @@ public sealed partial class DrawServicePageViewModel
             }
         }
 
-        var chatProviderFactory = GlobalDependencies.ServiceProvider.GetRequiredService<IDrawProviderFactory>();
+        var chatProviderFactory = this.Get<IDrawProviderFactory>();
         chatProviderFactory.ResetConfiguration(config);
     }
 }

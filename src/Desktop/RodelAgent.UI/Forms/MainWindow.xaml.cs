@@ -6,6 +6,7 @@ using RodelAgent.UI.Controls;
 using RodelAgent.UI.Models.Args;
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Toolkits;
+using RodelAgent.UI.ViewModels;
 using Windows.Graphics;
 
 namespace RodelAgent.UI.Forms;
@@ -23,12 +24,15 @@ public sealed partial class MainWindow : WindowBase, ITipWindow
     public MainWindow()
     {
         InitializeComponent();
-
+        Title = ResourceToolkit.GetLocalizedString(StringNames.AppName);
+        this.SetIcon("Assets/logo.ico");
+        AppWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Tall;
         MinWidth = 900;
         MinHeight = 640;
         AppTitleBar.AttachedWindow = this;
         SetTitleBar(AppTitleBar);
         AppWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Tall;
+        this.Get<AppViewModel>().DisplayWindows.Add(this);
 
         Activated += OnWindowActivated;
         Closed += OnWindowClosed;
@@ -60,15 +64,15 @@ public sealed partial class MainWindow : WindowBase, ITipWindow
 
     private void OnFrameUnloaded(object sender, RoutedEventArgs e)
     {
-        CoreViewModel.NavigationRequested -= OnNavigationRequested;
-        CoreViewModel.RequestShowTip -= OnRequestShowTip;
+        this.Get<AppViewModel>().NavigationRequested -= OnNavigationRequested;
+        this.Get<AppViewModel>().RequestShowTip -= OnRequestShowTip;
     }
 
     private void OnFrameLoaded(object sender, RoutedEventArgs e)
     {
-        CoreViewModel.NavigationRequested += OnNavigationRequested;
-        CoreViewModel.RequestShowTip += OnRequestShowTip;
-        CoreViewModel.InitializeCommand.Execute(default);
+        this.Get<AppViewModel>().NavigationRequested += OnNavigationRequested;
+        this.Get<AppViewModel>().RequestShowTip += OnRequestShowTip;
+        this.Get<AppViewModel>().InitializeCommand.Execute(default);
     }
 
     private void OnWindowActivated(object sender, WindowActivatedEventArgs args)
@@ -85,13 +89,13 @@ public sealed partial class MainWindow : WindowBase, ITipWindow
         }
 
         var localTheme = SettingsToolkit.ReadLocalSetting(SettingNames.AppTheme, ElementTheme.Default);
-        CoreViewModel.ChangeTheme(localTheme);
+        this.Get<AppViewModel>().ChangeTheme(localTheme);
         _isFirstActivated = false;
     }
 
     private void OnWindowClosed(object sender, WindowEventArgs args)
     {
-        foreach (var item in CoreViewModel.DisplayWindows.ToArray())
+        foreach (var item in this.Get<AppViewModel>().DisplayWindows.ToArray())
         {
             if (item is not MainWindow)
             {

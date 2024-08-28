@@ -16,7 +16,7 @@ public sealed partial class StartupPage : StartupPageBase
     public StartupPage()
     {
         InitializeComponent();
-        ViewModel = ServiceProvider.GetRequiredService<StartupPageViewModel>();
+        ViewModel = this.Get<StartupPageViewModel>();
         ViewModel.SideNavigationRequested += OnSideNavigationRequested;
     }
 
@@ -42,6 +42,6 @@ public sealed partial class StartupPage : StartupPageBase
 /// <summary>
 /// 启动页面基类.
 /// </summary>
-public abstract class StartupPageBase : PageBase<StartupPageViewModel>
+public abstract class StartupPageBase : LayoutPageBase<StartupPageViewModel>
 {
 }

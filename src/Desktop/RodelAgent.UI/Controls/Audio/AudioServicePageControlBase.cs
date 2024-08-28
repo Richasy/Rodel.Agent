@@ -13,5 +13,5 @@ public abstract class AudioServicePageControlBase : ReactiveUserControl<AudioSer
     /// Initializes a new instance of the <see cref="AudioServicePageControlBase"/> class.
     /// </summary>
     protected AudioServicePageControlBase()
-        => ViewModel = ServiceProvider.GetRequiredService<AudioServicePageViewModel>();
+        => ViewModel = this.Get<AudioServicePageViewModel>();
 }

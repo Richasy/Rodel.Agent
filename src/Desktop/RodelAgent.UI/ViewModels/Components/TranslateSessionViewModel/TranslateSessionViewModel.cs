@@ -29,13 +29,12 @@ public sealed partial class TranslateSessionViewModel : ViewModelBase
         _translateClient = translateClient;
         _logger = logger;
         _storageService = storageService;
-        AttachIsRunningToAsyncCommand(p => IsTranslating = p, TranslateCommand);
     }
 
     [RelayCommand]
     private void Initialize(ProviderType type)
     {
-        var pageVM = GlobalDependencies.ServiceProvider.GetRequiredService<TranslateServicePageViewModel>();
+        var pageVM = this.Get<TranslateServicePageViewModel>();
         var service = pageVM.AvailableServices.FirstOrDefault(p => p.ProviderType == type);
         TranslateService = service;
         SourceLanguage = default;
@@ -75,14 +74,14 @@ public sealed partial class TranslateSessionViewModel : ViewModelBase
     [RelayCommand]
     private async Task TranslateAsync()
     {
-        if (string.IsNullOrEmpty(SourceText))
+        if (string.IsNullOrEmpty(SourceText) || IsTranslating)
         {
             return;
         }
 
         var sourceLan = SourceLanguage?.Data;
         var targetLan = TargetLanguage?.Data;
-        var appVM = GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>();
+        var appVM = this.Get<AppViewModel>();
         if (targetLan == null)
         {
             appVM.ShowTip(StringNames.TargetLanguageCanNotBeEmpty, InfoType.Error);
@@ -105,6 +104,7 @@ public sealed partial class TranslateSessionViewModel : ViewModelBase
 
         try
         {
+            IsTranslating = true;
             CancelTranslate();
 
             _cancellationTokenSource = new System.Threading.CancellationTokenSource();
@@ -123,7 +123,7 @@ public sealed partial class TranslateSessionViewModel : ViewModelBase
             if (shouldRecord)
             {
                 await _storageService.AddOrUpdateTranslateSessionAsync(sessionData);
-                var pageVM = GlobalDependencies.ServiceProvider.GetRequiredService<TranslateServicePageViewModel>();
+                var pageVM = this.Get<TranslateServicePageViewModel>();
                 pageVM.ReloadHistoryCommand.Execute(default);
             }
 
@@ -134,6 +134,10 @@ public sealed partial class TranslateSessionViewModel : ViewModelBase
             _logger.LogError(ex, "Translate failed.");
             appVM.ShowTip(StringNames.TranslationFailed, InfoType.Error);
             return;
+        }
+        finally
+        {
+            IsTranslating = false;
         }
     }
 
@@ -160,7 +164,7 @@ public sealed partial class TranslateSessionViewModel : ViewModelBase
         var dataPackage = new DataPackage();
         dataPackage.SetText(TranslatedText);
         Clipboard.SetContent(dataPackage);
-        var appVM = GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>();
+        var appVM = this.Get<AppViewModel>();
         appVM.ShowTip(StringNames.Copied, InfoType.Success);
     }
 

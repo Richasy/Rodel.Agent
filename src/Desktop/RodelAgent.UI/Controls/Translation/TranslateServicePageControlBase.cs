@@ -13,5 +13,5 @@ public abstract class TranslateServicePageControlBase : ReactiveUserControl<Tran
     /// Initializes a new instance of the <see cref="TranslateServicePageControlBase"/> class.
     /// </summary>
     protected TranslateServicePageControlBase()
-        => ViewModel = ServiceProvider.GetRequiredService<TranslateServicePageViewModel>();
+        => ViewModel = this.Get<TranslateServicePageViewModel>();
 }

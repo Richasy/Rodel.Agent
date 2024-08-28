@@ -29,7 +29,7 @@ public sealed partial class AudioServicePageViewModel
             }
         }
 
-        var chatProviderFactory = GlobalDependencies.ServiceProvider.GetRequiredService<IAudioProviderFactory>();
+        var chatProviderFactory = this.Get<IAudioProviderFactory>();
         chatProviderFactory.ResetConfiguration(config);
     }
 }

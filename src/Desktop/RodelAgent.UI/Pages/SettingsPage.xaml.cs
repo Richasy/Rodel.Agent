@@ -49,7 +49,7 @@ public sealed partial class SettingsPage : SettingsPageBase
     private void InitializeSections()
     {
         var names = Enum.GetNames<SettingSectionType>();
-        var resToolkit = ServiceProvider.GetRequiredService<IStringResourceToolkit>();
+        var resToolkit = this.Get<IStringResourceToolkit>();
         var values = names.Select(resToolkit.GetString);
         for (var i = 0; i < values.Count(); i++)
         {
@@ -109,10 +109,10 @@ public sealed partial class SettingsPage : SettingsPageBase
 /// <summary>
 /// 设置页面基类.
 /// </summary>
-public abstract class SettingsPageBase : PageBase<SettingsPageViewModel>
+public abstract class SettingsPageBase : LayoutPageBase<SettingsPageViewModel>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="SettingsPageBase"/> class.
     /// </summary>
-    protected SettingsPageBase() => ViewModel = ServiceProvider.GetRequiredService<SettingsPageViewModel>();
+    protected SettingsPageBase() => ViewModel = this.Get<SettingsPageViewModel>();
 }

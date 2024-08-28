@@ -125,7 +125,7 @@ public sealed partial class ChatPresetModuleViewModel : ViewModelBase<ChatPreset
                 break;
         }
 
-        GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>().ForceUpdatePresetAvatar(Data.Data.Id);
+        this.Get<AppViewModel>().ForceUpdatePresetAvatar(Data.Data.Id);
         CloseRequested?.Invoke(this, EventArgs.Empty);
     }
 

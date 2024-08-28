@@ -16,10 +16,12 @@ public sealed partial class AudioWaveModuleViewModel : ViewModelBase
     /// <summary>
     /// Initializes a new instance of the <see cref="AudioWaveModuleViewModel"/> class.
     /// </summary>
-    public AudioWaveModuleViewModel(DispatcherQueue dispatcherQueue)
+    public AudioWaveModuleViewModel(
+        DispatcherQueue dispatcherQueue,
+        ILogger<AudioWaveModuleViewModel> logger)
     {
         _dispatcherQueue = dispatcherQueue;
-        AttachIsRunningToAsyncCommand(p => IsParsing = p, LoadFileCommand);
+        _logger = logger;
     }
 
     /// <summary>
@@ -63,16 +65,28 @@ public sealed partial class AudioWaveModuleViewModel : ViewModelBase
     [RelayCommand]
     private async Task LoadFileAsync(string file)
     {
-        await ParseFileAsync(file);
-        _mediaPlayer ??= CreateMediaPlayer();
-        if (_mediaPlayer.PlaybackSession != null)
+        try
         {
-            _mediaPlayer.Position = TimeSpan.Zero;
-            _mediaPlayer.PlaybackSession.PositionChanged -= OnPlayPositionChanged;
-        }
+            IsParsing = true;
+            await ParseFileAsync(file);
+            _mediaPlayer ??= CreateMediaPlayer();
+            if (_mediaPlayer.PlaybackSession != null)
+            {
+                _mediaPlayer.Position = TimeSpan.Zero;
+                _mediaPlayer.PlaybackSession.PositionChanged -= OnPlayPositionChanged;
+            }
 
-        _mediaPlayer.Source = MediaSource.CreateFromStorageFile(await StorageFile.GetFileFromPathAsync(file));
-        _mediaPlayer.Play();
+            _mediaPlayer.Source = MediaSource.CreateFromStorageFile(await StorageFile.GetFileFromPathAsync(file));
+            _mediaPlayer.Play();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to load file.");
+        }
+        finally
+        {
+            IsParsing = false;
+        }
     }
 
     [RelayCommand]

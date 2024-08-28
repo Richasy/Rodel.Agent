@@ -13,5 +13,5 @@ public abstract class DrawServicePageControlBase : ReactiveUserControl<DrawServi
     /// Initializes a new instance of the <see cref="DrawServicePageControlBase"/> class.
     /// </summary>
     protected DrawServicePageControlBase()
-        => ViewModel = ServiceProvider.GetRequiredService<DrawServicePageViewModel>();
+        => ViewModel = this.Get<DrawServicePageViewModel>();
 }

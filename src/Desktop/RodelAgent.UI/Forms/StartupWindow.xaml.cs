@@ -1,7 +1,10 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
 using Microsoft.UI.Windowing;
+using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Pages;
+using RodelAgent.UI.Toolkits;
+using RodelAgent.UI.ViewModels;
 
 namespace RodelAgent.UI.Forms;
 
@@ -20,6 +23,8 @@ public sealed partial class StartupWindow : WindowBase, ITipWindow
         IsMinimizable = false;
         IsResizable = false;
 
+        Title = ResourceToolkit.GetLocalizedString(StringNames.AppName);
+        this.SetIcon("Assets/logo.ico");
         AppWindow.SetPresenter(AppWindowPresenterKind.CompactOverlay);
 
         Width = 720;
@@ -27,6 +32,7 @@ public sealed partial class StartupWindow : WindowBase, ITipWindow
 
         this.CenterOnScreen();
         _ = MainFrame.Navigate(typeof(StartupPage));
+        this.Get<AppViewModel>().DisplayWindows.Add(this);
     }
 
     /// <inheritdoc/>

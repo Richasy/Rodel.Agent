@@ -90,6 +90,42 @@ public static class GlobalDependencies
         GlobalStatics.SetServiceProvider(ServiceProvider);
     }
 
+    /// <summary>
+    /// 获取指定类型的服务.
+    /// </summary>
+    /// <typeparam name="T">类型.</typeparam>
+    /// <returns>类型实例.</returns>
+    public static T Get<T>(this Window window)
+        where T : class
+        => this.Get<T>();
+
+    /// <summary>
+    /// 获取指定类型的服务.
+    /// </summary>
+    /// <typeparam name="T">类型.</typeparam>
+    /// <returns>类型实例.</returns>
+    public static T Get<T>(this FrameworkElement element)
+        where T : class
+        => this.Get<T>();
+
+    /// <summary>
+    /// 获取指定类型的服务.
+    /// </summary>
+    /// <typeparam name="T">类型.</typeparam>
+    /// <returns>类型实例.</returns>
+    public static T Get<T>(this Page page)
+        where T : class
+        => this.Get<T>();
+
+    /// <summary>
+    /// 获取指定类型的服务.
+    /// </summary>
+    /// <typeparam name="T">类型.</typeparam>
+    /// <returns>类型实例.</returns>
+    public static T Get<T>(this ViewModelBase vm)
+        where T : class
+        => this.Get<T>();
+
     private static void ToolInvoking(ToolInvokingEventArgs args)
     {
         var chatPageVM = ServiceProvider.GetService<ChatServicePageViewModel>();

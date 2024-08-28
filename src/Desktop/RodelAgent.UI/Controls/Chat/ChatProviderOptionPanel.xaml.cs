@@ -333,13 +333,13 @@ public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBas
 
     private void SetPropertyName(TextBlock textBlock, string name)
     {
-        var text = ServiceProvider.GetRequiredService<IStringResourceToolkit>().GetString(name);
+        var text = this.Get<IStringResourceToolkit>().GetString(name);
         if (string.IsNullOrEmpty(text))
         {
             text = name;
         }
 
-        var tip = ServiceProvider.GetRequiredService<IStringResourceToolkit>().GetString($"{name}Description");
+        var tip = this.Get<IStringResourceToolkit>().GetString($"{name}Description");
         if (!string.IsNullOrEmpty(tip))
         {
             ToolTipService.SetToolTip(textBlock, tip);

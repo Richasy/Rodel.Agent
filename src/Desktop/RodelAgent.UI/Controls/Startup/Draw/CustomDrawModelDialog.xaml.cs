@@ -54,7 +54,7 @@ public sealed partial class CustomDrawModelDialog : AppContentDialog
     {
         var modelName = ModelNameBox.Text?.Trim() ?? string.Empty;
         var modelId = ModelIdBox.Text?.Trim() ?? string.Empty;
-        var appVM = GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>();
+        var appVM = this.Get<AppViewModel>();
         if (string.IsNullOrEmpty(modelName) || string.IsNullOrEmpty(modelId))
         {
             args.Cancel = true;

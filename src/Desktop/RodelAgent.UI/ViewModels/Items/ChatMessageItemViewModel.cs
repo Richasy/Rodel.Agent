@@ -65,7 +65,7 @@ public sealed partial class ChatMessageItemViewModel : ViewModelBase<ChatMessage
         var dp = new DataPackage();
         dp.SetText(Content);
         Clipboard.SetContent(dp);
-        GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>().ShowTip(StringNames.Copied, InfoType.Success);
+        this.Get<AppViewModel>().ShowTip(StringNames.Copied, InfoType.Success);
     }
 
     [RelayCommand]

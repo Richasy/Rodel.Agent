@@ -44,7 +44,7 @@ public sealed partial class TranslateSessionItemControl : TranslateSessionItemCo
 
     private void OnDeleteButtonClick(object sender, RoutedEventArgs e)
     {
-        var pageVM = ServiceProvider.GetRequiredService<TranslateServicePageViewModel>();
+        var pageVM = this.Get<TranslateServicePageViewModel>();
         pageVM.DeleteHistoryItemCommand.Execute(ViewModel);
     }
 
@@ -59,7 +59,7 @@ public sealed partial class TranslateSessionItemControl : TranslateSessionItemCo
         var dataPackage = new DataPackage();
         dataPackage.SetText(text);
         Clipboard.SetContent(dataPackage);
-        ServiceProvider.GetRequiredService<AppViewModel>().ShowTip(Models.Constants.StringNames.Copied, Models.Constants.InfoType.Success);
+        this.Get<AppViewModel>().ShowTip(Models.Constants.StringNames.Copied, Models.Constants.InfoType.Success);
     }
 }
 

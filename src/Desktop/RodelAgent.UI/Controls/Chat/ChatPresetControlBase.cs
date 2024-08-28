@@ -12,5 +12,5 @@ public abstract class ChatPresetControlBase : ReactiveUserControl<ChatPresetModu
     /// <summary>
     /// Initializes a new instance of the <see cref="ChatPresetControlBase"/> class.
     /// </summary>
-    protected ChatPresetControlBase() => ViewModel = ServiceProvider.GetRequiredService<ChatPresetModuleViewModel>();
+    protected ChatPresetControlBase() => ViewModel = this.Get<ChatPresetModuleViewModel>();
 }

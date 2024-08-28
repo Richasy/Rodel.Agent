@@ -13,5 +13,5 @@ public abstract class StartupPageControlBase : ReactiveUserControl<StartupPageVi
     /// Initializes a new instance of the <see cref="StartupPageControlBase"/> class.
     /// </summary>
     protected StartupPageControlBase()
-        => ViewModel = ServiceProvider.GetRequiredService<StartupPageViewModel>();
+        => ViewModel = this.Get<StartupPageViewModel>();
 }

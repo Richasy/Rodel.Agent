@@ -29,6 +29,6 @@ public sealed partial class TranslateConfigurationPage : TranslateConfigurationP
 /// <summary>
 /// 聊天配置页面基类.
 /// </summary>
-public abstract class TranslateConfigurationPageBase : PageBase<TranslateServiceItemViewModel>
+public abstract class TranslateConfigurationPageBase : LayoutPageBase<TranslateServiceItemViewModel>
 {
 }

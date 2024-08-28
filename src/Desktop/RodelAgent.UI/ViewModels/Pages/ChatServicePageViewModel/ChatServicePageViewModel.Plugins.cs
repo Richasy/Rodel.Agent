@@ -17,7 +17,7 @@ public sealed partial class ChatServicePageViewModel
     [RelayCommand]
     private async Task ImportPluginAsync()
     {
-        var appVM = GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>();
+        var appVM = this.Get<AppViewModel>();
         var file = await FileToolkit.PickFileAsync(".zip", appVM.ActivatedWindow);
         if (file is null)
         {

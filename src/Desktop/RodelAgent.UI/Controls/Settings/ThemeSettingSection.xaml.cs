@@ -40,6 +40,6 @@ public sealed partial class ThemeSettingSection : SettingSectionBase
         };
 
         ViewModel.AppTheme = theme;
-        ServiceProvider.GetRequiredService<AppViewModel>().ChangeTheme(theme);
+        this.Get<AppViewModel>().ChangeTheme(theme);
     }
 }

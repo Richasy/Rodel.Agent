@@ -23,7 +23,7 @@ public sealed partial class GroupPresetSettingsDialog : AppContentDialog
     public GroupPresetSettingsDialog()
     {
         InitializeComponent();
-        ViewModel = GlobalDependencies.ServiceProvider.GetRequiredService<GroupPresetModuleViewModel>();
+        ViewModel = this.Get<GroupPresetModuleViewModel>();
         Closed += (_, _) => ViewModel.CloseRequested -= OnCloseRequested;
         ViewModel.CloseRequested += OnCloseRequested;
     }
@@ -52,7 +52,7 @@ public sealed partial class GroupPresetSettingsDialog : AppContentDialog
         btn.IsEnabled = false;
         if(!GroupPanel.IsValid())
         {
-            GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>()
+            this.Get<AppViewModel>()
                 .ShowTip(StringNames.MustFillRequireFields, InfoType.Warning);
             btn.IsEnabled = true;
             return;

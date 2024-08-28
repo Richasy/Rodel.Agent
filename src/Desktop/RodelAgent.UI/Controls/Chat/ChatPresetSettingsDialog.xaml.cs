@@ -23,7 +23,7 @@ public sealed partial class ChatPresetSettingsDialog : AppContentDialog
     public ChatPresetSettingsDialog()
     {
         InitializeComponent();
-        ViewModel = GlobalDependencies.ServiceProvider.GetRequiredService<ChatPresetModuleViewModel>();
+        ViewModel = this.Get<ChatPresetModuleViewModel>();
         Closed += (_, _) => ViewModel.CloseRequested -= OnCloseRequested;
         ViewModel.CloseRequested += OnCloseRequested;
     }
@@ -52,7 +52,7 @@ public sealed partial class ChatPresetSettingsDialog : AppContentDialog
         btn.IsEnabled = false;
         if (!ModelPanel.IsValid())
         {
-            GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>()
+            this.Get<AppViewModel>()
                 .ShowTip(StringNames.MustFillRequireFields, InfoType.Warning);
             btn.IsEnabled = true;
             return;

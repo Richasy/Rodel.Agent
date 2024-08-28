@@ -66,7 +66,7 @@ public sealed partial class CustomChatModelDialog : AppContentDialog
         if (string.IsNullOrEmpty(modelName) || string.IsNullOrEmpty(modelId))
         {
             args.Cancel = true;
-            var appVM = GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>();
+            var appVM = this.Get<AppViewModel>();
             appVM.ShowTip(ResourceToolkit.GetLocalizedString(StringNames.ModelNameOrIdCanNotBeEmpty));
             return;
         }

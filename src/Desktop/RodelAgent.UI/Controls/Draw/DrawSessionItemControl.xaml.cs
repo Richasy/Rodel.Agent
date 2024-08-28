@@ -28,7 +28,7 @@ public sealed partial class DrawSessionItemControl : DrawSessionItemControlBase
         => Initialize();
 
     private DrawSessionViewModel GetSessionViewModel()
-        => ServiceProvider.GetRequiredService<DrawServicePageViewModel>().Session;
+        => this.Get<DrawServicePageViewModel>().Session;
 
     private void OnLoaded(object sender, RoutedEventArgs e)
         => Initialize();
@@ -89,7 +89,7 @@ public sealed partial class DrawSessionItemControl : DrawSessionItemControlBase
 
     private void OnDeleteItemClick(object sender, RoutedEventArgs e)
     {
-        var pageVM = ServiceProvider.GetRequiredService<DrawServicePageViewModel>();
+        var pageVM = this.Get<DrawServicePageViewModel>();
         pageVM.DeleteHistoryItemCommand.Execute(ViewModel);
     }
 }

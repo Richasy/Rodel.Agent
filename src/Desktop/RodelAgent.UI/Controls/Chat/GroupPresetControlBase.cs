@@ -12,5 +12,5 @@ public abstract class GroupPresetControlBase : ReactiveUserControl<GroupPresetMo
     /// <summary>
     /// Initializes a new instance of the <see cref="GroupPresetControlBase"/> class.
     /// </summary>
-    protected GroupPresetControlBase() => ViewModel = ServiceProvider.GetRequiredService<GroupPresetModuleViewModel>();
+    protected GroupPresetControlBase() => ViewModel = this.Get<GroupPresetModuleViewModel>();
 }

@@ -11,8 +11,8 @@
 
     <Grid>
         <TextBox
-            Padding="12"
             x:Name="SystemBox"
+            Padding="12"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             AcceptsReturn="True"

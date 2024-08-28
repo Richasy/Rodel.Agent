@@ -29,6 +29,6 @@ public sealed partial class DrawConfigurationPage : DrawConfigurationPageBase
 /// <summary>
 /// 绘图配置页面基类.
 /// </summary>
-public abstract class DrawConfigurationPageBase : PageBase<DrawServiceItemViewModel>
+public abstract class DrawConfigurationPageBase : LayoutPageBase<DrawServiceItemViewModel>
 {
 }

@@ -15,7 +15,7 @@ public sealed partial class DrawServicePage : DrawServicePageBase
     public DrawServicePage()
     {
         InitializeComponent();
-        ViewModel = ServiceProvider.GetRequiredService<DrawServicePageViewModel>();
+        ViewModel = this.Get<DrawServicePageViewModel>();
     }
 
     /// <inheritdoc/>
@@ -34,6 +34,6 @@ public sealed partial class DrawServicePage : DrawServicePageBase
 /// <summary>
 /// 绘图服务页面.
 /// </summary>
-public abstract class DrawServicePageBase : PageBase<DrawServicePageViewModel>
+public abstract class DrawServicePageBase : LayoutPageBase<DrawServicePageViewModel>
 {
 }

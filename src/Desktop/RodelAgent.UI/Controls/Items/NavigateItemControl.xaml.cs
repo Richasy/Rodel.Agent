@@ -19,7 +19,7 @@ public sealed partial class NavigateItemControl : NavigateItemControlBase
     }
 
     private void OnNavItemClick(object sender, RoutedEventArgs e)
-        => ServiceProvider.GetRequiredService<AppViewModel>().ChangeFeatureCommand.Execute(ViewModel.FeatureType);
+        => this.Get<AppViewModel>().ChangeFeatureCommand.Execute(ViewModel.FeatureType);
 }
 
 /// <summary>

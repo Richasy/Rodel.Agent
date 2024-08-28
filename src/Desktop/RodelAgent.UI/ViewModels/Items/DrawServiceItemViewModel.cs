@@ -43,7 +43,7 @@ public sealed partial class DrawServiceItemViewModel : ViewModelBase
         ProviderType = providerType;
         Name = name;
 
-        var serverModels = GlobalDependencies.ServiceProvider.GetRequiredService<IDrawClient>()
+        var serverModels = this.Get<IDrawClient>()
             .GetPredefinedModels(ProviderType);
         ServerModels.Clear();
         serverModels.ForEach(p => ServerModels.Add(new DrawModelItemViewModel(p)));
@@ -130,7 +130,7 @@ public sealed partial class DrawServiceItemViewModel : ViewModelBase
 
             if (IsModelExist(model))
             {
-                GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>()
+                this.Get<AppViewModel>()
                     .ShowTip(Models.Constants.StringNames.ModelAlreadyExist, Models.Constants.InfoType.Error);
                 return;
             }

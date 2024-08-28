@@ -39,7 +39,7 @@ public sealed partial class AudioServiceItemViewModel : ViewModelBase
         ProviderType = providerType;
         Name = name;
 
-        var serverModels = GlobalDependencies.ServiceProvider.GetRequiredService<IAudioClient>()
+        var serverModels = this.Get<IAudioClient>()
             .GetPredefinedModels(ProviderType);
         ServerModels.Clear();
         serverModels.ForEach(p => ServerModels.Add(new AudioModelItemViewModel(p)));
