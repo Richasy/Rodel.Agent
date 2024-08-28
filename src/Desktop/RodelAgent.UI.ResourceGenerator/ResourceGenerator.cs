@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
 using System;
+using System.Security;
 using System.Text;
 using System.Xml;
 using Microsoft.CodeAnalysis;
@@ -56,6 +57,7 @@ public class ResourceGenerator : IIncrementalGenerator
         _ = sb.AppendLine();
         _ = sb.AppendLine("namespace RodelAgent.UI.Models.Constants;");
         _ = sb.AppendLine();
+        _ = sb.AppendLine("#pragma warning disable CS1591");
         _ = sb.AppendLine("public enum StringNames");
         _ = sb.AppendLine("{");
 
@@ -74,12 +76,12 @@ public class ResourceGenerator : IIncrementalGenerator
                         continue;
                     }
 
-                    _ = sb.AppendLine($"    /// {spt}");
+                    _ = sb.AppendLine($"    /// {SecurityElement.Escape(spt)}");
                 }
             }
             else
             {
-                _ = sb.AppendLine($"    /// {value}");
+                _ = sb.AppendLine($"    /// {SecurityElement.Escape(value)}");
             }
 
             _ = sb.AppendLine("    /// </summary>");

@@ -62,7 +62,7 @@ public sealed partial class ChatPluginItemViewModel : ViewModelBase<KernelPlugin
     public ObservableCollection<ChatPluginFunctionItemViewModel> Functions { get; } = new();
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is ChatPluginItemViewModel model && base.Equals(obj) && Id == model.Id;
+    public override bool Equals(object? obj) => obj is ChatPluginItemViewModel model && base.Equals(obj) && Id == model.Id;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(base.GetHashCode(), Id);

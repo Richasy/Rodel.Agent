@@ -180,7 +180,7 @@ public sealed partial class DrawSessionViewModel : ViewModelBase
             await _storageService.AddOrUpdateDrawSessionAsync(sessionData, bytes);
             var pageVM = GlobalDependencies.ServiceProvider.GetRequiredService<DrawServicePageViewModel>();
             pageVM.UpdateHistoryCommand.Execute(default);
-            LastGenerateTime = sessionData.Time.Value.ToString("yyyy-MM-dd HH:mm:ss");
+            LastGenerateTime = sessionData.Time!.Value.ToString("yyyy-MM-dd HH:mm:ss");
             ImagePath = AppToolkit.GetDrawPicturePath(sessionData.Id);
             DataChanged?.Invoke(this, sessionData);
         });

@@ -110,7 +110,7 @@ public sealed partial class DrawServiceItemViewModel : ViewModelBase
     }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is DrawServiceItemViewModel model && ProviderType == model.ProviderType;
+    public override bool Equals(object? obj) => obj is DrawServiceItemViewModel model && ProviderType == model.ProviderType;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(ProviderType);

@@ -12,7 +12,7 @@ namespace RodelAgent.UI.Extensions;
 public sealed partial class StorageService
 {
     /// <inheritdoc/>
-    public async Task<List<DrawSession>> GetDrawSessionsAsync()
+    public async Task<List<DrawSession>?> GetDrawSessionsAsync()
     {
         await InitializeDrawSessionsAsync();
         var sessions = _drawSessions.OrderByDescending(p => p.Time ?? DateTimeOffset.MinValue).ToList();
@@ -20,7 +20,7 @@ public sealed partial class StorageService
     }
 
     /// <inheritdoc/>
-    public async Task AddOrUpdateDrawSessionAsync(DrawSession session, byte[] imageData)
+    public async Task AddOrUpdateDrawSessionAsync(DrawSession session, byte[]? imageData)
     {
         await InitializeDrawSessionsAsync();
         if (_drawSessions.Any(s => s.Id == session.Id))

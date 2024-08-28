@@ -76,7 +76,7 @@ public sealed partial class AudioServiceItemViewModel : ViewModelBase
         => ServerModels.Any(p => p.Id == model.Id);
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is AudioServiceItemViewModel model && ProviderType == model.ProviderType;
+    public override bool Equals(object? obj) => obj is AudioServiceItemViewModel model && ProviderType == model.ProviderType;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(ProviderType);

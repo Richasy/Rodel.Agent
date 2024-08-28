@@ -68,7 +68,7 @@ public abstract partial class ViewModelBase<TData> : ViewModelBase
     protected ViewModelBase(TData data) => Data = data;
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is ViewModelBase<TData> @base && EqualityComparer<TData>.Default.Equals(Data, @base.Data);
+    public override bool Equals(object? obj) => obj is ViewModelBase<TData> @base && EqualityComparer<TData>.Default.Equals(Data, @base.Data);
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Data);

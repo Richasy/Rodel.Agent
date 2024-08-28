@@ -242,7 +242,7 @@ public sealed partial class AudioSessionViewModel : ViewModelBase
             await _storageService.AddOrUpdateAudioSessionAsync(sessionData, result.ToArray());
             var pageVM = GlobalDependencies.ServiceProvider.GetRequiredService<AudioServicePageViewModel>();
             pageVM.UpdateHistoryCommand.Execute(default);
-            LastGenerateTime = sessionData.Time.Value.ToString("yyyy-MM-dd HH:mm:ss");
+            LastGenerateTime = sessionData.Time!.Value.ToString("yyyy-MM-dd HH:mm:ss");
             AudioPath = AppToolkit.GetSpeechPath(sessionData.Id);
             DataChanged?.Invoke(this, sessionData);
             _waveViewModel.LoadFileCommand.Execute(AudioPath);

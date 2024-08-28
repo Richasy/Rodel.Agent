@@ -34,8 +34,7 @@ public class BaseFieldParameters
 
         foreach (var property in properties)
         {
-            var attribute = Attribute.GetCustomAttribute(property, typeof(BaseFieldAttribute)) as BaseFieldAttribute;
-            if (attribute != null)
+            if (Attribute.GetCustomAttribute(property, typeof(BaseFieldAttribute)) is BaseFieldAttribute attribute)
             {
                 var ft = attribute.FieldType;
                 var v = ft switch
@@ -79,8 +78,7 @@ public class BaseFieldParameters
             var name = jsonAttr != null ? ((JsonPropertyNameAttribute)jsonAttr).Name : property.Name;
             if (dictionary.ContainsKey(name))
             {
-                var attribute = Attribute.GetCustomAttribute(property, typeof(BaseFieldAttribute)) as BaseFieldAttribute;
-                if (attribute != null)
+                if (Attribute.GetCustomAttribute(property, typeof(BaseFieldAttribute)) is BaseFieldAttribute attribute)
                 {
                     var ft = attribute.FieldType;
                     var value = dictionary[name];
@@ -140,7 +138,7 @@ public class BaseFieldParameters
         throw new ArgumentException("The property does not exist.");
     }
 
-    private string GetPropertyName(PropertyInfo property)
+    private static string GetPropertyName(PropertyInfo property)
     {
         var nameAttr = property.GetCustomAttribute<JsonPropertyNameAttribute>();
         return nameAttr?.Name ?? property.Name;

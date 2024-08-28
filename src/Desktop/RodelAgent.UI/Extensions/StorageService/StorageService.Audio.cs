@@ -12,7 +12,7 @@ namespace RodelAgent.UI.Extensions;
 public sealed partial class StorageService
 {
     /// <inheritdoc/>
-    public async Task<List<AudioSession>> GetAudioSessionsAsync()
+    public async Task<List<AudioSession>?> GetAudioSessionsAsync()
     {
         await InitializeAudioSessionsAsync();
         var sessions = _audioSessions.OrderByDescending(p => p.Time ?? DateTimeOffset.MinValue).ToList();
@@ -20,7 +20,7 @@ public sealed partial class StorageService
     }
 
     /// <inheritdoc/>
-    public async Task AddOrUpdateAudioSessionAsync(AudioSession session, byte[] imageData)
+    public async Task AddOrUpdateAudioSessionAsync(AudioSession session, byte[]? imageData)
     {
         await InitializeAudioSessionsAsync();
         if (_audioSessions.Any(s => s.Id == session.Id))

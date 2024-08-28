@@ -142,24 +142,9 @@ public sealed partial class MainWindow : WindowBase, ITipWindow
     private void MoveAndResize()
     {
         var lastPoint = GetSavedWindowPosition();
-        var areas = DisplayArea.FindAll();
-        var workArea = default(RectInt32);
-        for (var i = 0; i < areas.Count; i++)
-        {
-            var area = areas[i];
-            if (area.WorkArea.X < lastPoint.X && area.WorkArea.X + area.WorkArea.Width > lastPoint.X)
-            {
-                workArea = area.WorkArea;
-                break;
-            }
-        }
-
-        if (workArea == default)
-        {
-            workArea = DisplayArea.Primary.WorkArea;
-        }
-
-        var rect = GetRenderRect(workArea);
+        var displayArea = DisplayArea.GetFromPoint(lastPoint, DisplayAreaFallback.Primary)
+            ?? DisplayArea.Primary;
+        var rect = GetRenderRect(displayArea.WorkArea);
         AppWindow.MoveAndResize(rect);
     }
 
