@@ -70,6 +70,6 @@ public sealed partial class AppTitleBar : AppTitleBarBase
 /// <summary>
 /// 应用程序标题栏基类.
 /// </summary>
-public abstract class AppTitleBarBase : ReactiveUserControl<AppViewModel>
+public abstract class AppTitleBarBase : LayoutUserControlBase<AppViewModel>
 {
 }

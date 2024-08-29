@@ -15,17 +15,12 @@ public sealed partial class ChatClientEndpointConfigSection : ChatServiceConfigC
     /// <summary>
     /// Initializes a new instance of the <see cref="ChatClientEndpointConfigSection"/> class.
     /// </summary>
-    public ChatClientEndpointConfigSection()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public ChatClientEndpointConfigSection() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as ChatServiceItemViewModel;
-        if (newVM == null)
+        if (e.NewValue is not ChatServiceItemViewModel newVM)
         {
             return;
         }
@@ -40,7 +35,8 @@ public sealed partial class ChatClientEndpointConfigSection : ChatServiceConfigC
         ViewModel.CheckCurrentConfig();
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
     {
         EndpointBox.Text = (ViewModel.Config as ClientEndpointConfigBase)?.Endpoint ?? string.Empty;
     }

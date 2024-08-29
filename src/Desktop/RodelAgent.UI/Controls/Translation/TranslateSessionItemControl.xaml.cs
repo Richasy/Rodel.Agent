@@ -16,17 +16,14 @@ public sealed partial class TranslateSessionItemControl : TranslateSessionItemCo
     /// <summary>
     /// Initializes a new instance of the <see cref="TranslateSessionItemControl"/> class.
     /// </summary>
-    public TranslateSessionItemControl()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public TranslateSessionItemControl() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
         => InitSourceAndTarget();
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
         => InitSourceAndTarget();
 
     private void InitSourceAndTarget()
@@ -66,6 +63,6 @@ public sealed partial class TranslateSessionItemControl : TranslateSessionItemCo
 /// <summary>
 /// <see cref="TranslateSessionItemControl"/> 的基类.
 /// </summary>
-public abstract class TranslateSessionItemControlBase : ReactiveUserControl<TranslateSession>
+public abstract class TranslateSessionItemControlBase : LayoutUserControlBase<TranslateSession>
 {
 }

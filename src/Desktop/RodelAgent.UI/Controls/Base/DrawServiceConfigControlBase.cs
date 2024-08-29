@@ -7,7 +7,7 @@ namespace RodelAgent.UI.Controls;
 /// <summary>
 /// 聊天服务配置控件基类.
 /// </summary>
-public abstract class DrawServiceConfigControlBase : ReactiveUserControl<DrawServiceItemViewModel>
+public abstract class DrawServiceConfigControlBase : LayoutUserControlBase<DrawServiceItemViewModel>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="DrawServiceConfigControlBase"/> class.

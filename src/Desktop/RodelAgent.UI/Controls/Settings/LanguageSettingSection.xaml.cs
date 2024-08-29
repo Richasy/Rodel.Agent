@@ -16,16 +16,14 @@ public sealed partial class LanguageSettingSection : SettingSectionBase
     /// Initializes a new instance of the <see cref="LanguageSettingSection"/> class.
     /// </summary>
     public LanguageSettingSection()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-        Unloaded += OnUnloaded;
-    }
+        => InitializeComponent();
 
-    private void OnUnloaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlUnloaded()
         => ViewModel.PropertyChanged -= OnViewModelPropertyChanged;
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
     {
         ViewModel.PropertyChanged += OnViewModelPropertyChanged;
         CheckLanguage();

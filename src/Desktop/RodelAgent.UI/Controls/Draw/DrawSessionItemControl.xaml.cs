@@ -17,21 +17,18 @@ public sealed partial class DrawSessionItemControl : DrawSessionItemControlBase
     /// <summary>
     /// Initializes a new instance of the <see cref="DrawSessionItemControl"/> class.
     /// </summary>
-    public DrawSessionItemControl()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public DrawSessionItemControl() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
         => Initialize();
 
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
+        => Initialize();
+
     private DrawSessionViewModel GetSessionViewModel()
         => this.Get<DrawServicePageViewModel>().Session;
-
-    private void OnLoaded(object sender, RoutedEventArgs e)
-        => Initialize();
 
     private void Initialize()
     {
@@ -97,6 +94,6 @@ public sealed partial class DrawSessionItemControl : DrawSessionItemControlBase
 /// <summary>
 /// 会话项控件基类.
 /// </summary>
-public abstract class DrawSessionItemControlBase : ReactiveUserControl<DrawSession>
+public abstract class DrawSessionItemControlBase : LayoutUserControlBase<DrawSession>
 {
 }

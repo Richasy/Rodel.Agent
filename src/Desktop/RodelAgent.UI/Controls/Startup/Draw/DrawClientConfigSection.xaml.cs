@@ -15,17 +15,12 @@ public sealed partial class DrawClientConfigSection : DrawServiceConfigControlBa
     /// <summary>
     /// Initializes a new instance of the <see cref="DrawClientConfigSection"/> class.
     /// </summary>
-    public DrawClientConfigSection()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public DrawClientConfigSection() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as DrawServiceItemViewModel;
-        if (newVM == null)
+        if (e.NewValue is not DrawServiceItemViewModel newVM)
         {
             return;
         }
@@ -35,7 +30,8 @@ public sealed partial class DrawClientConfigSection : DrawServiceConfigControlBa
         ViewModel.CheckCurrentConfig();
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
     {
         KeyBox.Password = ViewModel.Config?.Key ?? string.Empty;
         KeyBox.Focus(FocusState.Programmatic);

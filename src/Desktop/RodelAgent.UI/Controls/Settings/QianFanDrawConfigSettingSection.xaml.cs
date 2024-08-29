@@ -20,8 +20,7 @@ public sealed partial class QianFanDrawConfigSettingSection : DrawServiceConfigC
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as DrawServiceItemViewModel;
-        if (newVM == null)
+        if (e.NewValue is not DrawServiceItemViewModel newVM)
         {
             return;
         }

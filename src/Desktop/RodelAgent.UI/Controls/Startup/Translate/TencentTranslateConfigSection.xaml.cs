@@ -13,17 +13,12 @@ public sealed partial class TencentTranslateConfigSection : TranslateServiceConf
     /// <summary>
     /// InitiTencentTranslatezes a new instance of the <see cref="TencentTranslateConfigSection"/> class.
     /// </summary>
-    public TencentTranslateConfigSection()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public TencentTranslateConfigSection() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as TranslateServiceItemViewModel;
-        if (newVM == null)
+        if (e.NewValue is not TranslateServiceItemViewModel newVM)
         {
             return;
         }
@@ -32,10 +27,9 @@ public sealed partial class TencentTranslateConfigSection : TranslateServiceConf
         ViewModel.CheckCurrentConfig();
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
-    {
-        SecretBox.Password = (ViewModel.Config as TencentClientConfig)?.SecretId ?? string.Empty;
-    }
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
+        => SecretBox.Password = (ViewModel.Config as TencentClientConfig)?.SecretId ?? string.Empty;
 
     private void OnSecretBoxPasswordChanged(object sender, RoutedEventArgs e)
     {

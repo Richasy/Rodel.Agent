@@ -15,21 +15,18 @@ public sealed partial class AudioSessionItemControl : AudioSessionItemControlBas
     /// <summary>
     /// Initializes a new instance of the <see cref="AudioSessionItemControl"/> class.
     /// </summary>
-    public AudioSessionItemControl()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public AudioSessionItemControl() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
         => Initialize();
 
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
+        => Initialize();
+
     private AudioSessionViewModel GetSessionViewModel()
         => this.Get<AudioServicePageViewModel>().Session;
-
-    private void OnLoaded(object sender, RoutedEventArgs e)
-        => Initialize();
 
     private void Initialize()
     {
@@ -60,6 +57,6 @@ public sealed partial class AudioSessionItemControl : AudioSessionItemControlBas
 /// <summary>
 /// 会话项控件基类.
 /// </summary>
-public abstract class AudioSessionItemControlBase : ReactiveUserControl<AudioSession>
+public abstract class AudioSessionItemControlBase : LayoutUserControlBase<AudioSession>
 {
 }

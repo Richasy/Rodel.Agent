@@ -23,11 +23,7 @@ public sealed partial class ChatClientConfigSection : ChatServiceConfigControlBa
     /// <summary>
     /// Initializes a new instance of the <see cref="ChatClientConfigSection"/> class.
     /// </summary>
-    public ChatClientConfigSection()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public ChatClientConfigSection() => InitializeComponent();
 
     /// <summary>
     /// 自定义密钥标题文本.
@@ -41,8 +37,7 @@ public sealed partial class ChatClientConfigSection : ChatServiceConfigControlBa
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as ChatServiceItemViewModel;
-        if (newVM == null)
+        if (e.NewValue is not ChatServiceItemViewModel newVM)
         {
             return;
         }
@@ -52,9 +47,10 @@ public sealed partial class ChatClientConfigSection : ChatServiceConfigControlBa
         ViewModel.CheckCurrentConfig();
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
     {
-        if(string.IsNullOrEmpty(CustomHeaderText))
+        if (string.IsNullOrEmpty(CustomHeaderText))
         {
             CustomHeaderText = ResourceToolkit.GetLocalizedString(StringNames.AccessKey);
         }

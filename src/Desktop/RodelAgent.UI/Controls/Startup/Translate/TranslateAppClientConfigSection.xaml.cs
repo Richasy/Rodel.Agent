@@ -15,17 +15,12 @@ public sealed partial class TranslateAppClientConfigSection : TranslateServiceCo
     /// <summary>
     /// Initializes a new instance of the <see cref="TranslateAppClientConfigSection"/> class.
     /// </summary>
-    public TranslateAppClientConfigSection()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public TranslateAppClientConfigSection() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as TranslateServiceItemViewModel;
-        if (newVM == null)
+        if (e.NewValue is not TranslateServiceItemViewModel newVM)
         {
             return;
         }
@@ -35,10 +30,9 @@ public sealed partial class TranslateAppClientConfigSection : TranslateServiceCo
         ViewModel.CheckCurrentConfig();
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
-    {
-        AppIdBox.Text = (ViewModel.Config as AppClientConfigBase)?.AppId ?? string.Empty;
-    }
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
+        => AppIdBox.Text = (ViewModel.Config as AppClientConfigBase)?.AppId ?? string.Empty;
 
     private AppClientConfigBase CreateCurrentConfig()
     {

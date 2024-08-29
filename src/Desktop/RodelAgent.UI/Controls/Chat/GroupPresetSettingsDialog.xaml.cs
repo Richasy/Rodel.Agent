@@ -50,7 +50,7 @@ public sealed partial class GroupPresetSettingsDialog : AppContentDialog
     {
         var btn = (Button)sender;
         btn.IsEnabled = false;
-        if(!GroupPanel.IsValid())
+        if (!GroupPanel.IsValid())
         {
             this.Get<AppViewModel>()
                 .ShowTip(StringNames.MustFillRequireFields, InfoType.Warning);

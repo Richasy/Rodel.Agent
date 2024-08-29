@@ -13,17 +13,12 @@ public sealed partial class AzureSpeechAudioConfigSection : AudioServiceConfigCo
     /// <summary>
     /// Initializes a new instance of the <see cref="AzureSpeechAudioConfigSection"/> class.
     /// </summary>
-    public AzureSpeechAudioConfigSection()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public AzureSpeechAudioConfigSection() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as AudioServiceItemViewModel;
-        if (newVM == null)
+        if (e.NewValue is not AudioServiceItemViewModel newVM)
         {
             return;
         }
@@ -32,10 +27,9 @@ public sealed partial class AzureSpeechAudioConfigSection : AudioServiceConfigCo
         ViewModel.CheckCurrentConfig();
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
-    {
-        RegionBox.Text = (ViewModel.Config as AzureSpeechClientConfig)?.Region ?? string.Empty;
-    }
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
+        => RegionBox.Text = (ViewModel.Config as AzureSpeechClientConfig)?.Region ?? string.Empty;
 
     private void OnRegionBoxTextChanged(object sender, TextChangedEventArgs e)
     {

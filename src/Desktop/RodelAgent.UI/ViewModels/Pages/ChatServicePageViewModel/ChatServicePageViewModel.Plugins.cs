@@ -66,6 +66,7 @@ public sealed partial class ChatServicePageViewModel
     [RelayCommand]
     private async Task ResetPluginsAsync(bool force = false)
     {
+        IsPluginLoading = true;
         if (!force && _isPluginInitialized)
         {
             return;
@@ -102,6 +103,7 @@ public sealed partial class ChatServicePageViewModel
 
         SettingsToolkit.WriteLocalSetting(SettingNames.DeletingPluginIds, "[]");
         _isPluginInitialized = true;
+        IsPluginLoading = false;
     }
 
     private async Task InsertPluginFileAsync(string path)

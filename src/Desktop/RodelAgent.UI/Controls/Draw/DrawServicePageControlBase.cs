@@ -7,7 +7,7 @@ namespace RodelAgent.UI.Controls.Draw;
 /// <summary>
 /// 绘图服务页面控件基类.
 /// </summary>
-public abstract class DrawServicePageControlBase : ReactiveUserControl<DrawServicePageViewModel>
+public abstract class DrawServicePageControlBase : LayoutUserControlBase<DrawServicePageViewModel>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="DrawServicePageControlBase"/> class.

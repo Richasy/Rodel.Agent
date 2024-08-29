@@ -12,17 +12,14 @@ public sealed partial class SystemInstructionPanel : ChatSessionControlBase
     /// <summary>
     /// Initializes a new instance of the <see cref="SystemInstructionPanel"/> class.
     /// </summary>
-    public SystemInstructionPanel()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public SystemInstructionPanel() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
         => UpdateInstruction();
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
         => UpdateInstruction();
 
     private void UpdateInstruction()

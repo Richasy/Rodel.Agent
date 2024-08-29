@@ -7,7 +7,7 @@ namespace RodelAgent.UI.Controls.Chat;
 /// <summary>
 /// 群组预设控件基类.
 /// </summary>
-public abstract class GroupPresetControlBase : ReactiveUserControl<GroupPresetModuleViewModel>
+public abstract class GroupPresetControlBase : LayoutUserControlBase<GroupPresetModuleViewModel>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="GroupPresetControlBase"/> class.

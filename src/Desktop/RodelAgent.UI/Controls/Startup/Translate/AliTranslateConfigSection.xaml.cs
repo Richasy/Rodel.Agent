@@ -13,17 +13,12 @@ public sealed partial class AliTranslateConfigSection : TranslateServiceConfigCo
     /// <summary>
     /// Initializes a new instance of the <see cref="AliTranslateConfigSection"/> class.
     /// </summary>
-    public AliTranslateConfigSection()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public AliTranslateConfigSection() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as TranslateServiceItemViewModel;
-        if (newVM == null)
+        if (e.NewValue is not TranslateServiceItemViewModel newVM)
         {
             return;
         }
@@ -32,10 +27,9 @@ public sealed partial class AliTranslateConfigSection : TranslateServiceConfigCo
         ViewModel.CheckCurrentConfig();
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
-    {
-        SecretBox.Password = (ViewModel.Config as AliClientConfig)?.Secret ?? string.Empty;
-    }
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
+        => SecretBox.Password = (ViewModel.Config as AliClientConfig)?.Secret ?? string.Empty;
 
     private void OnSecretBoxPasswordChanged(object sender, RoutedEventArgs e)
     {

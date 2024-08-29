@@ -14,17 +14,12 @@ public sealed partial class HunYuanDrawConfigSection : DrawServiceConfigControlB
     /// <summary>
     /// Initializes a new instance of the <see cref="HunYuanDrawConfigSection"/> class.
     /// </summary>
-    public HunYuanDrawConfigSection()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public HunYuanDrawConfigSection() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as DrawServiceItemViewModel;
-        if (newVM == null)
+        if (e.NewValue is not DrawServiceItemViewModel newVM)
         {
             return;
         }
@@ -34,7 +29,8 @@ public sealed partial class HunYuanDrawConfigSection : DrawServiceConfigControlB
         ViewModel.CheckCurrentConfig();
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
         => SecretBox.Password = ((HunYuanClientConfig)ViewModel.Config).SecretId;
 
     private void OnSecretBoxTextChanged(object sender, RoutedEventArgs e)

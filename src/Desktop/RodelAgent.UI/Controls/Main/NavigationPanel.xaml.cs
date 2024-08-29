@@ -22,6 +22,6 @@ public sealed partial class NavigationPanel : NavigationPanelBase
 /// <summary>
 /// 导航面板基类.
 /// </summary>
-public abstract class NavigationPanelBase : ReactiveUserControl<AppViewModel>
+public abstract class NavigationPanelBase : LayoutUserControlBase<AppViewModel>
 {
 }

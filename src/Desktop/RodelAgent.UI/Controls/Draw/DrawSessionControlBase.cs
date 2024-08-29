@@ -7,6 +7,6 @@ namespace RodelAgent.UI.Controls.Draw;
 /// <summary>
 /// 绘图会话控件基类.
 /// </summary>
-public abstract class DrawSessionControlBase : ReactiveUserControl<DrawSessionViewModel>
+public abstract class DrawSessionControlBase : LayoutUserControlBase<DrawSessionViewModel>
 {
 }

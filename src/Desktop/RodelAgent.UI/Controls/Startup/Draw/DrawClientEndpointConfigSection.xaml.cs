@@ -15,17 +15,12 @@ public sealed partial class DrawClientEndpointConfigSection : DrawServiceConfigC
     /// <summary>
     /// Initializes a new instance of the <see cref="DrawClientEndpointConfigSection"/> class.
     /// </summary>
-    public DrawClientEndpointConfigSection()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public DrawClientEndpointConfigSection() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as DrawServiceItemViewModel;
-        if (newVM == null)
+        if (e.NewValue is not DrawServiceItemViewModel newVM)
         {
             return;
         }
@@ -35,10 +30,9 @@ public sealed partial class DrawClientEndpointConfigSection : DrawServiceConfigC
         ViewModel.CheckCurrentConfig();
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
-    {
-        EndpointBox.Text = (ViewModel.Config as ClientEndpointConfigBase)?.Endpoint ?? string.Empty;
-    }
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
+        => EndpointBox.Text = (ViewModel.Config as ClientEndpointConfigBase)?.Endpoint ?? string.Empty;
 
     private void OnEndpointBoxTextChanged(object sender, TextChangedEventArgs e)
     {

@@ -14,17 +14,12 @@ public sealed partial class SparkDeskChatConfigSection : ChatServiceConfigContro
     /// <summary>
     /// Initializes a new instance of the <see cref="SparkDeskChatConfigSection"/> class.
     /// </summary>
-    public SparkDeskChatConfigSection()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public SparkDeskChatConfigSection() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as ChatServiceItemViewModel;
-        if (newVM == null)
+        if (e.NewValue is not ChatServiceItemViewModel newVM)
         {
             return;
         }
@@ -34,7 +29,8 @@ public sealed partial class SparkDeskChatConfigSection : ChatServiceConfigContro
         ViewModel.CheckCurrentConfig();
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
     {
         SecretBox.Password = ((SparkDeskClientConfig)ViewModel.Config).Secret;
         AppIdBox.Text = ((SparkDeskClientConfig)ViewModel.Config).AppId;

@@ -15,17 +15,12 @@ public sealed partial class AudioClientEndpointConfigSection : AudioServiceConfi
     /// <summary>
     /// Initializes a new instance of the <see cref="AudioClientEndpointConfigSection"/> class.
     /// </summary>
-    public AudioClientEndpointConfigSection()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public AudioClientEndpointConfigSection() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as AudioServiceItemViewModel;
-        if (newVM == null)
+        if (e.NewValue is not AudioServiceItemViewModel newVM)
         {
             return;
         }
@@ -35,10 +30,9 @@ public sealed partial class AudioClientEndpointConfigSection : AudioServiceConfi
         ViewModel.CheckCurrentConfig();
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
-    {
-        EndpointBox.Text = (ViewModel.Config as ClientEndpointConfigBase)?.Endpoint ?? string.Empty;
-    }
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
+        => EndpointBox.Text = (ViewModel.Config as ClientEndpointConfigBase)?.Endpoint ?? string.Empty;
 
     private void OnEndpointBoxTextChanged(object sender, TextChangedEventArgs e)
     {

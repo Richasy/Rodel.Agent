@@ -25,6 +25,6 @@ public sealed partial class NavigateItemControl : NavigateItemControlBase
 /// <summary>
 /// 导航项控件基类.
 /// </summary>
-public abstract class NavigateItemControlBase : ReactiveUserControl<NavigateItemViewModel>
+public abstract class NavigateItemControlBase : LayoutUserControlBase<NavigateItemViewModel>
 {
 }

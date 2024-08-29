@@ -14,13 +14,10 @@ public sealed partial class DrawSessionInput : DrawSessionControlBase
     /// <summary>
     /// Initializes a new instance of the <see cref="DrawSessionInput"/> class.
     /// </summary>
-    public DrawSessionInput()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public DrawSessionInput() => InitializeComponent();
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
         => CheckEnterSendItem();
 
     private async void OnInputBoxPreviewKeyDownAsync(object sender, KeyRoutedEventArgs e)

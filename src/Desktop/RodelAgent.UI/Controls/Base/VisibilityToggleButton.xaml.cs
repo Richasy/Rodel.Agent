@@ -9,7 +9,7 @@ namespace RodelAgent.UI.Controls;
 /// <summary>
 /// 可见性切换按钮.
 /// </summary>
-public sealed partial class VisibilityToggleButton : UserControl
+public sealed partial class VisibilityToggleButton : LayoutUserControlBase
 {
     /// <summary>
     /// <see cref="Direction"/> 依赖属性.
@@ -26,11 +26,7 @@ public sealed partial class VisibilityToggleButton : UserControl
     /// <summary>
     /// Initializes a new instance of the <see cref="VisibilityToggleButton"/> class.
     /// </summary>
-    public VisibilityToggleButton()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public VisibilityToggleButton() => InitializeComponent();
 
     /// <summary>
     /// 点击事件.
@@ -71,14 +67,15 @@ public sealed partial class VisibilityToggleButton : UserControl
     protected override void OnPointerCanceled(PointerRoutedEventArgs e)
         => HideButton();
 
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
+        => CheckButtonStates();
+
     private static void OnIsHideChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var instance = d as VisibilityToggleButton;
         instance?.CheckButtonStates();
     }
-
-    private void OnLoaded(object sender, RoutedEventArgs e)
-        => CheckButtonStates();
 
     private void CheckButtonStates()
     {

@@ -7,7 +7,7 @@ namespace RodelAgent.UI.Controls.Items;
 /// <summary>
 /// 音频服务项控件.
 /// </summary>
-public sealed class AudioServiceItemControl : ReactiveControl<AudioServiceItemViewModel>
+public sealed class AudioServiceItemControl : LayoutControlBase<AudioServiceItemViewModel>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="AudioServiceItemControl"/> class.

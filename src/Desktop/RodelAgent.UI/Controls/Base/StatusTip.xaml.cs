@@ -7,7 +7,7 @@ namespace RodelAgent.UI.Controls;
 /// <summary>
 /// 状态提示.
 /// </summary>
-public sealed partial class StatusTip : UserControl
+public sealed partial class StatusTip : LayoutUserControlBase
 {
     /// <summary>
     /// <see cref="Text"/>的依赖属性.
@@ -24,11 +24,7 @@ public sealed partial class StatusTip : UserControl
     /// <summary>
     /// Initializes a new instance of the <see cref="StatusTip"/> class.
     /// </summary>
-    public StatusTip()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public StatusTip() => InitializeComponent();
 
     /// <summary>
     /// 当前状态.
@@ -47,6 +43,10 @@ public sealed partial class StatusTip : UserControl
         get => (string)GetValue(TextProperty);
         set => SetValue(TextProperty, value);
     }
+
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
+        => ChangeStatus();
 
     private static void OnStatusChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -74,8 +74,5 @@ public sealed partial class StatusTip : UserControl
                 break;
         }
     }
-
-    private void OnLoaded(object sender, RoutedEventArgs e)
-        => ChangeStatus();
 }
 

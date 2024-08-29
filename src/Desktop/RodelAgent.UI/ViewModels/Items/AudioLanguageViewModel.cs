@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
 using System.Globalization;
-using Richasy.WinUI.Share.ViewModels;
 
 namespace RodelAgent.UI.ViewModels.Items;
 

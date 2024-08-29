@@ -12,7 +12,7 @@ namespace RodelAgent.UI.Controls;
 /// <summary>
 /// 预设头像.
 /// </summary>
-public sealed partial class PresetAvatar : UserControl
+public sealed partial class PresetAvatar : LayoutUserControlBase
 {
     /// <summary>
     /// <see cref="PresetId"/> 的依赖属性.
@@ -32,8 +32,6 @@ public sealed partial class PresetAvatar : UserControl
     public PresetAvatar()
     {
         InitializeComponent();
-        Loaded += OnLoaded;
-        Unloaded += OnUnloaded;
     }
 
     /// <summary>
@@ -59,20 +57,22 @@ public sealed partial class PresetAvatar : UserControl
         set => SetValue(DefaultSymbolProperty, value);
     }
 
-    private static void OnPresetIdChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        var instance = d as PresetAvatar;
-        instance?.CheckAvatarAsync();
-    }
-
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
     {
         CheckAvatarAsync();
         this.Get<AppViewModel>().PresetAvatarUpdateRequested += OnPresetAvatarUpdateRequested;
     }
 
-    private void OnUnloaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlUnloaded()
         => this.Get<AppViewModel>().PresetAvatarUpdateRequested -= OnPresetAvatarUpdateRequested;
+
+    private static void OnPresetIdChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        var instance = d as PresetAvatar;
+        instance?.CheckAvatarAsync();
+    }
 
     private void OnPresetAvatarUpdateRequested(object sender, string e)
     {

@@ -7,7 +7,7 @@ namespace RodelAgent.UI.Controls;
 /// <summary>
 /// 聊天服务配置控件基类.
 /// </summary>
-public abstract class ChatServiceConfigControlBase : ReactiveUserControl<ChatServiceItemViewModel>
+public abstract class ChatServiceConfigControlBase : LayoutUserControlBase<ChatServiceItemViewModel>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="ChatServiceConfigControlBase"/> class.

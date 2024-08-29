@@ -14,17 +14,12 @@ public sealed partial class OpenAIChatConfigSection : ChatServiceConfigControlBa
     /// <summary>
     /// Initializes a new instance of the <see cref="OpenAIChatConfigSection"/> class.
     /// </summary>
-    public OpenAIChatConfigSection()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public OpenAIChatConfigSection() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as ChatServiceItemViewModel;
-        if (newVM == null)
+        if (e.NewValue is not ChatServiceItemViewModel newVM)
         {
             return;
         }
@@ -33,6 +28,10 @@ public sealed partial class OpenAIChatConfigSection : ChatServiceConfigControlBa
         Debug.Assert(ViewModel.Config != null, "ViewModel.Config should not be null.");
         ViewModel.CheckCurrentConfig();
     }
+
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
+        => OrganizationBox.Text = ((OpenAIClientConfig)ViewModel.Config).OrganizationId;
 
     private static OpenAIClientConfig CreateCurrentConfig()
     {
@@ -43,9 +42,6 @@ public sealed partial class OpenAIChatConfigSection : ChatServiceConfigControlBa
         };
         return config;
     }
-
-    private void OnLoaded(object sender, RoutedEventArgs e)
-        => OrganizationBox.Text = ((OpenAIClientConfig)ViewModel.Config).OrganizationId;
 
     private void OnOrganizationBoxTextChanged(object sender, TextChangedEventArgs e)
     {

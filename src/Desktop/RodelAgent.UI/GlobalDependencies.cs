@@ -97,7 +97,7 @@ public static class GlobalDependencies
     /// <returns>类型实例.</returns>
     public static T Get<T>(this Window window)
         where T : class
-        => this.Get<T>();
+        => ServiceProvider.GetRequiredService<T>();
 
     /// <summary>
     /// 获取指定类型的服务.
@@ -106,7 +106,7 @@ public static class GlobalDependencies
     /// <returns>类型实例.</returns>
     public static T Get<T>(this FrameworkElement element)
         where T : class
-        => this.Get<T>();
+        => ServiceProvider.GetRequiredService<T>();
 
     /// <summary>
     /// 获取指定类型的服务.
@@ -115,7 +115,7 @@ public static class GlobalDependencies
     /// <returns>类型实例.</returns>
     public static T Get<T>(this Page page)
         where T : class
-        => this.Get<T>();
+        => ServiceProvider.GetRequiredService<T>();
 
     /// <summary>
     /// 获取指定类型的服务.
@@ -124,7 +124,7 @@ public static class GlobalDependencies
     /// <returns>类型实例.</returns>
     public static T Get<T>(this ViewModelBase vm)
         where T : class
-        => this.Get<T>();
+        => ServiceProvider.GetRequiredService<T>();
 
     private static void ToolInvoking(ToolInvokingEventArgs args)
     {

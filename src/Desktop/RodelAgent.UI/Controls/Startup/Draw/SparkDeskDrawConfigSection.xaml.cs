@@ -14,17 +14,12 @@ public sealed partial class SparkDeskDrawConfigSection : DrawServiceConfigContro
     /// <summary>
     /// Initializes a new instance of the <see cref="SparkDeskDrawConfigSection"/> class.
     /// </summary>
-    public SparkDeskDrawConfigSection()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public SparkDeskDrawConfigSection() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as DrawServiceItemViewModel;
-        if (newVM == null)
+        if (e.NewValue is not DrawServiceItemViewModel newVM)
         {
             return;
         }
@@ -34,7 +29,8 @@ public sealed partial class SparkDeskDrawConfigSection : DrawServiceConfigContro
         ViewModel.CheckCurrentConfig();
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
         => AppIdBox.Text = ((SparkDeskClientConfig)ViewModel.Config).AppId;
 
     private void OnAppIdBoxTextChanged(object sender, TextChangedEventArgs e)

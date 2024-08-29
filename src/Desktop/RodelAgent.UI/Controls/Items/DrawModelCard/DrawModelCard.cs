@@ -7,7 +7,7 @@ namespace RodelAgent.UI.Controls.Items;
 /// <summary>
 /// 聊天模型卡片.
 /// </summary>
-public sealed class DrawModelCard : ReactiveControl<DrawModelItemViewModel>
+public sealed class DrawModelCard : LayoutControlBase<DrawModelItemViewModel>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="DrawModelCard"/> class.

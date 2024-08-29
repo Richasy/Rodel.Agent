@@ -13,16 +13,12 @@ public sealed partial class AzureOpenAIAudioConfigSection : AudioServiceConfigCo
     /// <summary>
     /// Initializes a new instance of the <see cref="AzureOpenAIAudioConfigSection"/> class.
     /// </summary>
-    public AzureOpenAIAudioConfigSection()
-    {
-        InitializeComponent();
-    }
+    public AzureOpenAIAudioConfigSection() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as AudioServiceItemViewModel;
-        if (newVM == null)
+        if (e.NewValue is not AudioServiceItemViewModel newVM)
         {
             return;
         }

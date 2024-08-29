@@ -7,7 +7,7 @@ namespace RodelAgent.UI.Controls.Items;
 /// <summary>
 /// 绘图服务项控件.
 /// </summary>
-public sealed class DrawServiceItemControl : ReactiveControl<DrawServiceItemViewModel>
+public sealed class DrawServiceItemControl : LayoutControlBase<DrawServiceItemViewModel>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="DrawServiceItemControl"/> class.

@@ -89,7 +89,7 @@ public sealed partial class ChatMessageItemControl : ChatMessageItemControlBase
 /// <summary>
 /// 聊天消息基类.
 /// </summary>
-public abstract class ChatMessageItemControlBase : ReactiveUserControl<ChatMessageItemViewModel>
+public abstract class ChatMessageItemControlBase : LayoutUserControlBase<ChatMessageItemViewModel>
 {
 }
 

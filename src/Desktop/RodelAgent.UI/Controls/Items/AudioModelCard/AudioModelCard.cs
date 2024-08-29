@@ -7,7 +7,7 @@ namespace RodelAgent.UI.Controls.Items;
 /// <summary>
 /// 音频模型卡片.
 /// </summary>
-public sealed class AudioModelCard : ReactiveControl<AudioModelItemViewModel>
+public sealed class AudioModelCard : LayoutControlBase<AudioModelItemViewModel>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="AudioModelCard"/> class.

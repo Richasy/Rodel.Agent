@@ -8,7 +8,7 @@ namespace RodelAgent.UI.Controls.Draw;
 /// <summary>
 /// 本地绘图图片.
 /// </summary>
-public sealed partial class LocalDrawImage : UserControl
+public sealed partial class LocalDrawImage : LayoutUserControlBase
 {
     /// <summary>
     /// <see cref="Id"/> 依赖属性.
@@ -19,11 +19,7 @@ public sealed partial class LocalDrawImage : UserControl
     /// <summary>
     /// Initializes a new instance of the <see cref="LocalDrawImage"/> class.
     /// </summary>
-    public LocalDrawImage()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public LocalDrawImage() => InitializeComponent();
 
     /// <summary>
     /// 图片Id.
@@ -33,6 +29,10 @@ public sealed partial class LocalDrawImage : UserControl
         get => (string)GetValue(IdProperty);
         set => SetValue(IdProperty, value);
     }
+
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
+        => ResetImage(Id);
 
     private static void OnIdChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -44,9 +44,6 @@ public sealed partial class LocalDrawImage : UserControl
 
         instance.ResetImage(e.NewValue as string);
     }
-
-    private void OnLoaded(object sender, RoutedEventArgs e)
-        => ResetImage(Id);
 
     private void ResetImage(string id)
     {

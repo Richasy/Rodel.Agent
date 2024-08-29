@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
 using Microsoft.Windows.AppLifecycle;
-using Richasy.WinUI.Share.ViewModels;
 using RodelAgent.Interfaces;
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Toolkits;

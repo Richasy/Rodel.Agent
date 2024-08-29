@@ -7,7 +7,7 @@ namespace RodelAgent.UI.Controls.Items;
 /// <summary>
 /// 聊天预设项控件.
 /// </summary>
-public sealed partial class ChatSessionPresetItemControl : ReactiveControl<ChatPresetItemViewModel>
+public sealed partial class ChatSessionPresetItemControl : LayoutControlBase<ChatPresetItemViewModel>
 {
     /// <summary>
     /// <see cref="DefaultSymbol"/> 的依赖属性.

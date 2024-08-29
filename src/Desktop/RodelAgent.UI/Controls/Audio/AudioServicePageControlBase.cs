@@ -7,7 +7,7 @@ namespace RodelAgent.UI.Controls.Audio;
 /// <summary>
 /// 音频服务页面控件基类.
 /// </summary>
-public abstract class AudioServicePageControlBase : ReactiveUserControl<AudioServicePageViewModel>
+public abstract class AudioServicePageControlBase : LayoutUserControlBase<AudioServicePageViewModel>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="AudioServicePageControlBase"/> class.

@@ -20,14 +20,12 @@ public sealed partial class AzureOpenAIDrawConfigSection : DrawServiceConfigCont
     {
         InitializeComponent();
         InitializeApiVersion();
-        Loaded += OnLoaded;
     }
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as DrawServiceItemViewModel;
-        if (newVM == null)
+        if (e.NewValue is not DrawServiceItemViewModel newVM)
         {
             return;
         }
@@ -37,7 +35,8 @@ public sealed partial class AzureOpenAIDrawConfigSection : DrawServiceConfigCont
         ViewModel.CheckCurrentConfig();
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
         => VersionComboBox.SelectedIndex = (int)((AzureOpenAIClientConfig)ViewModel.Config).Version;
 
     private void InitializeApiVersion()

@@ -14,17 +14,12 @@ public sealed partial class QianFanDrawConfigSection : DrawServiceConfigControlB
     /// <summary>
     /// Initializes a new instance of the <see cref="QianFanDrawConfigSection"/> class.
     /// </summary>
-    public QianFanDrawConfigSection()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public QianFanDrawConfigSection() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as DrawServiceItemViewModel;
-        if (newVM == null)
+        if (e.NewValue is not DrawServiceItemViewModel newVM)
         {
             return;
         }
@@ -34,7 +29,8 @@ public sealed partial class QianFanDrawConfigSection : DrawServiceConfigControlB
         ViewModel.CheckCurrentConfig();
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
         => SecretBox.Password = ((QianFanClientConfig)ViewModel.Config).Secret;
 
     private void OnSecretBoxTextChanged(object sender, RoutedEventArgs e)
