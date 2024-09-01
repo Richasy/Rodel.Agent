@@ -13,7 +13,7 @@ namespace RodelAgent.UI.Controls;
 /// <summary>
 /// 波形面板.
 /// </summary>
-public sealed class WavePanel : ReactiveControl<AudioWaveModuleViewModel>
+public sealed class WavePanel : LayoutControlBase<AudioWaveModuleViewModel>
 {
     private CanvasControl _waveCanvas;
     private Slider _waveSlider;
@@ -26,10 +26,8 @@ public sealed class WavePanel : ReactiveControl<AudioWaveModuleViewModel>
     public WavePanel()
     {
         DefaultStyleKey = typeof(WavePanel);
-        ViewModel = ServiceProvider.GetRequiredService<AudioWaveModuleViewModel>();
+        ViewModel = this.Get<AudioWaveModuleViewModel>();
         SizeChanged += OnSizeChanged;
-        Loaded += OnLoaded;
-        Unloaded += OnUnloaded;
     }
 
     /// <summary>
@@ -82,6 +80,28 @@ public sealed class WavePanel : ReactiveControl<AudioWaveModuleViewModel>
         }
     }
 
+    /// <inheritdoc/>
+    protected override void OnControlUnloaded()
+    {
+        ViewModel.RedrawWave -= OnRedrawWave;
+        ViewModel.PropertyChanged -= OnViewModelPropertyChanged;
+        if (ViewModel.IsRecording)
+        {
+            ViewModel.StopRecordingCommand.Execute(default);
+        }
+        else if (ViewModel.IsPlaying)
+        {
+            ViewModel.ResetPositionCommand.Execute(default);
+        }
+    }
+
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
+    {
+        ViewModel.PropertyChanged += OnViewModelPropertyChanged;
+        ViewModel.RedrawWave += OnRedrawWave;
+    }
+
     private static bool IsDark()
     {
         var theme = SettingsToolkit.ReadLocalSetting(Models.Constants.SettingNames.AppTheme, ElementTheme.Default);
@@ -110,26 +130,6 @@ public sealed class WavePanel : ReactiveControl<AudioWaveModuleViewModel>
         _hoverHolder.Visibility = Visibility.Visible;
         var x = e.GetCurrentPoint(this).Position.X;
         _hoverHolder.Margin = new Thickness(x - (_hoverHolder.ActualWidth / 2), 16, 0, 12);
-    }
-
-    private void OnUnloaded(object sender, RoutedEventArgs e)
-    {
-        ViewModel.RedrawWave -= OnRedrawWave;
-        ViewModel.PropertyChanged -= OnViewModelPropertyChanged;
-        if (ViewModel.IsRecording)
-        {
-            ViewModel.StopRecordingCommand.Execute(default);
-        }
-        else if (ViewModel.IsPlaying)
-        {
-            ViewModel.ResetPositionCommand.Execute(default);
-        }
-    }
-
-    private void OnLoaded(object sender, RoutedEventArgs e)
-    {
-        ViewModel.PropertyChanged += OnViewModelPropertyChanged;
-        ViewModel.RedrawWave += OnRedrawWave;
     }
 
     private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)

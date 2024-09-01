@@ -73,6 +73,7 @@ public static class GlobalDependencies
             .AddSingleton<DbService>()
             .AddSingleton<IStorageService, StorageService>()
             .AddSingleton<AppViewModel>()
+            .AddSingleton<NavigationViewModel>()
             .AddSingleton<AudioWaveModuleViewModel>()
             .AddSingleton<StartupPageViewModel>()
             .AddSingleton<ChatPresetModuleViewModel>()
@@ -89,6 +90,42 @@ public static class GlobalDependencies
         ServiceProvider = services.BuildServiceProvider();
         GlobalStatics.SetServiceProvider(ServiceProvider);
     }
+
+    /// <summary>
+    /// 获取指定类型的服务.
+    /// </summary>
+    /// <typeparam name="T">类型.</typeparam>
+    /// <returns>类型实例.</returns>
+    public static T Get<T>(this Window window)
+        where T : class
+        => ServiceProvider.GetRequiredService<T>();
+
+    /// <summary>
+    /// 获取指定类型的服务.
+    /// </summary>
+    /// <typeparam name="T">类型.</typeparam>
+    /// <returns>类型实例.</returns>
+    public static T Get<T>(this FrameworkElement element)
+        where T : class
+        => ServiceProvider.GetRequiredService<T>();
+
+    /// <summary>
+    /// 获取指定类型的服务.
+    /// </summary>
+    /// <typeparam name="T">类型.</typeparam>
+    /// <returns>类型实例.</returns>
+    public static T Get<T>(this Page page)
+        where T : class
+        => ServiceProvider.GetRequiredService<T>();
+
+    /// <summary>
+    /// 获取指定类型的服务.
+    /// </summary>
+    /// <typeparam name="T">类型.</typeparam>
+    /// <returns>类型实例.</returns>
+    public static T Get<T>(this ViewModelBase vm)
+        where T : class
+        => ServiceProvider.GetRequiredService<T>();
 
     private static void ToolInvoking(ToolInvokingEventArgs args)
     {

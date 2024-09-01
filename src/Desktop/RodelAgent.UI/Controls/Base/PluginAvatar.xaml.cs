@@ -9,7 +9,7 @@ namespace RodelAgent.UI.Controls;
 /// <summary>
 /// 插件头像.
 /// </summary>
-public sealed partial class PluginAvatar : UserControl
+public sealed partial class PluginAvatar : LayoutUserControlBase
 {
     /// <summary>
     /// <see cref="Id"/> 的依赖属性.
@@ -20,11 +20,7 @@ public sealed partial class PluginAvatar : UserControl
     /// <summary>
     /// Initializes a new instance of the <see cref="PluginAvatar"/> class.
     /// </summary>
-    public PluginAvatar()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public PluginAvatar() => InitializeComponent();
 
     /// <summary>
     /// 插件 ID.
@@ -35,14 +31,15 @@ public sealed partial class PluginAvatar : UserControl
         set => SetValue(IdProperty, value);
     }
 
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
+        => CheckAvatarAsync();
+
     private static void OnIdChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var instance = d as PluginAvatar;
         instance?.CheckAvatarAsync();
     }
-
-    private void OnLoaded(object sender, RoutedEventArgs e)
-        => CheckAvatarAsync();
 
     private async void CheckAvatarAsync()
     {

@@ -15,6 +15,7 @@ public class AppTipNotification : EventArgs
     /// </summary>
     /// <param name="msg">消息内容.</param>
     /// <param name="type">提示类型.</param>
+    /// <param name="targetWindow">目标窗口.</param>
     public AppTipNotification(string msg, InfoType type = InfoType.Information, object targetWindow = default)
     {
         Message = msg;

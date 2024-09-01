@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
+using RodelAgent.UI.Models.Constants;
+
 namespace RodelAgent.UI.Forms;
 
 /// <summary>
@@ -10,8 +12,8 @@ public interface ITipWindow
     /// <summary>
     /// 显示提示.
     /// </summary>
-    /// <param name="element">提示元素.</param>
-    /// <param name="duration">显示几秒.</param>
+    /// <param name="text">文本.</param>
+    /// <param name="type">显示类型.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task ShowTipAsync(UIElement element, double duration);
+    Task ShowTipAsync(string text, InfoType type = InfoType.Error);
 }

@@ -10,13 +10,10 @@ public sealed partial class AvailableChatServiceSection : ChatServicePageControl
     /// <summary>
     /// Initializes a new instance of the <see cref="AvailableChatServiceSection"/> class.
     /// </summary>
-    public AvailableChatServiceSection()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public AvailableChatServiceSection() => InitializeComponent();
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
     {
         if (ViewModel.AvailableServices.Count == 0)
         {

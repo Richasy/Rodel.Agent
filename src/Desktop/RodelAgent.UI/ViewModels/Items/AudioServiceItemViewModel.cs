@@ -39,7 +39,7 @@ public sealed partial class AudioServiceItemViewModel : ViewModelBase
         ProviderType = providerType;
         Name = name;
 
-        var serverModels = GlobalDependencies.ServiceProvider.GetRequiredService<IAudioClient>()
+        var serverModels = this.Get<IAudioClient>()
             .GetPredefinedModels(ProviderType);
         ServerModels.Clear();
         serverModels.ForEach(p => ServerModels.Add(new AudioModelItemViewModel(p)));
@@ -76,7 +76,7 @@ public sealed partial class AudioServiceItemViewModel : ViewModelBase
         => ServerModels.Any(p => p.Id == model.Id);
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is AudioServiceItemViewModel model && ProviderType == model.ProviderType;
+    public override bool Equals(object? obj) => obj is AudioServiceItemViewModel model && ProviderType == model.ProviderType;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(ProviderType);

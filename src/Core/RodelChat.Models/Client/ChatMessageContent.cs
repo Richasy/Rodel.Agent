@@ -46,6 +46,7 @@ public sealed class ChatMessageContent
     /// 创建图片消息内容.
     /// </summary>
     /// <param name="content">图片链接或者 BASE64 字符串.</param>
+    /// <param name="detailType">详情类型.</param>
     /// <returns><see cref="ChatMessageContent"/>.</returns>
     public static ChatMessageContent CreateImageContent(string content, ImageDetailType detailType = ImageDetailType.Auto)
     {

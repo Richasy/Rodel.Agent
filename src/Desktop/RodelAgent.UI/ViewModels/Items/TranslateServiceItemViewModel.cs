@@ -53,7 +53,7 @@ public sealed partial class TranslateServiceItemViewModel : ViewModelBase
         => IsCompleted = Config?.IsValid() ?? false;
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is TranslateServiceItemViewModel model && ProviderType == model.ProviderType;
+    public override bool Equals(object? obj) => obj is TranslateServiceItemViewModel model && ProviderType == model.ProviderType;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(ProviderType);

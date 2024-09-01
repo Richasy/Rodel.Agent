@@ -18,7 +18,6 @@ public sealed partial class ChatServicePage : ChatServicePageBase
     public ChatServicePage()
     {
         InitializeComponent();
-        ViewModel = ServiceProvider.GetRequiredService<ChatServicePageViewModel>();
         SizeChanged += OnSizeChanged;
     }
 
@@ -70,7 +69,7 @@ public sealed partial class ChatServicePage : ChatServicePageBase
     private void InitializeSessionPanelType()
     {
         var names = Enum.GetNames(typeof(ChatSessionPanelType));
-        var stringToolkit = ServiceProvider.GetRequiredService<IStringResourceToolkit>();
+        var stringToolkit = this.Get<IStringResourceToolkit>();
         for (var i = 0; i < names.Length; i++)
         {
             var name = names[i];
@@ -91,7 +90,7 @@ public sealed partial class ChatServicePage : ChatServicePageBase
     private void InitializeGroupPanelType()
     {
         var names = Enum.GetNames(typeof(ChatGroupPanelType));
-        var stringToolkit = ServiceProvider.GetRequiredService<IStringResourceToolkit>();
+        var stringToolkit = this.Get<IStringResourceToolkit>();
         for (var i = 0; i < names.Length; i++)
         {
             var name = names[i];
@@ -132,14 +131,15 @@ public sealed partial class ChatServicePage : ChatServicePageBase
 
     private void OnExtraVisibilityButtonClick(object sender, EventArgs e)
         => ViewModel.IsExtraColumnManualHide = !ViewModel.IsExtraColumnManualHide;
-
-    private void OnServiceVisibilityButtonClick(object sender, EventArgs e)
-        => ViewModel.IsServiceColumnManualHide = !ViewModel.IsServiceColumnManualHide;
 }
 
 /// <summary>
 /// 对话服务页面基类.
 /// </summary>
-public abstract class ChatServicePageBase : PageBase<ChatServicePageViewModel>
+public abstract class ChatServicePageBase : LayoutPageBase<ChatServicePageViewModel>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ChatServicePageBase"/> class.
+    /// </summary>
+    protected ChatServicePageBase() => ViewModel = this.Get<ChatServicePageViewModel>();
 }

@@ -18,12 +18,12 @@ public abstract class AppContentDialog : ContentDialog
         Opened += OnOpened;
         Closing += OnClosing;
         AppToolkit.ResetControlTheme(this);
-        XamlRoot = GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>().ActivatedWindow.Content.XamlRoot;
+        XamlRoot = this.Get<AppViewModel>().ActivatedWindow.Content.XamlRoot;
     }
 
     private void OnClosing(ContentDialog sender, ContentDialogClosingEventArgs args)
-        => GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>().CurrentDialog = null;
+        => this.Get<AppViewModel>().CurrentDialog = null;
 
     private void OnOpened(ContentDialog sender, ContentDialogOpenedEventArgs args)
-        => GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>().CurrentDialog = this;
+        => this.Get<AppViewModel>().CurrentDialog = this;
 }

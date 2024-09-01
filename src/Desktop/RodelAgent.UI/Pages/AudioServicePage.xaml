@@ -24,12 +24,16 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="{x:Bind ViewModel.NavColumnWidth, Mode=OneWay, Converter={StaticResource GridLengthConverter}}" />
             </Grid.ColumnDefinitions>
+
+            <Grid.ChildrenTransitions>
+                <RepositionThemeTransition IsStaggeringEnabled="False" />
+            </Grid.ChildrenTransitions>
 
             <Grid Margin="0,0,-6,0" RowSpacing="8">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="56" />
                     <RowDefinition />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
@@ -91,36 +95,19 @@
 
             <Grid
                 Grid.Column="2"
-                Width="{x:Bind ViewModel.HistoryColumnWidth, Mode=OneWay}"
                 Margin="-6,0,0,0"
                 Background="{ThemeResource LayerFillColorDefaultBrush}"
-                Visibility="{x:Bind ViewModel.IsHistoryColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+                Visibility="{x:Bind ViewModel.IsNavColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
                 <audio:AudioHistorySection />
             </Grid>
 
             <!--  右侧分栏大小控制器  -->
-            <Grid Grid.RowSpan="2" Grid.Column="1">
-                <Border
-                    Width="1"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Stretch"
-                    Background="{ThemeResource DividerStrokeColorDefaultBrush}"
-                    Visibility="{x:Bind ViewModel.IsHistoryColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
-                <community:PropertySizer
-                    HorizontalAlignment="Center"
-                    Binding="{x:Bind ViewModel.HistoryColumnWidth, Mode=TwoWay}"
-                    IsDragInverted="True"
-                    Maximum="360"
-                    Minimum="240"
-                    Visibility="{x:Bind ViewModel.IsHistoryColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
-                <controls:VisibilityToggleButton
-                    Margin="-20,0,0,0"
-                    VerticalAlignment="Stretch"
-                    Click="OnHistoryVisibilityButtonClick"
-                    CornerRadius="4,0,0,4"
-                    Direction="RightToLeftVisible"
-                    IsHide="{x:Bind ViewModel.IsHistoryColumnManualHide, Mode=OneWay}" />
-            </Grid>
+            <controls:ColumnSplitter
+                Grid.RowSpan="2"
+                Grid.Column="1"
+                ColumnWidth="{x:Bind ViewModel.NavColumnWidth, Mode=TwoWay}"
+                IsHide="{x:Bind ViewModel.IsNavColumnManualHide, Mode=TwoWay}"
+                IsInvertDirection="True" />
         </Grid>
     </Grid>
 </local:AudioServicePageBase>

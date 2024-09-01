@@ -12,11 +12,7 @@ public sealed partial class ChatGroupHistory : ChatGroupControlBase
     /// <summary>
     /// Initializes a new instance of the <see cref="ChatGroupHistory"/> class.
     /// </summary>
-    public ChatGroupHistory()
-    {
-        InitializeComponent();
-        Unloaded += OnUnloaded;
-    }
+    public ChatGroupHistory() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
@@ -32,7 +28,8 @@ public sealed partial class ChatGroupHistory : ChatGroupControlBase
         }
     }
 
-    private void OnUnloaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlUnloaded()
     {
         if (ViewModel is not null)
         {

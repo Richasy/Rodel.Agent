@@ -18,8 +18,7 @@ public sealed partial class VolcanoTranslateConfigSettingSection : TranslateServ
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as TranslateServiceItemViewModel;
-        if (newVM is null)
+        if (e.NewValue is not TranslateServiceItemViewModel newVM)
         {
             return;
         }

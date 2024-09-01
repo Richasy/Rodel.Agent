@@ -33,9 +33,6 @@ public sealed partial class ChatSessionViewModel : ViewModelBase<ChatSession>
         IsEnterSend = SettingsToolkit.ReadLocalSetting(SettingNames.ChatServicePageIsEnterSend, true);
         Messages.CollectionChanged += OnMessageCountChanged;
         Initialize(data);
-
-        AttachIsRunningToAsyncCommand(p => IsResponding = p, SendCommand, RegenerateCommand);
-        AttachExceptionHandlerToAsyncCommand(HandleSendMessageException, SendCommand, RegenerateCommand);
     }
 
     private void Initialize(ChatSession data)
@@ -92,7 +89,7 @@ public sealed partial class ChatSessionViewModel : ViewModelBase<ChatSession>
     [RelayCommand]
     private void SaveAsPreset()
     {
-        GlobalDependencies.ServiceProvider.GetRequiredService<ChatServicePageViewModel>()
+        this.Get<ChatServicePageViewModel>()
             .SaveAsSessionPresetCommand.Execute(Data);
     }
 

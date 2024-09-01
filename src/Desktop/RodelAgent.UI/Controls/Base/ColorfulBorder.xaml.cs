@@ -5,7 +5,7 @@ namespace RodelAgent.UI.Controls;
 /// <summary>
 /// 彩色边框.
 /// </summary>
-public sealed partial class ColorfulBorder : UserControl
+public sealed partial class ColorfulBorder : LayoutUserControlBase
 {
     /// <summary>
     /// <see cref="IsLoading"/> 的依赖属性.
@@ -16,11 +16,7 @@ public sealed partial class ColorfulBorder : UserControl
     /// <summary>
     /// Initializes a new instance of the <see cref="ColorfulBorder"/> class.
     /// </summary>
-    public ColorfulBorder()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public ColorfulBorder() => InitializeComponent();
 
     /// <summary>
     /// 是否处于加载状态.
@@ -31,14 +27,15 @@ public sealed partial class ColorfulBorder : UserControl
         set => SetValue(IsLoadingProperty, value);
     }
 
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
+        => CheckState();
+
     private static void OnIsLoadingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var instance = d as ColorfulBorder;
         instance?.CheckState();
     }
-
-    private void OnLoaded(object sender, RoutedEventArgs e)
-        => CheckState();
 
     private void CheckState()
     {

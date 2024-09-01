@@ -14,17 +14,12 @@ public sealed partial class HunYuanChatConfigSection : ChatServiceConfigControlB
     /// <summary>
     /// Initializes a new instance of the <see cref="HunYuanChatConfigSection"/> class.
     /// </summary>
-    public HunYuanChatConfigSection()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public HunYuanChatConfigSection() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as ChatServiceItemViewModel;
-        if (newVM == null)
+        if (e.NewValue is not ChatServiceItemViewModel newVM)
         {
             return;
         }
@@ -34,7 +29,8 @@ public sealed partial class HunYuanChatConfigSection : ChatServiceConfigControlB
         ViewModel.CheckCurrentConfig();
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
         => SecretBox.Password = ((HunYuanClientConfig)ViewModel.Config).SecretId;
 
     private void OnSecretBoxTextChanged(object sender, RoutedEventArgs e)

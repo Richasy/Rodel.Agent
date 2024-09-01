@@ -79,7 +79,7 @@ public sealed partial class SettingsPageViewModel : ViewModelBase
 
         _shouldSaveChatServices = false;
         await PageViewModelShare.SaveOnlineChatServicesAsync(OnlineChatServices, _storageService);
-        GlobalDependencies.ServiceProvider.GetRequiredService<ChatServicePageViewModel>()
+        this.Get<ChatServicePageViewModel>()
             .ResetAvailableChatServicesCommand.Execute(default);
     }
 
@@ -93,7 +93,7 @@ public sealed partial class SettingsPageViewModel : ViewModelBase
 
         _shouldSaveTranslateServices = false;
         await PageViewModelShare.SaveOnlineTranslateServicesAsync(OnlineTranslateServices, _storageService);
-        GlobalDependencies.ServiceProvider.GetRequiredService<TranslateServicePageViewModel>()
+        this.Get<TranslateServicePageViewModel>()
            .ResetAvailableTranslateServicesCommand.Execute(default);
     }
 
@@ -107,7 +107,7 @@ public sealed partial class SettingsPageViewModel : ViewModelBase
 
         _shouldSaveDrawServices = false;
         await PageViewModelShare.SaveOnlineDrawServicesAsync(OnlineDrawServices, _storageService);
-        GlobalDependencies.ServiceProvider.GetRequiredService<DrawServicePageViewModel>()
+        this.Get<DrawServicePageViewModel>()
            .ResetAvailableDrawServicesCommand.Execute(default);
     }
 
@@ -121,7 +121,7 @@ public sealed partial class SettingsPageViewModel : ViewModelBase
 
         _shouldSaveAudioServices = false;
         await PageViewModelShare.SaveOnlineAudioServicesAsync(OnlineAudioServices, _storageService);
-        GlobalDependencies.ServiceProvider.GetRequiredService<AudioServicePageViewModel>()
+        this.Get<AudioServicePageViewModel>()
            .ResetAvailableAudioServicesCommand.Execute(default);
     }
 

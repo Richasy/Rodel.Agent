@@ -18,8 +18,7 @@ public sealed partial class AzureSpeechConfigSettingSection : AudioServiceConfig
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as AudioServiceItemViewModel;
-        if (newVM is null)
+        if (e.NewValue is not AudioServiceItemViewModel newVM)
         {
             return;
         }

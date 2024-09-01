@@ -9,13 +9,13 @@ namespace RodelAgent.UI.Controls;
 /// <summary>
 /// 可见性切换按钮.
 /// </summary>
-public sealed partial class VisibilityToggleButton : UserControl
+public sealed partial class VisibilityToggleButton : LayoutUserControlBase
 {
     /// <summary>
     /// <see cref="Direction"/> 依赖属性.
     /// </summary>
     public static readonly DependencyProperty DirectionProperty =
-        DependencyProperty.Register(nameof(Direction), typeof(VisibilityToggleButtonDirection), typeof(VisibilityToggleButton), new PropertyMetadata(VisibilityToggleButtonDirection.LeftToRightVisible));
+        DependencyProperty.Register(nameof(Direction), typeof(VisibilityToggleButtonDirection), typeof(VisibilityToggleButton), new PropertyMetadata(VisibilityToggleButtonDirection.LeftToRightVisible, new PropertyChangedCallback(OnDirectionChanged)));
 
     /// <summary>
     /// <see cref="IsHide"/> 依赖属性.
@@ -26,11 +26,7 @@ public sealed partial class VisibilityToggleButton : UserControl
     /// <summary>
     /// Initializes a new instance of the <see cref="VisibilityToggleButton"/> class.
     /// </summary>
-    public VisibilityToggleButton()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public VisibilityToggleButton() => InitializeComponent();
 
     /// <summary>
     /// 点击事件.
@@ -71,21 +67,27 @@ public sealed partial class VisibilityToggleButton : UserControl
     protected override void OnPointerCanceled(PointerRoutedEventArgs e)
         => HideButton();
 
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
+        => CheckButtonStates();
+
     private static void OnIsHideChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var instance = d as VisibilityToggleButton;
         instance?.CheckButtonStates();
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
-        => CheckButtonStates();
+    private static void OnDirectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        var instance = d as VisibilityToggleButton;
+        instance?.CheckButtonStates();
+    }
 
     private void CheckButtonStates()
     {
-        var symbol = IsHide
+        Icon.Symbol = IsHide
             ? Direction == VisibilityToggleButtonDirection.LeftToRightVisible ? FluentIcons.Common.Symbol.ChevronRight : FluentIcons.Common.Symbol.ChevronLeft
             : Direction == VisibilityToggleButtonDirection.LeftToRightVisible ? FluentIcons.Common.Symbol.ChevronLeft : FluentIcons.Common.Symbol.ChevronRight;
-        Icon.Symbol = symbol;
         var tip = IsHide ? ResourceToolkit.GetLocalizedString(Models.Constants.StringNames.Show) : ResourceToolkit.GetLocalizedString(Models.Constants.StringNames.Hide);
         ToolTipService.SetToolTip(Btn, tip);
         AutomationProperties.SetName(Btn, tip);
@@ -100,18 +102,21 @@ public sealed partial class VisibilityToggleButton : UserControl
     }
 
     private void OnBtnClick(object sender, RoutedEventArgs e)
-        => Click?.Invoke(this, EventArgs.Empty);
+    {
+        IsHide = !IsHide;
+        Click?.Invoke(this, EventArgs.Empty);
+    }
 
     private void ShowButton()
     {
-        BackGrid.Visibility = Visibility.Visible;
         Btn.Visibility = Visibility.Visible;
+        BackgroundGrid.Visibility = Visibility.Visible;
     }
 
     private void HideButton()
     {
-        BackGrid.Visibility = Visibility.Collapsed;
         Btn.Visibility = Visibility.Collapsed;
+        BackgroundGrid.Visibility = Visibility.Collapsed;
     }
 }
 

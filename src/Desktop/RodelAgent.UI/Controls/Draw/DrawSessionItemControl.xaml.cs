@@ -17,21 +17,18 @@ public sealed partial class DrawSessionItemControl : DrawSessionItemControlBase
     /// <summary>
     /// Initializes a new instance of the <see cref="DrawSessionItemControl"/> class.
     /// </summary>
-    public DrawSessionItemControl()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public DrawSessionItemControl() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
         => Initialize();
 
-    private DrawSessionViewModel GetSessionViewModel()
-        => ServiceProvider.GetRequiredService<DrawServicePageViewModel>().Session;
-
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
         => Initialize();
+
+    private DrawSessionViewModel GetSessionViewModel()
+        => this.Get<DrawServicePageViewModel>().Session;
 
     private void Initialize()
     {
@@ -89,7 +86,7 @@ public sealed partial class DrawSessionItemControl : DrawSessionItemControlBase
 
     private void OnDeleteItemClick(object sender, RoutedEventArgs e)
     {
-        var pageVM = ServiceProvider.GetRequiredService<DrawServicePageViewModel>();
+        var pageVM = this.Get<DrawServicePageViewModel>();
         pageVM.DeleteHistoryItemCommand.Execute(ViewModel);
     }
 }
@@ -97,6 +94,6 @@ public sealed partial class DrawSessionItemControl : DrawSessionItemControlBase
 /// <summary>
 /// 会话项控件基类.
 /// </summary>
-public abstract class DrawSessionItemControlBase : ReactiveUserControl<DrawSession>
+public abstract class DrawSessionItemControlBase : LayoutUserControlBase<DrawSession>
 {
 }

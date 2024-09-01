@@ -12,13 +12,10 @@ public sealed partial class ThemeSettingSection : SettingSectionBase
     /// <summary>
     /// Initializes a new instance of the <see cref="ThemeSettingSection"/> class.
     /// </summary>
-    public ThemeSettingSection()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public ThemeSettingSection() => InitializeComponent();
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
     {
         var index = ViewModel.AppTheme switch
         {
@@ -40,6 +37,6 @@ public sealed partial class ThemeSettingSection : SettingSectionBase
         };
 
         ViewModel.AppTheme = theme;
-        ServiceProvider.GetRequiredService<AppViewModel>().ChangeTheme(theme);
+        this.Get<AppViewModel>().ChangeTheme(theme);
     }
 }

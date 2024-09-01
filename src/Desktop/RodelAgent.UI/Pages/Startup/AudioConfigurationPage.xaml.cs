@@ -29,6 +29,6 @@ public sealed partial class AudioConfigurationPage : AudioConfigurationPageBase
 /// <summary>
 /// 音频配置页面基类.
 /// </summary>
-public abstract class AudioConfigurationPageBase : PageBase<AudioServiceItemViewModel>
+public abstract class AudioConfigurationPageBase : LayoutPageBase<AudioServiceItemViewModel>
 {
 }

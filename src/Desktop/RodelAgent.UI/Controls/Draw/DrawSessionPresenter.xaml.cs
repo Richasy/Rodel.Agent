@@ -18,7 +18,6 @@ public sealed partial class DrawSessionPresenter : DrawSessionControlBase
     public DrawSessionPresenter()
     {
         InitializeComponent();
-        Unloaded += OnUnloaded;
     }
 
     /// <inheritdoc/>
@@ -35,13 +34,12 @@ public sealed partial class DrawSessionPresenter : DrawSessionControlBase
         }
     }
 
-    private void OnDataChanged(object sender, DrawSession e)
-    {
-        CheckImageSize();
-    }
-
-    private void OnUnloaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlUnloaded()
         => ViewModel.DataChanged -= OnDataChanged;
+
+    private void OnDataChanged(object sender, DrawSession e)
+        => CheckImageSize();
 
     private void OnImageSizeChanged(object sender, SizeChangedEventArgs e)
         => CheckImageSize();

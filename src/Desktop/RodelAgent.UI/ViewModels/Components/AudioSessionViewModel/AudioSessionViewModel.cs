@@ -33,12 +33,9 @@ public sealed partial class AudioSessionViewModel : ViewModelBase
         _storageService = storageService;
         _waveViewModel = waveViewModel;
         IsEnterSend = SettingsToolkit.ReadLocalSetting(SettingNames.AudioServicePageIsEnterSend, true);
-
-        AttachIsRunningToAsyncCommand(p => IsGenerating = p, GenerateCommand);
-        AttachExceptionHandlerToAsyncCommand(HandleGenerateException, GenerateCommand);
     }
 
-    private static bool IsAudioValid(string audioPath)
+    private bool IsAudioValid(string audioPath)
     {
         if (string.IsNullOrEmpty(audioPath))
         {
@@ -47,8 +44,8 @@ public sealed partial class AudioSessionViewModel : ViewModelBase
 
         if (!File.Exists(audioPath))
         {
-            var appVM = GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>();
-            appVM.ShowTip(StringNames.ImageNotFound, InfoType.Error);
+            var appVM = this.Get<AppViewModel>();
+            appVM.ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.ImageNotFound), InfoType.Error));
             return false;
         }
 
@@ -85,7 +82,7 @@ public sealed partial class AudioSessionViewModel : ViewModelBase
     [RelayCommand]
     private async Task InitializeAsync(ProviderType providerType)
     {
-        var pageVM = GlobalDependencies.ServiceProvider.GetRequiredService<AudioServicePageViewModel>();
+        var pageVM = this.Get<AudioServicePageViewModel>();
         var serviceVM = pageVM.AvailableServices.FirstOrDefault(p => p.ProviderType == providerType);
         AudioService = serviceVM;
         AudioPath = string.Empty;
@@ -226,27 +223,39 @@ public sealed partial class AudioSessionViewModel : ViewModelBase
             Voice = Voice.Id,
         };
 
-        CancelGenerate();
-        AudioPath = string.Empty;
-        LastGenerateTime = string.Empty;
-        _cancellationTokenSource = new CancellationTokenSource();
-        var dispatcherQueue = GlobalDependencies.ServiceProvider.GetRequiredService<Microsoft.UI.Dispatching.DispatcherQueue>();
-        var result = await _audioClient.TextToSpeechAsync(sessionData, _cancellationTokenSource.Token).ConfigureAwait(false);
-        dispatcherQueue.TryEnqueue(async () =>
+        try
         {
-            if (_cancellationTokenSource.IsCancellationRequested)
+            IsGenerating = true;
+            CancelGenerate();
+            AudioPath = string.Empty;
+            LastGenerateTime = string.Empty;
+            _cancellationTokenSource = new CancellationTokenSource();
+            var dispatcherQueue = this.Get<Microsoft.UI.Dispatching.DispatcherQueue>();
+            var result = await _audioClient.TextToSpeechAsync(sessionData, _cancellationTokenSource.Token).ConfigureAwait(false);
+            dispatcherQueue.TryEnqueue(async () =>
             {
-                return;
-            }
+                if (_cancellationTokenSource.IsCancellationRequested)
+                {
+                    return;
+                }
 
-            await _storageService.AddOrUpdateAudioSessionAsync(sessionData, result.ToArray());
-            var pageVM = GlobalDependencies.ServiceProvider.GetRequiredService<AudioServicePageViewModel>();
-            pageVM.UpdateHistoryCommand.Execute(default);
-            LastGenerateTime = sessionData.Time.Value.ToString("yyyy-MM-dd HH:mm:ss");
-            AudioPath = AppToolkit.GetSpeechPath(sessionData.Id);
-            DataChanged?.Invoke(this, sessionData);
-            _waveViewModel.LoadFileCommand.Execute(AudioPath);
-        });
+                await _storageService.AddOrUpdateAudioSessionAsync(sessionData, result.ToArray());
+                var pageVM = this.Get<AudioServicePageViewModel>();
+                pageVM.UpdateHistoryCommand.Execute(default);
+                LastGenerateTime = sessionData.Time!.Value.ToString("yyyy-MM-dd HH:mm:ss");
+                AudioPath = AppToolkit.GetSpeechPath(sessionData.Id);
+                DataChanged?.Invoke(this, sessionData);
+                _waveViewModel.LoadFileCommand.Execute(AudioPath);
+            });
+        }
+        catch (Exception ex)
+        {
+            HandleGenerateException(ex);
+        }
+        finally
+        {
+            IsGenerating = false;
+        }
     }
 
     [RelayCommand]
@@ -283,7 +292,7 @@ public sealed partial class AudioSessionViewModel : ViewModelBase
             return;
         }
 
-        var appVM = GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>();
+        var appVM = this.Get<AppViewModel>();
         var targetAudio = await FileToolkit.SaveFileAsync(".wav", appVM.ActivatedWindow);
         if (targetAudio == null)
         {
@@ -292,7 +301,7 @@ public sealed partial class AudioSessionViewModel : ViewModelBase
 
         var file = await StorageFile.GetFileFromPathAsync(audioPath);
         await file.CopyAndReplaceAsync(targetAudio);
-        appVM.ShowTip(StringNames.Saved, InfoType.Success);
+        appVM.ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.Saved), InfoType.Success));
     }
 
     private void HandleGenerateException(Exception ex)

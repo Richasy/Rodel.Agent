@@ -14,17 +14,12 @@ public sealed partial class QianFanChatConfigSection : ChatServiceConfigControlB
     /// <summary>
     /// Initializes a new instance of the <see cref="QianFanChatConfigSection"/> class.
     /// </summary>
-    public QianFanChatConfigSection()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public QianFanChatConfigSection() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as ChatServiceItemViewModel;
-        if (newVM == null)
+        if (e.NewValue is not ChatServiceItemViewModel newVM)
         {
             return;
         }
@@ -34,7 +29,8 @@ public sealed partial class QianFanChatConfigSection : ChatServiceConfigControlB
         ViewModel.CheckCurrentConfig();
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
         => SecretBox.Password = ((QianFanClientConfig)ViewModel.Config).Secret;
 
     private void OnSecretBoxTextChanged(object sender, RoutedEventArgs e)

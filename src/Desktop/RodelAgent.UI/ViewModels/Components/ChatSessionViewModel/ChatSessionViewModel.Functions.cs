@@ -3,6 +3,7 @@
 using System.Globalization;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Text;
+using RodelAgent.UI.Toolkits;
 
 namespace RodelAgent.UI.ViewModels.Components;
 
@@ -63,8 +64,8 @@ public sealed partial class ChatSessionViewModel
 
         if (string.IsNullOrEmpty(response))
         {
-            GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>()
-                .ShowTip(UI.Models.Constants.StringNames.GenerateTitleFailed, UI.Models.Constants.InfoType.Error);
+            this.Get<AppViewModel>()
+                .ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(UI.Models.Constants.StringNames.GenerateTitleFailed), UI.Models.Constants.InfoType.Error));
             return;
         }
 

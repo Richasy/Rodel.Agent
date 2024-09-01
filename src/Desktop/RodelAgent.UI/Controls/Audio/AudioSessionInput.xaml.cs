@@ -14,13 +14,10 @@ public sealed partial class AudioSessionInput : AudioSessionControlBase
     /// <summary>
     /// Initializes a new instance of the <see cref="AudioSessionInput"/> class.
     /// </summary>
-    public AudioSessionInput()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public AudioSessionInput() => InitializeComponent();
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
         => CheckEnterSendItem();
 
     private async void OnInputBoxPreviewKeyDownAsync(object sender, KeyRoutedEventArgs e)

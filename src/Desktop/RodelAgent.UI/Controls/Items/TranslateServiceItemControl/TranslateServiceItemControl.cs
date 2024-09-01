@@ -7,7 +7,7 @@ namespace RodelAgent.UI.Controls.Items;
 /// <summary>
 /// 翻译服务条目控件.
 /// </summary>
-public sealed class TranslateServiceItemControl : ReactiveControl<TranslateServiceItemViewModel>
+public sealed class TranslateServiceItemControl : LayoutControlBase<TranslateServiceItemViewModel>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="TranslateServiceItemControl"/> class.

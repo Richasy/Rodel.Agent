@@ -158,7 +158,7 @@ internal class MyCodeBlock : IAddChild
         var dataPackage = new DataPackage();
         dataPackage.SetText(sb.ToString().Trim());
         Clipboard.SetContent(dataPackage);
-        GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>().ShowTip(StringNames.Copied, InfoType.Success);
+        GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>().ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.Copied), InfoType.Success));
     }
 
     public void AddChild(IAddChild child)

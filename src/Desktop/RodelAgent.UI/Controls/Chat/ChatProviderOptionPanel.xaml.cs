@@ -24,11 +24,7 @@ public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBas
     /// <summary>
     /// Initializes a new instance of the <see cref="ChatProviderOptionPanel"/> class.
     /// </summary>
-    public ChatProviderOptionPanel()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public ChatProviderOptionPanel() => InitializeComponent();
 
     /// <summary>
     /// 属性改变事件.
@@ -54,7 +50,8 @@ public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBas
         }
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
         => Initialize();
 
     private void Initialize()
@@ -71,8 +68,7 @@ public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBas
         for (var i = 0; i < properties.Length; i++)
         {
             var property = properties[i];
-            var attribute = Attribute.GetCustomAttribute(property, typeof(BaseFieldAttribute)) as BaseFieldAttribute;
-            if (attribute != null)
+            if (Attribute.GetCustomAttribute(property, typeof(BaseFieldAttribute)) is BaseFieldAttribute attribute)
             {
                 var ft = attribute.FieldType;
                 var ele = ft switch
@@ -333,13 +329,13 @@ public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBas
 
     private void SetPropertyName(TextBlock textBlock, string name)
     {
-        var text = ServiceProvider.GetRequiredService<IStringResourceToolkit>().GetString(name);
+        var text = this.Get<IStringResourceToolkit>().GetString(name);
         if (string.IsNullOrEmpty(text))
         {
             text = name;
         }
 
-        var tip = ServiceProvider.GetRequiredService<IStringResourceToolkit>().GetString($"{name}Description");
+        var tip = this.Get<IStringResourceToolkit>().GetString($"{name}Description");
         if (!string.IsNullOrEmpty(tip))
         {
             ToolTipService.SetToolTip(textBlock, tip);
@@ -363,6 +359,6 @@ public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBas
 /// <summary>
 /// 聊天服务选项面板基类.
 /// </summary>
-public abstract class ChatProviderOptionPanelBase : ReactiveUserControl<ChatSessionPreset>
+public abstract class ChatProviderOptionPanelBase : LayoutUserControlBase<ChatSessionPreset>
 {
 }

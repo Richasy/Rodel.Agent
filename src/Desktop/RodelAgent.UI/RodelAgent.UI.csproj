@@ -6,15 +6,14 @@
     <RootNamespace>RodelAgent.UI</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Platforms>x86;x64;ARM64</Platforms>
-    <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+    <RuntimeIdentifiers Condition="$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &gt;= 8">win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+    <RuntimeIdentifiers Condition="$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &lt; 8">win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
     <PublishProfile>win-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
     <DefaultLanguage>en-US</DefaultLanguage>
     <ApplicationIcon>Assets\logo.ico</ApplicationIcon>
-    <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <NoWarn>CS1591;CS1574;CS1573</NoWarn>
+    <NoWarn>$(NoWarn);CS1591;CS1574;CS1573</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Assets\Emoji\**" />
@@ -52,6 +51,7 @@
     <None Remove="Controls\Audio\AudioSessionItemControl.xaml" />
     <None Remove="Controls\Audio\AudioSessionPresenter.xaml" />
     <None Remove="Controls\Base\ColorfulBorder.xaml" />
+    <None Remove="Controls\Base\ColumnSplitter.xaml" />
     <None Remove="Controls\Base\EmojiPanel.xaml" />
     <None Remove="Controls\Base\EnterWrapTip.xaml" />
     <None Remove="Controls\Base\PluginAvatar.xaml" />
@@ -121,11 +121,10 @@
     <None Remove="Controls\Items\ChatSessionPresetItemControl\ChatSessionPresetItemControl.xaml" />
     <None Remove="Controls\Items\DrawModelCard\DrawModelCard.xaml" />
     <None Remove="Controls\Items\DrawServiceItemControl\DrawServiceItemControl.xaml" />
-    <None Remove="Controls\Items\NavigateItemControl.xaml" />
     <None Remove="Controls\Items\NavigationPanel.xaml" />
     <None Remove="Controls\Items\TranslateServiceItemControl\TranslateServiceItemControl.xaml" />
-    <None Remove="Controls\Main\AppTitleBar.xaml" />
     <None Remove="Controls\ProviderLogo.xaml" />
+    <None Remove="Controls\RootLayout.xaml" />
     <None Remove="Controls\Settings\AboutSettingSection.xaml" />
     <None Remove="Controls\Settings\AliTranslateConfigSettingSection.xaml" />
     <None Remove="Controls\Settings\AppLogSettingSection.xaml" />
@@ -217,14 +216,14 @@
     <PackageReference Include="ColorCode.WinUI" Version="2.0.15" />
     <PackageReference Include="CommunityToolkit.Labs.WinUI.Shimmer" Version="0.1.240430-build.1676" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-    <PackageReference Include="CommunityToolkit.WinUI.Animations" Version="8.1.240606-rc" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.ImageCropper" Version="8.1.240606-rc" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.1.240606-rc" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.Sizers" Version="8.1.240606-rc" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.TokenizingTextBox" Version="8.1.240606-rc" />
-    <PackageReference Include="FluentIcons.WinUI" Version="1.1.247" />
-    <PackageReference Include="H.NotifyIcon.WinUI" Version="2.1.0" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.61" />
+    <PackageReference Include="CommunityToolkit.WinUI.Animations" Version="8.1.240821" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.ImageCropper" Version="8.1.240821" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.1.240821" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.Sizers" Version="8.1.240821" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.TokenizingTextBox" Version="8.1.240821" />
+    <PackageReference Include="FluentIcons.WinUI" Version="1.1.255" />
+    <PackageReference Include="H.NotifyIcon.WinUI" Version="2.1.3" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.64" />
     <PackageReference Include="Markdig" Version="0.37.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.Graphics.Win2D" Version="1.2.0" />
@@ -232,11 +231,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240627000" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240802000" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.3233" />
     <PackageReference Include="NAudio" Version="2.2.1" />
-    <PackageReference Include="NLog.Extensions.Logging" Version="5.3.11" />
-    <PackageReference Include="Roman-Numerals" Version="2.0.0" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="5.3.12" />
+    <PackageReference Include="Roman-Numerals" Version="2.0.1" />
     <PackageReference Include="Tiktoken" Version="2.0.3" />
     <PackageReference Include="WinUIEx" Version="2.3.4" />
     <Manifest Include="$(ApplicationManifest)" />
@@ -261,6 +260,7 @@
     <ProjectReference Include="..\..\Core\RodelTranslate.Core\RodelTranslate.Core.csproj" />
     <ProjectReference Include="..\..\Core\RodelTranslate.Interfaces\RodelTranslate.Interfaces.csproj" />
     <ProjectReference Include="..\..\Libs\Migration.V1\Migration.V1.csproj" />
+    <ProjectReference Include="..\..\Libs\WinUI.Share\src\Richasy.WinUI.Share.csproj" />
     <ProjectReference Include="..\RodelAgent.UI.Models\RodelAgent.UI.Models.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -634,6 +634,12 @@
     <Page Update="Controls\Chat\ChatSessionTokenUsageControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Update="Controls\RootLayout.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Controls\Base\ColumnSplitter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <None Update="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -777,11 +783,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Controls\Main\AppTitleBar.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
     <Page Update="Controls\Items\NavigationPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -808,11 +809,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\RAGPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Items\NavigateItemControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

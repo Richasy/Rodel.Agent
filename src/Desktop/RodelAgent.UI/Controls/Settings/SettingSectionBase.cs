@@ -7,7 +7,7 @@ namespace RodelAgent.UI.Controls.Settings;
 /// <summary>
 /// 设置页面控件的基类.
 /// </summary>
-public abstract class SettingSectionBase : ReactiveUserControl<SettingsPageViewModel>
+public abstract class SettingSectionBase : LayoutUserControlBase<SettingsPageViewModel>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="SettingSectionBase"/> class.
@@ -15,6 +15,6 @@ public abstract class SettingSectionBase : ReactiveUserControl<SettingsPageViewM
     public SettingSectionBase()
     {
         IsTabStop = false;
-        ViewModel = ServiceProvider.GetRequiredService<SettingsPageViewModel>();
+        ViewModel = this.Get<SettingsPageViewModel>();
     }
 }

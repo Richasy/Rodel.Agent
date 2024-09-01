@@ -1,11 +1,10 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
 using Microsoft.UI.Windowing;
-using Microsoft.UI.Xaml.Media.Animation;
 using RodelAgent.UI.Controls;
-using RodelAgent.UI.Models.Args;
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Toolkits;
+using RodelAgent.UI.ViewModels;
 using Windows.Graphics;
 
 namespace RodelAgent.UI.Forms;
@@ -23,12 +22,14 @@ public sealed partial class MainWindow : WindowBase, ITipWindow
     public MainWindow()
     {
         InitializeComponent();
-
+        SetTitleBar(RootLayout.GetMainTitleBar());
+        Title = ResourceToolkit.GetLocalizedString(StringNames.AppName);
+        this.SetIcon("Assets/logo.ico");
+        AppWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Tall;
         MinWidth = 900;
         MinHeight = 640;
-        AppTitleBar.AttachedWindow = this;
-        SetTitleBar(AppTitleBar);
         AppWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Tall;
+        this.Get<AppViewModel>().DisplayWindows.Add(this);
 
         Activated += OnWindowActivated;
         Closed += OnWindowClosed;
@@ -37,18 +38,14 @@ public sealed partial class MainWindow : WindowBase, ITipWindow
     }
 
     /// <inheritdoc/>
-    public async Task ShowTipAsync(UIElement element, double delaySeconds)
+    public async Task ShowTipAsync(string text, InfoType type = InfoType.Error)
     {
+        var popup = new TipPopup() { Text = text };
         TipContainer.Visibility = Visibility.Visible;
-        TipContainer.Children.Add(element);
-        element.Visibility = Visibility.Visible;
-        await Task.Delay(TimeSpan.FromSeconds(delaySeconds));
-        element.Visibility = Visibility.Collapsed;
-        _ = TipContainer.Children.Remove(element);
-        if (TipContainer.Children.Count == 0)
-        {
-            TipContainer.Visibility = Visibility.Collapsed;
-        }
+        TipContainer.Children.Add(popup);
+        await popup.ShowAsync(type);
+        TipContainer.Children.Remove(popup);
+        TipContainer.Visibility = Visibility.Collapsed;
     }
 
     private static PointInt32 GetSavedWindowPosition()
@@ -56,19 +53,6 @@ public sealed partial class MainWindow : WindowBase, ITipWindow
         var left = SettingsToolkit.ReadLocalSetting(SettingNames.MainWindowPositionLeft, 0);
         var top = SettingsToolkit.ReadLocalSetting(SettingNames.MainWindowPositionTop, 0);
         return new PointInt32(left, top);
-    }
-
-    private void OnFrameUnloaded(object sender, RoutedEventArgs e)
-    {
-        CoreViewModel.NavigationRequested -= OnNavigationRequested;
-        CoreViewModel.RequestShowTip -= OnRequestShowTip;
-    }
-
-    private void OnFrameLoaded(object sender, RoutedEventArgs e)
-    {
-        CoreViewModel.NavigationRequested += OnNavigationRequested;
-        CoreViewModel.RequestShowTip += OnRequestShowTip;
-        CoreViewModel.InitializeCommand.Execute(default);
     }
 
     private void OnWindowActivated(object sender, WindowActivatedEventArgs args)
@@ -85,13 +69,13 @@ public sealed partial class MainWindow : WindowBase, ITipWindow
         }
 
         var localTheme = SettingsToolkit.ReadLocalSetting(SettingNames.AppTheme, ElementTheme.Default);
-        CoreViewModel.ChangeTheme(localTheme);
+        this.Get<AppViewModel>().ChangeTheme(localTheme);
         _isFirstActivated = false;
     }
 
     private void OnWindowClosed(object sender, WindowEventArgs args)
     {
-        foreach (var item in CoreViewModel.DisplayWindows.ToArray())
+        foreach (var item in this.Get<AppViewModel>().DisplayWindows.ToArray())
         {
             if (item is not MainWindow)
             {
@@ -99,19 +83,15 @@ public sealed partial class MainWindow : WindowBase, ITipWindow
             }
         }
 
+        var hideWhenClose = SettingsToolkit.ReadLocalSetting(SettingNames.HideWhenCloseWindow, false);
+        if (!hideWhenClose)
+        {
+            Activated -= OnWindowActivated;
+            Closed -= OnWindowClosed;
+        }
+
         SaveCurrentWindowStats();
     }
-
-    private void OnRequestShowTip(object sender, AppTipNotification e)
-    {
-        if (e.TargetWindow is ITipWindow window)
-        {
-            new TipPopup(e.Message, window).ShowAsync(e.Type);
-        }
-    }
-
-    private void OnNavigationRequested(object sender, AppNavigationEventArgs e)
-        => MainFrame.Navigate(e.PageType, e.Parameter, new DrillInNavigationTransitionInfo());
 
     private RectInt32 GetRenderRect(RectInt32 workArea)
     {
@@ -142,24 +122,9 @@ public sealed partial class MainWindow : WindowBase, ITipWindow
     private void MoveAndResize()
     {
         var lastPoint = GetSavedWindowPosition();
-        var areas = DisplayArea.FindAll();
-        var workArea = default(RectInt32);
-        for (var i = 0; i < areas.Count; i++)
-        {
-            var area = areas[i];
-            if (area.WorkArea.X < lastPoint.X && area.WorkArea.X + area.WorkArea.Width > lastPoint.X)
-            {
-                workArea = area.WorkArea;
-                break;
-            }
-        }
-
-        if (workArea == default)
-        {
-            workArea = DisplayArea.Primary.WorkArea;
-        }
-
-        var rect = GetRenderRect(workArea);
+        var displayArea = DisplayArea.GetFromPoint(lastPoint, DisplayAreaFallback.Primary)
+            ?? DisplayArea.Primary;
+        var rect = GetRenderRect(displayArea.WorkArea);
         AppWindow.MoveAndResize(rect);
     }
 

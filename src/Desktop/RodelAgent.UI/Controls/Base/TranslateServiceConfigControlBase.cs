@@ -7,7 +7,7 @@ namespace RodelAgent.UI.Controls;
 /// <summary>
 /// 聊天服务配置控件基类.
 /// </summary>
-public abstract class TranslateServiceConfigControlBase : ReactiveUserControl<TranslateServiceItemViewModel>
+public abstract class TranslateServiceConfigControlBase : LayoutUserControlBase<TranslateServiceItemViewModel>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="TranslateServiceConfigControlBase"/> class.

@@ -22,3 +22,5 @@ global using Windows.Win32.Foundation;
 global using WinUIEx;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;
+global using Richasy.WinUI.Share.ViewModels;
+global using Richasy.WinUI.Share.Base;

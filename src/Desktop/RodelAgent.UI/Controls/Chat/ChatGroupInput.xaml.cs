@@ -15,12 +15,7 @@ public sealed partial class ChatGroupInput : ChatGroupControlBase
     /// <summary>
     /// Initializes a new instance of the <see cref="ChatGroupInput"/> class.
     /// </summary>
-    public ChatGroupInput()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-        Unloaded += OnUnloaded;
-    }
+    public ChatGroupInput() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
@@ -38,21 +33,21 @@ public sealed partial class ChatGroupInput : ChatGroupControlBase
         CheckEnterSendItem();
     }
 
-    private void OnRequestFocusInput(object sender, EventArgs e)
-    {
-        InputBox.Focus(FocusState.Programmatic);
-    }
-
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
         => CheckEnterSendItem();
 
-    private void OnUnloaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlUnloaded()
     {
         if (ViewModel is not null)
         {
             ViewModel.RequestFocusInput -= OnRequestFocusInput;
         }
     }
+
+    private void OnRequestFocusInput(object sender, EventArgs e)
+        => InputBox.Focus(FocusState.Programmatic);
 
     private async void OnInputBoxPreviewKeyDownAsync(object sender, KeyRoutedEventArgs e)
     {

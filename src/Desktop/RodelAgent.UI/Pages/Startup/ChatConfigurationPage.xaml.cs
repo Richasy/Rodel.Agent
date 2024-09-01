@@ -29,6 +29,6 @@ public sealed partial class ChatConfigurationPage : ChatConfigurationPageBase
 /// <summary>
 /// 聊天配置页面基类.
 /// </summary>
-public abstract class ChatConfigurationPageBase : PageBase<ChatServiceItemViewModel>
+public abstract class ChatConfigurationPageBase : LayoutPageBase<ChatServiceItemViewModel>
 {
 }

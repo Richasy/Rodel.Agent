@@ -31,7 +31,7 @@ public sealed partial class AudioLanguageViewModel : ViewModelBase
     public string Code { get; }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is AudioLanguageViewModel model && Code == model.Code;
+    public override bool Equals(object? obj) => obj is AudioLanguageViewModel model && Code == model.Code;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Code);

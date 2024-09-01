@@ -205,7 +205,7 @@ public partial class ImageExBase
                 var index = source.IndexOf(base64Head);
                 if (index >= 0)
                 {
-                    var bytes = Convert.FromBase64String(source[(index + base64Head.Length) ..]);
+                    var bytes = Convert.FromBase64String(source[(index + base64Head.Length)..]);
                     var bitmap = new BitmapImage();
                     await bitmap.SetSourceAsync(new MemoryStream(bytes).AsRandomAccessStream());
 

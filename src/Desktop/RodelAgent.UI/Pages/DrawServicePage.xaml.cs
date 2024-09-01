@@ -12,11 +12,7 @@ public sealed partial class DrawServicePage : DrawServicePageBase
     /// <summary>
     /// Initializes a new instance of the <see cref="DrawServicePage"/> class.
     /// </summary>
-    public DrawServicePage()
-    {
-        InitializeComponent();
-        ViewModel = ServiceProvider.GetRequiredService<DrawServicePageViewModel>();
-    }
+    public DrawServicePage() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnPageLoaded()
@@ -26,14 +22,15 @@ public sealed partial class DrawServicePage : DrawServicePageBase
             ViewModel.ResetAvailableDrawServicesCommand.Execute(default);
         }
     }
-
-    private void OnHistoryVisibilityButtonClick(object sender, EventArgs e)
-        => ViewModel.IsHistoryColumnManualHide = !ViewModel.IsHistoryColumnManualHide;
 }
 
 /// <summary>
 /// 绘图服务页面.
 /// </summary>
-public abstract class DrawServicePageBase : PageBase<DrawServicePageViewModel>
+public abstract class DrawServicePageBase : LayoutPageBase<DrawServicePageViewModel>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DrawServicePageBase"/> class.
+    /// </summary>
+    protected DrawServicePageBase() => ViewModel = this.Get<DrawServicePageViewModel>();
 }

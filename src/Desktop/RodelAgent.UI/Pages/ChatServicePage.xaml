@@ -21,18 +21,18 @@
             Visibility="{x:Bind ViewModel.IsAvailableServicesEmpty, Mode=OneWay}" />
         <Grid Visibility="{x:Bind ViewModel.IsAvailableServicesEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="{x:Bind ViewModel.NavColumnWidth, Mode=OneWay, Converter={StaticResource GridLengthConverter}}" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="{x:Bind ViewModel.ExtraColumnWidth, Mode=OneWay, Converter={StaticResource GridLengthConverter}}" />
             </Grid.ColumnDefinitions>
 
-            <!--  助手及服务列表  -->
-            <Grid
-                Width="{x:Bind ViewModel.ServiceColumnWidth, Mode=OneWay}"
-                Margin="0,0,-6,0"
-                Visibility="{x:Bind ViewModel.IsServiceColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+            <Grid.ChildrenTransitions>
+                <RepositionThemeTransition IsStaggeringEnabled="False" />
+            </Grid.ChildrenTransitions>
+
+            <Grid Margin="0,0,-6,0" Visibility="{x:Bind ViewModel.IsNavColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
@@ -56,8 +56,6 @@
                 <Grid
                     Grid.Row="2"
                     Padding="8,4"
-                    BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
-                    BorderThickness="0,1,0,0"
                     ColumnSpacing="8"
                     Visibility="{x:Bind ViewModel.IsDeletingPluginsNotEmpty, Mode=OneWay}">
                     <Grid.ColumnDefinitions>
@@ -94,13 +92,12 @@
                 <chat:ChatSessionPanel ViewModel="{x:Bind ViewModel.CurrentSession, Mode=OneWay}" Visibility="{x:Bind ViewModel.CurrentSession, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}" />
             </Grid>
 
-            <Grid Grid.Column="4" Visibility="{x:Bind ViewModel.IsExtraColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+            <Grid
+                Grid.Column="4"
+                Margin="-6,0,0,0"
+                Visibility="{x:Bind ViewModel.IsExtraColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
                 <!--  聊天附加面板  -->
-                <Grid
-                    Width="{x:Bind ViewModel.ExtraColumnWidth, Mode=OneWay}"
-                    Margin="-6,0,0,0"
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    Visibility="{x:Bind ViewModel.CurrentSession, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
+                <Grid Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" Visibility="{x:Bind ViewModel.CurrentSession, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -108,7 +105,7 @@
                     </Grid.RowDefinitions>
                     <Grid Height="{x:Bind ViewModel.ExtraRowHeight, Mode=OneWay}" Visibility="{x:Bind ViewModel.IsGroupChat, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="53" />
+                            <RowDefinition Height="55" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
@@ -153,11 +150,7 @@
                 </Grid>
 
                 <!--  群组附加面板  -->
-                <Grid
-                    Width="{x:Bind ViewModel.ExtraColumnWidth, Mode=OneWay}"
-                    Margin="-6,0,0,0"
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    Visibility="{x:Bind ViewModel.CurrentGroup, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
+                <Grid Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" Visibility="{x:Bind ViewModel.CurrentGroup, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -165,7 +158,7 @@
                     </Grid.RowDefinitions>
                     <Grid Height="{x:Bind ViewModel.ExtraRowHeight, Mode=OneWay}">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="53" />
+                            <RowDefinition Height="55" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
@@ -211,75 +204,17 @@
 
 
             <!--  左侧分栏大小控制器  -->
-            <Grid Grid.Column="1">
-                <Border
-                    Width="1"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Stretch"
-                    Background="{ThemeResource DividerStrokeColorDefaultBrush}"
-                    Visibility="{x:Bind ViewModel.IsServiceColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
-                <community:PropertySizer
-                    HorizontalAlignment="Center"
-                    Binding="{x:Bind ViewModel.ServiceColumnWidth, Mode=TwoWay}"
-                    Maximum="360"
-                    Minimum="220"
-                    Visibility="{x:Bind ViewModel.IsServiceColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
-                <controls:VisibilityToggleButton
-                    Margin="0,0,-20,0"
-                    VerticalAlignment="Stretch"
-                    Click="OnServiceVisibilityButtonClick"
-                    CornerRadius="0,4,4,0"
-                    IsHide="{x:Bind ViewModel.IsServiceColumnManualHide, Mode=OneWay}" />
-            </Grid>
-
+            <controls:ColumnSplitter
+                Grid.Column="1"
+                ColumnWidth="{x:Bind ViewModel.NavColumnWidth, Mode=TwoWay}"
+                IsHide="{x:Bind ViewModel.IsNavColumnManualHide, Mode=TwoWay}" />
 
             <!--  右侧分栏大小控制器  -->
-            <Grid Grid.Column="3" Visibility="{x:Bind ViewModel.CurrentSession, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
-                <Border
-                    Width="1"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Stretch"
-                    Background="{ThemeResource DividerStrokeColorDefaultBrush}"
-                    Visibility="{x:Bind ViewModel.IsExtraColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
-                <community:PropertySizer
-                    HorizontalAlignment="Center"
-                    Binding="{x:Bind ViewModel.ExtraColumnWidth, Mode=TwoWay}"
-                    IsDragInverted="True"
-                    Maximum="360"
-                    Minimum="220"
-                    Visibility="{x:Bind ViewModel.IsExtraColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
-                <controls:VisibilityToggleButton
-                    Margin="-20,0,0,0"
-                    VerticalAlignment="Stretch"
-                    Click="OnExtraVisibilityButtonClick"
-                    CornerRadius="4,0,0,4"
-                    Direction="RightToLeftVisible"
-                    IsHide="{x:Bind ViewModel.IsExtraColumnManualHide, Mode=OneWay}" />
-            </Grid>
-
-            <!--  右侧分栏大小控制器  -->
-            <Grid Grid.Column="3" Visibility="{x:Bind ViewModel.CurrentGroup, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
-                <Border
-                    Width="1"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Stretch"
-                    Background="{ThemeResource DividerStrokeColorDefaultBrush}"
-                    Visibility="{x:Bind ViewModel.IsExtraColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
-                <community:PropertySizer
-                    HorizontalAlignment="Center"
-                    Binding="{x:Bind ViewModel.ExtraColumnWidth, Mode=TwoWay}"
-                    IsDragInverted="True"
-                    Maximum="360"
-                    Minimum="220"
-                    Visibility="{x:Bind ViewModel.IsExtraColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
-                <controls:VisibilityToggleButton
-                    Margin="-20,0,0,0"
-                    VerticalAlignment="Stretch"
-                    Click="OnExtraVisibilityButtonClick"
-                    CornerRadius="4,0,0,4"
-                    Direction="RightToLeftVisible"
-                    IsHide="{x:Bind ViewModel.IsExtraColumnManualHide, Mode=OneWay}" />
-            </Grid>
+            <controls:ColumnSplitter
+                Grid.Column="3"
+                ColumnWidth="{x:Bind ViewModel.ExtraColumnWidth, Mode=TwoWay}"
+                IsHide="{x:Bind ViewModel.IsExtraColumnManualHide, Mode=TwoWay}"
+                IsInvertDirection="True" />
         </Grid>
         <ProgressRing x:Name="InitialRing" Style="{StaticResource PageProgressRingStyle}" />
     </Grid>

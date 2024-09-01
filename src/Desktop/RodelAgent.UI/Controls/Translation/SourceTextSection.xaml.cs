@@ -17,12 +17,7 @@ public sealed partial class SourceTextSection : TranslateSessionControlBase
     /// <summary>
     /// Initializes a new instance of the <see cref="SourceTextSection"/> class.
     /// </summary>
-    public SourceTextSection()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-        Unloaded += OnUnloaded;
-    }
+    public SourceTextSection() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
@@ -38,9 +33,11 @@ public sealed partial class SourceTextSection : TranslateSessionControlBase
         }
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e) => CheckTextLength();
+    /// <inheritdoc/>
+    protected override void OnControlLoaded() => CheckTextLength();
 
-    private void OnUnloaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlUnloaded()
     {
         if (ViewModel != null)
         {

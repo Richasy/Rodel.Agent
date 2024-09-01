@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
 using RodelAgent.UI.Controls.Startup;
+using RodelAgent.UI.Toolkits;
 using RodelDraw.Interfaces.Client;
 using RodelDraw.Models.Client;
 using RodelDraw.Models.Constants;
@@ -43,7 +44,7 @@ public sealed partial class DrawServiceItemViewModel : ViewModelBase
         ProviderType = providerType;
         Name = name;
 
-        var serverModels = GlobalDependencies.ServiceProvider.GetRequiredService<IDrawClient>()
+        var serverModels = this.Get<IDrawClient>()
             .GetPredefinedModels(ProviderType);
         ServerModels.Clear();
         serverModels.ForEach(p => ServerModels.Add(new DrawModelItemViewModel(p)));
@@ -110,7 +111,7 @@ public sealed partial class DrawServiceItemViewModel : ViewModelBase
     }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is DrawServiceItemViewModel model && ProviderType == model.ProviderType;
+    public override bool Equals(object? obj) => obj is DrawServiceItemViewModel model && ProviderType == model.ProviderType;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(ProviderType);
@@ -130,8 +131,8 @@ public sealed partial class DrawServiceItemViewModel : ViewModelBase
 
             if (IsModelExist(model))
             {
-                GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>()
-                    .ShowTip(Models.Constants.StringNames.ModelAlreadyExist, Models.Constants.InfoType.Error);
+                this.Get<AppViewModel>()
+                    .ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(Models.Constants.StringNames.ModelAlreadyExist), Models.Constants.InfoType.Error));
                 return;
             }
 

@@ -3,6 +3,7 @@
 
 namespace RodelAgent.UI.Models.Constants;
 
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
 /// <summary>
 /// 设置名称.
 /// </summary>
@@ -46,4 +47,6 @@ public enum SettingNames
     IsChatServicePageExtraColumnManualHide,
     IsDrawHistoryColumnManualHide,
     IsAudioHistoryColumnManualHide,
+    LastSelectedFeaturePage,
 }
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释

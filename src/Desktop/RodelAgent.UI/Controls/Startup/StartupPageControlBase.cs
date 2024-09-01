@@ -7,11 +7,11 @@ namespace RodelAgent.UI.Controls.Startup;
 /// <summary>
 /// 启动页面控件基类.
 /// </summary>
-public abstract class StartupPageControlBase : ReactiveUserControl<StartupPageViewModel>
+public abstract class StartupPageControlBase : LayoutUserControlBase<StartupPageViewModel>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="StartupPageControlBase"/> class.
     /// </summary>
     protected StartupPageControlBase()
-        => ViewModel = ServiceProvider.GetRequiredService<StartupPageViewModel>();
+        => ViewModel = this.Get<StartupPageViewModel>();
 }

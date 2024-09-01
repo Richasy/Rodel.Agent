@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<local:WindowBase
+<base:WindowBase
     x:Class="RodelAgent.UI.Forms.StartupWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:base="using:Richasy.WinUI.Share.Base"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:RodelAgent.UI.Forms"
     xmlns:markdown="using:RodelAgent.UI.Controls.Markdown"
@@ -10,7 +11,8 @@
     mc:Ignorable="d">
 
     <Grid>
+        <base:AppTitleBar x:Name="TitleBar" VerticalAlignment="Top" />
         <Frame x:Name="MainFrame" />
         <Grid x:Name="TipContainer" Visibility="Collapsed" />
     </Grid>
-</local:WindowBase>
+</base:WindowBase>

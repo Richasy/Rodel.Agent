@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
+using Microsoft.Windows.ApplicationModel.Resources;
 using RodelAgent.Interfaces;
 using RodelAgent.UI.Models.Constants;
-using Windows.ApplicationModel.Resources.Core;
 
 namespace RodelAgent.UI.Toolkits;
 
@@ -11,13 +11,18 @@ namespace RodelAgent.UI.Toolkits;
 /// </summary>
 public static class ResourceToolkit
 {
+    private static ResourceLoader _loader;
+
     /// <summary>
     /// Get localized text.
     /// </summary>
     /// <param name="stringName">Resource name corresponding to localized text.</param>
     /// <returns>Localized text.</returns>
     public static string GetLocalizedString(StringNames stringName)
-        => ResourceManager.Current.MainResourceMap.GetValueOrDefault($"Resources/{stringName}")?.Candidates?.FirstOrDefault()?.ValueAsString ?? string.Empty;
+    {
+        _loader ??= new ResourceLoader(ResourceLoader.GetDefaultResourceFilePath(), "Resources");
+        return _loader.GetString(stringName.ToString());
+    }
 }
 
 /// <summary>
@@ -25,7 +30,12 @@ public static class ResourceToolkit
 /// </summary>
 public class StringResourceToolkit : IStringResourceToolkit
 {
+    private ResourceLoader _loader;
+
     /// <inheritdoc/>
     public string GetString(string key)
-        => ResourceManager.Current.MainResourceMap.GetValueOrDefault($"Resources/{key}")?.Candidates?.FirstOrDefault()?.ValueAsString ?? string.Empty;
+    {
+        _loader ??= new ResourceLoader(ResourceLoader.GetDefaultResourceFilePath(), "Resources");
+        return _loader.GetString(key);
+    }
 }

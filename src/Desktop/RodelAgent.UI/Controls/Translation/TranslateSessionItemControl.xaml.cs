@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
+using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels;
 using RodelAgent.UI.ViewModels.Items;
 using RodelAgent.UI.ViewModels.Pages;
@@ -16,17 +17,14 @@ public sealed partial class TranslateSessionItemControl : TranslateSessionItemCo
     /// <summary>
     /// Initializes a new instance of the <see cref="TranslateSessionItemControl"/> class.
     /// </summary>
-    public TranslateSessionItemControl()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public TranslateSessionItemControl() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
         => InitSourceAndTarget();
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
         => InitSourceAndTarget();
 
     private void InitSourceAndTarget()
@@ -44,7 +42,7 @@ public sealed partial class TranslateSessionItemControl : TranslateSessionItemCo
 
     private void OnDeleteButtonClick(object sender, RoutedEventArgs e)
     {
-        var pageVM = ServiceProvider.GetRequiredService<TranslateServicePageViewModel>();
+        var pageVM = this.Get<TranslateServicePageViewModel>();
         pageVM.DeleteHistoryItemCommand.Execute(ViewModel);
     }
 
@@ -59,13 +57,13 @@ public sealed partial class TranslateSessionItemControl : TranslateSessionItemCo
         var dataPackage = new DataPackage();
         dataPackage.SetText(text);
         Clipboard.SetContent(dataPackage);
-        ServiceProvider.GetRequiredService<AppViewModel>().ShowTip(Models.Constants.StringNames.Copied, Models.Constants.InfoType.Success);
+        this.Get<AppViewModel>().ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(Models.Constants.StringNames.Copied), Models.Constants.InfoType.Success));
     }
 }
 
 /// <summary>
 /// <see cref="TranslateSessionItemControl"/> 的基类.
 /// </summary>
-public abstract class TranslateSessionItemControlBase : ReactiveUserControl<TranslateSession>
+public abstract class TranslateSessionItemControlBase : LayoutUserControlBase<TranslateSession>
 {
 }

@@ -54,18 +54,18 @@ public sealed partial class CustomDrawModelDialog : AppContentDialog
     {
         var modelName = ModelNameBox.Text?.Trim() ?? string.Empty;
         var modelId = ModelIdBox.Text?.Trim() ?? string.Empty;
-        var appVM = GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>();
+        var appVM = this.Get<AppViewModel>();
         if (string.IsNullOrEmpty(modelName) || string.IsNullOrEmpty(modelId))
         {
             args.Cancel = true;
-            appVM.ShowTip(ResourceToolkit.GetLocalizedString(StringNames.ModelNameOrIdCanNotBeEmpty));
+            appVM.ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.ModelNameOrIdCanNotBeEmpty), InfoType.Error));
             return;
         }
 
         if (Sizes.Count == 0)
         {
             args.Cancel = true;
-            appVM.ShowTip(ResourceToolkit.GetLocalizedString(StringNames.DrawSizeCanNotBeEmpty));
+            appVM.ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.DrawSizeCanNotBeEmpty), InfoType.Error));
             return;
         }
 
@@ -82,8 +82,7 @@ public sealed partial class CustomDrawModelDialog : AppContentDialog
 
     private void OnSizeRightTapped(object sender, RightTappedRoutedEventArgs e)
     {
-        var element = ((FrameworkElement)sender).DataContext as string;
-        if (element != null)
+        if (((FrameworkElement)sender).DataContext is string element)
         {
             Sizes.Remove(element);
             CheckSizeCount();

@@ -29,7 +29,7 @@ public sealed partial class TranslateServicePageViewModel
             }
         }
 
-        var chatProviderFactory = GlobalDependencies.ServiceProvider.GetRequiredService<ITranslateProviderFactory>();
+        var chatProviderFactory = this.Get<ITranslateProviderFactory>();
         chatProviderFactory.ResetConfiguration(config);
     }
 }

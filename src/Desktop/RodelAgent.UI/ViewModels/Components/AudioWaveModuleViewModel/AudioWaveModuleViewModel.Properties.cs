@@ -13,6 +13,7 @@ public sealed partial class AudioWaveModuleViewModel
 {
     private const int SampleRate = 44100;
     private readonly DispatcherQueue _dispatcherQueue;
+    private readonly ILogger<AudioWaveModuleViewModel> _logger;
     private List<float> _samples;
     private WaveFileWriter _waveFileWriter;
     private WaveInEvent _waveIn;

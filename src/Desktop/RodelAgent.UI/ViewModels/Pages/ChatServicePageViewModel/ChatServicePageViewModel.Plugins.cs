@@ -17,7 +17,7 @@ public sealed partial class ChatServicePageViewModel
     [RelayCommand]
     private async Task ImportPluginAsync()
     {
-        var appVM = GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>();
+        var appVM = this.Get<AppViewModel>();
         var file = await FileToolkit.PickFileAsync(".zip", appVM.ActivatedWindow);
         if (file is null)
         {
@@ -59,13 +59,14 @@ public sealed partial class ChatServicePageViewModel
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to import plugin.");
-            appVM.ShowTip(ex.Message);
+            appVM.ShowTipCommand.Execute((ex.Message, InfoType.Error));
         }
     }
 
     [RelayCommand]
     private async Task ResetPluginsAsync(bool force = false)
     {
+        IsPluginLoading = true;
         if (!force && _isPluginInitialized)
         {
             return;
@@ -102,6 +103,7 @@ public sealed partial class ChatServicePageViewModel
 
         SettingsToolkit.WriteLocalSetting(SettingNames.DeletingPluginIds, "[]");
         _isPluginInitialized = true;
+        IsPluginLoading = false;
     }
 
     private async Task InsertPluginFileAsync(string path)

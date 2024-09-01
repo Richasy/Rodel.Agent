@@ -10,7 +10,7 @@ namespace RodelAgent.UI.Controls;
 /// <summary>
 /// 服务提供商 Logo.
 /// </summary>
-public sealed partial class ProviderLogo : UserControl
+public sealed partial class ProviderLogo : LayoutUserControlBase
 {
     /// <summary>
     /// <see cref="Provider"/> 的依赖属性.
@@ -41,11 +41,7 @@ public sealed partial class ProviderLogo : UserControl
     /// <summary>
     /// Initializes a new instance of the <see cref="ProviderLogo"/> class.
     /// </summary>
-    public ProviderLogo()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public ProviderLogo() => InitializeComponent();
 
     /// <summary>
     /// 服务提供商.
@@ -74,11 +70,12 @@ public sealed partial class ProviderLogo : UserControl
         set => SetValue(AvatarPaddingProperty, value);
     }
 
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
+        => ResetLogo();
+
     private static void OnProviderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         => ((ProviderLogo)d).ResetLogo();
-
-    private void OnLoaded(object sender, RoutedEventArgs e)
-        => ResetLogo();
 
     private void ResetLogo()
     {

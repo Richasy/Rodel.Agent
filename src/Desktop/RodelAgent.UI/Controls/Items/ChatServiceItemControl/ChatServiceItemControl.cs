@@ -7,7 +7,7 @@ namespace RodelAgent.UI.Controls.Items;
 /// <summary>
 /// 聊天服务项控件.
 /// </summary>
-public sealed class ChatServiceItemControl : ReactiveControl<ChatServiceItemViewModel>
+public sealed class ChatServiceItemControl : LayoutControlBase<ChatServiceItemViewModel>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="ChatServiceItemControl"/> class.

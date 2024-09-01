@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
 using RodelAgent.UI.Controls.Startup;
+using RodelAgent.UI.Toolkits;
 using RodelChat.Interfaces.Client;
 using RodelChat.Models.Client;
 using RodelChat.Models.Constants;
@@ -43,7 +44,7 @@ public sealed partial class ChatServiceItemViewModel : ViewModelBase
         ProviderType = providerType;
         Name = name;
 
-        var serverModels = GlobalDependencies.ServiceProvider.GetRequiredService<IChatClient>()
+        var serverModels = this.Get<IChatClient>()
             .GetPredefinedModels(ProviderType);
         ServerModels.Clear();
         serverModels.ForEach(p => ServerModels.Add(new ChatModelItemViewModel(p)));
@@ -110,7 +111,7 @@ public sealed partial class ChatServiceItemViewModel : ViewModelBase
     }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is ChatServiceItemViewModel model && ProviderType == model.ProviderType;
+    public override bool Equals(object? obj) => obj is ChatServiceItemViewModel model && ProviderType == model.ProviderType;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(ProviderType);
@@ -130,8 +131,8 @@ public sealed partial class ChatServiceItemViewModel : ViewModelBase
 
             if (IsModelExist(model))
             {
-                GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>()
-                    .ShowTip(Models.Constants.StringNames.ModelAlreadyExist, Models.Constants.InfoType.Error);
+                this.Get<AppViewModel>()
+                    .ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(Models.Constants.StringNames.ModelAlreadyExist), Models.Constants.InfoType.Error));
                 return;
             }
 

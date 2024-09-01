@@ -253,7 +253,6 @@ public interface IStorageService
     /// <summary>
     /// 获取所有绘图会话.
     /// </summary>
-    /// <param name="type">供应商类型.</param>
     /// <returns>会话列表.</returns>
     Task<List<DrawSession>?> GetDrawSessionsAsync();
 
@@ -275,7 +274,6 @@ public interface IStorageService
     /// <summary>
     /// 获取所有音频会话.
     /// </summary>
-    /// <param name="type">供应商类型.</param>
     /// <returns>会话列表.</returns>
     Task<List<AudioSession>?> GetAudioSessionsAsync();
 

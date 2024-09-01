@@ -13,17 +13,12 @@ public sealed partial class VolcanoTranslateConfigSection : TranslateServiceConf
     /// <summary>
     /// InitiVolcanozes a new instance of the <see cref="VolcanoTranslateConfigSection"/> class.
     /// </summary>
-    public VolcanoTranslateConfigSection()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public VolcanoTranslateConfigSection() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as TranslateServiceItemViewModel;
-        if (newVM == null)
+        if (e.NewValue is not TranslateServiceItemViewModel newVM)
         {
             return;
         }
@@ -32,10 +27,9 @@ public sealed partial class VolcanoTranslateConfigSection : TranslateServiceConf
         ViewModel.CheckCurrentConfig();
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
-    {
-        IdBox.Text = (ViewModel.Config as VolcanoClientConfig)?.KeyId ?? string.Empty;
-    }
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
+        => IdBox.Text = (ViewModel.Config as VolcanoClientConfig)?.KeyId ?? string.Empty;
 
     private void OnIdBoxTextChanged(object sender, TextChangedEventArgs e)
     {

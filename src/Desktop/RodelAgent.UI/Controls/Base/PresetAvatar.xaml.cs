@@ -12,7 +12,7 @@ namespace RodelAgent.UI.Controls;
 /// <summary>
 /// 预设头像.
 /// </summary>
-public sealed partial class PresetAvatar : UserControl
+public sealed partial class PresetAvatar : LayoutUserControlBase
 {
     /// <summary>
     /// <see cref="PresetId"/> 的依赖属性.
@@ -32,8 +32,6 @@ public sealed partial class PresetAvatar : UserControl
     public PresetAvatar()
     {
         InitializeComponent();
-        Loaded += OnLoaded;
-        Unloaded += OnUnloaded;
     }
 
     /// <summary>
@@ -59,20 +57,22 @@ public sealed partial class PresetAvatar : UserControl
         set => SetValue(DefaultSymbolProperty, value);
     }
 
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
+    {
+        CheckAvatarAsync();
+        this.Get<AppViewModel>().PresetAvatarUpdateRequested += OnPresetAvatarUpdateRequested;
+    }
+
+    /// <inheritdoc/>
+    protected override void OnControlUnloaded()
+        => this.Get<AppViewModel>().PresetAvatarUpdateRequested -= OnPresetAvatarUpdateRequested;
+
     private static void OnPresetIdChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var instance = d as PresetAvatar;
         instance?.CheckAvatarAsync();
     }
-
-    private void OnLoaded(object sender, RoutedEventArgs e)
-    {
-        CheckAvatarAsync();
-        GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>().PresetAvatarUpdateRequested += OnPresetAvatarUpdateRequested;
-    }
-
-    private void OnUnloaded(object sender, RoutedEventArgs e)
-        => GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>().PresetAvatarUpdateRequested -= OnPresetAvatarUpdateRequested;
 
     private void OnPresetAvatarUpdateRequested(object sender, string e)
     {
@@ -90,7 +90,7 @@ public sealed partial class PresetAvatar : UserControl
         }
 
         var emojiText = string.Empty;
-        var storageService = GlobalDependencies.ServiceProvider.GetRequiredService<IStorageService>();
+        var storageService = this.Get<IStorageService>();
         if (IsChatPreset)
         {
             var preset = await storageService.GetChatSessionPresetByIdAsync(PresetId);

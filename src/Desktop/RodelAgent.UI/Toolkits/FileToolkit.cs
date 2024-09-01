@@ -99,7 +99,7 @@ public static class FileToolkit
     /// <param name="defaultValue">The default value when the file does not exist or has no content.</param>
     /// <param name="folderName">The folder to which the file belongs.</param>
     /// <returns>Converted result.</returns>
-    public static Task<T> ReadLocalDataAsync<T>(string fileName, string defaultValue = "{}", string folderName = "") => Task.Run(async () =>
+    public static Task<T?> ReadLocalDataAsync<T>(string fileName, string defaultValue = "{}", string folderName = "") => Task.Run(async () =>
     {
         var path = string.IsNullOrEmpty(folderName) ?
                         $"ms-appdata:///local/{fileName}" :

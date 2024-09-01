@@ -23,9 +23,6 @@ public sealed partial class ChatServicePageViewModel
     private bool _isPluginInitialized;
 
     [ObservableProperty]
-    private double _serviceColumnWidth;
-
-    [ObservableProperty]
     private double _extraColumnWidth;
 
     [ObservableProperty]
@@ -93,9 +90,6 @@ public sealed partial class ChatServicePageViewModel
 
     [ObservableProperty]
     private bool _isGroupChat;
-
-    [ObservableProperty]
-    private bool _isServiceColumnManualHide;
 
     [ObservableProperty]
     private bool _isExtraColumnManualHide;

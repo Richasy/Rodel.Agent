@@ -19,8 +19,6 @@ public sealed partial class ChatSessionInput : ChatSessionControlBase
     {
         InitializeComponent();
         ImageButton.Visibility = GlobalFeatureSwitcher.IsChatImageSupported ? Visibility.Visible : Visibility.Collapsed;
-        Loaded += OnLoaded;
-        Unloaded += OnUnloaded;
     }
 
     /// <inheritdoc/>
@@ -39,6 +37,19 @@ public sealed partial class ChatSessionInput : ChatSessionControlBase
         CheckEnterSendItem();
     }
 
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
+        => CheckEnterSendItem();
+
+    /// <inheritdoc/>
+    protected override void OnControlUnloaded()
+    {
+        if (ViewModel is not null)
+        {
+            ViewModel.RequestFocusInput -= OnRequestFocusInput;
+        }
+    }
+
     private void OnRequestFocusInput(object sender, EventArgs e)
     {
         if (ModelFlyout.IsOpen)
@@ -47,17 +58,6 @@ public sealed partial class ChatSessionInput : ChatSessionControlBase
         }
 
         InputBox.Focus(FocusState.Programmatic);
-    }
-
-    private void OnLoaded(object sender, RoutedEventArgs e)
-        => CheckEnterSendItem();
-
-    private void OnUnloaded(object sender, RoutedEventArgs e)
-    {
-        if (ViewModel is not null)
-        {
-            ViewModel.RequestFocusInput -= OnRequestFocusInput;
-        }
     }
 
     private async void OnInputBoxPreviewKeyDownAsync(object sender, KeyRoutedEventArgs e)

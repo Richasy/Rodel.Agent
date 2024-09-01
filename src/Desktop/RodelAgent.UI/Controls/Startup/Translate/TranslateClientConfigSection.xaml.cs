@@ -15,17 +15,12 @@ public sealed partial class TranslateClientConfigSection : TranslateServiceConfi
     /// <summary>
     /// Initializes a new instance of the <see cref="TranslateClientConfigSection"/> class.
     /// </summary>
-    public TranslateClientConfigSection()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public TranslateClientConfigSection() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as TranslateServiceItemViewModel;
-        if (newVM == null)
+        if (e.NewValue is not TranslateServiceItemViewModel newVM)
         {
             return;
         }
@@ -35,7 +30,8 @@ public sealed partial class TranslateClientConfigSection : TranslateServiceConfi
         ViewModel.CheckCurrentConfig();
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
     {
         KeyBox.Password = ViewModel.Config?.Key ?? string.Empty;
         KeyBox.Focus(FocusState.Programmatic);

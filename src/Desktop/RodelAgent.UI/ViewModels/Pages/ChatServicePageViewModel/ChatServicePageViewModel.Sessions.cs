@@ -251,7 +251,7 @@ public sealed partial class ChatServicePageViewModel
             var service = AvailableServices.FirstOrDefault(p => p.ProviderType == presetVM.Data.Provider);
             if (service == null)
             {
-                await GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>()
+                await this.Get<AppViewModel>()
                         .ShowMessageDialogAsync(StringNames.CanNotLoadSessionPresetWarning);
                 return;
             }

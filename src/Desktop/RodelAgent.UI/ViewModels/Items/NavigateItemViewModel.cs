@@ -68,7 +68,7 @@ public sealed partial class NavigateItemViewModel : ViewModelBase
     public FeatureType FeatureType { get; }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj) => obj is NavigateItemViewModel model && FeatureType == model.FeatureType;
+    public override bool Equals(object? obj) => obj is NavigateItemViewModel model && FeatureType == model.FeatureType;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(FeatureType);

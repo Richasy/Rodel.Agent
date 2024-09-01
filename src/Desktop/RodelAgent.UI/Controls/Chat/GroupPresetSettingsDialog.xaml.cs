@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
 using RodelAgent.UI.Models.Constants;
+using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels;
 using RodelAgent.UI.ViewModels.Components;
 
@@ -23,7 +24,7 @@ public sealed partial class GroupPresetSettingsDialog : AppContentDialog
     public GroupPresetSettingsDialog()
     {
         InitializeComponent();
-        ViewModel = GlobalDependencies.ServiceProvider.GetRequiredService<GroupPresetModuleViewModel>();
+        ViewModel = this.Get<GroupPresetModuleViewModel>();
         Closed += (_, _) => ViewModel.CloseRequested -= OnCloseRequested;
         ViewModel.CloseRequested += OnCloseRequested;
     }
@@ -50,10 +51,10 @@ public sealed partial class GroupPresetSettingsDialog : AppContentDialog
     {
         var btn = (Button)sender;
         btn.IsEnabled = false;
-        if(!GroupPanel.IsValid())
+        if (!GroupPanel.IsValid())
         {
-            GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>()
-                .ShowTip(StringNames.MustFillRequireFields, InfoType.Warning);
+            this.Get<AppViewModel>()
+                .ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.MustFillRequireFields), InfoType.Warning));
             btn.IsEnabled = true;
             return;
         }

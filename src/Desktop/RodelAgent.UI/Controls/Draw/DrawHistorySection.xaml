@@ -13,11 +13,12 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="56" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid
-            Padding="16,18"
+            Padding="16,0"
+            VerticalAlignment="Stretch"
             BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
             BorderThickness="0,0,0,1"
             ColumnSpacing="8">

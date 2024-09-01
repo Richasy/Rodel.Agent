@@ -144,77 +144,94 @@ public sealed partial class ChatSessionViewModel
 
     private async Task SendMessageInternalAsync(bool addUserMsg = true)
     {
-        CancelMessage();
-        _cancellationTokenSource = new CancellationTokenSource();
-
-        ErrorText = string.Empty;
-        TempMessage = string.Empty;
-        GeneratingTipText = ResourceToolkit.GetLocalizedString(StringNames.Generating);
-
-        // TODO: 支持多模态消息.
-        var chatMessage = CreateUserMessage();
-        UserInput = "\n";
-        UserInput = string.Empty;
-
-        if (addUserMsg)
-        {
-            Messages.Add(new ChatMessageItemViewModel(
-                               chatMessage,
-                               EditMessageAsync,
-                               DeleteMessageAsync));
-        }
-
-        var selectedPlugins = Plugins.Where(p => p.IsSelected).Select(p => p.Data).ToList();
-        var functions = selectedPlugins.SelectMany(p => p);
-        List<Microsoft.SemanticKernel.KernelPlugin> tempPlugins = functions.Count() > 0 ? [Microsoft.SemanticKernel.KernelPluginFactory.CreateFromFunctions("temp", functions)] : default;
-        var response = await _chatClient.SendMessageAsync(
-                SessionId,
-                chatMessage,
-                Data.Model,
-                text =>
-                {
-                    _ = _dispatcherQueue.TryEnqueue(() =>
-                    {
-                        if (_cancellationTokenSource is null || _cancellationTokenSource.IsCancellationRequested)
-                        {
-                            return;
-                        }
-
-                        TempMessage += text;
-                    });
-                },
-                tempPlugins,
-                _cancellationTokenSource.Token);
-
-        if (response.Content.Count > 0 && string.IsNullOrEmpty(response.GetFirstTextContent()))
-        {
-            response.Content.First(p => p.Type == ChatContentType.Text).Text = TempMessage;
-        }
-
-        if (_cancellationTokenSource is null || _cancellationTokenSource.IsCancellationRequested)
+        if (IsResponding)
         {
             return;
         }
 
-        CheckPluginSelectedStatus();
-        await SaveSessionToDatabaseAsync();
-
-        if (response.Role == MessageRole.Assistant)
+        try
         {
-            Messages.Add(new ChatMessageItemViewModel(
-            response,
-            EditMessageAsync,
-            DeleteMessageAsync));
-        }
-        else if (response.Role == MessageRole.Client)
-        {
-            ErrorText = GetClientMessageContent(response);
-            _logger.LogError("Send message failed: {0}", ErrorText);
-        }
+            IsResponding = true;
+            CancelMessage();
+            _cancellationTokenSource = new CancellationTokenSource();
 
-        TempMessage = string.Empty;
-        RequestFocusInput?.Invoke(this, EventArgs.Empty);
-        _cancellationTokenSource = null;
+            ErrorText = string.Empty;
+            TempMessage = string.Empty;
+            GeneratingTipText = ResourceToolkit.GetLocalizedString(StringNames.Generating);
+
+            // TODO: 支持多模态消息.
+            var chatMessage = CreateUserMessage();
+            UserInput = "\n";
+            UserInput = string.Empty;
+
+            if (addUserMsg)
+            {
+                Messages.Add(new ChatMessageItemViewModel(
+                                   chatMessage,
+                                   EditMessageAsync,
+                                   DeleteMessageAsync));
+            }
+
+            var selectedPlugins = Plugins.Where(p => p.IsSelected).Select(p => p.Data).ToList();
+            var functions = selectedPlugins.SelectMany(p => p);
+            List<Microsoft.SemanticKernel.KernelPlugin> tempPlugins = functions.Count() > 0 ? [Microsoft.SemanticKernel.KernelPluginFactory.CreateFromFunctions("temp", functions)] : default;
+            var response = await _chatClient.SendMessageAsync(
+                    SessionId,
+                    chatMessage,
+                    Data.Model,
+                    text =>
+                    {
+                        _ = _dispatcherQueue.TryEnqueue(() =>
+                        {
+                            if (_cancellationTokenSource is null || _cancellationTokenSource.IsCancellationRequested)
+                            {
+                                return;
+                            }
+
+                            TempMessage += text;
+                        });
+                    },
+                    tempPlugins,
+                    _cancellationTokenSource.Token);
+
+            if (response.Content.Count > 0 && string.IsNullOrEmpty(response.GetFirstTextContent()))
+            {
+                response.Content.First(p => p.Type == ChatContentType.Text).Text = TempMessage;
+            }
+
+            if (_cancellationTokenSource is null || _cancellationTokenSource.IsCancellationRequested)
+            {
+                return;
+            }
+
+            CheckPluginSelectedStatus();
+            await SaveSessionToDatabaseAsync();
+
+            if (response.Role == MessageRole.Assistant)
+            {
+                Messages.Add(new ChatMessageItemViewModel(
+                response,
+                EditMessageAsync,
+                DeleteMessageAsync));
+            }
+            else if (response.Role == MessageRole.Client)
+            {
+                ErrorText = GetClientMessageContent(response);
+                _logger.LogError("Send message failed: {0}", ErrorText);
+            }
+
+            TempMessage = string.Empty;
+            RequestFocusInput?.Invoke(this, EventArgs.Empty);
+            _cancellationTokenSource = null;
+        }
+        catch (Exception ex)
+        {
+            HandleSendMessageException(ex);
+        }
+        finally
+        {
+            IsResponding = false;
+        }
     }
 
     private Task EditMessageAsync(ChatMessage msg)

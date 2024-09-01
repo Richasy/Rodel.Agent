@@ -14,17 +14,12 @@ public sealed partial class OpenAIAudioConfigSection : AudioServiceConfigControl
     /// <summary>
     /// Initializes a new instance of the <see cref="OpenAIAudioConfigSection"/> class.
     /// </summary>
-    public OpenAIAudioConfigSection()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public OpenAIAudioConfigSection() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as AudioServiceItemViewModel;
-        if (newVM == null)
+        if (e.NewValue is not AudioServiceItemViewModel newVM)
         {
             return;
         }
@@ -39,6 +34,10 @@ public sealed partial class OpenAIAudioConfigSection : AudioServiceConfigControl
         ViewModel.CheckCurrentConfig();
     }
 
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
+        => OrganizationBox.Text = ((OpenAIClientConfig)ViewModel.Config).OrganizationId;
+
     private static OpenAIClientConfig CreateCurrentConfig()
     {
         var config = new OpenAIClientConfig
@@ -48,9 +47,6 @@ public sealed partial class OpenAIAudioConfigSection : AudioServiceConfigControl
         };
         return config;
     }
-
-    private void OnLoaded(object sender, RoutedEventArgs e)
-        => OrganizationBox.Text = ((OpenAIClientConfig)ViewModel.Config).OrganizationId;
 
     private void OnOrganizationBoxTextChanged(object sender, TextChangedEventArgs e)
     {

@@ -7,25 +7,22 @@ namespace RodelAgent.UI.Controls.Base;
 /// <summary>
 /// 表情面板.
 /// </summary>
-public sealed partial class EmojiPanel : UserControl
+public sealed partial class EmojiPanel : LayoutUserControlBase
 {
     private readonly ObservableCollection<EmojiItem> _items = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="EmojiPanel"/> class.
     /// </summary>
-    public EmojiPanel()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public EmojiPanel() => InitializeComponent();
 
     /// <summary>
     /// 表情点击事件.
     /// </summary>
     public event EventHandler<EmojiItem> EmojiClick;
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
     {
         if (_items.Count == 0)
         {

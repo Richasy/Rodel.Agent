@@ -6,7 +6,7 @@ using RodelAudio.Models.Constants;
 namespace RodelAgent.UI.Controls.Startup;
 
 /// <summary>
-/// 聊天配置部分.
+/// 音频配置部分.
 /// </summary>
 public sealed partial class AudioConfigurationSection : AudioServiceConfigControlBase
 {
@@ -18,8 +18,7 @@ public sealed partial class AudioConfigurationSection : AudioServiceConfigContro
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as AudioServiceItemViewModel;
-        if (newVM == null)
+        if (e.NewValue is not AudioServiceItemViewModel newVM)
         {
             return;
         }

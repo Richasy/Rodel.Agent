@@ -3,12 +3,14 @@
     x:Class="RodelAgent.UI.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="using:RodelAgent.UI.Converters"
-    xmlns:local="using:RodelAgent.UI">
+    xmlns:converters="using:Richasy.WinUI.Share.Converters"
+    xmlns:local="using:RodelAgent.UI"
+    xmlns:localConverters="using:RodelAgent.UI.Converters">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+                <ResourceDictionary Source="ms-appx:///Richasy.WinUI.Share/Base/CustomNavigationViewResources.xaml" />
                 <ResourceDictionary Source="ms-appx:///Controls/Base/CardPanel/CardPanel.xaml" />
                 <ResourceDictionary Source="ms-appx:///Controls/Base/ImageEx/ImageEx.xaml" />
                 <ResourceDictionary Source="ms-appx:///Controls/Base/Markdown/MarkdownTextBlock.xaml" />
@@ -53,14 +55,16 @@
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
 
+            <converters:BoolToIconVariantConverter x:Key="BoolToIconVariantConverter" />
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityReverseConverter" IsReverse="True" />
             <converters:ObjectToBoolConverter x:Key="ObjectToBoolConverter" />
             <converters:ObjectToBoolConverter x:Key="ObjectToBoolReverseConverter" IsReverse="True" />
             <converters:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
             <converters:ObjectToVisibilityConverter x:Key="ObjectToVisibilityReverseConverter" IsReverse="True" />
-            <converters:SecondsToTimeConverter x:Key="SecondsToTimeConverter" />
-            <converters:TokenCountConverter x:Key="TokenCountConverter" />
+            <localConverters:SecondsToTimeConverter x:Key="SecondsToTimeConverter" />
+            <localConverters:TokenCountConverter x:Key="TokenCountConverter" />
+            <localConverters:GridLengthConverter x:Key="GridLengthConverter" />
 
             <SolidColorBrush x:Key="AnthropicColor" Color="#F1F0E8" />
             <SolidColorBrush x:Key="AzureOpenAIColor" Color="#FFFFFF" />

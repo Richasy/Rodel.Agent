@@ -12,7 +12,7 @@ namespace RodelAgent.UI.Extensions;
 public sealed partial class StorageService
 {
     /// <inheritdoc/>
-    public async Task<List<TranslateSession>> GetTranslateSessionsAsync(ProviderType type)
+    public async Task<List<TranslateSession>?> GetTranslateSessionsAsync(ProviderType type)
     {
         await InitializeTranslateSessionsAsync();
         var sessions = _translateSessions.Where(s => s.Provider == type).OrderByDescending(p => p.Time ?? DateTimeOffset.MinValue).ToList();

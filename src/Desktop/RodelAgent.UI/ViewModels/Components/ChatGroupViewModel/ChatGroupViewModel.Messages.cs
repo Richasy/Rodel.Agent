@@ -110,84 +110,101 @@ public sealed partial class ChatGroupViewModel
 
     private async Task SendMessageInternalAsync(bool addUserMsg = true)
     {
-        CancelMessage();
-        _cancellationTokenSource = new CancellationTokenSource();
-
-        _currentGeneratingIndex = 0;
-        ErrorText = string.Empty;
-        UpdateGeneratingTip();
-        UpdateAgentSelection();
-
-        var chatMessage = CreateUserMessage();
-
-        if (addUserMsg)
-        {
-            Messages.Add(new ChatMessageItemViewModel(
-                               chatMessage,
-                               EditMessageAsync,
-                               DeleteMessageAsync));
-        }
-
-        UserInput = string.Empty;
-        var selectedAgents = Agents.Select(p => p.Data).ToList();
-        await _chatClient.SendGroupMessageAsync(
-                SessionId,
-                chatMessage,
-                response =>
-                {
-                    _ = _dispatcherQueue.TryEnqueue(() =>
-                    {
-                        if (_cancellationTokenSource is null && Messages.Count == 0)
-                        {
-                            return;
-                        }
-
-                        var name = response.Author;
-                        var agent = Agents.FirstOrDefault(p => p.Data.Name == name);
-                        if (agent != null)
-                        {
-                            var index = Agents.IndexOf(agent);
-                            if (index >= Agents.Count - 1)
-                            {
-                                index = IsResponding ? 0 : _currentGeneratingIndex;
-                            }
-                            else
-                            {
-                                index = IsResponding ? index + 1 : _currentGeneratingIndex;
-                            }
-
-                            _currentGeneratingIndex = index;
-                            UpdateGeneratingTip();
-                            UpdateAgentSelection();
-                        }
-
-                        if (response.Role == MessageRole.Assistant)
-                        {
-                            var msg = new ChatMessageItemViewModel(
-                                response,
-                                EditMessageAsync,
-                                DeleteMessageAsync);
-                            Messages.Add(msg);
-                        }
-                        else if (response.Role == MessageRole.Client)
-                        {
-                            ErrorText = GetClientMessageContent(response);
-                            _logger.LogError("Send message failed: {0}", ErrorText);
-                        }
-                    });
-                },
-                selectedAgents,
-                _cancellationTokenSource.Token);
-
-        if (_cancellationTokenSource is null || _cancellationTokenSource.IsCancellationRequested)
+        if (IsResponding)
         {
             return;
         }
 
-        await SaveSessionToDatabaseAsync();
-        ResetAgentSelection();
-        RequestFocusInput?.Invoke(this, EventArgs.Empty);
-        _cancellationTokenSource = null;
+        try
+        {
+            IsResponding = true;
+            CancelMessage();
+            _cancellationTokenSource = new CancellationTokenSource();
+
+            _currentGeneratingIndex = 0;
+            ErrorText = string.Empty;
+            UpdateGeneratingTip();
+            UpdateAgentSelection();
+
+            var chatMessage = CreateUserMessage();
+
+            if (addUserMsg)
+            {
+                Messages.Add(new ChatMessageItemViewModel(
+                                   chatMessage,
+                                   EditMessageAsync,
+                                   DeleteMessageAsync));
+            }
+
+            UserInput = string.Empty;
+            var selectedAgents = Agents.Select(p => p.Data).ToList();
+            await _chatClient.SendGroupMessageAsync(
+                    SessionId,
+                    chatMessage,
+                    response =>
+                    {
+                        _ = _dispatcherQueue.TryEnqueue(() =>
+                        {
+                            if (_cancellationTokenSource is null && Messages.Count == 0)
+                            {
+                                return;
+                            }
+
+                            var name = response.Author;
+                            var agent = Agents.FirstOrDefault(p => p.Data.Name == name);
+                            if (agent != null)
+                            {
+                                var index = Agents.IndexOf(agent);
+                                if (index >= Agents.Count - 1)
+                                {
+                                    index = IsResponding ? 0 : _currentGeneratingIndex;
+                                }
+                                else
+                                {
+                                    index = IsResponding ? index + 1 : _currentGeneratingIndex;
+                                }
+
+                                _currentGeneratingIndex = index;
+                                UpdateGeneratingTip();
+                                UpdateAgentSelection();
+                            }
+
+                            if (response.Role == MessageRole.Assistant)
+                            {
+                                var msg = new ChatMessageItemViewModel(
+                                    response,
+                                    EditMessageAsync,
+                                    DeleteMessageAsync);
+                                Messages.Add(msg);
+                            }
+                            else if (response.Role == MessageRole.Client)
+                            {
+                                ErrorText = GetClientMessageContent(response);
+                                _logger.LogError("Send message failed: {0}", ErrorText);
+                            }
+                        });
+                    },
+                    selectedAgents,
+                    _cancellationTokenSource.Token);
+
+            if (_cancellationTokenSource is null || _cancellationTokenSource.IsCancellationRequested)
+            {
+                return;
+            }
+
+            await SaveSessionToDatabaseAsync();
+            ResetAgentSelection();
+            RequestFocusInput?.Invoke(this, EventArgs.Empty);
+            _cancellationTokenSource = null;
+        }
+        catch (Exception ex)
+        {
+            HandleSendMessageException(ex);
+        }
+        finally
+        {
+            IsResponding = false;
+        }
     }
 
     private void UpdateGeneratingTip()

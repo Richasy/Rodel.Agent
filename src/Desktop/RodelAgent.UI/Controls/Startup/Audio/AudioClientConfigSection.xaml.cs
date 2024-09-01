@@ -15,17 +15,12 @@ public sealed partial class AudioClientConfigSection : AudioServiceConfigControl
     /// <summary>
     /// Initializes a new instance of the <see cref="AudioClientConfigSection"/> class.
     /// </summary>
-    public AudioClientConfigSection()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public AudioClientConfigSection() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as AudioServiceItemViewModel;
-        if (newVM == null)
+        if (e.NewValue is not AudioServiceItemViewModel newVM)
         {
             return;
         }
@@ -35,7 +30,8 @@ public sealed partial class AudioClientConfigSection : AudioServiceConfigControl
         ViewModel.CheckCurrentConfig();
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
     {
         KeyBox.Password = ViewModel.Config?.Key ?? string.Empty;
         KeyBox.Focus(FocusState.Programmatic);
@@ -47,7 +43,7 @@ public sealed partial class AudioClientConfigSection : AudioServiceConfigControl
         ViewModel.CheckCurrentConfig();
     }
 
-    private ClientConfigBase CreateCurrentConfig()
+    private ClientConfigBase? CreateCurrentConfig()
     {
         var assembly = Assembly.GetAssembly(typeof(ClientConfigBase));
         var types = assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(ClientConfigBase)));

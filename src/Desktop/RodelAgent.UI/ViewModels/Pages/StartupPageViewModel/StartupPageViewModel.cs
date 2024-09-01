@@ -27,11 +27,6 @@ public sealed partial class StartupPageViewModel : ViewModelBase
         StepCount = 6;
         CurrentStep = 0;
         CheckStep();
-
-        AttachIsRunningToAsyncCommand(p => IsOnlineChatInitializing = p, InitializeOnlineChatServicesCommand);
-        AttachIsRunningToAsyncCommand(p => IsOnlineTranslateInitializing = p, InitializeOnlineTranslateServicesCommand);
-        AttachIsRunningToAsyncCommand(p => IsOnlineDrawInitializing = p, InitializeOnlineDrawServicesCommand);
-        AttachIsRunningToAsyncCommand(p => IsOnlineAudioInitializing = p, InitializeOnlineAudioServicesCommand);
     }
 
     /// <summary>
@@ -134,7 +129,7 @@ public sealed partial class StartupPageViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            _appViewModel.ShowTip(ex.Message, InfoType.Error);
+            _appViewModel.ShowTipCommand.Execute((ex.Message, InfoType.Error));
             _logger.LogError(ex, "Failed to restart the app.");
         }
     }
@@ -241,16 +236,24 @@ public sealed partial class StartupPageViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private Task InitializeOnlineChatServicesAsync()
-        => PageViewModelShare.InitializeOnlineChatServicesAsync(OnlineChatServices, _storageService);
+    private async Task InitializeOnlineChatServicesAsync()
+    {
+        IsOnlineChatInitializing = true;
+        await PageViewModelShare.InitializeOnlineChatServicesAsync(OnlineChatServices, _storageService);
+        IsOnlineChatInitializing = false;
+    }
 
     [RelayCommand]
     private Task SaveOnlineChatServicesAsync()
         => PageViewModelShare.SaveOnlineChatServicesAsync(OnlineChatServices, _storageService);
 
     [RelayCommand]
-    private Task InitializeOnlineTranslateServicesAsync()
-        => PageViewModelShare.InitializeOnlineTranslateServicesAsync(OnlineTranslateServices, _storageService);
+    private async Task InitializeOnlineTranslateServicesAsync()
+    {
+        IsOnlineTranslateInitializing = true;
+        await PageViewModelShare.InitializeOnlineTranslateServicesAsync(OnlineTranslateServices, _storageService);
+        IsOnlineTranslateInitializing = false;
+    }
 
     [RelayCommand]
     private Task SaveOnlineTranslateServicesAsync()
@@ -259,6 +262,7 @@ public sealed partial class StartupPageViewModel : ViewModelBase
     [RelayCommand]
     private async Task InitializeOnlineDrawServicesAsync()
     {
+        IsOnlineDrawInitializing = true;
         await PageViewModelShare.InitializeOnlineDrawServicesAsync(OnlineDrawServices, _storageService);
         foreach (var item in OnlineDrawServices)
         {
@@ -344,6 +348,8 @@ public sealed partial class StartupPageViewModel : ViewModelBase
                 }
             }
         }
+
+        IsOnlineDrawInitializing = false;
     }
 
     [RelayCommand]
@@ -353,6 +359,7 @@ public sealed partial class StartupPageViewModel : ViewModelBase
     [RelayCommand]
     private async Task InitializeOnlineAudioServicesAsync()
     {
+        IsOnlineAudioInitializing = true;
         await PageViewModelShare.InitializeOnlineAudioServicesAsync(OnlineAudioServices, _storageService);
         foreach (var item in OnlineAudioServices)
         {
@@ -396,6 +403,8 @@ public sealed partial class StartupPageViewModel : ViewModelBase
                 }
             }
         }
+
+        IsOnlineAudioInitializing = false;
     }
 
     [RelayCommand]

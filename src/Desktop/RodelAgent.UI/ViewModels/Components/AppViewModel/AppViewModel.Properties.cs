@@ -1,8 +1,5 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
-using RodelAgent.UI.Models.Args;
-using RodelAgent.UI.ViewModels.Items;
-
 namespace RodelAgent.UI.ViewModels;
 
 /// <summary>
@@ -16,16 +13,6 @@ public sealed partial class AppViewModel
     private Window _activatedWindow;
 
     /// <summary>
-    /// 在有新的提示请求时触发.
-    /// </summary>
-    public event EventHandler<AppTipNotification> RequestShowTip;
-
-    /// <summary>
-    /// 导航请求.
-    /// </summary>
-    public event EventHandler<AppNavigationEventArgs> NavigationRequested;
-
-    /// <summary>
     /// 预设头像更新请求.
     /// </summary>
     public event EventHandler<string> PresetAvatarUpdateRequested;
@@ -34,16 +21,6 @@ public sealed partial class AppViewModel
     /// 显示的窗口列表.
     /// </summary>
     public List<Window> DisplayWindows { get; } = new();
-
-    /// <summary>
-    /// 导航条目.
-    /// </summary>
-    public ObservableCollection<NavigateItemViewModel> NavigateItems { get; } = new();
-
-    /// <summary>
-    /// 设置项.
-    /// </summary>
-    public NavigateItemViewModel SettingsItem { get; }
 
     /// <summary>
     /// 当前显示的对话框.

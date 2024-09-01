@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
 using RodelAgent.UI.Models.Constants;
+using RodelAgent.UI.Toolkits;
 using RodelChat.Models.Client;
 using RodelChat.Models.Constants;
 using Windows.ApplicationModel.DataTransfer;
@@ -65,7 +66,7 @@ public sealed partial class ChatMessageItemViewModel : ViewModelBase<ChatMessage
         var dp = new DataPackage();
         dp.SetText(Content);
         Clipboard.SetContent(dp);
-        GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>().ShowTip(StringNames.Copied, InfoType.Success);
+        this.Get<AppViewModel>().ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.Copied), InfoType.Success));
     }
 
     [RelayCommand]

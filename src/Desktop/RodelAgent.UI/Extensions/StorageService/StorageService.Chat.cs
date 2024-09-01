@@ -12,7 +12,7 @@ namespace RodelAgent.UI.Extensions;
 public sealed partial class StorageService
 {
     /// <inheritdoc/>
-    public async Task<List<ChatSession>> GetChatSessionsAsync(chatConstants.ProviderType type)
+    public async Task<List<ChatSession>?> GetChatSessionsAsync(chatConstants.ProviderType type)
     {
         await InitializeChatSessionsAsync();
         var sessions = _chatSessions.Where(s => s.Provider == type).ToList();
@@ -20,7 +20,7 @@ public sealed partial class StorageService
     }
 
     /// <inheritdoc/>
-    public async Task<List<ChatSession>> GetChatSessionsAsync(string presetId)
+    public async Task<List<ChatSession>?> GetChatSessionsAsync(string presetId)
     {
         await InitializeChatSessionsAsync();
         var sessions = _chatSessions.Where(s => s.PresetId == presetId).ToList();
@@ -88,7 +88,7 @@ public sealed partial class StorageService
         => RemovePresetInternalAsync(chatConstants.ChatSessionPresetType.Agent, agentId);
 
     /// <inheritdoc/>
-    public async Task<List<ChatGroup>> GetChatGroupSessionsAsync(string presetId)
+    public async Task<List<ChatGroup>?> GetChatGroupSessionsAsync(string presetId)
     {
         await InitializeChatGroupSessionsAsync();
         var sessions = _chatGroups.Where(s => s.PresetId == presetId).ToList();

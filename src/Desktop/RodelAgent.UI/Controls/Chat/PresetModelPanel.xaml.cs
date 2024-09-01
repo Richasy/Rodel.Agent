@@ -19,11 +19,7 @@ public sealed partial class PresetModelPanel : ChatPresetControlBase
     /// <summary>
     /// Initializes a new instance of the <see cref="PresetModelPanel"/> class.
     /// </summary>
-    public PresetModelPanel()
-    {
-        InitializeComponent();
-        Loaded += OnLoadedAsync;
-    }
+    public PresetModelPanel() => InitializeComponent();
 
     /// <summary>
     /// 保存头像到本地.
@@ -55,7 +51,8 @@ public sealed partial class PresetModelPanel : ChatPresetControlBase
     public bool IsValid()
         => !string.IsNullOrEmpty(ViewModel.Name);
 
-    private async void OnLoadedAsync(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override async void OnControlLoaded()
     {
         if (!string.IsNullOrEmpty(ViewModel.Data.Data.Emoji))
         {

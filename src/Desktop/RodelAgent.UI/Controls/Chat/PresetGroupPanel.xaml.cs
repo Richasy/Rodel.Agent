@@ -20,11 +20,7 @@ public sealed partial class PresetGroupPanel : GroupPresetControlBase
     /// <summary>
     /// Initializes a new instance of the <see cref="PresetGroupPanel"/> class.
     /// </summary>
-    public PresetGroupPanel()
-    {
-        InitializeComponent();
-        Loaded += OnLoadedAsync;
-    }
+    public PresetGroupPanel() => InitializeComponent();
 
     /// <summary>
     /// 保存头像到本地.
@@ -56,7 +52,8 @@ public sealed partial class PresetGroupPanel : GroupPresetControlBase
     public bool IsValid()
         => !string.IsNullOrEmpty(ViewModel.Name) && ViewModel.SelectedAgents.Count >= 2;
 
-    private async void OnLoadedAsync(object sender, RoutedEventArgs e)
+    /// <inheritdoc/>
+    protected override async void OnControlLoaded()
     {
         if (!string.IsNullOrEmpty(ViewModel.Data.Data.Emoji))
         {

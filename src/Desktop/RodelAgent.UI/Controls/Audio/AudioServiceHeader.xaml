@@ -12,7 +12,8 @@
     mc:Ignorable="d">
 
     <Grid
-        Padding="20,12"
+        Padding="20,0"
+        VerticalAlignment="Stretch"
         BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
         BorderThickness="0,0,0,1"
         ColumnSpacing="12">

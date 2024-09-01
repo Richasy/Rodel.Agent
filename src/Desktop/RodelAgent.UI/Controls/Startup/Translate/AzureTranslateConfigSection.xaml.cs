@@ -13,17 +13,12 @@ public sealed partial class AzureTranslateConfigSection : TranslateServiceConfig
     /// <summary>
     /// Initializes a new instance of the <see cref="AzureTranslateConfigSection"/> class.
     /// </summary>
-    public AzureTranslateConfigSection()
-    {
-        InitializeComponent();
-        Loaded += OnLoaded;
-    }
+    public AzureTranslateConfigSection() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
     {
-        var newVM = e.NewValue as TranslateServiceItemViewModel;
-        if (newVM == null)
+        if (e.NewValue is not TranslateServiceItemViewModel newVM)
         {
             return;
         }
@@ -32,10 +27,9 @@ public sealed partial class AzureTranslateConfigSection : TranslateServiceConfig
         ViewModel.CheckCurrentConfig();
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
-    {
-        RegionBox.Text = (ViewModel.Config as AzureClientConfig)?.Region ?? string.Empty;
-    }
+    /// <inheritdoc/>
+    protected override void OnControlLoaded()
+        => RegionBox.Text = (ViewModel.Config as AzureClientConfig)?.Region ?? string.Empty;
 
     private void OnRegionBoxTextChanged(object sender, TextChangedEventArgs e)
     {

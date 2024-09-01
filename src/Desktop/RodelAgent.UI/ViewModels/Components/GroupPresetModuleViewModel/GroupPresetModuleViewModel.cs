@@ -65,10 +65,10 @@ public sealed partial class GroupPresetModuleViewModel : ViewModelBase<GroupPres
     private async Task SaveGroupPresetAsync()
     {
         UpdatePresetData();
-        var pageVM = GlobalDependencies.ServiceProvider.GetRequiredService<ChatServicePageViewModel>();
+        var pageVM = this.Get<ChatServicePageViewModel>();
         await _storageService.AddOrUpdateChatGroupPresetAsync(Data.Data);
         pageVM.ResetGroupsCommand.Execute(default);
-        GlobalDependencies.ServiceProvider.GetRequiredService<AppViewModel>().ForceUpdatePresetAvatar(Data.Data.Id);
+        this.Get<AppViewModel>().ForceUpdatePresetAvatar(Data.Data.Id);
         CloseRequested?.Invoke(this, EventArgs.Empty);
     }
 
