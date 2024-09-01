@@ -51,6 +51,7 @@
     <None Remove="Controls\Audio\AudioSessionItemControl.xaml" />
     <None Remove="Controls\Audio\AudioSessionPresenter.xaml" />
     <None Remove="Controls\Base\ColorfulBorder.xaml" />
+    <None Remove="Controls\Base\ColumnSplitter.xaml" />
     <None Remove="Controls\Base\EmojiPanel.xaml" />
     <None Remove="Controls\Base\EnterWrapTip.xaml" />
     <None Remove="Controls\Base\PluginAvatar.xaml" />
@@ -634,6 +635,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Controls\RootLayout.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Controls\Base\ColumnSplitter.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <None Update="NLog.config">

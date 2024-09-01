@@ -19,16 +19,10 @@ public sealed partial class DrawServicePageViewModel
     private bool _isAvailableServicesEmpty;
 
     [ObservableProperty]
-    private double _historyColumnWidth;
-
-    [ObservableProperty]
     private bool _isHistoryEmpty;
 
     [ObservableProperty]
     private int _historyCount;
-
-    [ObservableProperty]
-    private bool _isHistoryColumnManualHide;
 
     /// <summary>
     /// 会话模型.

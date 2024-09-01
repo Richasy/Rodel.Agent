@@ -15,7 +15,7 @@ public sealed partial class VisibilityToggleButton : LayoutUserControlBase
     /// <see cref="Direction"/> 依赖属性.
     /// </summary>
     public static readonly DependencyProperty DirectionProperty =
-        DependencyProperty.Register(nameof(Direction), typeof(VisibilityToggleButtonDirection), typeof(VisibilityToggleButton), new PropertyMetadata(VisibilityToggleButtonDirection.LeftToRightVisible));
+        DependencyProperty.Register(nameof(Direction), typeof(VisibilityToggleButtonDirection), typeof(VisibilityToggleButton), new PropertyMetadata(VisibilityToggleButtonDirection.LeftToRightVisible, new PropertyChangedCallback(OnDirectionChanged)));
 
     /// <summary>
     /// <see cref="IsHide"/> 依赖属性.
@@ -77,12 +77,17 @@ public sealed partial class VisibilityToggleButton : LayoutUserControlBase
         instance?.CheckButtonStates();
     }
 
+    private static void OnDirectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        var instance = d as VisibilityToggleButton;
+        instance?.CheckButtonStates();
+    }
+
     private void CheckButtonStates()
     {
-        var symbol = IsHide
+        Icon.Symbol = IsHide
             ? Direction == VisibilityToggleButtonDirection.LeftToRightVisible ? FluentIcons.Common.Symbol.ChevronRight : FluentIcons.Common.Symbol.ChevronLeft
             : Direction == VisibilityToggleButtonDirection.LeftToRightVisible ? FluentIcons.Common.Symbol.ChevronLeft : FluentIcons.Common.Symbol.ChevronRight;
-        Icon.Symbol = symbol;
         var tip = IsHide ? ResourceToolkit.GetLocalizedString(Models.Constants.StringNames.Show) : ResourceToolkit.GetLocalizedString(Models.Constants.StringNames.Hide);
         ToolTipService.SetToolTip(Btn, tip);
         AutomationProperties.SetName(Btn, tip);
@@ -97,18 +102,21 @@ public sealed partial class VisibilityToggleButton : LayoutUserControlBase
     }
 
     private void OnBtnClick(object sender, RoutedEventArgs e)
-        => Click?.Invoke(this, EventArgs.Empty);
+    {
+        IsHide = !IsHide;
+        Click?.Invoke(this, EventArgs.Empty);
+    }
 
     private void ShowButton()
     {
-        BackGrid.Visibility = Visibility.Visible;
         Btn.Visibility = Visibility.Visible;
+        BackgroundGrid.Visibility = Visibility.Visible;
     }
 
     private void HideButton()
     {
-        BackGrid.Visibility = Visibility.Collapsed;
         Btn.Visibility = Visibility.Collapsed;
+        BackgroundGrid.Visibility = Visibility.Collapsed;
     }
 }
 

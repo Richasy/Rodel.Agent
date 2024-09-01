@@ -3,6 +3,7 @@
 using System.Collections.Specialized;
 using RodelAgent.Interfaces;
 using RodelAgent.UI.Models.Constants;
+using RodelAgent.UI.Pages;
 using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels.Components;
 using RodelChat.Interfaces.Client;
@@ -12,7 +13,7 @@ namespace RodelAgent.UI.ViewModels.Pages;
 /// <summary>
 /// 聊天服务页面视图模型.
 /// </summary>
-public sealed partial class ChatServicePageViewModel : ViewModelBase
+public sealed partial class ChatServicePageViewModel : LayoutPageViewModelBase
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="ChatServicePageViewModel"/> class.
@@ -31,13 +32,11 @@ public sealed partial class ChatServicePageViewModel : ViewModelBase
         _logger = logger;
         _chatPresetModuleVM = chatPresetModuleVM;
         _groupPresetModuleVM = groupPresetModuleVM;
-        ServiceColumnWidth = SettingsToolkit.ReadLocalSetting(SettingNames.ChatServicePageServiceColumnWidth, 280d);
         ExtraColumnWidth = SettingsToolkit.ReadLocalSetting(SettingNames.ChatServicePageExtraColumnWidth, 240d);
         ExtraColumnVisible = SettingsToolkit.ReadLocalSetting(SettingNames.ChatServicePageExtraColumnVisible, true);
         ExtraRowHeight = SettingsToolkit.ReadLocalSetting(SettingNames.ChatServicePageExtraRowHeight, 400d);
         SessionPanelType = SettingsToolkit.ReadLocalSetting(SettingNames.ChatSessionPanelType, ChatSessionPanelType.SystemInstruction);
         GroupPanelType = SettingsToolkit.ReadLocalSetting(SettingNames.ChatGroupPanelType, ChatGroupPanelType.Agents);
-        IsServiceColumnManualHide = SettingsToolkit.ReadLocalSetting(SettingNames.IsChatServicePageServiceColumnManualHide, false);
         IsExtraColumnManualHide = SettingsToolkit.ReadLocalSetting(SettingNames.IsChatServicePageExtraColumnManualHide, false);
         CheckSessionPanelType();
         CheckGroupPanelType();
@@ -52,6 +51,10 @@ public sealed partial class ChatServicePageViewModel : ViewModelBase
         Plugins.CollectionChanged += OnPluginsCountChanged;
         CheckPluginsCount();
     }
+
+    /// <inheritdoc/>
+    protected override string GetPageKey()
+        => nameof(ChatServicePage);
 
     private void CheckSessionPanelType()
     {
@@ -72,14 +75,6 @@ public sealed partial class ChatServicePageViewModel : ViewModelBase
     {
         IsChatHistorySessionsEmpty = HistoryChatSessions.Count == 0;
         IsGroupHistorySessionsEmpty = HistoryGroupSessions.Count == 0;
-    }
-
-    partial void OnServiceColumnWidthChanged(double value)
-    {
-        if (value > 0)
-        {
-            SettingsToolkit.WriteLocalSetting(SettingNames.ChatServicePageServiceColumnWidth, value);
-        }
     }
 
     partial void OnExtraColumnWidthChanged(double value)
@@ -140,9 +135,9 @@ public sealed partial class ChatServicePageViewModel : ViewModelBase
         value.EnterViewCommand.Execute(default);
     }
 
-    partial void OnIsServiceColumnManualHideChanged(bool value)
-        => SettingsToolkit.WriteLocalSetting(SettingNames.IsChatServicePageServiceColumnManualHide, value);
-
     partial void OnIsExtraColumnManualHideChanged(bool value)
-        => SettingsToolkit.WriteLocalSetting(SettingNames.IsChatServicePageExtraColumnManualHide, value);
+    {
+        SettingsToolkit.WriteLocalSetting(SettingNames.IsChatServicePageExtraColumnManualHide, value);
+        ExtraColumnWidth = value ? 0 : SettingsToolkit.ReadLocalSetting(SettingNames.ChatServicePageExtraColumnWidth, 240d);
+    }
 }

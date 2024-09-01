@@ -131,9 +131,6 @@ public sealed partial class ChatServicePage : ChatServicePageBase
 
     private void OnExtraVisibilityButtonClick(object sender, EventArgs e)
         => ViewModel.IsExtraColumnManualHide = !ViewModel.IsExtraColumnManualHide;
-
-    private void OnServiceVisibilityButtonClick(object sender, EventArgs e)
-        => ViewModel.IsServiceColumnManualHide = !ViewModel.IsServiceColumnManualHide;
 }
 
 /// <summary>

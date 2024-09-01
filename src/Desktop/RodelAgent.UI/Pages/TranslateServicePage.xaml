@@ -20,7 +20,7 @@
             Visibility="{x:Bind ViewModel.IsAvailableServicesEmpty, Mode=OneWay}" />
         <Grid Visibility="{x:Bind ViewModel.IsAvailableServicesEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="56" />
                 <RowDefinition />
             </Grid.RowDefinitions>
             <translation:TranslationServiceHeader />
