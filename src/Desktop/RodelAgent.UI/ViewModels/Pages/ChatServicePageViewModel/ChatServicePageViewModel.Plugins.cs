@@ -59,7 +59,7 @@ public sealed partial class ChatServicePageViewModel
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to import plugin.");
-            appVM.ShowTip(ex.Message);
+            appVM.ShowTipCommand.Execute((ex.Message, InfoType.Error));
         }
     }
 

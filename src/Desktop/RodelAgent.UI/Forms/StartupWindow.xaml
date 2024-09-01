@@ -11,6 +11,7 @@
     mc:Ignorable="d">
 
     <Grid>
+        <base:AppTitleBar x:Name="TitleBar" VerticalAlignment="Top" />
         <Frame x:Name="MainFrame" />
         <Grid x:Name="TipContainer" Visibility="Collapsed" />
     </Grid>

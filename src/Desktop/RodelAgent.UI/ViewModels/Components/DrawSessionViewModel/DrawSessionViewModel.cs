@@ -44,7 +44,7 @@ public sealed partial class DrawSessionViewModel : ViewModelBase
         if (!File.Exists(imagePath))
         {
             var appVM = this.Get<AppViewModel>();
-            appVM.ShowTip(StringNames.ImageNotFound, InfoType.Error);
+            appVM.ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.ImageNotFound), InfoType.Error));
             return false;
         }
 
@@ -234,7 +234,7 @@ public sealed partial class DrawSessionViewModel : ViewModelBase
         dataPackage.SetStorageItems(new[] { file });
         Clipboard.SetContent(dataPackage);
         var appVM = this.Get<AppViewModel>();
-        appVM.ShowTip(StringNames.Copied, InfoType.Success);
+        appVM.ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.Copied), InfoType.Success));
     }
 
     [RelayCommand]
@@ -255,7 +255,7 @@ public sealed partial class DrawSessionViewModel : ViewModelBase
 
         var file = await StorageFile.GetFileFromPathAsync(imagePath);
         await file.CopyAndReplaceAsync(targetImage);
-        appVM.ShowTip(StringNames.Saved, InfoType.Success);
+        appVM.ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.Saved), InfoType.Success));
     }
 
     private void HandleDrawException(Exception ex)

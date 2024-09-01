@@ -45,7 +45,7 @@ public sealed partial class AudioSessionViewModel : ViewModelBase
         if (!File.Exists(audioPath))
         {
             var appVM = this.Get<AppViewModel>();
-            appVM.ShowTip(StringNames.ImageNotFound, InfoType.Error);
+            appVM.ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.ImageNotFound), InfoType.Error));
             return false;
         }
 
@@ -301,7 +301,7 @@ public sealed partial class AudioSessionViewModel : ViewModelBase
 
         var file = await StorageFile.GetFileFromPathAsync(audioPath);
         await file.CopyAndReplaceAsync(targetAudio);
-        appVM.ShowTip(StringNames.Saved, InfoType.Success);
+        appVM.ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.Saved), InfoType.Success));
     }
 
     private void HandleGenerateException(Exception ex)

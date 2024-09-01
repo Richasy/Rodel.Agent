@@ -73,6 +73,7 @@ public static class GlobalDependencies
             .AddSingleton<DbService>()
             .AddSingleton<IStorageService, StorageService>()
             .AddSingleton<AppViewModel>()
+            .AddSingleton<NavigationViewModel>()
             .AddSingleton<AudioWaveModuleViewModel>()
             .AddSingleton<StartupPageViewModel>()
             .AddSingleton<ChatPresetModuleViewModel>()

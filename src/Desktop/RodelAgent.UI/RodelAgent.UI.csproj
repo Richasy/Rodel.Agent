@@ -120,11 +120,10 @@
     <None Remove="Controls\Items\ChatSessionPresetItemControl\ChatSessionPresetItemControl.xaml" />
     <None Remove="Controls\Items\DrawModelCard\DrawModelCard.xaml" />
     <None Remove="Controls\Items\DrawServiceItemControl\DrawServiceItemControl.xaml" />
-    <None Remove="Controls\Items\NavigateItemControl.xaml" />
     <None Remove="Controls\Items\NavigationPanel.xaml" />
     <None Remove="Controls\Items\TranslateServiceItemControl\TranslateServiceItemControl.xaml" />
-    <None Remove="Controls\Main\AppTitleBar.xaml" />
     <None Remove="Controls\ProviderLogo.xaml" />
+    <None Remove="Controls\RootLayout.xaml" />
     <None Remove="Controls\Settings\AboutSettingSection.xaml" />
     <None Remove="Controls\Settings\AliTranslateConfigSettingSection.xaml" />
     <None Remove="Controls\Settings\AppLogSettingSection.xaml" />
@@ -634,6 +633,9 @@
     <Page Update="Controls\Chat\ChatSessionTokenUsageControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Update="Controls\RootLayout.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <None Update="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -777,11 +779,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Controls\Main\AppTitleBar.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
     <Page Update="Controls\Items\NavigationPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -808,11 +805,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\RAGPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Items\NavigateItemControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

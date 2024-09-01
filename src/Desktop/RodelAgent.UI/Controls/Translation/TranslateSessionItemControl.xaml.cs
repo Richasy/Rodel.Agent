@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
+using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels;
 using RodelAgent.UI.ViewModels.Items;
 using RodelAgent.UI.ViewModels.Pages;
@@ -56,7 +57,7 @@ public sealed partial class TranslateSessionItemControl : TranslateSessionItemCo
         var dataPackage = new DataPackage();
         dataPackage.SetText(text);
         Clipboard.SetContent(dataPackage);
-        this.Get<AppViewModel>().ShowTip(Models.Constants.StringNames.Copied, Models.Constants.InfoType.Success);
+        this.Get<AppViewModel>().ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(Models.Constants.StringNames.Copied), Models.Constants.InfoType.Success));
     }
 }
 

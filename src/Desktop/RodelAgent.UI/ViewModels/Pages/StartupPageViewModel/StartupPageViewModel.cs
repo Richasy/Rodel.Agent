@@ -129,7 +129,7 @@ public sealed partial class StartupPageViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            _appViewModel.ShowTip(ex.Message, InfoType.Error);
+            _appViewModel.ShowTipCommand.Execute((ex.Message, InfoType.Error));
             _logger.LogError(ex, "Failed to restart the app.");
         }
     }

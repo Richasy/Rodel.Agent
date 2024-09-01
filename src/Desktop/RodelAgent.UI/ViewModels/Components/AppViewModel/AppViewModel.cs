@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
 using RodelAgent.UI.Controls;
-using RodelAgent.UI.Models.Args;
+using RodelAgent.UI.Forms;
 using RodelAgent.UI.Models.Constants;
-using RodelAgent.UI.Pages;
 using RodelAgent.UI.Toolkits;
-using RodelAgent.UI.ViewModels.Items;
 
 namespace RodelAgent.UI.ViewModels;
 
@@ -18,28 +16,7 @@ public sealed partial class AppViewModel : ViewModelBase
     /// Initializes a new instance of the <see cref="AppViewModel"/> class.
     /// </summary>
     public AppViewModel(ILogger<AppViewModel> logger)
-    {
-        _logger = logger;
-        NavigateItems.Add(new NavigateItemViewModel(FeatureType.Chat));
-
-        if (GlobalFeatureSwitcher.IsRagFeatureEnabled)
-        {
-            NavigateItems.Add(new NavigateItemViewModel(FeatureType.RAG));
-        }
-
-        if (GlobalFeatureSwitcher.IsT2IFeatureEnabled)
-        {
-            NavigateItems.Add(new NavigateItemViewModel(FeatureType.Draw));
-        }
-
-        if (GlobalFeatureSwitcher.IsT2SFeatureEnabled)
-        {
-            NavigateItems.Add(new NavigateItemViewModel(FeatureType.Audio));
-        }
-
-        NavigateItems.Add(new NavigateItemViewModel(FeatureType.Translate));
-        SettingsItem = new NavigateItemViewModel(FeatureType.Settings);
-    }
+        => _logger = logger;
 
     /// <summary>
     /// 强制更新指定预设的头像.
@@ -47,22 +24,6 @@ public sealed partial class AppViewModel : ViewModelBase
     /// <param name="presetId">预设标识符.</param>
     public void ForceUpdatePresetAvatar(string presetId)
         => PresetAvatarUpdateRequested?.Invoke(this, presetId);
-
-    /// <summary>
-    /// 显示提示.
-    /// </summary>
-    /// <param name="message">提示内容.</param>
-    /// <param name="type">提示类型.</param>
-    public void ShowTip(string message, InfoType type = InfoType.Information)
-        => RequestShowTip?.Invoke(this, new AppTipNotification(message, type, ActivatedWindow));
-
-    /// <summary>
-    /// 显示提示.
-    /// </summary>
-    /// <param name="messageName">提示内容.</param>
-    /// <param name="type">提示类型.</param>
-    public void ShowTip(StringNames messageName, InfoType type = InfoType.Information)
-        => ShowTip(ResourceToolkit.GetLocalizedString(messageName), type);
 
     /// <summary>
     /// 显示消息通知.
@@ -83,12 +44,6 @@ public sealed partial class AppViewModel : ViewModelBase
     /// <returns><see cref="Task"/>.</returns>
     public Task ShowMessageDialogAsync(StringNames messageName)
         => ShowMessageDialogAsync(ResourceToolkit.GetLocalizedString(messageName));
-
-    /// <summary>
-    /// 导航请求.
-    /// </summary>
-    public void Navigate(Type pageType, object parameter = default)
-        => NavigationRequested?.Invoke(this, new AppNavigationEventArgs(pageType, parameter));
 
     /// <summary>
     /// 修改主题.
@@ -116,45 +71,23 @@ public sealed partial class AppViewModel : ViewModelBase
         }
     }
 
+    /// <summary>
+    /// 显示提示.
+    /// </summary>
     [RelayCommand]
-    private void Initialize()
+    private async Task ShowTipAsync((string, InfoType) data)
     {
-        var lastSelectedFeature = SettingsToolkit.ReadLocalSetting(SettingNames.LastSelectedFeature, FeatureType.Chat);
-        ChangeFeatureCommand.Execute(lastSelectedFeature);
-    }
-
-    [RelayCommand]
-    private void ChangeFeature(FeatureType feature)
-    {
-        var currentFeature = NavigateItems.FirstOrDefault(x => x.IsSelected)?.FeatureType;
-        if (currentFeature == feature)
+        if (ActivatedWindow is ITipWindow tipWindow)
         {
-            return;
+            await tipWindow.ShowTipAsync(data.Item1, data.Item2);
         }
-
-        foreach (var item in NavigateItems)
+        else
         {
-            item.IsSelected = item.FeatureType == feature;
+            var firstWindow = DisplayWindows.OfType<ITipWindow>().FirstOrDefault();
+            if (firstWindow is not null)
+            {
+                await firstWindow.ShowTipAsync(data.Item1, data.Item2);
+            }
         }
-
-        SettingsItem.IsSelected = feature == FeatureType.Settings;
-
-        if (feature != FeatureType.Settings)
-        {
-            SettingsToolkit.WriteLocalSetting(SettingNames.LastSelectedFeature, feature);
-        }
-
-        var pageType = feature switch
-        {
-            FeatureType.Chat => typeof(ChatServicePage),
-            FeatureType.RAG => typeof(RAGPage),
-            FeatureType.Draw => typeof(DrawServicePage),
-            FeatureType.Audio => typeof(AudioServicePage),
-            FeatureType.Translate => typeof(TranslateServicePage),
-            FeatureType.Settings => typeof(SettingsPage),
-            _ => throw new ArgumentOutOfRangeException(nameof(feature), feature, null)
-        };
-
-        Navigate(pageType);
     }
 }

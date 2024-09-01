@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
 using RodelAgent.UI.Controls.Startup;
+using RodelAgent.UI.Toolkits;
 using RodelChat.Interfaces.Client;
 using RodelChat.Models.Client;
 using RodelChat.Models.Constants;
@@ -131,7 +132,7 @@ public sealed partial class ChatServiceItemViewModel : ViewModelBase
             if (IsModelExist(model))
             {
                 this.Get<AppViewModel>()
-                    .ShowTip(Models.Constants.StringNames.ModelAlreadyExist, Models.Constants.InfoType.Error);
+                    .ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(Models.Constants.StringNames.ModelAlreadyExist), Models.Constants.InfoType.Error));
                 return;
             }
 

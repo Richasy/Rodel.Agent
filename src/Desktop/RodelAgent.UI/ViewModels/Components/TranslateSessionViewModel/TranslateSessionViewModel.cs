@@ -84,13 +84,13 @@ public sealed partial class TranslateSessionViewModel : ViewModelBase
         var appVM = this.Get<AppViewModel>();
         if (targetLan == null)
         {
-            appVM.ShowTip(StringNames.TargetLanguageCanNotBeEmpty, InfoType.Error);
+            appVM.ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.TargetLanguageCanNotBeEmpty), InfoType.Error));
             return;
         }
 
         if (IsExceedMaxTextLength)
         {
-            appVM.ShowTip(StringNames.ExceedTextLimit, InfoType.Error);
+            appVM.ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.ExceedTextLimit), InfoType.Error));
             return;
         }
 
@@ -132,7 +132,7 @@ public sealed partial class TranslateSessionViewModel : ViewModelBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Translate failed.");
-            appVM.ShowTip(StringNames.TranslationFailed, InfoType.Error);
+            appVM.ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.TranslationFailed), InfoType.Error));
             return;
         }
         finally
@@ -165,7 +165,7 @@ public sealed partial class TranslateSessionViewModel : ViewModelBase
         dataPackage.SetText(TranslatedText);
         Clipboard.SetContent(dataPackage);
         var appVM = this.Get<AppViewModel>();
-        appVM.ShowTip(StringNames.Copied, InfoType.Success);
+        appVM.ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.Copied), InfoType.Success));
     }
 
     partial void OnSourceTextChanged(string value)

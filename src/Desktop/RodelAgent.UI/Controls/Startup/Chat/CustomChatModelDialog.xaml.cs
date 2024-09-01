@@ -67,7 +67,7 @@ public sealed partial class CustomChatModelDialog : AppContentDialog
         {
             args.Cancel = true;
             var appVM = this.Get<AppViewModel>();
-            appVM.ShowTip(ResourceToolkit.GetLocalizedString(StringNames.ModelNameOrIdCanNotBeEmpty));
+            appVM.ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.ModelNameOrIdCanNotBeEmpty), InfoType.Error));
             return;
         }
 

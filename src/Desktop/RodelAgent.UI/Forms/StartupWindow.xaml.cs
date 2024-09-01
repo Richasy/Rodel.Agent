@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
 using Microsoft.UI.Windowing;
+using RodelAgent.UI.Controls;
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Pages;
 using RodelAgent.UI.Toolkits;
@@ -36,17 +37,13 @@ public sealed partial class StartupWindow : WindowBase, ITipWindow
     }
 
     /// <inheritdoc/>
-    public async Task ShowTipAsync(UIElement element, double delaySeconds)
+    public async Task ShowTipAsync(string text, InfoType type = InfoType.Error)
     {
+        var popup = new TipPopup() { Text = text };
         TipContainer.Visibility = Visibility.Visible;
-        TipContainer.Children.Add(element);
-        element.Visibility = Visibility.Visible;
-        await Task.Delay(TimeSpan.FromSeconds(delaySeconds));
-        element.Visibility = Visibility.Collapsed;
-        _ = TipContainer.Children.Remove(element);
-        if (TipContainer.Children.Count == 0)
-        {
-            TipContainer.Visibility = Visibility.Collapsed;
-        }
+        TipContainer.Children.Add(popup);
+        await popup.ShowAsync(type);
+        TipContainer.Children.Remove(popup);
+        TipContainer.Visibility = Visibility.Collapsed;
     }
 }
