@@ -210,12 +210,14 @@
                 IsHide="{x:Bind ViewModel.IsNavColumnManualHide, Mode=TwoWay}" />
 
             <!--  右侧分栏大小控制器  -->
-            <controls:ColumnSplitter
-                Grid.Column="3"
-                ColumnWidth="{x:Bind ViewModel.ExtraColumnWidth, Mode=TwoWay}"
-                IsHide="{x:Bind ViewModel.IsExtraColumnManualHide, Mode=TwoWay}"
-                IsInvertDirection="True" />
+            <Grid Grid.Column="3" Visibility="{x:Bind ViewModel.CurrentSession, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
+                <controls:ColumnSplitter
+                    ColumnWidth="{x:Bind ViewModel.ExtraColumnWidth, Mode=TwoWay}"
+                    IsHide="{x:Bind ViewModel.IsExtraColumnManualHide, Mode=TwoWay}"
+                    IsInvertDirection="True" />
+            </Grid>
         </Grid>
+
         <ProgressRing x:Name="InitialRing" Style="{StaticResource PageProgressRingStyle}" />
     </Grid>
 </local:ChatServicePageBase>

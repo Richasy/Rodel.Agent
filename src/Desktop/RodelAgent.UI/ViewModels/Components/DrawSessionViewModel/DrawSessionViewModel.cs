@@ -167,23 +167,19 @@ public sealed partial class DrawSessionViewModel : ViewModelBase
             ImagePath = string.Empty;
             LastGenerateTime = string.Empty;
             _cancellationTokenSource = new CancellationTokenSource();
-            var dispatcherQueue = this.Get<Microsoft.UI.Dispatching.DispatcherQueue>();
-            var result = await _drawClient.DrawAsync(sessionData, _cancellationTokenSource.Token).ConfigureAwait(false);
-            dispatcherQueue.TryEnqueue(async () =>
+            var result = await _drawClient.DrawAsync(sessionData, _cancellationTokenSource.Token);
+            if (_cancellationTokenSource.IsCancellationRequested)
             {
-                if (_cancellationTokenSource.IsCancellationRequested)
-                {
-                    return;
-                }
+                return;
+            }
 
-                var bytes = Convert.FromBase64String(result);
-                await _storageService.AddOrUpdateDrawSessionAsync(sessionData, bytes);
-                var pageVM = this.Get<DrawServicePageViewModel>();
-                pageVM.UpdateHistoryCommand.Execute(default);
-                LastGenerateTime = sessionData.Time!.Value.ToString("yyyy-MM-dd HH:mm:ss");
-                ImagePath = AppToolkit.GetDrawPicturePath(sessionData.Id);
-                DataChanged?.Invoke(this, sessionData);
-            });
+            var bytes = Convert.FromBase64String(result);
+            await _storageService.AddOrUpdateDrawSessionAsync(sessionData, bytes);
+            var pageVM = this.Get<DrawServicePageViewModel>();
+            pageVM.UpdateHistoryCommand.Execute(default);
+            LastGenerateTime = sessionData.Time!.Value.ToString("yyyy-MM-dd HH:mm:ss");
+            ImagePath = AppToolkit.GetDrawPicturePath(sessionData.Id);
+            DataChanged?.Invoke(this, sessionData);
         }
         catch (Exception ex)
         {
