@@ -58,7 +58,7 @@
     <None Remove="Controls\Base\PresetAvatar.xaml" />
     <None Remove="Controls\Base\TipDialog.xaml" />
     <None Remove="Controls\Base\VisibilityToggleButton.xaml" />
-    <None Remove="Controls\Base\WavePanel\WavePanel.xaml" />
+    <None Remove="Controls\Base\WavePanel.xaml" />
     <None Remove="Controls\Chat\AgentsSection.xaml" />
     <None Remove="Controls\Chat\ChatGroupHeader.xaml" />
     <None Remove="Controls\Chat\ChatGroupHistory.xaml" />
@@ -215,7 +215,6 @@
   <ItemGroup>
     <PackageReference Include="ColorCode.WinUI" Version="2.0.15" />
     <PackageReference Include="CommunityToolkit.Labs.WinUI.Shimmer" Version="0.1.240430-build.1676" />
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="CommunityToolkit.WinUI.Animations" Version="8.1.240821" />
     <PackageReference Include="CommunityToolkit.WinUI.Controls.ImageCropper" Version="8.1.240821" />
     <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.1.240821" />
@@ -520,9 +519,6 @@
     <Page Update="Controls\Draw\DrawProviderOptionPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="Controls\Base\WavePanel\WavePanel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Update="Controls\Settings\OpenAIAudioConfigSettingSection.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -638,6 +634,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Controls\Base\ColumnSplitter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Controls\Base\WavePanel.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <None Update="NLog.config">

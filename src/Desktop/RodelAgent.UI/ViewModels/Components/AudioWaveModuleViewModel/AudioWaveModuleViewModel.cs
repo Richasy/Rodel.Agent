@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
+using System.Diagnostics;
 using Microsoft.UI.Dispatching;
 using NAudio.Wave;
 using Windows.Media.Core;
@@ -198,6 +199,7 @@ public sealed partial class AudioWaveModuleViewModel : ViewModelBase
             {
                 Position = 0;
                 Seconds = session.NaturalDuration.TotalSeconds;
+                Debug.WriteLine($"Media opened: {Seconds}");
             });
 
             session.Position = TimeSpan.Zero;
@@ -209,6 +211,7 @@ public sealed partial class AudioWaveModuleViewModel : ViewModelBase
     {
         _dispatcherQueue.TryEnqueue(() =>
         {
+            Seconds = sender.NaturalDuration.TotalSeconds;
             if (sender.Position.TotalSeconds - Position >= 0.1)
             {
                 Position = sender.Position.TotalSeconds;

@@ -10,11 +10,9 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
-                <ResourceDictionary Source="ms-appx:///Richasy.WinUI.Share/Base/CustomNavigationViewResources.xaml" />
                 <ResourceDictionary Source="ms-appx:///Controls/Base/CardPanel/CardPanel.xaml" />
                 <ResourceDictionary Source="ms-appx:///Controls/Base/ImageEx/ImageEx.xaml" />
                 <ResourceDictionary Source="ms-appx:///Controls/Base/Markdown/MarkdownTextBlock.xaml" />
-                <ResourceDictionary Source="ms-appx:///Controls/Base/WavePanel/WavePanel.xaml" />
                 <ResourceDictionary Source="ms-appx:///Controls/Items/ChatModelCard/ChatModelCard.xaml" />
                 <ResourceDictionary Source="ms-appx:///Controls/Items/ChatServiceItemControl/ChatServiceItemControl.xaml" />
                 <ResourceDictionary Source="ms-appx:///Controls/Items/ChatSessionItemControl/ChatSessionItemControl.xaml" />
@@ -29,6 +27,7 @@
                 <ResourceDictionary Source="ms-appx:///Controls/Items/AudioServiceItemControl/AudioServiceItemControl.xaml" />
                 <ResourceDictionary Source="ms-appx:///Styles/Overwrites.xaml" />
                 <ResourceDictionary Source="ms-appx:///Styles/TrayResources.xaml" />
+                <ResourceDictionary Source="ms-appx:///Richasy.WinUI.Share/Base/CustomNavigationViewResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <ResourceDictionary.ThemeDictionaries>

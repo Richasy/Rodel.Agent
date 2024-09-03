@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
-using System.ComponentModel;
 using Microsoft.Graphics.Canvas.UI.Xaml;
-using Microsoft.UI.Xaml.Shapes;
 using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels.Components;
 using Windows.UI;
@@ -11,22 +9,16 @@ using Windows.UI.ViewManagement;
 namespace RodelAgent.UI.Controls;
 
 /// <summary>
-/// 波形面板.
+/// 音频波形面板.
 /// </summary>
-public sealed class WavePanel : LayoutControlBase<AudioWaveModuleViewModel>
+public sealed partial class WavePanel : WavePanelBase
 {
-    private CanvasControl _waveCanvas;
-    private Slider _waveSlider;
-    private Rectangle _hoverHolder;
-    private Button _playPauseButton;
-
     /// <summary>
     /// Initializes a new instance of the <see cref="WavePanel"/> class.
     /// </summary>
     public WavePanel()
     {
-        DefaultStyleKey = typeof(WavePanel);
-        ViewModel = this.Get<AudioWaveModuleViewModel>();
+        InitializeComponent();
         SizeChanged += OnSizeChanged;
     }
 
@@ -41,50 +33,10 @@ public sealed class WavePanel : LayoutControlBase<AudioWaveModuleViewModel>
     public event EventHandler SaveAudio;
 
     /// <inheritdoc/>
-    protected override void OnApplyTemplate()
+    protected override void OnControlLoaded()
     {
-        _waveCanvas = GetTemplateChild("WaveCanvas") as CanvasControl;
-        _waveSlider = GetTemplateChild("WaveSlider") as Slider;
-        _hoverHolder = GetTemplateChild("HoverHolder") as Rectangle;
-        _playPauseButton = GetTemplateChild("PlayPauseButton") as Button;
-
-        var openAudioButton = GetTemplateChild("OpenAudioButton") as Button;
-        var saveAudioButton = GetTemplateChild("SaveAudioButton") as Button;
-
-        if (_waveCanvas != null)
-        {
-            _waveCanvas.Draw += OnWaveCanvasDraw;
-        }
-
-        if (_waveSlider != null)
-        {
-            _waveSlider.PointerEntered += OnWaveSliderPointerEntered;
-            _waveSlider.PointerExited += OnWaveSliderPointerExited;
-            _waveSlider.PointerMoved += OnWaveSliderPointerMoved;
-            _waveSlider.ValueChanged += OnWaveSliderValueChanged;
-        }
-
-        if (_playPauseButton != null)
-        {
-            _playPauseButton.Click += OnPlayPauseButtonClick;
-        }
-
-        if (openAudioButton != null)
-        {
-            openAudioButton.Click += (sender, e) => OpenAudio?.Invoke(this, default);
-        }
-
-        if (saveAudioButton != null)
-        {
-            saveAudioButton.Click += (sender, e) => SaveAudio?.Invoke(this, default);
-        }
-    }
-
-    /// <inheritdoc/>
-    protected override void OnControlUnloaded()
-    {
-        ViewModel.RedrawWave -= OnRedrawWave;
-        ViewModel.PropertyChanged -= OnViewModelPropertyChanged;
+        WaveCanvas.Draw += OnWaveCanvasDraw;
+        ViewModel.RedrawWave += OnRedrawWave;
         if (ViewModel.IsRecording)
         {
             ViewModel.StopRecordingCommand.Execute(default);
@@ -96,10 +48,18 @@ public sealed class WavePanel : LayoutControlBase<AudioWaveModuleViewModel>
     }
 
     /// <inheritdoc/>
-    protected override void OnControlLoaded()
+    protected override void OnControlUnloaded()
     {
-        ViewModel.PropertyChanged += OnViewModelPropertyChanged;
-        ViewModel.RedrawWave += OnRedrawWave;
+        WaveCanvas.Draw -= OnWaveCanvasDraw;
+        ViewModel.RedrawWave -= OnRedrawWave;
+        if (ViewModel.IsRecording)
+        {
+            ViewModel.StopRecordingCommand.Execute(default);
+        }
+        else if (ViewModel.IsPlaying)
+        {
+            ViewModel.TogglePlayPauseCommand.Execute(default);
+        }
     }
 
     private static bool IsDark()
@@ -127,35 +87,24 @@ public sealed class WavePanel : LayoutControlBase<AudioWaveModuleViewModel>
             return;
         }
 
-        _hoverHolder.Visibility = Visibility.Visible;
+        HoverHolder.Visibility = Visibility.Visible;
         var x = e.GetCurrentPoint(this).Position.X;
-        _hoverHolder.Margin = new Thickness(x - (_hoverHolder.ActualWidth / 2), 16, 0, 12);
+        HoverHolder.Margin = new Thickness(x - (HoverHolder.ActualWidth / 2), 16, 0, 12);
     }
-
-    private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == nameof(ViewModel.Position))
-        {
-            _waveSlider.Value = ViewModel.Position;
-        }
-    }
-
-    private void OnPlayPauseButtonClick(object sender, RoutedEventArgs e)
-        => ViewModel.TogglePlayPauseCommand.Execute(default);
 
     private void OnWaveSliderPointerMoved(object sender, PointerRoutedEventArgs e)
         => RepositionHoverHolder(e);
 
     private void OnWaveSliderPointerExited(object sender, PointerRoutedEventArgs e)
-        => _hoverHolder.Visibility = Visibility.Collapsed;
+        => HoverHolder.Visibility = Visibility.Collapsed;
 
     private void OnWaveSliderPointerEntered(object sender, PointerRoutedEventArgs e)
         => RepositionHoverHolder(e);
 
     private void OnWaveSliderValueChanged(object sender, RangeBaseValueChangedEventArgs e)
     {
-        _hoverHolder.Visibility = Visibility.Collapsed;
-        _waveCanvas.Invalidate();
+        HoverHolder.Visibility = Visibility.Collapsed;
+        WaveCanvas.Invalidate();
         ViewModel.ChangePositionCommand.Execute(e.NewValue);
     }
 
@@ -177,7 +126,7 @@ public sealed class WavePanel : LayoutControlBase<AudioWaveModuleViewModel>
 
         var highlightIndex = ViewModel.IsRecording
             ? points.Count
-            : (int)(_waveSlider.Value / ViewModel.Seconds * points.Count);
+            : (int)(WaveSlider.Value / ViewModel.Seconds * points.Count);
 
         for (var i = 0; i < points.Count; i++)
         {
@@ -189,8 +138,25 @@ public sealed class WavePanel : LayoutControlBase<AudioWaveModuleViewModel>
     }
 
     private void OnSizeChanged(object sender, SizeChangedEventArgs e)
-        => _waveCanvas.Invalidate();
+        => WaveCanvas.Invalidate();
 
     private void OnRedrawWave(object sender, EventArgs e)
-        => _waveCanvas.Invalidate();
+        => WaveCanvas.Invalidate();
+
+    private void OnOpenAudioButtonClick(object sender, RoutedEventArgs e)
+        => OpenAudio?.Invoke(this, EventArgs.Empty);
+
+    private void OnSaveAudioButtonClick(object sender, RoutedEventArgs e)
+        => SaveAudio?.Invoke(this, EventArgs.Empty);
+}
+
+/// <summary>
+/// 音频波形面板基类.
+/// </summary>
+public abstract class WavePanelBase : LayoutUserControlBase<AudioWaveModuleViewModel>
+{
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WavePanelBase"/> class.
+    /// </summary>
+    protected WavePanelBase() => ViewModel = this.Get<AudioWaveModuleViewModel>();
 }

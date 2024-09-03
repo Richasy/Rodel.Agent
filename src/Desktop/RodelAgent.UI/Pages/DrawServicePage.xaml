@@ -77,7 +77,7 @@
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
                             CornerRadius="{StaticResource OverlayCornerRadius}"
-                            Visibility="{x:Bind ViewModel.Session.IsDrawing, Mode=OneWay}" />
+                            Visibility="{x:Bind ViewModel.Session.IsDrawing, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
                         <controls:EmptyHolder
                             Title="{ext:Locale Name=NeedDrawImage}"
                             Description="{ext:Locale Name=NeedDrawImageDescription}"

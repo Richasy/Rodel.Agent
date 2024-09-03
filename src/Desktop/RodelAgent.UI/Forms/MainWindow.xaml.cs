@@ -57,6 +57,11 @@ public sealed partial class MainWindow : WindowBase, ITipWindow
 
     private void OnWindowActivated(object sender, WindowActivatedEventArgs args)
     {
+        if (args.WindowActivationState != WindowActivationState.Deactivated)
+        {
+            this.Get<AppViewModel>().ActivatedWindow = this;
+        }
+
         if (!_isFirstActivated)
         {
             return;

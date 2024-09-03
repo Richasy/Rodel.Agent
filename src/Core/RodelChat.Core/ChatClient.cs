@@ -205,7 +205,7 @@ public sealed partial class ChatClient : IChatClient
             var chatAgent = new ChatCompletionAgent
             {
                 Instructions = agent.SystemInstruction,
-                ExecutionSettings = provider.ConvertExecutionSettings(agent),
+                Arguments = new KernelArguments([provider.ConvertExecutionSettings(agent)]),
                 Id = agent.Id,
                 Kernel = kernel,
                 Name = EncodeName(agent.Name),

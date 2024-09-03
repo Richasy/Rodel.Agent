@@ -230,23 +230,19 @@ public sealed partial class AudioSessionViewModel : ViewModelBase
             AudioPath = string.Empty;
             LastGenerateTime = string.Empty;
             _cancellationTokenSource = new CancellationTokenSource();
-            var dispatcherQueue = this.Get<Microsoft.UI.Dispatching.DispatcherQueue>();
-            var result = await _audioClient.TextToSpeechAsync(sessionData, _cancellationTokenSource.Token).ConfigureAwait(false);
-            dispatcherQueue.TryEnqueue(async () =>
+            var result = await _audioClient.TextToSpeechAsync(sessionData, _cancellationTokenSource.Token);
+            if (_cancellationTokenSource.IsCancellationRequested)
             {
-                if (_cancellationTokenSource.IsCancellationRequested)
-                {
-                    return;
-                }
+                return;
+            }
 
-                await _storageService.AddOrUpdateAudioSessionAsync(sessionData, result.ToArray());
-                var pageVM = this.Get<AudioServicePageViewModel>();
-                pageVM.UpdateHistoryCommand.Execute(default);
-                LastGenerateTime = sessionData.Time!.Value.ToString("yyyy-MM-dd HH:mm:ss");
-                AudioPath = AppToolkit.GetSpeechPath(sessionData.Id);
-                DataChanged?.Invoke(this, sessionData);
-                _waveViewModel.LoadFileCommand.Execute(AudioPath);
-            });
+            await _storageService.AddOrUpdateAudioSessionAsync(sessionData, result.ToArray());
+            var pageVM = this.Get<AudioServicePageViewModel>();
+            pageVM.UpdateHistoryCommand.Execute(default);
+            LastGenerateTime = sessionData.Time!.Value.ToString("yyyy-MM-dd HH:mm:ss");
+            AudioPath = AppToolkit.GetSpeechPath(sessionData.Id);
+            DataChanged?.Invoke(this, sessionData);
+            _waveViewModel.LoadFileCommand.Execute(AudioPath);
         }
         catch (Exception ex)
         {

@@ -34,6 +34,8 @@ public sealed partial class StartupWindow : WindowBase, ITipWindow
         this.CenterOnScreen();
         _ = MainFrame.Navigate(typeof(StartupPage));
         this.Get<AppViewModel>().DisplayWindows.Add(this);
+        this.Get<AppViewModel>().ActivatedWindow = this;
+        Activated += OnWindowActivated;
     }
 
     /// <inheritdoc/>
@@ -45,5 +47,13 @@ public sealed partial class StartupWindow : WindowBase, ITipWindow
         await popup.ShowAsync(type);
         TipContainer.Children.Remove(popup);
         TipContainer.Visibility = Visibility.Collapsed;
+    }
+
+    private void OnWindowActivated(object sender, WindowActivatedEventArgs args)
+    {
+        if (args.WindowActivationState != WindowActivationState.Deactivated)
+        {
+            this.Get<AppViewModel>().ActivatedWindow = this;
+        }
     }
 }
