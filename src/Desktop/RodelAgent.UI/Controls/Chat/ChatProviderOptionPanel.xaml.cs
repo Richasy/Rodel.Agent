@@ -4,7 +4,7 @@ using System.Reflection;
 using RodelAgent.Interfaces;
 using RodelAgent.Models.Abstractions;
 using RodelAgent.Models.Constants;
-using RodelChat.Models.Client;
+using RodelAgent.UI.ViewModels.Items;
 
 namespace RodelAgent.UI.Controls.Chat;
 
@@ -41,7 +41,7 @@ public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBas
     }
 
     /// <inheritdoc/>
-    protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
+    protected override void OnViewModelChanged(ChatPresetItemViewModel? oldValue, ChatPresetItemViewModel? newValue)
     {
         _isInitialized = false;
         if (IsLoaded)
@@ -56,15 +56,15 @@ public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBas
 
     private void Initialize()
     {
-        if (ViewModel?.Parameters == null)
+        if (ViewModel?.Data.Parameters == null)
         {
             return;
         }
 
-        StreamOutputSwitch.IsOn = ViewModel.UseStreamOutput;
-        MaxTurnSlider.Value = ViewModel.MaxRounds;
+        StreamOutputSwitch.IsOn = ViewModel.Data.UseStreamOutput;
+        MaxTurnSlider.Value = ViewModel.Data.MaxRounds;
         CustomPanel.Children.Clear();
-        var properties = ViewModel.Parameters.GetType().GetProperties();
+        var properties = ViewModel.Data.Parameters.GetType().GetProperties();
         for (var i = 0; i < properties.Length; i++)
         {
             var property = properties[i];
@@ -107,7 +107,7 @@ public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBas
     private FrameworkElement CreateBooleanElement(BaseFieldAttribute attr, PropertyInfo property)
     {
         var boolAttr = attr as BooleanFieldAttribute;
-        var value = property.GetValue(ViewModel.Parameters) as bool?;
+        var value = property.GetValue(ViewModel.Data.Parameters) as bool?;
         var toggleSwitch = new ToggleSwitch
         {
             IsOn = value ?? false,
@@ -116,8 +116,8 @@ public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBas
 
         toggleSwitch.Toggled += (s, e) =>
         {
-            property.SetValue(ViewModel.Parameters, toggleSwitch.IsOn);
-            ViewModel.Parameters.ToDictionary();
+            property.SetValue(ViewModel.Data.Parameters, toggleSwitch.IsOn);
+            ViewModel.Data.Parameters.ToDictionary();
             PropertyChanged?.Invoke(this, EventArgs.Empty);
         };
 
@@ -131,7 +131,7 @@ public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBas
     private FrameworkElement CreateRangeFloatElement(BaseFieldAttribute attr, PropertyInfo property)
     {
         var rangeAttr = attr as RangeFloatFieldAttribute;
-        var value = property.GetValue(ViewModel.Parameters) as double?;
+        var value = property.GetValue(ViewModel.Data.Parameters) as double?;
         var min = rangeAttr.Minimum;
         var max = rangeAttr.Maximum;
 
@@ -152,8 +152,8 @@ public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBas
 
             numberBox.ValueChanged += (s, e) =>
             {
-                property.SetValue(ViewModel.Parameters, numberBox.Value);
-                ViewModel.Parameters.ToDictionary();
+                property.SetValue(ViewModel.Data.Parameters, numberBox.Value);
+                ViewModel.Data.Parameters.ToDictionary();
                 PropertyChanged?.Invoke(this, EventArgs.Empty);
             };
 
@@ -172,8 +172,8 @@ public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBas
 
             slider.ValueChanged += (s, e) =>
             {
-                property.SetValue(ViewModel.Parameters, slider.Value);
-                ViewModel.Parameters.ToDictionary();
+                property.SetValue(ViewModel.Data.Parameters, slider.Value);
+                ViewModel.Data.Parameters.ToDictionary();
                 PropertyChanged?.Invoke(this, EventArgs.Empty);
             };
 
@@ -189,7 +189,7 @@ public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBas
     private FrameworkElement CreateRangeIntElement(BaseFieldAttribute attr, PropertyInfo property)
     {
         var rangeAttr = attr as RangeIntFieldAttribute;
-        var value = property.GetValue(ViewModel.Parameters) as int?;
+        var value = property.GetValue(ViewModel.Data.Parameters) as int?;
         var min = rangeAttr.Minimum;
         var max = rangeAttr.Maximum;
         object innerElement = null;
@@ -210,8 +210,8 @@ public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBas
 
             numberBox.ValueChanged += (s, e) =>
             {
-                property.SetValue(ViewModel.Parameters, Convert.ToInt32(numberBox.Value));
-                ViewModel.Parameters.ToDictionary();
+                property.SetValue(ViewModel.Data.Parameters, Convert.ToInt32(numberBox.Value));
+                ViewModel.Data.Parameters.ToDictionary();
                 PropertyChanged?.Invoke(this, EventArgs.Empty);
             };
 
@@ -230,8 +230,8 @@ public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBas
 
             slider.ValueChanged += (s, e) =>
             {
-                property.SetValue(ViewModel.Parameters, (int)slider.Value);
-                ViewModel.Parameters.ToDictionary();
+                property.SetValue(ViewModel.Data.Parameters, (int)slider.Value);
+                ViewModel.Data.Parameters.ToDictionary();
                 PropertyChanged?.Invoke(this, EventArgs.Empty);
             };
 
@@ -247,7 +247,7 @@ public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBas
     private FrameworkElement CreateRangeLongElement(BaseFieldAttribute attr, PropertyInfo property)
     {
         var rangeAttr = attr as RangeLongFieldAttribute;
-        var value = property.GetValue(ViewModel.Parameters) as long?;
+        var value = property.GetValue(ViewModel.Data.Parameters) as long?;
         var min = rangeAttr.Minimum;
         var max = rangeAttr.Maximum;
         var numberBox = new NumberBox
@@ -263,8 +263,8 @@ public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBas
 
         numberBox.ValueChanged += (s, e) =>
         {
-            property.SetValue(ViewModel.Parameters, Convert.ToInt64(numberBox.Value));
-            ViewModel.Parameters.ToDictionary();
+            property.SetValue(ViewModel.Data.Parameters, Convert.ToInt64(numberBox.Value));
+            ViewModel.Data.Parameters.ToDictionary();
             PropertyChanged?.Invoke(this, EventArgs.Empty);
         };
 
@@ -277,7 +277,7 @@ public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBas
     private FrameworkElement CreateSelectionElement(BaseFieldAttribute attr, PropertyInfo property)
     {
         var selectionAttr = attr as SelectionFieldAttribute;
-        var value = property.GetValue(ViewModel.Parameters) as string;
+        var value = property.GetValue(ViewModel.Data.Parameters) as string;
         var comboBox = new ComboBox
         {
             ItemsSource = selectionAttr.Options,
@@ -287,8 +287,8 @@ public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBas
 
         comboBox.SelectionChanged += (s, e) =>
         {
-            property.SetValue(ViewModel.Parameters, comboBox.SelectedItem);
-            ViewModel.Parameters.ToDictionary();
+            property.SetValue(ViewModel.Data.Parameters, comboBox.SelectedItem);
+            ViewModel.Data.Parameters.ToDictionary();
             PropertyChanged?.Invoke(this, EventArgs.Empty);
         };
 
@@ -300,15 +300,15 @@ public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBas
 
     private FrameworkElement CreateTextElement(BaseFieldAttribute attr, PropertyInfo property)
     {
-        var value = property.GetValue(ViewModel.Parameters) as string;
+        var value = property.GetValue(ViewModel.Data.Parameters) as string;
 
         var panel = TextTemplate.LoadContent() as StackPanel;
         var box = panel.Children.OfType<TextBox>().First();
         box.Text = value;
         box.TextChanged += (s, e) =>
         {
-            property.SetValue(ViewModel.Parameters, box.Text);
-            ViewModel.Parameters.ToDictionary();
+            property.SetValue(ViewModel.Data.Parameters, box.Text);
+            ViewModel.Data.Parameters.ToDictionary();
             PropertyChanged?.Invoke(this, EventArgs.Empty);
         };
 
@@ -323,7 +323,7 @@ public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBas
             return;
         }
 
-        ViewModel.UseStreamOutput = StreamOutputSwitch.IsOn;
+        ViewModel.Data.UseStreamOutput = StreamOutputSwitch.IsOn;
         PropertyChanged?.Invoke(this, EventArgs.Empty);
     }
 
@@ -351,7 +351,7 @@ public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBas
             return;
         }
 
-        ViewModel.MaxRounds = Convert.ToInt32(MaxTurnSlider.Value);
+        ViewModel.Data.MaxRounds = Convert.ToInt32(MaxTurnSlider.Value);
         PropertyChanged?.Invoke(this, EventArgs.Empty);
     }
 }
@@ -359,6 +359,6 @@ public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBas
 /// <summary>
 /// 聊天服务选项面板基类.
 /// </summary>
-public abstract class ChatProviderOptionPanelBase : LayoutUserControlBase<ChatSessionPreset>
+public abstract class ChatProviderOptionPanelBase : LayoutUserControlBase<ChatPresetItemViewModel>
 {
 }

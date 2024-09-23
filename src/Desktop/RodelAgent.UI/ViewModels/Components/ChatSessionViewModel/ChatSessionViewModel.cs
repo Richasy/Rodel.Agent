@@ -32,6 +32,7 @@ public sealed partial class ChatSessionViewModel : ViewModelBase<ChatSession>
         _storageService = GlobalDependencies.ServiceProvider.GetService<IStorageService>();
         IsEnterSend = SettingsToolkit.ReadLocalSetting(SettingNames.ChatServicePageIsEnterSend, true);
         Messages.CollectionChanged += OnMessageCountChanged;
+        PresetViewModel = new(data);
         Initialize(data);
     }
 

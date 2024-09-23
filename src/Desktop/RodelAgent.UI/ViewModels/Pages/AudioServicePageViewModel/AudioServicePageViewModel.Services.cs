@@ -67,16 +67,16 @@ public sealed partial class AudioServicePageViewModel
     }
 
     [RelayCommand]
-    private async Task DeleteHistoryItemAsync(AudioSession session)
+    private async Task DeleteHistoryItemAsync(AudioSessionItemViewModel session)
     {
-        if (Session.AudioPath?.Contains(session.Id) ?? false)
+        if (Session.AudioPath?.Contains(session.Data.Id) ?? false)
         {
             Session.ClearCommand.Execute(default);
             Session.InitializeCommand.Execute(Session.AudioService.ProviderType);
         }
 
         History.Remove(session);
-        await _storageService.RemoveAudioSessionAsync(session.Id);
+        await _storageService.RemoveAudioSessionAsync(session.Data.Id);
     }
 
     private void SyncAudioHistory(List<AudioSession> list)
@@ -92,7 +92,7 @@ public sealed partial class AudioServicePageViewModel
             for (var i = History.Count - 1; i >= 0; i--)
             {
                 var item = History[i];
-                if (!listDict.ContainsKey(item.Id))
+                if (!listDict.ContainsKey(item.Data.Id))
                 {
                     History.RemoveAt(i);
                 }
@@ -104,14 +104,14 @@ public sealed partial class AudioServicePageViewModel
                 if (i < History.Count)
                 {
                     var collectionItem = History[i];
-                    if (!Equals(listItem.Id, collectionItem.Id))
+                    if (!Equals(listItem.Id, collectionItem.Data.Id))
                     {
-                        History.Insert(i, listItem);
+                        History.Insert(i, new(listItem));
                     }
                 }
                 else
                 {
-                    History.Add(listItem);
+                    History.Add(new(listItem));
                 }
             }
         }

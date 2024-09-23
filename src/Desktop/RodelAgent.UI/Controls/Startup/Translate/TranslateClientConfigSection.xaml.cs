@@ -18,9 +18,9 @@ public sealed partial class TranslateClientConfigSection : TranslateServiceConfi
     public TranslateClientConfigSection() => InitializeComponent();
 
     /// <inheritdoc/>
-    protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
+    protected override void OnViewModelChanged(TranslateServiceItemViewModel? oldValue, TranslateServiceItemViewModel? newValue)
     {
-        if (e.NewValue is not TranslateServiceItemViewModel newVM)
+        if (newValue is not TranslateServiceItemViewModel newVM)
         {
             return;
         }

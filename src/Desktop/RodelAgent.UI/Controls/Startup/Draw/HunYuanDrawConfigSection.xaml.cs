@@ -17,9 +17,9 @@ public sealed partial class HunYuanDrawConfigSection : DrawServiceConfigControlB
     public HunYuanDrawConfigSection() => InitializeComponent();
 
     /// <inheritdoc/>
-    protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
+    protected override void OnViewModelChanged(DrawServiceItemViewModel? oldValue, DrawServiceItemViewModel? newValue)
     {
-        if (e.NewValue is not DrawServiceItemViewModel newVM)
+        if (newValue is not DrawServiceItemViewModel newVM)
         {
             return;
         }

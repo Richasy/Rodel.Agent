@@ -22,14 +22,14 @@ public sealed partial class ChatSessionInput : ChatSessionControlBase
     }
 
     /// <inheritdoc/>
-    protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
+    protected override void OnViewModelChanged(ChatSessionViewModel? oldValue, ChatSessionViewModel? newValue)
     {
-        if (e.OldValue is ChatSessionViewModel oldVm)
+        if (oldValue is ChatSessionViewModel oldVm)
         {
             oldVm.RequestFocusInput -= OnRequestFocusInput;
         }
 
-        if (e.NewValue is ChatSessionViewModel newVm)
+        if (newValue is ChatSessionViewModel newVm)
         {
             newVm.RequestFocusInput += OnRequestFocusInput;
         }

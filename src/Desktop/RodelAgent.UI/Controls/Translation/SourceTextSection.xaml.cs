@@ -20,14 +20,14 @@ public sealed partial class SourceTextSection : TranslateSessionControlBase
     public SourceTextSection() => InitializeComponent();
 
     /// <inheritdoc/>
-    protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
+    protected override void OnViewModelChanged(TranslateSessionViewModel? oldValue, TranslateSessionViewModel? newValue)
     {
-        if (e.OldValue is TranslateSessionViewModel oldVM)
+        if (oldValue is TranslateSessionViewModel oldVM)
         {
             oldVM.PropertyChanged -= OnViewModelPropertyChanged;
         }
 
-        if (e.NewValue is TranslateSessionViewModel newVM)
+        if (newValue is TranslateSessionViewModel newVM)
         {
             newVM.PropertyChanged += OnViewModelPropertyChanged;
         }

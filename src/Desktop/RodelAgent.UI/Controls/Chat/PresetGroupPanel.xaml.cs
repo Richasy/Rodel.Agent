@@ -37,7 +37,7 @@ public sealed partial class PresetGroupPanel : GroupPresetControlBase
         if (!File.Exists(avatarPath))
         {
             Directory.CreateDirectory(Path.GetDirectoryName(avatarPath));
-            File.Create(avatarPath).Dispose();
+            await File.Create(avatarPath).DisposeAsync();
         }
 
         var file = await StorageFile.GetFileFromPathAsync(avatarPath);

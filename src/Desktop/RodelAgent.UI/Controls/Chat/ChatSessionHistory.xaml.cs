@@ -15,14 +15,14 @@ public sealed partial class ChatSessionHistory : ChatSessionControlBase
     public ChatSessionHistory() => InitializeComponent();
 
     /// <inheritdoc/>
-    protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
+    protected override void OnViewModelChanged(ChatSessionViewModel? oldValue, ChatSessionViewModel? newValue)
     {
-        if (e.OldValue is ChatSessionViewModel oldVm)
+        if (oldValue is ChatSessionViewModel oldVm)
         {
             oldVm.RequestScrollToBottom -= OnRequestScrollToBottomAsync;
         }
 
-        if (e.NewValue is ChatSessionViewModel newVm)
+        if (newValue is ChatSessionViewModel newVm)
         {
             newVm.RequestScrollToBottom += OnRequestScrollToBottomAsync;
         }

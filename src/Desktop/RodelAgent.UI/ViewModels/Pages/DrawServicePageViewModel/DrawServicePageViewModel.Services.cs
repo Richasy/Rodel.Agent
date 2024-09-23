@@ -67,16 +67,16 @@ public sealed partial class DrawServicePageViewModel
     }
 
     [RelayCommand]
-    private async Task DeleteHistoryItemAsync(DrawSession session)
+    private async Task DeleteHistoryItemAsync(DrawSessionItemViewModel session)
     {
-        if (Session.ImagePath?.Contains(session.Id) ?? false)
+        if (Session.ImagePath?.Contains(session.Data.Id) ?? false)
         {
             Session.ClearCommand.Execute(default);
             Session.InitializeCommand.Execute(Session.DrawService.ProviderType);
         }
 
         History.Remove(session);
-        await _storageService.RemoveDrawSessionAsync(session.Id);
+        await _storageService.RemoveDrawSessionAsync(session.Data.Id);
     }
 
     private void SyncDrawHistory(List<DrawSession> list)
@@ -90,7 +90,7 @@ public sealed partial class DrawServicePageViewModel
         for (var i = History.Count - 1; i >= 0; i--)
         {
             var item = History[i];
-            if (!listDict.ContainsKey(item.Id))
+            if (!listDict.ContainsKey(item.Data.Id))
             {
                 History.RemoveAt(i);
             }
@@ -102,14 +102,14 @@ public sealed partial class DrawServicePageViewModel
             if (i < History.Count)
             {
                 var collectionItem = History[i];
-                if (!Equals(listItem.Id, collectionItem.Id))
+                if (!Equals(listItem.Id, collectionItem.Data.Id))
                 {
-                    History.Insert(i, listItem);
+                    History.Insert(i, new(listItem));
                 }
             }
             else
             {
-                History.Add(listItem);
+                History.Add(new(listItem));
             }
         }
     }

@@ -112,6 +112,11 @@ public sealed partial class ChatSessionViewModel
     public string SessionId => Data?.Id ?? string.Empty;
 
     /// <summary>
+    /// 会话预设模型（仅用于绑定）.
+    /// </summary>
+    public ChatPresetItemViewModel PresetViewModel { get; }
+
+    /// <summary>
     /// 消息列表.
     /// </summary>
     public ObservableCollection<ChatMessageItemViewModel> Messages { get; } = new();

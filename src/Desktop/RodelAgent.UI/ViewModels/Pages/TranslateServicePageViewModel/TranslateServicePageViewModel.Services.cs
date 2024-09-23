@@ -3,7 +3,6 @@
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels.Items;
-using RodelTranslate.Models.Client;
 using RodelTranslate.Models.Constants;
 
 namespace RodelAgent.UI.ViewModels.Pages;
@@ -67,15 +66,15 @@ public sealed partial class TranslateServicePageViewModel
         var history = await _storageService.GetTranslateSessionsAsync(provider);
         foreach (var item in history)
         {
-            History.Add(item);
+            History.Add(new(item));
         }
     }
 
     [RelayCommand]
-    private async Task DeleteHistoryItemAsync(TranslateSession session)
+    private async Task DeleteHistoryItemAsync(TranslateSessionItemViewModel session)
     {
         History.Remove(session);
-        await _storageService.RemoveTranslateSessionAsync(session.Id);
+        await _storageService.RemoveTranslateSessionAsync(session.Data.Id);
     }
 
     private void SyncTranslateServices(List<TranslateServiceItemViewModel> list)

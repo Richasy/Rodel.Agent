@@ -3,7 +3,7 @@
     x:Class="RodelAgent.UI.Controls.Settings.AzureTranslateConfigSettingSection"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:community="using:CommunityToolkit.WinUI.Controls"
+    xmlns:base="using:Richasy.WinUI.Share.Base"
     xmlns:controls="using:RodelAgent.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:ext="using:RodelAgent.UI.Extensions"
@@ -12,12 +12,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <community:SettingsExpander AutomationProperties.Name="{ext:Locale Name=AzureTranslate}">
-        <community:SettingsExpander.Header>
+    <base:SettingsExpander AutomationProperties.Name="{ext:Locale Name=AzureTranslate}">
+        <base:SettingsExpander.Header>
             <controls:ProviderLogo Height="20" Provider="Azure" />
-        </community:SettingsExpander.Header>
-        <community:SettingsExpander.Items>
-            <community:SettingsCard
+        </base:SettingsExpander.Header>
+        <base:SettingsExpander.Items>
+            <base:SettingsCard
                 x:Name="KeyCard"
                 Description="{ext:Locale Name=AzureOpenAIAccessKeyDescription}"
                 Header="{ext:Locale Name=AccessKey}">
@@ -27,8 +27,8 @@
                     AutomationProperties.Name="{ext:Locale Name=AccessKey}"
                     Loaded="OnKeyBoxLoaded"
                     PasswordChanged="OnKeyBoxPasswordChanged" />
-            </community:SettingsCard>
-            <community:SettingsCard
+            </base:SettingsCard>
+            <base:SettingsCard
                 x:Name="RegionCard"
                 Description="{ext:Locale Name=AzureRegionDescription}"
                 Header="{ext:Locale Name=Region}">
@@ -38,13 +38,13 @@
                     AutomationProperties.Name="{ext:Locale Name=Region}"
                     PlaceholderText="eastus"
                     TextChanged="OnRegionBoxTextChanged" />
-            </community:SettingsCard>
-        </community:SettingsExpander.Items>
+            </base:SettingsCard>
+        </base:SettingsExpander.Items>
         <ic:SymbolIcon
             FontSize="14"
             Foreground="{ThemeResource SystemFillColorSuccessBrush}"
             IconVariant="Filled"
             Symbol="CheckmarkCircle"
             Visibility="{x:Bind ViewModel.IsCompleted, Mode=OneWay}" />
-    </community:SettingsExpander>
+    </base:SettingsExpander>
 </controls:TranslateServiceConfigControlBase>

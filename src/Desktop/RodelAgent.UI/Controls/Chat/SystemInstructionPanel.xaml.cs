@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
+using RodelAgent.UI.ViewModels.Components;
+
 namespace RodelAgent.UI.Controls.Chat;
 
 /// <summary>
@@ -15,7 +17,7 @@ public sealed partial class SystemInstructionPanel : ChatSessionControlBase
     public SystemInstructionPanel() => InitializeComponent();
 
     /// <inheritdoc/>
-    protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
+    protected override void OnViewModelChanged(ChatSessionViewModel? oldValue, ChatSessionViewModel? newValue)
         => UpdateInstruction();
 
     /// <inheritdoc/>

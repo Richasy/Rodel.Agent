@@ -3,7 +3,6 @@
 using RodelAgent.Interfaces;
 using RodelAgent.UI.ViewModels.Components;
 using RodelAgent.UI.ViewModels.Items;
-using RodelTranslate.Models.Client;
 
 namespace RodelAgent.UI.ViewModels.Pages;
 
@@ -37,5 +36,5 @@ public sealed partial class TranslateServicePageViewModel
     /// <summary>
     /// 翻译会话.
     /// </summary>
-    public ObservableCollection<TranslateSession> History { get; } = new();
+    public ObservableCollection<TranslateSessionItemViewModel> History { get; } = new();
 }

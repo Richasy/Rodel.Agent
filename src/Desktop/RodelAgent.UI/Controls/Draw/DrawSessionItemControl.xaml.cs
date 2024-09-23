@@ -2,8 +2,8 @@
 
 using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels.Components;
+using RodelAgent.UI.ViewModels.Items;
 using RodelAgent.UI.ViewModels.Pages;
-using RodelDraw.Models.Client;
 
 namespace RodelAgent.UI.Controls.Draw;
 
@@ -20,7 +20,7 @@ public sealed partial class DrawSessionItemControl : DrawSessionItemControlBase
     public DrawSessionItemControl() => InitializeComponent();
 
     /// <inheritdoc/>
-    protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
+    protected override void OnViewModelChanged(DrawSessionItemViewModel? oldValue, DrawSessionItemViewModel? newValue)
         => Initialize();
 
     /// <inheritdoc/>
@@ -37,13 +37,13 @@ public sealed partial class DrawSessionItemControl : DrawSessionItemControlBase
             return;
         }
 
-        var time = !ViewModel.Time.HasValue
+        var time = !ViewModel.Data.Time.HasValue
             ? "-/-"
-            : ViewModel.Time.Value.ToString("yyyy-MM-dd HH:mm:ss");
+            : ViewModel.Data.Time.Value.ToString("yyyy-MM-dd HH:mm:ss");
         DateBlock.Text = time;
 
         _xi = 1;
-        var sp = ViewModel.Request.Size.Split("x");
+        var sp = ViewModel.Data.Request.Size.Split("x");
         if (sp.Length == 2)
         {
             var width = double.Parse(sp[0]);
@@ -79,10 +79,10 @@ public sealed partial class DrawSessionItemControl : DrawSessionItemControlBase
         => GetSessionViewModel().LoadSessionCommand.Execute(ViewModel);
 
     private void OnCopyItemClick(object sender, RoutedEventArgs e)
-        => GetSessionViewModel().CopyImageCommand.Execute(AppToolkit.GetDrawPicturePath(ViewModel.Id));
+        => GetSessionViewModel().CopyImageCommand.Execute(AppToolkit.GetDrawPicturePath(ViewModel.Data.Id));
 
     private void OnOpenItemClick(object sender, RoutedEventArgs e)
-        => GetSessionViewModel().OpenImageCommand.Execute(AppToolkit.GetDrawPicturePath(ViewModel.Id));
+        => GetSessionViewModel().OpenImageCommand.Execute(AppToolkit.GetDrawPicturePath(ViewModel.Data.Id));
 
     private void OnDeleteItemClick(object sender, RoutedEventArgs e)
     {
@@ -94,6 +94,6 @@ public sealed partial class DrawSessionItemControl : DrawSessionItemControlBase
 /// <summary>
 /// 会话项控件基类.
 /// </summary>
-public abstract class DrawSessionItemControlBase : LayoutUserControlBase<DrawSession>
+public abstract class DrawSessionItemControlBase : LayoutUserControlBase<DrawSessionItemViewModel>
 {
 }
