@@ -85,6 +85,7 @@ public static class GlobalDependencies
             .AddSingleton<AudioServicePageViewModel>()
             .AddSingleton<TranslateSessionViewModel>()
             .AddSingleton<TranslateServicePageViewModel>()
+            .AddSingleton<PromptTestPageViewModel>()
             .AddSingleton<SettingsPageViewModel>();
 
         ServiceProvider = services.BuildServiceProvider();

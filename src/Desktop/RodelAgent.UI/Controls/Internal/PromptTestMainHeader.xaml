@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:PromptTestPageControlBase
+    x:Class="RodelAgent.UI.Controls.Internal.PromptTestMainHeader"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:base="using:Richasy.WinUI.Share.Base"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:local="using:RodelAgent.UI.Controls.Internal"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Padding="16,0" ColumnSpacing="8">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <StackPanel VerticalAlignment="Center">
+            <TextBlock
+                HorizontalAlignment="Left"
+                Style="{StaticResource BodyStrongTextBlockStyle}"
+                Text="{ext:Locale Name=SystemInstruction}" />
+            <base:TrimTextBlock
+                Margin="0,4,0,0"
+                HorizontalAlignment="Left"
+                FontSize="12"
+                Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                Text="{x:Bind ViewModel.SystemPromptFilePath, Mode=OneWay}"
+                Visibility="{x:Bind ViewModel.SystemPromptFilePath, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}" />
+        </StackPanel>
+        <HyperlinkButton
+            Grid.Column="1"
+            VerticalAlignment="Center"
+            Command="{x:Bind ViewModel.ImportSystemPromptCommand}"
+            Content="{ext:Locale Name=Import}" />
+        <Button
+            Grid.Column="2"
+            VerticalAlignment="Center"
+            Command="{x:Bind ViewModel.SaveSystemPromptCommand}"
+            IsEnabled="{x:Bind ViewModel.SystemPrompt, Mode=OneWay, Converter={StaticResource ObjectToBoolConverter}}"
+            Style="{StaticResource IconButtonStyle}"
+            ToolTipService.ToolTip="{ext:Locale Name=SaveAs}">
+            <ic:SymbolIcon FontSize="14" Symbol="Save" />
+            <Button.KeyboardAccelerators>
+                <KeyboardAccelerator
+                    Key="S"
+                    IsEnabled="True"
+                    Modifiers="Control" />
+            </Button.KeyboardAccelerators>
+        </Button>
+    </Grid>
+</local:PromptTestPageControlBase>

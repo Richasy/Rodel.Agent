@@ -1190,4 +1190,25 @@ Choose a library folder and let's get started!</value>
   <data name="PromptTest" xml:space="preserve">
     <value>Prompt test</value>
   </data>
+  <data name="HistoryImported" xml:space="preserve">
+    <value>The history has been imported, totaling {0} pieces of data</value>
+  </data>
+  <data name="Dataset" xml:space="preserve">
+    <value>Dataset</value>
+  </data>
+  <data name="FailedToImportHistory" xml:space="preserve">
+    <value>The import history failed, the data format was incorrect, or the message list was empty</value>
+  </data>
+  <data name="FileNotExist" xml:space="preserve">
+    <value>File not exist</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="ImportHistory" xml:space="preserve">
+    <value>Import history file</value>
+  </data>
+  <data name="Variables" xml:space="preserve">
+    <value>Variables</value>
+  </data>
 </root>

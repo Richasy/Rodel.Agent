@@ -1190,4 +1190,25 @@
   <data name="PromptTest" xml:space="preserve">
     <value>提示词测试</value>
   </data>
+  <data name="HistoryImported" xml:space="preserve">
+    <value>历史记录已导入，共计 {0} 条数据</value>
+  </data>
+  <data name="Dataset" xml:space="preserve">
+    <value>数据集</value>
+  </data>
+  <data name="FailedToImportHistory" xml:space="preserve">
+    <value>导入历史记录失败，数据格式有误或者消息列表为空</value>
+  </data>
+  <data name="FileNotExist" xml:space="preserve">
+    <value>文件不存在</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>导入</value>
+  </data>
+  <data name="ImportHistory" xml:space="preserve">
+    <value>导入历史记录文件</value>
+  </data>
+  <data name="Variables" xml:space="preserve">
+    <value>变量列表</value>
+  </data>
 </root>
