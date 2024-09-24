@@ -15,9 +15,9 @@ public sealed partial class ChatMessageItemControl : ChatMessageItemControlBase
     public ChatMessageItemControl() => InitializeComponent();
 
     /// <inheritdoc/>
-    protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
+    protected override void OnViewModelChanged(ChatMessageItemViewModel? oldValue, ChatMessageItemViewModel? newValue)
     {
-        if (e.NewValue is ChatMessageItemViewModel vm)
+        if (newValue is ChatMessageItemViewModel vm)
         {
             _ = vm.IsUser
                 ? VisualStateManager.GoToState(this, nameof(MyState), false)

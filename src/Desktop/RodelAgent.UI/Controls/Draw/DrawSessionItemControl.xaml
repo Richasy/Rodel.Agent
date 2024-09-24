@@ -43,11 +43,11 @@
                 Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                 MaxLines="2"
                 Style="{StaticResource CaptionTextBlockStyle}"
-                Text="{x:Bind ViewModel.Request.Prompt, Mode=OneWay}"
+                Text="{x:Bind ViewModel.Data.Request.Prompt, Mode=OneWay}"
                 TextTrimming="CharacterEllipsis"
                 TextWrapping="Wrap">
                 <ToolTipService.ToolTip>
-                    <ToolTip Content="{x:Bind ViewModel.Request.Prompt, Mode=OneWay}" IsEnabled="{x:Bind PromptBlock.IsTextTrimmed, Mode=OneWay}" />
+                    <ToolTip Content="{x:Bind ViewModel.Data.Request.Prompt, Mode=OneWay}" IsEnabled="{x:Bind PromptBlock.IsTextTrimmed, Mode=OneWay}" />
                 </ToolTipService.ToolTip>
             </TextBlock>
             <local:LocalDrawImage
@@ -55,7 +55,7 @@
                 Grid.Row="1"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Id="{x:Bind ViewModel.Id, Mode=OneWay}"
+                Id="{x:Bind ViewModel.Data.Id, Mode=OneWay}"
                 SizeChanged="OnImageSizeChanged" />
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
@@ -69,7 +69,7 @@
                     VerticalAlignment="Center"
                     AvatarPadding="4"
                     IsAvatar="True"
-                    Provider="{x:Bind ViewModel.Provider, Mode=OneWay}" />
+                    Provider="{x:Bind ViewModel.Data.Provider, Mode=OneWay}" />
                 <TextBlock
                     x:Name="DateBlock"
                     Grid.Column="1"

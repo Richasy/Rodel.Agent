@@ -4,7 +4,6 @@ using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels;
 using RodelAgent.UI.ViewModels.Items;
 using RodelAgent.UI.ViewModels.Pages;
-using RodelTranslate.Models.Client;
 using Windows.ApplicationModel.DataTransfer;
 
 namespace RodelAgent.UI.Controls.Translation;
@@ -20,7 +19,7 @@ public sealed partial class TranslateSessionItemControl : TranslateSessionItemCo
     public TranslateSessionItemControl() => InitializeComponent();
 
     /// <inheritdoc/>
-    protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
+    protected override void OnViewModelChanged(TranslateSessionItemViewModel? oldValue, TranslateSessionItemViewModel? newValue)
         => InitSourceAndTarget();
 
     /// <inheritdoc/>
@@ -34,8 +33,8 @@ public sealed partial class TranslateSessionItemControl : TranslateSessionItemCo
             return;
         }
 
-        var sourceLan = new TranslateLanguageItemViewModel(ViewModel.SourceLanguage);
-        var targetLan = new TranslateLanguageItemViewModel(ViewModel.TargetLanguage);
+        var sourceLan = new TranslateLanguageItemViewModel(ViewModel.Data.SourceLanguage);
+        var targetLan = new TranslateLanguageItemViewModel(ViewModel.Data.TargetLanguage);
         SourceLanguageBlock.Text = sourceLan.DisplayName;
         TargetLanguageBlock.Text = targetLan.DisplayName;
     }
@@ -47,10 +46,10 @@ public sealed partial class TranslateSessionItemControl : TranslateSessionItemCo
     }
 
     private void OnCopySourceTextItemClick(object sender, RoutedEventArgs e)
-        => CopyTextInternal(ViewModel.InputText);
+        => CopyTextInternal(ViewModel.Data.InputText);
 
     private void OnCopyTranslatedTextItemClick(object sender, RoutedEventArgs e)
-        => CopyTextInternal(ViewModel.OutputText);
+        => CopyTextInternal(ViewModel.Data.OutputText);
 
     private void CopyTextInternal(string text)
     {
@@ -64,6 +63,6 @@ public sealed partial class TranslateSessionItemControl : TranslateSessionItemCo
 /// <summary>
 /// <see cref="TranslateSessionItemControl"/> 的基类.
 /// </summary>
-public abstract class TranslateSessionItemControlBase : LayoutUserControlBase<TranslateSession>
+public abstract class TranslateSessionItemControlBase : LayoutUserControlBase<TranslateSessionItemViewModel>
 {
 }

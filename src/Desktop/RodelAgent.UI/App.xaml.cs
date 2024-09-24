@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
+using System.Web;
 using H.NotifyIcon;
 using Microsoft.UI.Dispatching;
 using Microsoft.Windows.AppLifecycle;
@@ -126,47 +127,60 @@ public partial class App : Application
 
     private async Task LaunchWindowAsync(IActivatedEventArgs args = default)
     {
+        var instance = AppInstance.FindOrRegisterForKey(Id);
         if (args is IProtocolActivatedEventArgs protocolArgs
             && !string.IsNullOrEmpty(protocolArgs.Uri.Host))
         {
-            // 处理协议启动.
+            if (protocolArgs.Uri.Host == "internal")
+            {
+                var query = protocolArgs.Uri.Query;
+                var queryItems = HttpUtility.ParseQueryString(query);
+                var feature = queryItems["feature"]?.ToLower() ?? string.Empty;
+                if (!string.IsNullOrEmpty(feature))
+                {
+                    if (feature == "prompt-test")
+                    {
+                        SettingsToolkit.WriteLocalSetting(SettingNames.IsInternalPromptTest, true);
+                    }
+                    else if(feature == "clear")
+                    {
+                        SettingsToolkit.WriteLocalSetting(SettingNames.IsInternalPromptTest, false);
+                    }
+                }
+            }
+        }
+
+        // If the current instance is not the previously registered instance
+        if (!instance.IsCurrent)
+        {
+            var activatedArgs = AppInstance.GetCurrent().GetActivatedEventArgs();
+
+            // Redirect to the existing instance
+            await instance.RedirectActivationToAsync(activatedArgs);
+
+            // Kill the current instance
+            Current.Exit();
+            return;
+        }
+
+        var shouldSkipStartup = SettingsToolkit.ReadLocalSetting(SettingNames.ShouldSkipStartup, false);
+        if (!shouldSkipStartup)
+        {
+            var window = new StartupWindow();
+            window.Activate();
         }
         else
         {
-            var instance = AppInstance.FindOrRegisterForKey(Id);
+            _window = new MainWindow();
+            _window.Closed += OnMainWindowClosedAsync;
 
-            // If the current instance is not the previously registered instance
-            if (!instance.IsCurrent)
+            HandleCloseEvents = SettingsToolkit.ReadLocalSetting(SettingNames.HideWhenCloseWindow, true);
+            if (HandleCloseEvents)
             {
-                var activatedArgs = AppInstance.GetCurrent().GetActivatedEventArgs();
-
-                // Redirect to the existing instance
-                await instance.RedirectActivationToAsync(activatedArgs);
-
-                // Kill the current instance
-                Current.Exit();
-                return;
+                InitializeTrayIcon();
             }
 
-            var shouldSkipStartup = SettingsToolkit.ReadLocalSetting(SettingNames.ShouldSkipStartup, false);
-            if (!shouldSkipStartup)
-            {
-                var window = new StartupWindow();
-                window.Activate();
-            }
-            else
-            {
-                _window = new MainWindow();
-                _window.Closed += OnMainWindowClosedAsync;
-
-                HandleCloseEvents = SettingsToolkit.ReadLocalSetting(SettingNames.HideWhenCloseWindow, true);
-                if (HandleCloseEvents)
-                {
-                    InitializeTrayIcon();
-                }
-
-                _window.Activate();
-            }
+            _window.Activate();
         }
     }
 

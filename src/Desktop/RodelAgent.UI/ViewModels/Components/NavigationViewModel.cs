@@ -3,6 +3,7 @@
 using RodelAgent.UI.Forms;
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Pages;
+using RodelAgent.UI.Pages.Internal;
 using RodelAgent.UI.Toolkits;
 
 namespace RodelAgent.UI.ViewModels.Components;
@@ -31,7 +32,7 @@ public sealed partial class NavigationViewModel : ViewModelBase, INavServiceView
     private IReadOnlyCollection<AppNavigationItemViewModel> _footerItems;
 
     /// <inheritdoc/>
-    public void NavigateTo(string pageKey, object? parameter = null)
+    public void NavigateTo(Type pageType, object? parameter = null)
     {
         if (_navFrame is null)
         {
@@ -46,25 +47,23 @@ public sealed partial class NavigationViewModel : ViewModelBase, INavServiceView
             _overFrame.Navigate(typeof(Page));
             _overFrame.BackStack.Clear();
 
-            if (pageKey == lastSelectedPage)
+            if (pageType.FullName == lastSelectedPage)
             {
                 return;
             }
         }
 
-        if (lastSelectedPage == pageKey && _navFrame.Content is not null && _navFrame.Content.GetType().FullName == lastSelectedPage)
+        if (lastSelectedPage == pageType.FullName && _navFrame.Content is not null && _navFrame.Content.GetType().FullName == lastSelectedPage)
         {
             return;
         }
 
-        SettingsToolkit.WriteLocalSetting(SettingNames.LastSelectedFeaturePage, pageKey);
-        var pageType = Type.GetType(pageKey)
-            ?? throw new InvalidOperationException("无法找到页面.");
+        SettingsToolkit.WriteLocalSetting(SettingNames.LastSelectedFeaturePage, pageType.FullName);
         _navFrame.Navigate(pageType, parameter, new Microsoft.UI.Xaml.Media.Animation.EntranceNavigationTransitionInfo());
     }
 
     /// <inheritdoc/>
-    public void NavigateToOver(string pageKey, object? parameter = null)
+    public void NavigateToOver(Type pageType, object? parameter = null)
     {
         if (_overFrame is null)
         {
@@ -77,9 +76,6 @@ public sealed partial class NavigationViewModel : ViewModelBase, INavServiceView
         }
 
         ActiveMainWindow();
-        var pageType = Type.GetType(pageKey)
-            ?? throw new InvalidOperationException("无法找到页面.");
-
         _overFrame.Navigate(pageType, parameter, new Microsoft.UI.Xaml.Media.Animation.EntranceNavigationTransitionInfo());
         IsOverlayOpen = true;
     }
@@ -153,15 +149,22 @@ public sealed partial class NavigationViewModel : ViewModelBase, INavServiceView
 
     private IReadOnlyList<AppNavigationItemViewModel> GetFooterItems()
     {
-        return new List<AppNavigationItemViewModel>
+        var list = new List<AppNavigationItemViewModel>
         {
             GetItem<SettingsPage>(StringNames.Settings, FluentIcons.Common.Symbol.Settings),
         };
+
+        if (SettingsToolkit.ReadLocalSetting(SettingNames.IsInternalPromptTest, false))
+        {
+            list.Insert(0, GetItem<PromptTestPage>(StringNames.PromptTest, FluentIcons.Common.Symbol.TextBulletListSquareEdit));
+        }
+
+        return list;
     }
 
     private AppNavigationItemViewModel GetItem<TPage>(StringNames title, FluentIcons.Common.Symbol symbol, bool isSelected = false)
         where TPage : Page
-        => new AppNavigationItemViewModel(this, typeof(TPage).FullName, ResourceToolkit.GetLocalizedString(title), symbol, isSelected);
+        => new AppNavigationItemViewModel(this, typeof(TPage), ResourceToolkit.GetLocalizedString(title), symbol, isSelected);
 
     private void ActiveMainWindow()
         => this.Get<AppViewModel>().DisplayWindows.Find(p => p is MainWindow)?.Activate();

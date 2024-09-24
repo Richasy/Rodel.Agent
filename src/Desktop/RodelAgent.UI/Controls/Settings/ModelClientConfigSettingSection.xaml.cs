@@ -19,9 +19,9 @@ public sealed partial class ModelClientConfigSettingSection : ChatServiceConfigC
     public ModelClientConfigSettingSection() => InitializeComponent();
 
     /// <inheritdoc/>
-    protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
+    protected override void OnViewModelChanged(ChatServiceItemViewModel? oldValue, ChatServiceItemViewModel? newValue)
     {
-        if (e.NewValue is not ChatServiceItemViewModel newVM)
+        if (newValue is not ChatServiceItemViewModel newVM)
         {
             return;
         }

@@ -89,6 +89,18 @@
   <Rules AnalyzerId="Microsoft.CodeAnalysis.NetAnalyzers" RuleNamespace="Microsoft.CodeAnalysis.NetAnalyzers">
     <Rule Id="CA1416" Action="None" />
   </Rules>
+  <Rules AnalyzerId="Microsoft.VisualStudio.Threading.Analyzers" RuleNamespace="Microsoft.VisualStudio.Threading.Analyzers">
+    <Rule Id="VSTHRD100" Action="None" />
+    <Rule Id="VSTHRD101" Action="None" />
+    <Rule Id="VSTHRD200" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="Microsoft.VisualStudio.Threading.Analyzers.CSharp" RuleNamespace="Microsoft.VisualStudio.Threading.Analyzers.CSharp">
+    <Rule Id="VSTHRD003" Action="None" />
+    <Rule Id="VSTHRD110" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="Roslynator.CSharp.Analyzers" RuleNamespace="Roslynator.CSharp.Analyzers">
+    <Rule Id="RCS1075" Action="None" />
+  </Rules>
   <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
     <Rule Id="SA0001" Action="None" />
     <Rule Id="SA1000" Action="None" />

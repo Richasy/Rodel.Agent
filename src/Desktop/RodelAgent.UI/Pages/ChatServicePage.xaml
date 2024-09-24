@@ -122,7 +122,7 @@
                         <chat:ChatProviderOptionPanel
                             Grid.Row="2"
                             PropertyChanged="OnSessionParameterChanged"
-                            ViewModel="{x:Bind ViewModel.CurrentSession.Data, Mode=OneWay}"
+                            ViewModel="{x:Bind ViewModel.CurrentSession.PresetViewModel, Mode=OneWay}"
                             Visibility="{x:Bind ViewModel.IsSessionOptionsVisible, Mode=OneWay}" />
                         <chat:SystemInstructionPanel
                             Grid.Row="2"

@@ -2,8 +2,8 @@
 
 using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels.Components;
+using RodelAgent.UI.ViewModels.Items;
 using RodelAgent.UI.ViewModels.Pages;
-using RodelAudio.Models.Client;
 
 namespace RodelAgent.UI.Controls.Audio;
 
@@ -18,7 +18,7 @@ public sealed partial class AudioSessionItemControl : AudioSessionItemControlBas
     public AudioSessionItemControl() => InitializeComponent();
 
     /// <inheritdoc/>
-    protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
+    protected override void OnViewModelChanged(AudioSessionItemViewModel? oldValue, AudioSessionItemViewModel? newValue)
         => Initialize();
 
     /// <inheritdoc/>
@@ -35,9 +35,9 @@ public sealed partial class AudioSessionItemControl : AudioSessionItemControlBas
             return;
         }
 
-        var time = !ViewModel.Time.HasValue
+        var time = !ViewModel.Data.Time.HasValue
             ? "-/-"
-            : ViewModel.Time.Value.ToString("yyyy-MM-dd HH:mm:ss");
+            : ViewModel.Data.Time.Value.ToString("yyyy-MM-dd HH:mm:ss");
         DateBlock.Text = time;
     }
 
@@ -45,7 +45,7 @@ public sealed partial class AudioSessionItemControl : AudioSessionItemControlBas
         => GetSessionViewModel().LoadSessionCommand.Execute(ViewModel);
 
     private void OnOpenItemClick(object sender, RoutedEventArgs e)
-        => GetSessionViewModel().OpenAudioCommand.Execute(AppToolkit.GetSpeechPath(ViewModel.Id));
+        => GetSessionViewModel().OpenAudioCommand.Execute(AppToolkit.GetSpeechPath(ViewModel.Data.Id));
 
     private void OnDeleteItemClick(object sender, RoutedEventArgs e)
     {
@@ -57,6 +57,6 @@ public sealed partial class AudioSessionItemControl : AudioSessionItemControlBas
 /// <summary>
 /// 会话项控件基类.
 /// </summary>
-public abstract class AudioSessionItemControlBase : LayoutUserControlBase<AudioSession>
+public abstract class AudioSessionItemControlBase : LayoutUserControlBase<AudioSessionItemViewModel>
 {
 }

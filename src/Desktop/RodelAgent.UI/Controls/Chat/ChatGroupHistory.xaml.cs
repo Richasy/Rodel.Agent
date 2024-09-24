@@ -15,14 +15,14 @@ public sealed partial class ChatGroupHistory : ChatGroupControlBase
     public ChatGroupHistory() => InitializeComponent();
 
     /// <inheritdoc/>
-    protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
+    protected override void OnViewModelChanged(ChatGroupViewModel? oldValue, ChatGroupViewModel? newValue)
     {
-        if (e.OldValue is ChatGroupViewModel oldVm)
+        if (oldValue is ChatGroupViewModel oldVm)
         {
             oldVm.RequestScrollToBottom -= OnRequestScrollToBottomAsync;
         }
 
-        if (e.NewValue is ChatGroupViewModel newVm)
+        if (newValue is ChatGroupViewModel newVm)
         {
             newVm.RequestScrollToBottom += OnRequestScrollToBottomAsync;
         }

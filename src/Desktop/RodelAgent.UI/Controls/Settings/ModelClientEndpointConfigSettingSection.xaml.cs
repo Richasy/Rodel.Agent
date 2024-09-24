@@ -20,9 +20,9 @@ public sealed partial class ModelClientEndpointConfigSettingSection : ChatServic
     public ModelClientEndpointConfigSettingSection() => InitializeComponent();
 
     /// <inheritdoc/>
-    protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
+    protected override void OnViewModelChanged(ChatServiceItemViewModel? oldValue, ChatServiceItemViewModel? newValue)
     {
-        if (e.NewValue is not ChatServiceItemViewModel newVM)
+        if (newValue is not ChatServiceItemViewModel newVM)
         {
             return;
         }

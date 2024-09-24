@@ -21,14 +21,14 @@ public sealed partial class DrawSessionPresenter : DrawSessionControlBase
     }
 
     /// <inheritdoc/>
-    protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
+    protected override void OnViewModelChanged(DrawSessionViewModel? oldValue, DrawSessionViewModel? newValue)
     {
-        if (e.OldValue is DrawSessionViewModel oldViewModel)
+        if (oldValue is DrawSessionViewModel oldViewModel)
         {
             oldViewModel.DataChanged -= OnDataChanged;
         }
 
-        if (e.NewValue is DrawSessionViewModel newViewModel)
+        if (newValue is DrawSessionViewModel newViewModel)
         {
             newViewModel.DataChanged += OnDataChanged;
         }

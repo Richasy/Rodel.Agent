@@ -17,9 +17,9 @@ public sealed partial class OpenAIAudioConfigSettingSection : AudioServiceConfig
     public OpenAIAudioConfigSettingSection() => InitializeComponent();
 
     /// <inheritdoc/>
-    protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
+    protected override void OnViewModelChanged(AudioServiceItemViewModel? oldValue, AudioServiceItemViewModel? newValue)
     {
-        if (e.NewValue is not AudioServiceItemViewModel newVM)
+        if (newValue is not AudioServiceItemViewModel newVM)
         {
             return;
         }

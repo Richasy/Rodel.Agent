@@ -54,6 +54,8 @@
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
 
+            <x:Double x:Key="WindowNarrowMinWidth">850</x:Double>
+
             <converters:BoolToIconVariantConverter x:Key="BoolToIconVariantConverter" />
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityReverseConverter" IsReverse="True" />

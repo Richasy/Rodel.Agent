@@ -3,7 +3,7 @@
     x:Class="RodelAgent.UI.Controls.Settings.LanguageSettingSection"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:community="using:CommunityToolkit.WinUI.Controls"
+    xmlns:base="using:Richasy.WinUI.Share.Base"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:ext="using:RodelAgent.UI.Extensions"
     xmlns:ic="using:FluentIcons.WinUI"
@@ -11,10 +11,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <community:SettingsCard Description="{ext:Locale Name=LanguageSettingDescription}" Header="{ext:Locale Name=LanguageSetting}">
-        <community:SettingsCard.HeaderIcon>
+    <base:SettingsCard Description="{ext:Locale Name=LanguageSettingDescription}" Header="{ext:Locale Name=LanguageSetting}">
+        <base:SettingsCard.HeaderIcon>
             <ic:SymbolIcon Symbol="LocalLanguage" />
-        </community:SettingsCard.HeaderIcon>
+        </base:SettingsCard.HeaderIcon>
 
         <ComboBox
             x:Name="LanguageComboBox"
@@ -26,5 +26,5 @@
             <ComboBoxItem Content="简体中文" Tag="zh-Hans-CN" />
             <ComboBoxItem Content="English" Tag="en-US" />
         </ComboBox>
-    </community:SettingsCard>
+    </base:SettingsCard>
 </local:SettingSectionBase>

@@ -3,7 +3,6 @@
 using RodelAgent.Interfaces;
 using RodelAgent.UI.ViewModels.Components;
 using RodelAgent.UI.ViewModels.Items;
-using RodelDraw.Models.Client;
 
 namespace RodelAgent.UI.ViewModels.Pages;
 
@@ -37,5 +36,5 @@ public sealed partial class DrawServicePageViewModel
     /// <summary>
     /// 生成历史.
     /// </summary>
-    public ObservableCollection<DrawSession> History { get; } = new();
+    public ObservableCollection<DrawSessionItemViewModel> History { get; } = new();
 }

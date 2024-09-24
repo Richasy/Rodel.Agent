@@ -1187,4 +1187,7 @@
   <data name="ZhiPu" xml:space="preserve">
     <value>智谱 AI</value>
   </data>
+  <data name="PromptTest" xml:space="preserve">
+    <value>提示词测试</value>
+  </data>
 </root>

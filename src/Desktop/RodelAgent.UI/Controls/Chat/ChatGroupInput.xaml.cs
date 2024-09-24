@@ -18,14 +18,14 @@ public sealed partial class ChatGroupInput : ChatGroupControlBase
     public ChatGroupInput() => InitializeComponent();
 
     /// <inheritdoc/>
-    protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
+    protected override void OnViewModelChanged(ChatGroupViewModel? oldValue, ChatGroupViewModel? newValue)
     {
-        if (e.OldValue is ChatGroupViewModel oldVm)
+        if (oldValue is ChatGroupViewModel oldVm)
         {
             oldVm.RequestFocusInput -= OnRequestFocusInput;
         }
 
-        if (e.NewValue is ChatGroupViewModel newVm)
+        if (newValue is ChatGroupViewModel newVm)
         {
             newVm.RequestFocusInput += OnRequestFocusInput;
         }

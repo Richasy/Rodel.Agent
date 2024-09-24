@@ -48,6 +48,11 @@
         </uap:DefaultTile >
         <uap:SplashScreen Image="Assets\Logo\SplashScreen.png"  BackgroundColor="#FFFFFF"/>
       </uap:VisualElements>
+      <Extensions>
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="rodelagent" DesiredView="useLess" />
+        </uap:Extension>
+      </Extensions>
     </Application>
   </Applications>
 

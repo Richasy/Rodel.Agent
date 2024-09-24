@@ -1187,4 +1187,7 @@ Choose a library folder and let's get started!</value>
   <data name="ZhiPu" xml:space="preserve">
     <value>Zhipu AI</value>
   </data>
+  <data name="PromptTest" xml:space="preserve">
+    <value>Prompt test</value>
+  </data>
 </root>

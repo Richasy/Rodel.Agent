@@ -3,7 +3,7 @@
     x:Class="RodelAgent.UI.Controls.Settings.AppLogSettingSection"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:community="using:CommunityToolkit.WinUI.Controls"
+    xmlns:base="using:Richasy.WinUI.Share.Base"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:ext="using:RodelAgent.UI.Extensions"
     xmlns:ic="using:FluentIcons.WinUI"
@@ -11,14 +11,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <community:SettingsCard
+    <base:SettingsCard
         ActionIconToolTip="{ext:Locale Name=OpenLogFolder}"
         Click="OnItemClickAsync"
         Description="{ext:Locale Name=AppLogDescription}"
         Header="{ext:Locale Name=AppLog}"
         IsClickEnabled="True">
-        <community:SettingsCard.HeaderIcon>
+        <base:SettingsCard.HeaderIcon>
             <ic:SymbolIcon Symbol="DocumentBulletList" />
-        </community:SettingsCard.HeaderIcon>
-    </community:SettingsCard>
+        </base:SettingsCard.HeaderIcon>
+    </base:SettingsCard>
 </local:SettingSectionBase>

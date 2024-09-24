@@ -18,9 +18,9 @@ public sealed partial class AudioClientConfigSection : AudioServiceConfigControl
     public AudioClientConfigSection() => InitializeComponent();
 
     /// <inheritdoc/>
-    protected override void OnViewModelChanged(DependencyPropertyChangedEventArgs e)
+    protected override void OnViewModelChanged(AudioServiceItemViewModel? oldValue, AudioServiceItemViewModel? newValue)
     {
-        if (e.NewValue is not AudioServiceItemViewModel newVM)
+        if (newValue is not AudioServiceItemViewModel newVM)
         {
             return;
         }

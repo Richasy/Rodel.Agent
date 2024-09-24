@@ -75,11 +75,11 @@
                 IsTextSelectionEnabled="True"
                 MaxLines="3"
                 Style="{StaticResource BodyTextBlockStyle}"
-                Text="{x:Bind ViewModel.InputText, Mode=OneWay}"
+                Text="{x:Bind ViewModel.Data.InputText, Mode=OneWay}"
                 TextTrimming="CharacterEllipsis"
                 TextWrapping="Wrap">
                 <ToolTipService.ToolTip>
-                    <ToolTip Content="{x:Bind ViewModel.InputText, Mode=OneWay}" IsEnabled="{x:Bind InputBlock.IsTextTrimmed, Mode=OneWay}" />
+                    <ToolTip Content="{x:Bind ViewModel.Data.InputText, Mode=OneWay}" IsEnabled="{x:Bind InputBlock.IsTextTrimmed, Mode=OneWay}" />
                 </ToolTipService.ToolTip>
             </TextBlock>
             <TextBlock
@@ -87,11 +87,11 @@
                 Foreground="{ThemeResource TextFillColorTertiaryBrush}"
                 IsTextSelectionEnabled="True"
                 MaxLines="3"
-                Text="{x:Bind ViewModel.OutputText, Mode=OneWay}"
+                Text="{x:Bind ViewModel.Data.OutputText, Mode=OneWay}"
                 TextTrimming="CharacterEllipsis"
                 TextWrapping="Wrap">
                 <ToolTipService.ToolTip>
-                    <ToolTip Content="{x:Bind ViewModel.OutputText, Mode=OneWay}" IsEnabled="{x:Bind OutputBlock.IsTextTrimmed, Mode=OneWay}" />
+                    <ToolTip Content="{x:Bind ViewModel.Data.OutputText, Mode=OneWay}" IsEnabled="{x:Bind OutputBlock.IsTextTrimmed, Mode=OneWay}" />
                 </ToolTipService.ToolTip>
             </TextBlock>
         </StackPanel>

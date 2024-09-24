@@ -3,7 +3,6 @@
 using RodelAgent.Interfaces;
 using RodelAgent.UI.ViewModels.Components;
 using RodelAgent.UI.ViewModels.Items;
-using RodelAudio.Models.Client;
 
 namespace RodelAgent.UI.ViewModels.Pages;
 
@@ -37,5 +36,5 @@ public sealed partial class AudioServicePageViewModel
     /// <summary>
     /// 生成历史.
     /// </summary>
-    public ObservableCollection<AudioSession> History { get; } = new();
+    public ObservableCollection<AudioSessionItemViewModel> History { get; } = new();
 }
