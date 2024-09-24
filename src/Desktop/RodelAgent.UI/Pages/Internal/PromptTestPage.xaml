@@ -49,6 +49,12 @@
                 Grid.Column="2"
                 Margin="-6,0" />
 
+            <internal:PromptTestExtraHeader Grid.Column="4" Margin="-6,0,0,0" />
+            <internal:PromptTestExtraBody
+                Grid.Row="2"
+                Grid.Column="4"
+                Margin="-6,0,0,0" />
+
             <!--  左侧分栏大小控制器  -->
             <controls:ColumnSplitter
                 Grid.RowSpan="3"

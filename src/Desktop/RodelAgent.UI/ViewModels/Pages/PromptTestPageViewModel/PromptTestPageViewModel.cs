@@ -59,21 +59,21 @@ public sealed partial class PromptTestPageViewModel : LayoutPageViewModelBase
             ChangeService(AvailableServices.FirstOrDefault());
         }
 
+        if (string.IsNullOrEmpty(PresetVariablesFilePath))
+        {
+            PresetVariablesFilePath = SettingsToolkit.ReadLocalSetting(SettingNames.PromptTestPresetVariablesFilePath, string.Empty);
+            if (!string.IsNullOrEmpty(PresetVariablesFilePath))
+            {
+                await ParsePresetVariablesAsync(PresetVariablesFilePath);
+            }
+        }
+
         if (string.IsNullOrEmpty(MessageJsonFilePath))
         {
             MessageJsonFilePath = SettingsToolkit.ReadLocalSetting(SettingNames.PromptTestMessageJsonFilePath, string.Empty);
             if (!string.IsNullOrEmpty(MessageJsonFilePath))
             {
                 await ParseHistoryAsync(MessageJsonFilePath, false);
-            }
-        }
-
-        if (string.IsNullOrEmpty(SystemPromptFilePath))
-        {
-            SystemPromptFilePath = SettingsToolkit.ReadLocalSetting(SettingNames.PromptTestSystemPromptPath, string.Empty);
-            if (!string.IsNullOrEmpty(SystemPromptFilePath))
-            {
-                await ParseSystemPromptAsync(SystemPromptFilePath);
             }
         }
     }

@@ -62,13 +62,42 @@
                     </StackPanel>
 
                     <base:SettingsExpander.ItemsFooter>
-                        <TextBlock
-                            HorizontalAlignment="Left"
+                        <Grid
+                            Padding="16,12"
+                            HorizontalAlignment="Stretch"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+                            <TextBlock
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                IsTextSelectionEnabled="True"
+                                Style="{StaticResource CaptionTextBlockStyle}"
+                                Text="{x:Bind ViewModel.MessageJsonFilePath, Mode=OneWay}" />
+                        </Grid>
+                    </base:SettingsExpander.ItemsFooter>
+                </base:SettingsExpander>
+                <base:SettingsExpander Header="{ext:Locale Name=ImportVariables}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <InfoBadge
                             VerticalAlignment="Center"
-                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                            IsTextSelectionEnabled="True"
-                            Style="{StaticResource CaptionTextBlockStyle}"
-                            Text="{x:Bind ViewModel.MessageJsonFilePath, Mode=OneWay}" />
+                            Style="{StaticResource InformationalValueInfoBadgeStyle}"
+                            Value="{x:Bind ViewModel.PresetVariablesCount, Mode=OneWay}" />
+                        <Button Command="{x:Bind ViewModel.ImportVariablesCommand}" Content="{ext:Locale Name=Import}" />
+                    </StackPanel>
+
+                    <base:SettingsExpander.ItemsFooter>
+                        <Grid
+                            Padding="16,12"
+                            HorizontalAlignment="Stretch"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+                            <TextBlock
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                IsTextSelectionEnabled="True"
+                                Style="{StaticResource CaptionTextBlockStyle}"
+                                Text="{x:Bind ViewModel.PresetVariablesFilePath, Mode=OneWay}" />
+                        </Grid>
                     </base:SettingsExpander.ItemsFooter>
                 </base:SettingsExpander>
                 <TextBlock

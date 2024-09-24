@@ -46,6 +46,14 @@
                 Foreground="{ThemeResource InfoBarErrorSeverityIconBackground}"
                 Symbol="DismissCircle"
                 Visibility="Collapsed" />
+            <ProgressRing
+                x:Name="LoadingRing"
+                MinWidth="14"
+                MinHeight="14"
+                VerticalAlignment="Center"
+                IsActive="False"
+                Style="{StaticResource PageProgressRingStyle}"
+                Visibility="Collapsed" />
         </Grid>
         <TextBlock
             Grid.Column="1"

@@ -56,6 +56,13 @@ public sealed partial class StatusTip : LayoutUserControlBase
 
     private void ChangeStatus()
     {
+        InformationIcon.Visibility = Visibility.Collapsed;
+        SuccessIcon.Visibility = Visibility.Collapsed;
+        WarningIcon.Visibility = Visibility.Collapsed;
+        ErrorIcon.Visibility = Visibility.Collapsed;
+        LoadingRing.Visibility = Visibility.Collapsed;
+        LoadingRing.IsActive = false;
+
         switch (Status)
         {
             case InfoType.Information:
@@ -69,6 +76,10 @@ public sealed partial class StatusTip : LayoutUserControlBase
                 break;
             case InfoType.Error:
                 ErrorIcon.Visibility = Visibility.Visible;
+                break;
+            case InfoType.Loading:
+                LoadingRing.Visibility = Visibility.Visible;
+                LoadingRing.IsActive = true;
                 break;
             default:
                 break;

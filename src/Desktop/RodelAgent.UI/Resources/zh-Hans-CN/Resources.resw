@@ -1211,4 +1211,25 @@
   <data name="Variables" xml:space="preserve">
     <value>变量列表</value>
   </data>
+  <data name="Generate" xml:space="preserve">
+    <value>生成</value>
+  </data>
+  <data name="GenerateResult" xml:space="preserve">
+    <value>生成结果</value>
+  </data>
+  <data name="ImportInputs" xml:space="preserve">
+    <value>导入输入源</value>
+  </data>
+  <data name="ImportVariables" xml:space="preserve">
+    <value>导入变量</value>
+  </data>
+  <data name="InputsImported" xml:space="preserve">
+    <value>输入源已导入</value>
+  </data>
+  <data name="InstructionAndTemplate" xml:space="preserve">
+    <value>指令与模板</value>
+  </data>
+  <data name="TestName" xml:space="preserve">
+    <value>测试 {0}</value>
+  </data>
 </root>

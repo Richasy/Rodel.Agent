@@ -1211,4 +1211,25 @@ Choose a library folder and let's get started!</value>
   <data name="Variables" xml:space="preserve">
     <value>Variables</value>
   </data>
+  <data name="Generate" xml:space="preserve">
+    <value>Generate</value>
+  </data>
+  <data name="GenerateResult" xml:space="preserve">
+    <value>Results</value>
+  </data>
+  <data name="ImportInputs" xml:space="preserve">
+    <value>Import input source</value>
+  </data>
+  <data name="ImportVariables" xml:space="preserve">
+    <value>Import variables</value>
+  </data>
+  <data name="InputsImported" xml:space="preserve">
+    <value>User input source imported</value>
+  </data>
+  <data name="InstructionAndTemplate" xml:space="preserve">
+    <value>Instruction &amp; Template</value>
+  </data>
+  <data name="TestName" xml:space="preserve">
+    <value>Test {0}</value>
+  </data>
 </root>

@@ -26,4 +26,9 @@ public enum InfoType
     /// 成功消息.
     /// </summary>
     Success,
+
+    /// <summary>
+    /// 加载中.
+    /// </summary>
+    Loading,
 }

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <local:PromptTestPageControlBase
-    x:Class="RodelAgent.UI.Controls.Internal.PromptTestMainHeader"
+    x:Class="RodelAgent.UI.Controls.Internal.PromptTestExtraHeader"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:base="using:Richasy.WinUI.Share.Base"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:ext="using:RodelAgent.UI.Extensions"
     xmlns:ic="using:FluentIcons.WinUI"
@@ -11,9 +10,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Padding="16,0" ColumnSpacing="8">
+    <Grid Padding="16,0">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
@@ -21,26 +19,19 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             Style="{StaticResource BodyStrongTextBlockStyle}"
-            Text="{ext:Locale Name=InstructionAndTemplate}" />
-        <SelectorBar
-            x:Name="PromptSelector"
+            Text="{ext:Locale Name=GenerateResult}" />
+        <HyperlinkButton
             Grid.Column="1"
-            HorizontalAlignment="Center"
-            SelectionChanged="OnPromptSelectionChanged" />
-        <Button
-            Grid.Column="2"
             VerticalAlignment="Center"
-            Command="{x:Bind ViewModel.SaveHistoryJsonCommand}"
-            IsEnabled="{x:Bind ViewModel.CurrentSystemPrompt, Mode=OneWay, Converter={StaticResource ObjectToBoolConverter}}"
+            Content="{ext:Locale Name=Cancel}"
+            Visibility="{x:Bind ViewModel.IsGenerating, Mode=OneWay}" />
+        <Button
+            Grid.Column="1"
+            VerticalAlignment="Center"
             Style="{StaticResource IconButtonStyle}"
-            ToolTipService.ToolTip="{ext:Locale Name=SaveAs}">
+            ToolTipService.ToolTip="{ext:Locale Name=SaveAs}"
+            Visibility="{x:Bind ViewModel.IsFinished, Mode=OneWay}">
             <ic:SymbolIcon FontSize="14" Symbol="Save" />
-            <Button.KeyboardAccelerators>
-                <KeyboardAccelerator
-                    Key="S"
-                    IsEnabled="True"
-                    Modifiers="Control" />
-            </Button.KeyboardAccelerators>
         </Button>
     </Grid>
 </local:PromptTestPageControlBase>

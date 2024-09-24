@@ -82,8 +82,11 @@
     <None Remove="Controls\Draw\DrawSessionItemControl.xaml" />
     <None Remove="Controls\Draw\DrawSessionPresenter.xaml" />
     <None Remove="Controls\Draw\LocalDrawImage.xaml" />
+    <None Remove="Controls\Internal\PromptTestExtraBody.xaml" />
+    <None Remove="Controls\Internal\PromptTestExtraHeader.xaml" />
     <None Remove="Controls\Internal\PromptTestMainBody.xaml" />
     <None Remove="Controls\Internal\PromptTestMainHeader.xaml" />
+    <None Remove="Controls\Internal\PromptTestSessionItemControl.xaml" />
     <None Remove="Controls\Internal\PromptTestSideBody.xaml" />
     <None Remove="Controls\Items\AudioModelCard\AudioModelCard.xaml" />
     <None Remove="Controls\Items\AudioServiceItemControl\AudioServiceItemControl.xaml" />
@@ -649,6 +652,15 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Controls\Internal\PromptTestMainBody.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Controls\Internal\PromptTestSessionItemControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Controls\Internal\PromptTestExtraHeader.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Controls\Internal\PromptTestExtraBody.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <None Update="NLog.config">

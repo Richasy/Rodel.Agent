@@ -28,39 +28,186 @@ public sealed partial class PromptTestPageViewModel
     }
 
     [RelayCommand]
-    private async Task ImportSystemPromptAsync()
+    private async Task ImportVariablesAsync()
     {
-        var txtFile = await FileToolkit.PickFileAsync(".txt", this.Get<AppViewModel>().ActivatedWindow);
-        if (txtFile is StorageFile file)
+        var jsonFile = await FileToolkit.PickFileAsync(".json", this.Get<AppViewModel>().ActivatedWindow);
+        if (jsonFile is StorageFile file)
         {
-            SystemPromptFilePath = file.Path;
-            SettingsToolkit.WriteLocalSetting(SettingNames.PromptTestSystemPromptPath, file.Path);
-            await ParseSystemPromptAsync(SystemPromptFilePath);
+            PresetVariablesFilePath = file.Path;
+            SettingsToolkit.WriteLocalSetting(SettingNames.PromptTestPresetVariablesFilePath, PresetVariablesFilePath);
+            await ParsePresetVariablesAsync(PresetVariablesFilePath);
+        }
+    }
+
+    private async Task ImportInputsAsync()
+    {
+        var jsonFile = await FileToolkit.PickFileAsync(".json", this.Get<AppViewModel>().ActivatedWindow);
+        if (jsonFile is StorageFile file)
+        {
+            InputFilePath = file.Path;
+            SettingsToolkit.WriteLocalSetting(SettingNames.PromptTestInputFilePath, InputFilePath);
+            var json = await FileIO.ReadTextAsync(file);
+            _inputs = JsonSerializer.Deserialize<List<string>>(json);
+            InputsCount = _inputs.Count;
+            this.Get<AppViewModel>().ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.InputsImported), InfoType.Success));
         }
     }
 
     [RelayCommand]
-    private async Task SaveSystemPromptAsync()
+    private async Task UpdatePromptVariablesAsync()
     {
-        var file = await FileToolkit.SaveFileAsync(".txt", this.Get<AppViewModel>().ActivatedWindow);
-        if (file is StorageFile storageFile)
+        if (string.IsNullOrEmpty(UserPromptTemplate))
         {
-            await FileIO.WriteTextAsync(storageFile, SystemPrompt);
-            SystemPromptFilePath = storageFile.Path;
-            SettingsToolkit.WriteLocalSetting(SettingNames.PromptTestSystemPromptPath, SystemPromptFilePath);
+            Variables.Clear();
+            return;
+        }
+
+        try
+        {
+            // 匹配 $ 后跟随一个或多个大写字母，直到遇到空格或者字符串结尾
+            var regex = new Regex(@"\$(?<variable>[A-Z]+)");
+            var matches = regex.Matches(UserPromptTemplate);
+            var variables = new List<VariableItemViewModel>();
+            foreach (Match match in matches)
+            {
+                if (match.Success)
+                {
+                    var name = match.Groups["variable"].Value;
+                    if (variables.Any(p => p.Name == name))
+                    {
+                        continue;
+                    }
+
+                    if (_variables?.Count > 0 && _variables.ContainsKey(name))
+                    {
+                        var values = _variables[name];
+                        var variable = new VariableItemViewModel(name, values, values.FirstOrDefault());
+                        variables.Add(variable);
+                    }
+                    else
+                    {
+                        var variable = new VariableItemViewModel(name);
+                        variables.Add(variable);
+                    }
+                }
+            }
+
+            for (var i = Variables.Count - 1; i >= 0; i--)
+            {
+                var variable = Variables[i];
+                if (!variables.Any(p => p.Name == variable.Name))
+                {
+                    Variables.RemoveAt(i);
+                }
+            }
+
+            foreach (var variable in variables)
+            {
+                var original = Variables.FirstOrDefault(p => p.Name == variable.Name);
+                if (original is null)
+                {
+                    Variables.Add(variable);
+                }
+                else if (original.Values?.Count != variable.Values?.Count)
+                {
+                    original.Values = variable.Values;
+                    original.Value = variable.Value;
+                }
+            }
+
+            var firstTextVariable = Variables.FirstOrDefault(p => p.Values is null);
+            _defaultInputVariable = firstTextVariable?.Name ?? string.Empty;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to parse system prompt file.");
+            await this.Get<AppViewModel>().ShowMessageDialogAsync(ex.Message);
+        }
+        finally
+        {
+            IsVariableEmpty = Variables.Count == 0;
+        }
+    }
+
+    [RelayCommand]
+    private async Task SaveHistoryJsonAsync()
+    {
+        if (_predefinedMessages is null)
+        {
+            return;
+        }
+
+        try
+        {
+            for (var i = 0; i < SystemPrompts.Count; i++)
+            {
+                var targetMessage = _predefinedMessages.Where(p => p.Role == RodelChat.Models.Constants.MessageRole.System).ElementAtOrDefault(i);
+                if (targetMessage is ChatMessage message)
+                {
+                    message.Content.First().Text = SystemPrompts[i].Content;
+                }
+            }
+
+            var lastUserMessage = _predefinedMessages.LastOrDefault(p => p.Role == RodelChat.Models.Constants.MessageRole.User);
+            if (lastUserMessage is ChatMessage userMessage)
+            {
+                userMessage.Content.First().Text = UserPromptTemplate;
+            }
+
+            var json = JsonSerializer.Serialize(_predefinedMessages, new JsonSerializerOptions { WriteIndented = true });
+            var file = await FileToolkit.SaveFileAsync(".json", this.Get<AppViewModel>().ActivatedWindow);
+            await FileIO.WriteTextAsync(file, json);
+            this.Get<AppViewModel>().ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.Saved), InfoType.Success));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to save history file.");
+            await this.Get<AppViewModel>().ShowMessageDialogAsync(ex.Message);
+        }
+    }
+
+    private async Task ParsePresetVariablesAsync(string filePath)
+    {
+        try
+        {
+            var file = await StorageFile.GetFileFromPathAsync(filePath);
+            var json = await FileIO.ReadTextAsync(file);
+            _variables = JsonSerializer.Deserialize<Dictionary<string, List<string>>>(json);
+            PresetVariablesCount = _variables.Count;
+            UpdatePromptVariablesCommand.Execute(default);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to parse variables file.");
+            await this.Get<AppViewModel>().ShowMessageDialogAsync(ex.Message);
         }
     }
 
     private async Task ParseHistoryAsync(string filePath, bool showTip = true)
     {
-        var file = await StorageFile.GetFileFromPathAsync(filePath);
-        var json = await FileIO.ReadTextAsync(file);
         try
         {
+            var file = await StorageFile.GetFileFromPathAsync(filePath);
+            var json = await FileIO.ReadTextAsync(file);
             var messages = JsonSerializer.Deserialize<List<ChatMessage>>(json);
             if (messages is List<ChatMessage> chatMessages && chatMessages.Count > 0)
             {
                 _predefinedMessages = chatMessages;
+
+                var systemMessages = chatMessages.Where(p => p.Role == RodelChat.Models.Constants.MessageRole.System).ToList();
+                var systemPrompts = new List<PromptTestSystemPromptItemViewModel>();
+                for (var i = 0; i < systemMessages.Count; i++)
+                {
+                    systemPrompts.Add(new PromptTestSystemPromptItemViewModel(i, systemMessages[i].GetFirstTextContent()));
+                }
+
+                SystemPrompts = systemPrompts;
+                CurrentSystemPrompt = SystemPrompts.FirstOrDefault();
+
+                var lastUserMessage = chatMessages.LastOrDefault(p => p.Role == RodelChat.Models.Constants.MessageRole.User);
+                UserPromptTemplate = lastUserMessage?.GetFirstTextContent() ?? string.Empty;
+                UpdatePromptVariablesCommand.Execute(default);
+
                 var tip = ResourceToolkit.GetLocalizedString(StringNames.HistoryImported);
                 tip = string.Format(tip, _predefinedMessages.Count);
 
@@ -68,6 +215,8 @@ public sealed partial class PromptTestPageViewModel
                 {
                     this.Get<AppViewModel>().ShowTipCommand.Execute((tip, InfoType.Success));
                 }
+
+                SystemPromptInitialzied?.Invoke(this, EventArgs.Empty);
             }
             else
             {
@@ -88,66 +237,6 @@ public sealed partial class PromptTestPageViewModel
         finally
         {
             MessageCount = _predefinedMessages?.Count ?? 0;
-        }
-    }
-
-    private async Task ParseSystemPromptAsync(string filePath)
-    {
-        var file = await StorageFile.GetFileFromPathAsync(filePath);
-        var text = await FileIO.ReadTextAsync(file);
-        SystemPrompt = text;
-        await UpdatePromptVariablesAsync();
-    }
-
-    [RelayCommand]
-    private async Task UpdatePromptVariablesAsync()
-    {
-        try
-        {
-            // 匹配 $ 后跟随一个或多个大写字母，直到遇到空格或者字符串结尾
-            var regex = new Regex(@"\$(?<variable>[A-Z]+)");
-            var matches = regex.Matches(SystemPrompt);
-            var variables = new List<VariableItemViewModel>();
-            foreach (Match match in matches)
-            {
-                if (match.Success)
-                {
-                    var name = match.Groups["variable"].Value;
-                    if (variables.Any(p => p.Name == name))
-                    {
-                        continue;
-                    }
-
-                    var variable = new VariableItemViewModel { Name = name };
-                    variables.Add(variable);
-                }
-            }
-
-            for (var i = Variables.Count - 1; i >= 0; i--)
-            {
-                var variable = Variables[i];
-                if (!variables.Any(p => p.Name == variable.Name))
-                {
-                    Variables.RemoveAt(i);
-                }
-            }
-
-            foreach (var variable in variables)
-            {
-                if (!Variables.Any(p => p.Name == variable.Name))
-                {
-                    Variables.Add(variable);
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Failed to parse system prompt file.");
-            await this.Get<AppViewModel>().ShowMessageDialogAsync(ex.Message);
-        }
-        finally
-        {
-            IsVariableEmpty = Variables.Count == 0;
         }
     }
 }

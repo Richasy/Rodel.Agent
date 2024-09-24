@@ -17,8 +17,10 @@ public sealed partial class PromptTestPageViewModel
     private readonly IStorageService _storageService;
     private readonly IChatClient _chatClient;
 
-    // private List<ChatSession>? _sessions;
     private List<ChatMessage>? _predefinedMessages;
+    private Dictionary<string, List<string>>? _variables;
+    private List<string>? _inputs;
+    private string _defaultInputVariable = string.Empty;
 
     [ObservableProperty]
     private double _extraColumnWidth;
@@ -30,16 +32,25 @@ public sealed partial class PromptTestPageViewModel
     private string? _messageJsonFilePath;
 
     [ObservableProperty]
-    private string? _systemPromptFilePath;
-
-    [ObservableProperty]
-    private string? _systemPrompt;
+    private PromptTestSystemPromptItemViewModel? _currentSystemPrompt;
 
     [ObservableProperty]
     private int _messageCount;
 
     [ObservableProperty]
     private bool _isVariableEmpty;
+
+    [ObservableProperty]
+    private int _presetVariablesCount;
+
+    [ObservableProperty]
+    private string? _presetVariablesFilePath;
+
+    [ObservableProperty]
+    private int _inputsCount;
+
+    [ObservableProperty]
+    private string? _inputFilePath;
 
     [ObservableProperty]
     private ChatPresetItemViewModel? _preset;
@@ -55,6 +66,26 @@ public sealed partial class PromptTestPageViewModel
 
     [ObservableProperty]
     private List<ChatModelItemViewModel> _availableModels;
+
+    [ObservableProperty]
+    private List<PromptTestSystemPromptItemViewModel> _systemPrompts;
+
+    [ObservableProperty]
+    private List<PromptTestSessionItemViewModel>? _sessions;
+
+    [ObservableProperty]
+    private string _userPromptTemplate;
+
+    [ObservableProperty]
+    private bool _isGenerating;
+
+    [ObservableProperty]
+    private bool _isFinished;
+
+    /// <summary>
+    /// 系统提示初始化完成事件.
+    /// </summary>
+    public event EventHandler SystemPromptInitialzied;
 
     /// <summary>
     /// 变量列表.

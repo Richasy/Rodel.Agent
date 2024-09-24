@@ -3,6 +3,7 @@
     x:Class="RodelAgent.UI.Controls.Internal.PromptTestMainBody"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:base="using:Richasy.WinUI.Share.Base"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:ext="using:RodelAgent.UI.Extensions"
     xmlns:items="using:RodelAgent.UI.ViewModels.Items"
@@ -14,6 +15,9 @@
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TextBox
             Padding="18,12"
@@ -21,17 +25,37 @@
             VerticalAlignment="Stretch"
             AcceptsReturn="True"
             FontSize="18"
+            Style="{StaticResource TransparentTextBoxStyle}"
+            Text="{x:Bind ViewModel.CurrentSystemPrompt.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            TextWrapping="Wrap" />
+        <Border
+            Grid.Row="1"
+            Height="1"
+            HorizontalAlignment="Stretch"
+            Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
+        <TextBox
+            Grid.Row="2"
+            Padding="18,12"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            AcceptsReturn="True"
+            FontSize="18"
             LostFocus="OnTextBoxLostFocus"
             Style="{StaticResource TransparentTextBoxStyle}"
-            Text="{x:Bind ViewModel.SystemPrompt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Text="{x:Bind ViewModel.UserPromptTemplate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             TextWrapping="Wrap" />
-        <Grid Grid.Row="1" Padding="16,8">
+        <Border
+            Grid.Row="3"
+            Height="1"
+            HorizontalAlignment="Stretch"
+            Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
+        <Grid Grid.Row="4" Padding="16,8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Button
-                Grid.Column="1"
+                HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Content="{ext:Locale Name=Variables}"
                 IsEnabled="{x:Bind ViewModel.IsVariableEmpty, Mode=OneWay, Converter={StaticResource ObjectToBoolReverseConverter}}">
@@ -41,13 +65,32 @@
                             <ItemsRepeater ItemsSource="{x:Bind ViewModel.Variables}">
                                 <ItemsRepeater.ItemTemplate>
                                     <DataTemplate x:DataType="items:VariableItemViewModel">
-                                        <TextBox
-                                            HorizontalAlignment="Stretch"
-                                            AcceptsReturn="True"
-                                            Header="{x:Bind Name}"
-                                            PlaceholderText="{x:Bind Name}"
-                                            Text="{x:Bind Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            TextWrapping="Wrap" />
+                                        <Grid>
+                                            <ComboBox
+                                                x:Name="ValuesComboBox"
+                                                HorizontalAlignment="Stretch"
+                                                x:Load="{x:Bind Values, Mode=OneWay, Converter={StaticResource ObjectToBoolConverter}}"
+                                                Header="{x:Bind Name}"
+                                                ItemsSource="{x:Bind Values}"
+                                                SelectedItem="{x:Bind Value, Mode=TwoWay}"
+                                                Visibility="{x:Bind Values, Converter={StaticResource ObjectToVisibilityConverter}}">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate x:DataType="x:String">
+                                                        <base:TrimTextBlock MaxLines="1" Text="{x:Bind}" />
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
+                                            <TextBox
+                                                x:Name="ValueBox"
+                                                HorizontalAlignment="Stretch"
+                                                x:Load="{x:Bind Values, Mode=OneWay, Converter={StaticResource ObjectToBoolReverseConverter}}"
+                                                AcceptsReturn="True"
+                                                Header="{x:Bind Name}"
+                                                PlaceholderText="{x:Bind Name}"
+                                                Text="{x:Bind Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                TextWrapping="Wrap"
+                                                Visibility="{x:Bind Values, Converter={StaticResource ObjectToVisibilityReverseConverter}}" />
+                                        </Grid>
                                     </DataTemplate>
                                 </ItemsRepeater.ItemTemplate>
                                 <ItemsRepeater.Layout>
@@ -58,6 +101,13 @@
                     </Flyout>
                 </Button.Flyout>
             </Button>
+            <Button
+                Grid.Column="1"
+                MinWidth="120"
+                VerticalAlignment="Center"
+                Command="{x:Bind ViewModel.GenerateCommand}"
+                Content="{ext:Locale Name=Generate}"
+                Style="{StaticResource AccentButtonStyle}" />
         </Grid>
     </Grid>
 </local:PromptTestPageControlBase>
