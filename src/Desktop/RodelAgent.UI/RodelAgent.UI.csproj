@@ -196,6 +196,7 @@
     <None Remove="Pages\AudioServicePage.xaml" />
     <None Remove="Pages\ChatServicePage.xaml" />
     <None Remove="Pages\DrawServicePage.xaml" />
+    <None Remove="Pages\Internal\PromptTestPage.xaml" />
     <None Remove="Pages\RAGPage.xaml" />
     <None Remove="Pages\SettingsPage.xaml" />
     <None Remove="Pages\Settings\AudioServicesPage.xaml" />
@@ -234,7 +235,7 @@
     <PackageReference Include="NAudio" />
     <PackageReference Include="NLog.Extensions.Logging" />
     <PackageReference Include="Roman-Numerals" />
-    <PackageReference Include="Tiktoken"/>
+    <PackageReference Include="Tiktoken" />
     <PackageReference Include="WinUIEx" />
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
@@ -641,6 +642,9 @@
     <None Update="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Pages\Internal\PromptTestPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Pages\Startup\AudioConfigurationPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

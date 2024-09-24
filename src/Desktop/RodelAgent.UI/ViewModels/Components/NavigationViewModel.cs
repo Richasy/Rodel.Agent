@@ -3,6 +3,7 @@
 using RodelAgent.UI.Forms;
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Pages;
+using RodelAgent.UI.Pages.Internal;
 using RodelAgent.UI.Toolkits;
 
 namespace RodelAgent.UI.ViewModels.Components;
@@ -148,10 +149,17 @@ public sealed partial class NavigationViewModel : ViewModelBase, INavServiceView
 
     private IReadOnlyList<AppNavigationItemViewModel> GetFooterItems()
     {
-        return new List<AppNavigationItemViewModel>
+        var list = new List<AppNavigationItemViewModel>
         {
             GetItem<SettingsPage>(StringNames.Settings, FluentIcons.Common.Symbol.Settings),
         };
+
+        if (SettingsToolkit.ReadLocalSetting(SettingNames.IsInternalPromptTest, false))
+        {
+            list.Insert(0, GetItem<PromptTestPage>(StringNames.PromptTest, FluentIcons.Common.Symbol.TextBulletListSquareEdit));
+        }
+
+        return list;
     }
 
     private AppNavigationItemViewModel GetItem<TPage>(StringNames title, FluentIcons.Common.Symbol symbol, bool isSelected = false)
