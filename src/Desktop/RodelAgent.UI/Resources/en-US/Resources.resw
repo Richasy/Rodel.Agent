@@ -1253,4 +1253,10 @@ Choose a library folder and let's get started!</value>
   <data name="UserCancelGenerate" xml:space="preserve">
     <value>The generate was canceled by the user</value>
   </data>
+  <data name="HideWhenClose" xml:space="preserve">
+    <value>Hide when closed</value>
+  </data>
+  <data name="HideWhenCloseDescription" xml:space="preserve">
+    <value>Hide the app when the window is closed instead of quitting</value>
+  </data>
 </root>

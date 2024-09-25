@@ -43,6 +43,9 @@ public sealed partial class SettingsPageViewModel
     [ObservableProperty]
     private string _appLanguage;
 
+    [ObservableProperty]
+    private bool _hiddenWhenCloseWindow;
+
     /// <summary>
     /// 在线聊天服务.
     /// </summary>
