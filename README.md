@@ -36,8 +36,8 @@ Please refer to the document website for detailed introduction: [Rodel Agent](ht
 
 |Development Tools|Visual Studio 2022|
 |-|-|
-|Basic Dependencies|.NET 8, Windows App SDK 1.5|
-|Submodules|[Richasy/semantic-kernel](https://github.com/Richasy/semantic-kernel/tree/dev)|
+|Basic Dependencies|.NET 8, Windows App SDK 1.6|
+|Submodules|- [Richasy/semantic-kernel](https://github.com/Richasy/semantic-kernel/tree/dev) <br/> - [Richasy/WinUI.Share](https://github.com/Richasy/WinUI.Share)|
 
 ### Cloning the Repository
 

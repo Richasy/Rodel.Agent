@@ -36,8 +36,8 @@
 
 |开发工具|Visual Studio 2022|
 |-|-|
-|基础依赖|.NET 8, Windows App SDK 1.5|
-|子仓库|[Richasy/semantic-kernel](https://github.com/Richasy/semantic-kernel/tree/dev)|
+|基础依赖|.NET 8, Windows App SDK 1.6|
+|子仓库|- [Richasy/semantic-kernel](https://github.com/Richasy/semantic-kernel/tree/dev) <br/>- [Richasy/WinUI.Share](https://github.com/Richasy/WinUI.Share)|
 
 ### 克隆仓库
 
