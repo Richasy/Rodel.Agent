@@ -11,7 +11,7 @@
     mc:Ignorable="d">
 
     <Grid
-        Padding="12,8,12,12"
+        Padding="{x:Bind Padding, Mode=OneWay}"
         Background="{x:Bind Background, Mode=OneWay}"
         BorderBrush="{x:Bind BorderBrush, Mode=OneWay}"
         BorderThickness="{x:Bind BorderThickness, Mode=OneWay}"
@@ -45,6 +45,16 @@
                 FontSize="14"
                 Foreground="{ThemeResource InfoBarErrorSeverityIconBackground}"
                 Symbol="DismissCircle"
+                Visibility="Collapsed" />
+            <ProgressRing
+                x:Name="LoadingRing"
+                Width="12"
+                Height="12"
+                MinWidth="12"
+                MinHeight="12"
+                VerticalAlignment="Center"
+                IsActive="False"
+                Style="{StaticResource PageProgressRingStyle}"
                 Visibility="Collapsed" />
         </Grid>
         <TextBlock

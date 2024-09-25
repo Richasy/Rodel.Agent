@@ -54,7 +54,7 @@
         Padding="8,0"
         Style="{StaticResource PageScrollViewerStyle}">
         <StackPanel x:Name="ControlPanel" Margin="0,0,0,12">
-            <StackPanel x:Name="BasicPanel">
+            <StackPanel x:Name="BasicPanel" Visibility="{x:Bind BasicPanelVisibility, Mode=OneWay}">
                 <Grid
                     Margin="12,0"
                     Padding="0,2"

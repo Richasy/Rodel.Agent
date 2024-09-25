@@ -24,12 +24,14 @@ public sealed class ChatMessage
     /// 发送者名称.
     /// </summary>
     [JsonPropertyName("author")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Author { get; set; }
 
     /// <summary>
     /// 发送者 ID.
     /// </summary>
     [JsonPropertyName("author_id")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? AuthorId { get; set; }
 
     /// <summary>
@@ -43,6 +45,7 @@ public sealed class ChatMessage
     /// 消息发送的时间.
     /// </summary>
     [JsonPropertyName("time")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonConverter(typeof(DateTimeOffsetConverter))]
     public DateTimeOffset? Time { get; set; }
 
@@ -50,6 +53,7 @@ public sealed class ChatMessage
     /// 获取或设置客户端消息类型.
     /// </summary>
     [JsonPropertyName("client_message_type")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     public ClientMessageType ClientMessageType { get; set; } = ClientMessageType.Normal;
 
     /// <summary>

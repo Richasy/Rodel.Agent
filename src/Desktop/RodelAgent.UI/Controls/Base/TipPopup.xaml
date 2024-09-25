@@ -35,6 +35,7 @@
 
     <local:StatusTip
         x:Name="PopupContainer"
+        Padding="12,8,12,12"
         HorizontalAlignment="Center"
         VerticalAlignment="Bottom"
         Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"

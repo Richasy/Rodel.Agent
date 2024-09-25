@@ -19,6 +19,12 @@ public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBas
     public static readonly DependencyProperty IsMaxRoundEnabledProperty =
         DependencyProperty.Register(nameof(IsMaxRoundEnabled), typeof(bool), typeof(ChatProviderOptionPanel), new PropertyMetadata(true));
 
+    /// <summary>
+    /// <see cref="BasicPanelVisibility"/> 的依赖属性.
+    /// </summary>
+    public static readonly DependencyProperty BasicPanelVisibilityProperty =
+        DependencyProperty.Register(nameof(BasicPanelVisibility), typeof(Visibility), typeof(ChatProviderOptionPanel), new PropertyMetadata(Visibility.Visible));
+
     private bool _isInitialized;
 
     /// <summary>
@@ -38,6 +44,15 @@ public sealed partial class ChatProviderOptionPanel : ChatProviderOptionPanelBas
     {
         get => (bool)GetValue(IsMaxRoundEnabledProperty);
         set => SetValue(IsMaxRoundEnabledProperty, value);
+    }
+
+    /// <summary>
+    /// 基础面板可见性.
+    /// </summary>
+    public Visibility BasicPanelVisibility
+    {
+        get => (Visibility)GetValue(BasicPanelVisibilityProperty);
+        set => SetValue(BasicPanelVisibilityProperty, value);
     }
 
     /// <inheritdoc/>

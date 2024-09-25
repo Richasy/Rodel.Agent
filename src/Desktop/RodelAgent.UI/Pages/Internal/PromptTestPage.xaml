@@ -1,13 +1,74 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<base:LayoutPageBase
+<local:PromptTestPageBase
     x:Class="RodelAgent.UI.Pages.Internal.PromptTestPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:base="using:Richasy.WinUI.Share.Base"
+    xmlns:controls="using:RodelAgent.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:internal="using:RodelAgent.UI.Controls.Internal"
     xmlns:local="using:RodelAgent.UI.Pages.Internal"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid />
-</base:LayoutPageBase>
+    <Grid>
+        <controls:EmptyHolder
+            Title="{ext:Locale Name=NoAvailableService}"
+            Description="{ext:Locale Name=NoAvailableServiceDescription}"
+            Emoji="&#x1FAE3;"
+            Style="{StaticResource BasicEmptyHolderStyle}"
+            Visibility="{x:Bind ViewModel.IsAvailableServicesEmpty, Mode=OneWay}" />
+        <Grid Visibility="{x:Bind ViewModel.IsAvailableServicesEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{x:Bind ViewModel.NavColumnWidth, Mode=OneWay, Converter={StaticResource GridLengthConverter}}" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="{x:Bind ViewModel.ExtraColumnWidth, Mode=OneWay, Converter={StaticResource GridLengthConverter}}" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="56" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock
+                Margin="16,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Style="{StaticResource BodyStrongTextBlockStyle}"
+                Text="{ext:Locale Name=PromptTest}" />
+            <Border
+                Grid.Row="1"
+                Grid.ColumnSpan="5"
+                Height="1"
+                Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
+            <internal:PromptTestSideBody Grid.Row="2" Margin="0,0,-6,0" />
+            <internal:PromptTestMainHeader Grid.Column="2" Margin="-6,0" />
+            <internal:PromptTestMainBody
+                Grid.Row="2"
+                Grid.Column="2"
+                Margin="-6,0" />
+
+            <internal:PromptTestExtraHeader Grid.Column="4" Margin="-6,0,0,0" />
+            <internal:PromptTestExtraBody
+                Grid.Row="2"
+                Grid.Column="4"
+                Margin="-6,0,0,0" />
+
+            <!--  左侧分栏大小控制器  -->
+            <controls:ColumnSplitter
+                Grid.RowSpan="3"
+                Grid.Column="1"
+                ColumnWidth="{x:Bind ViewModel.NavColumnWidth, Mode=TwoWay}"
+                IsHideButtonEnabled="False" />
+
+            <!--  右侧分栏大小控制器  -->
+            <controls:ColumnSplitter
+                Grid.RowSpan="3"
+                Grid.Column="3"
+                ColumnWidth="{x:Bind ViewModel.ExtraColumnWidth, Mode=TwoWay}"
+                IsHideButtonEnabled="False"
+                IsInvertDirection="True" />
+        </Grid>
+    </Grid>
+</local:PromptTestPageBase>
