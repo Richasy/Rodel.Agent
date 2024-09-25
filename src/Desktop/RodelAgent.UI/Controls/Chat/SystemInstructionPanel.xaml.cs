@@ -38,7 +38,7 @@ public sealed partial class SystemInstructionPanel : ChatSessionControlBase
         }
 
         ViewModel.Data.SystemInstruction = SystemBox.Text;
-        ViewModel.CalcTotalTokenCountCommand.Execute(default);
+        ViewModel.ResetLastInputTimeCommand.Execute(default);
         _textChanged = true;
     }
 

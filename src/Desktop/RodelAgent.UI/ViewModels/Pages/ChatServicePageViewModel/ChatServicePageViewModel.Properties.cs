@@ -20,6 +20,7 @@ public sealed partial class ChatServicePageViewModel
     private readonly ILogger<ChatServicePageViewModel> _logger;
     private readonly ChatPresetModuleViewModel _chatPresetModuleVM;
     private readonly GroupPresetModuleViewModel _groupPresetModuleVM;
+    private readonly DispatcherTimer? _tokenTimer;
     private bool _isPluginInitialized;
 
     [ObservableProperty]

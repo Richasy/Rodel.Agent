@@ -306,4 +306,18 @@ public sealed partial class ChatSessionViewModel
             });
         });
     }
+
+    [RelayCommand]
+    private void TryAutoCalcUserInputToken()
+    {
+        if (_lastInputTime is not null && DateTimeOffset.Now - _lastInputTime >= TimeSpan.FromSeconds(1))
+        {
+            _lastInputTime = default;
+            CalcTotalTokenCountCommand.Execute(default);
+        }
+    }
+
+    [RelayCommand]
+    private void ResetLastInputTime()
+        => _lastInputTime = DateTimeOffset.Now;
 }

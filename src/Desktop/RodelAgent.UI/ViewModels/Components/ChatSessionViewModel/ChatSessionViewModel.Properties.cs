@@ -18,6 +18,7 @@ public sealed partial class ChatSessionViewModel
     private readonly IStorageService _storageService;
     private readonly ILogger<ChatSessionViewModel> _logger;
     private CancellationTokenSource _cancellationTokenSource;
+    private DateTimeOffset? _lastInputTime;
 
     private int _baseTokenCount;
 

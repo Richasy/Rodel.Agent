@@ -74,10 +74,8 @@ public sealed partial class ChatSessionViewModel : ViewModelBase<ChatSession>
     /// 在进入视图开始显示时执行.
     /// </summary>
     [RelayCommand]
-    private async Task EnterViewAsync()
-    {
-        await CalcTotalTokenCountAsync();
-    }
+    private void EnterView()
+        => CalcTotalTokenCountCommand.Execute(default);
 
     [RelayCommand]
     private void NewSession()
@@ -251,5 +249,5 @@ public sealed partial class ChatSessionViewModel : ViewModelBase<ChatSession>
         => CheckCurrentModelStatus();
 
     partial void OnUserInputChanged(string value)
-        => CalcUserInputTokenCountCommand.Execute(default);
+        => _lastInputTime = DateTimeOffset.Now;
 }

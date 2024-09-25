@@ -50,6 +50,14 @@ public sealed partial class ChatServicePageViewModel : LayoutPageViewModelBase
         HistoryGroupSessions.CollectionChanged += OnHistorySessionsCountChanged;
         Plugins.CollectionChanged += OnPluginsCountChanged;
         CheckPluginsCount();
+
+        if (_tokenTimer is null)
+        {
+            _tokenTimer = new DispatcherTimer();
+            _tokenTimer.Interval = TimeSpan.FromMilliseconds(400);
+            _tokenTimer.Tick += OnTokenTimerTick;
+            _tokenTimer.Start();
+        }
     }
 
     /// <inheritdoc/>

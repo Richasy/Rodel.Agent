@@ -314,4 +314,7 @@ public sealed partial class ChatServicePageViewModel
         CurrentGroup?.SaveSessionToDatabaseCommand.ExecuteAsync(default);
         CurrentGroup = default;
     }
+
+    private void OnTokenTimerTick(object? sender, object e)
+        => CurrentSession?.TryAutoCalcUserInputTokenCommand.Execute(default);
 }
