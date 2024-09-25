@@ -13,7 +13,8 @@ public sealed partial class PromptTestMainBody : PromptTestPageControlBase
     public PromptTestMainBody() => InitializeComponent();
 
     private void OnTextBoxLostFocus(object sender, RoutedEventArgs e)
-    {
-        ViewModel?.UpdatePromptVariablesCommand.Execute(default);
-    }
+        => ViewModel?.UpdatePromptVariablesCommand.Execute(default);
+
+    private void OnVariableFlyoutOpened(object sender, object e)
+        => ViewModel?.CheckDefaultInputVariableCommand.Execute(default);
 }

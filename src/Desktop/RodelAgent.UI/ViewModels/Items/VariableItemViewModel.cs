@@ -16,6 +16,9 @@ public sealed partial class VariableItemViewModel : ViewModelBase
     [ObservableProperty]
     private List<string>? _values;
 
+    [ObservableProperty]
+    private bool _isEnabled;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="VariableItemViewModel"/> class.
     /// </summary>
@@ -27,6 +30,7 @@ public sealed partial class VariableItemViewModel : ViewModelBase
         Name = name;
         Values = selectValues;
         Value = defaultValue ?? Values?.FirstOrDefault() ?? string.Empty;
+        IsEnabled = true;
     }
 
     /// <inheritdoc/>

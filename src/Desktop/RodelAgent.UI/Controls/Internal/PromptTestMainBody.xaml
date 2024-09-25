@@ -63,7 +63,10 @@
                 IsEnabled="{x:Bind ViewModel.IsGenerating, Mode=OneWay, Converter={StaticResource ObjectToBoolReverseConverter}}"
                 Visibility="{x:Bind ViewModel.IsVariableEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
                 <Button.Flyout>
-                    <Flyout Placement="Top" ShouldConstrainToRootBounds="False">
+                    <Flyout
+                        Opened="OnVariableFlyoutOpened"
+                        Placement="Top"
+                        ShouldConstrainToRootBounds="False">
                         <Grid Width="380">
                             <ItemsRepeater ItemsSource="{x:Bind ViewModel.Variables}">
                                 <ItemsRepeater.ItemTemplate>
@@ -88,7 +91,9 @@
                                                 HorizontalAlignment="Stretch"
                                                 x:Load="{x:Bind Values, Mode=OneWay, Converter={StaticResource ObjectToBoolReverseConverter}}"
                                                 AcceptsReturn="True"
+                                                AllowFocusOnInteraction="True"
                                                 Header="{x:Bind Name}"
+                                                IsEnabled="{x:Bind IsEnabled, Mode=OneWay}"
                                                 PlaceholderText="{x:Bind Name}"
                                                 Text="{x:Bind Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 TextWrapping="Wrap"

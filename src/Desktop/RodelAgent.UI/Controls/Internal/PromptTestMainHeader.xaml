@@ -27,21 +27,38 @@
             Grid.Column="1"
             HorizontalAlignment="Center"
             SelectionChanged="OnPromptSelectionChanged" />
-        <Button
+        <StackPanel
             Grid.Column="2"
             VerticalAlignment="Center"
-            Command="{x:Bind ViewModel.SaveHistoryJsonCommand}"
-            IsEnabled="{x:Bind ViewModel.IsGenerating, Mode=OneWay, Converter={StaticResource ObjectToBoolReverseConverter}}"
-            Style="{StaticResource IconButtonStyle}"
-            ToolTipService.ToolTip="{ext:Locale Name=SaveAs}"
-            Visibility="{x:Bind ViewModel.CurrentSystemPrompt, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
-            <ic:SymbolIcon FontSize="14" Symbol="Save" />
-            <Button.KeyboardAccelerators>
-                <KeyboardAccelerator
-                    Key="S"
-                    IsEnabled="True"
-                    Modifiers="Control" />
-            </Button.KeyboardAccelerators>
-        </Button>
+            Orientation="Horizontal">
+            <Button
+                Command="{x:Bind ViewModel.ReloadMessagesCommand}"
+                IsEnabled="{x:Bind ViewModel.IsGenerating, Mode=OneWay, Converter={StaticResource ObjectToBoolReverseConverter}}"
+                Style="{StaticResource IconButtonStyle}"
+                ToolTipService.ToolTip="{ext:Locale Name=Reload}"
+                Visibility="{x:Bind ViewModel.CurrentSystemPrompt, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
+                <ic:SymbolIcon FontSize="14" Symbol="ArrowClockwise" />
+                <Button.KeyboardAccelerators>
+                    <KeyboardAccelerator
+                        Key="R"
+                        IsEnabled="True"
+                        Modifiers="Control" />
+                </Button.KeyboardAccelerators>
+            </Button>
+            <Button
+                Command="{x:Bind ViewModel.SaveHistoryJsonCommand}"
+                IsEnabled="{x:Bind ViewModel.IsGenerating, Mode=OneWay, Converter={StaticResource ObjectToBoolReverseConverter}}"
+                Style="{StaticResource IconButtonStyle}"
+                ToolTipService.ToolTip="{ext:Locale Name=SaveAs}"
+                Visibility="{x:Bind ViewModel.CurrentSystemPrompt, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
+                <ic:SymbolIcon FontSize="14" Symbol="Save" />
+                <Button.KeyboardAccelerators>
+                    <KeyboardAccelerator
+                        Key="S"
+                        IsEnabled="True"
+                        Modifiers="Control" />
+                </Button.KeyboardAccelerators>
+            </Button>
+        </StackPanel>
     </Grid>
 </local:PromptTestPageControlBase>

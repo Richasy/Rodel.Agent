@@ -30,6 +30,11 @@ public sealed partial class PromptTestMainHeader : PromptTestPageControlBase
 
     private void OnPromptSelectionChanged(SelectorBar sender, SelectorBarSelectionChangedEventArgs args)
     {
+        if (sender.SelectedItem is null)
+        {
+            return;
+        }
+
         var item = sender.SelectedItem.Tag as PromptTestSystemPromptItemViewModel;
         if (ViewModel.CurrentSystemPrompt == item)
         {

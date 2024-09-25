@@ -59,7 +59,7 @@ public sealed partial class PromptTestPageViewModel
             PresetVariablesFilePath = file.Path;
             SettingsToolkit.WriteLocalSetting(SettingNames.PromptTestPresetVariablesFilePath, PresetVariablesFilePath);
             Variables.Clear();
-            _variables.Clear();
+            _variables?.Clear();
             await ParsePresetVariablesAsync(PresetVariablesFilePath);
         }
     }
@@ -200,6 +200,35 @@ public sealed partial class PromptTestPageViewModel
     [RelayCommand]
     private async Task OpenHistoryFileAsync()
         => await Launcher.LaunchFileAsync(await StorageFile.GetFileFromPathAsync(MessageJsonFilePath));
+
+    [RelayCommand]
+    private void RemoveInput()
+    {
+        InputFilePath = string.Empty;
+        SettingsToolkit.WriteLocalSetting(SettingNames.PromptTestInputFilePath, InputFilePath);
+        _inputs.Clear();
+        InputsCount = 0;
+    }
+
+    [RelayCommand]
+    private void CheckDefaultInputVariable()
+    {
+        if (string.IsNullOrEmpty(_defaultInputVariable))
+        {
+            return;
+        }
+
+        var shouldDisableDefaultInputVariable = _inputs?.Count > 0;
+        var defaultInputVariable = Variables.FirstOrDefault(p => p.Name == _defaultInputVariable);
+        if (defaultInputVariable is not null)
+        {
+            defaultInputVariable.IsEnabled = !shouldDisableDefaultInputVariable;
+        }
+    }
+
+    [RelayCommand]
+    private Task ReloadMessagesAsync()
+        => ParseHistoryAsync(MessageJsonFilePath, true);
 
     private async Task ParseInputAsync(string filePath, bool showTip = true)
     {

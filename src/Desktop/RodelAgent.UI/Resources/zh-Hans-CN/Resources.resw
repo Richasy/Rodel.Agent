@@ -1259,4 +1259,7 @@
   <data name="HideWhenCloseDescription" xml:space="preserve">
     <value>关闭窗口时隐藏应用而非退出</value>
   </data>
+  <data name="Reload" xml:space="preserve">
+    <value>重新载入</value>
+  </data>
 </root>

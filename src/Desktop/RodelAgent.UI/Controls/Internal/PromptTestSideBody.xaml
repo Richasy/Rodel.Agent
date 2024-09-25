@@ -74,6 +74,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <TextBlock
                                 HorizontalAlignment="Left"
@@ -87,8 +88,21 @@
                                 VerticalAlignment="Center"
                                 Command="{x:Bind ViewModel.OpenInputFileCommand}"
                                 Style="{StaticResource SmallIconButtonStyle}"
-                                ToolTipService.ToolTip="{ext:Locale Name=OpenFile}">
+                                ToolTipService.ToolTip="{ext:Locale Name=OpenFile}"
+                                Visibility="{x:Bind ViewModel.InputFilePath, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <ic:SymbolIcon FontSize="14" Symbol="Open" />
+                            </Button>
+                            <Button
+                                Grid.Column="2"
+                                VerticalAlignment="Center"
+                                Command="{x:Bind ViewModel.RemoveInputCommand}"
+                                Style="{StaticResource SmallIconButtonStyle}"
+                                ToolTipService.ToolTip="{ext:Locale Name=Delete}"
+                                Visibility="{x:Bind ViewModel.InputFilePath, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
+                                <ic:SymbolIcon
+                                    FontSize="14"
+                                    Foreground="{ThemeResource SystemFillColorCriticalBrush}"
+                                    Symbol="Delete" />
                             </Button>
                         </Grid>
                     </base:SettingsExpander.ItemsFooter>
@@ -124,7 +138,8 @@
                                 VerticalAlignment="Center"
                                 Command="{x:Bind ViewModel.OpenHistoryFileCommand}"
                                 Style="{StaticResource SmallIconButtonStyle}"
-                                ToolTipService.ToolTip="{ext:Locale Name=OpenFile}">
+                                ToolTipService.ToolTip="{ext:Locale Name=OpenFile}"
+                                Visibility="{x:Bind ViewModel.MessageJsonFilePath, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <ic:SymbolIcon FontSize="14" Symbol="Open" />
                             </Button>
                         </Grid>
@@ -161,7 +176,8 @@
                                 VerticalAlignment="Center"
                                 Command="{x:Bind ViewModel.OpenVariablesFileCommand}"
                                 Style="{StaticResource SmallIconButtonStyle}"
-                                ToolTipService.ToolTip="{ext:Locale Name=OpenFile}">
+                                ToolTipService.ToolTip="{ext:Locale Name=OpenFile}"
+                                Visibility="{x:Bind ViewModel.PresetVariablesFilePath, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <ic:SymbolIcon FontSize="14" Symbol="Open" />
                             </Button>
                         </Grid>
