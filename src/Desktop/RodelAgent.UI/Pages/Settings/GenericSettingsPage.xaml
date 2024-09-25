@@ -28,6 +28,7 @@
             <settings:LanguageSettingSection ViewModel="{x:Bind ViewModel}" />
             <settings:AppLogSettingSection ViewModel="{x:Bind ViewModel}" />
             <settings:LibrarySettingSection ViewModel="{x:Bind ViewModel}" />
+            <settings:CloseBehaviorSettingSection ViewModel="{x:Bind ViewModel}" />
             <TextBlock
                 Margin="0,12,0,4"
                 HorizontalAlignment="Left"

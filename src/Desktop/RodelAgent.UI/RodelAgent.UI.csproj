@@ -140,6 +140,7 @@
     <None Remove="Controls\Settings\AzureOpenAIDrawConfigSettingSection.xaml" />
     <None Remove="Controls\Settings\AzureSpeechConfigSettingSection.xaml" />
     <None Remove="Controls\Settings\AzureTranslateConfigSettingSection.xaml" />
+    <None Remove="Controls\Settings\CloseBehaviorSettingSection.xaml" />
     <None Remove="Controls\Settings\DouBaoChatConfigSettingSection.xaml" />
     <None Remove="Controls\Settings\HunYuanChatConfigSettingSection.xaml" />
     <None Remove="Controls\Settings\HunYuanDrawConfigSettingSection.xaml" />
@@ -661,6 +662,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Controls\Internal\PromptTestExtraBody.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Controls\Settings\CloseBehaviorSettingSection.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <None Update="NLog.config">

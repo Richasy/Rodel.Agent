@@ -37,7 +37,7 @@ public sealed partial class SettingsPageViewModel : ViewModelBase
         Copyright = string.Format(copyrightTemplate, BuildYear);
 
         WorkingDirectory = SettingsToolkit.ReadLocalSetting(SettingNames.WorkingDirectory, string.Empty);
-
+        HiddenWhenCloseWindow = SettingsToolkit.ReadLocalSetting(SettingNames.HideWhenCloseWindow, false);
         ShouldRecordTranslate = SettingsToolkit.ReadLocalSetting(SettingNames.ShouldRecordTranslate, false);
     }
 
@@ -166,4 +166,7 @@ public sealed partial class SettingsPageViewModel : ViewModelBase
 
     partial void OnShouldRecordTranslateChanged(bool value)
         => SettingsToolkit.WriteLocalSetting(SettingNames.ShouldRecordTranslate, value);
+
+    partial void OnHiddenWhenCloseWindowChanged(bool value)
+        => SettingsToolkit.WriteLocalSetting(SettingNames.HideWhenCloseWindow, value);
 }
