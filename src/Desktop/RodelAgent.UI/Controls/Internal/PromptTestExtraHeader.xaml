@@ -20,18 +20,20 @@
             VerticalAlignment="Center"
             Style="{StaticResource BodyStrongTextBlockStyle}"
             Text="{ext:Locale Name=GenerateResult}" />
-        <HyperlinkButton
-            Grid.Column="1"
-            VerticalAlignment="Center"
-            Content="{ext:Locale Name=Cancel}"
-            Visibility="{x:Bind ViewModel.IsGenerating, Mode=OneWay}" />
-        <Button
-            Grid.Column="1"
-            VerticalAlignment="Center"
-            Style="{StaticResource IconButtonStyle}"
-            ToolTipService.ToolTip="{ext:Locale Name=SaveAs}"
-            Visibility="{x:Bind ViewModel.IsFinished, Mode=OneWay}">
-            <ic:SymbolIcon FontSize="14" Symbol="Save" />
-        </Button>
+        <Grid Grid.Column="1" Visibility="{x:Bind ViewModel.IsSessionsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+            <HyperlinkButton
+                VerticalAlignment="Center"
+                Command="{x:Bind ViewModel.CancelGeneratingCommand}"
+                Content="{ext:Locale Name=Cancel}"
+                Visibility="{x:Bind ViewModel.IsGenerating, Mode=OneWay}" />
+            <Button
+                VerticalAlignment="Center"
+                Command="{x:Bind ViewModel.ExportResultCommand, Mode=OneWay}"
+                Style="{StaticResource IconButtonStyle}"
+                ToolTipService.ToolTip="{ext:Locale Name=Export}"
+                Visibility="{x:Bind ViewModel.IsFinished, Mode=OneWay}">
+                <ic:SymbolIcon FontSize="14" Symbol="Share" />
+            </Button>
+        </Grid>
     </Grid>
 </local:PromptTestPageControlBase>

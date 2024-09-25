@@ -25,6 +25,7 @@
             VerticalAlignment="Stretch"
             AcceptsReturn="True"
             FontSize="18"
+            IsEnabled="{x:Bind ViewModel.IsGenerating, Mode=OneWay, Converter={StaticResource ObjectToBoolReverseConverter}}"
             Style="{StaticResource TransparentTextBoxStyle}"
             Text="{x:Bind ViewModel.CurrentSystemPrompt.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             TextWrapping="Wrap" />
@@ -40,6 +41,7 @@
             VerticalAlignment="Stretch"
             AcceptsReturn="True"
             FontSize="18"
+            IsEnabled="{x:Bind ViewModel.IsGenerating, Mode=OneWay, Converter={StaticResource ObjectToBoolReverseConverter}}"
             LostFocus="OnTextBoxLostFocus"
             Style="{StaticResource TransparentTextBoxStyle}"
             Text="{x:Bind ViewModel.UserPromptTemplate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -58,7 +60,8 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Content="{ext:Locale Name=Variables}"
-                IsEnabled="{x:Bind ViewModel.IsVariableEmpty, Mode=OneWay, Converter={StaticResource ObjectToBoolReverseConverter}}">
+                IsEnabled="{x:Bind ViewModel.IsGenerating, Mode=OneWay, Converter={StaticResource ObjectToBoolReverseConverter}}"
+                Visibility="{x:Bind ViewModel.IsVariableEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
                 <Button.Flyout>
                     <Flyout Placement="Top" ShouldConstrainToRootBounds="False">
                         <Grid Width="380">
@@ -107,7 +110,24 @@
                 VerticalAlignment="Center"
                 Command="{x:Bind ViewModel.GenerateCommand}"
                 Content="{ext:Locale Name=Generate}"
-                Style="{StaticResource AccentButtonStyle}" />
+                Style="{StaticResource AccentButtonStyle}"
+                Visibility="{x:Bind ViewModel.IsGenerating, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
+            <Button
+                Grid.Column="1"
+                MinWidth="120"
+                VerticalAlignment="Center"
+                Command="{x:Bind ViewModel.CancelGeneratingCommand, Mode=OneWay}"
+                Style="{StaticResource AccentButtonStyle}"
+                Visibility="{x:Bind ViewModel.IsGenerating, Mode=OneWay}">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <ProgressRing
+                        Width="16"
+                        Height="16"
+                        VerticalAlignment="Center"
+                        Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}" />
+                    <TextBlock VerticalAlignment="Center" Text="{ext:Locale Name=Cancel}" />
+                </StackPanel>
+            </Button>
         </Grid>
     </Grid>
 </local:PromptTestPageControlBase>

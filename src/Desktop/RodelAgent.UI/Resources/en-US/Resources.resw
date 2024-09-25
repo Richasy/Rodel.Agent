@@ -824,7 +824,7 @@ You can manually adjust the limit, and the application will capture the specifie
     <value>View the built-in model list of {0}</value>
   </data>
   <data name="PresencePenalty" xml:space="preserve">
-    <value>Topic repetition penalty</value>
+    <value>Repetition penalty</value>
   </data>
   <data name="PresencePenaltyDescription" xml:space="preserve">
     <value>The higher the value, the more likely the model will output new topics</value>
@@ -932,7 +932,7 @@ You can manually adjust the limit, and the application will capture the specifie
     <value>See all models</value>
   </data>
   <data name="Seed" xml:space="preserve">
-    <value>Random seed</value>
+    <value>Seed</value>
   </data>
   <data name="SeedDescription" xml:space="preserve">
     <value>The model will try to keep the same seed producing the same response content (requires model support)</value>
@@ -1055,10 +1055,10 @@ You can manually adjust the limit, and the application will capture the specifie
     <value>The translated text will be displayed here</value>
   </data>
   <data name="Temperature" xml:space="preserve">
-    <value>Sampling temperature</value>
+    <value>Temperature</value>
   </data>
   <data name="TemperatureDescription" xml:space="preserve">
-    <value>Higher values make the output more random, while lower values make the results more focused and deterministic (usually not mixed with nucleus sampling factor)</value>
+    <value>Higher values make the output more random, while lower values make the results more focused and deterministic (usually not mixed with Top P)</value>
   </data>
   <data name="TencentAccessKeyDescription" xml:space="preserve">
     <value>Register on Tencent Cloud and obtain the access key</value>
@@ -1094,7 +1094,7 @@ You can manually adjust the limit, and the application will capture the specifie
     <value>Randomly select one from a specified number of token candidates (non-uniform probability)</value>
   </data>
   <data name="TopP" xml:space="preserve">
-    <value>Nucleus sampling factor</value>
+    <value>Top P</value>
   </data>
   <data name="TopPDescription" xml:space="preserve">
     <value>Only consider higher quality token results, for example, at 0.1, the model only considers tokens within the top 10% of probability mass (usually not mixed with sampling temperature)</value>
@@ -1231,5 +1231,26 @@ Choose a library folder and let's get started!</value>
   </data>
   <data name="TestName" xml:space="preserve">
     <value>Test {0}</value>
+  </data>
+  <data name="CheckResult" xml:space="preserve">
+    <value>Check result</value>
+  </data>
+  <data name="ClickGenerate" xml:space="preserve">
+    <value>Click the Generate</value>
+  </data>
+  <data name="ClickGenerateDescription" xml:space="preserve">
+    <value>Click the generate button to generate the results in batches</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="ExportSuccess" xml:space="preserve">
+    <value>Export success!</value>
+  </data>
+  <data name="OpenFile" xml:space="preserve">
+    <value>Open file</value>
+  </data>
+  <data name="UserCancelGenerate" xml:space="preserve">
+    <value>The generate was canceled by the user</value>
   </data>
 </root>

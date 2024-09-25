@@ -21,6 +21,8 @@ public sealed partial class PromptTestPageViewModel
     private Dictionary<string, List<string>>? _variables;
     private List<string>? _inputs;
     private string _defaultInputVariable = string.Empty;
+    private string? _lastContext;
+    private DispatcherTimer? _generateTimer;
 
     [ObservableProperty]
     private double _extraColumnWidth;
@@ -81,6 +83,9 @@ public sealed partial class PromptTestPageViewModel
 
     [ObservableProperty]
     private bool _isFinished;
+
+    [ObservableProperty]
+    private bool _isSessionsEmpty;
 
     /// <summary>
     /// 系统提示初始化完成事件.

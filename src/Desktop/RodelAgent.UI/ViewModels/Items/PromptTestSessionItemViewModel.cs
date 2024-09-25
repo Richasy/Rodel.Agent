@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
+using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading;
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Toolkits;
@@ -15,6 +17,7 @@ public sealed partial class PromptTestSessionItemViewModel : ViewModelBase
 {
     private readonly IChatClient _chatClient;
     private readonly ILogger<PromptTestSessionItemViewModel> _logger;
+    private readonly string _sourceInput;
     private CancellationTokenSource? _cancellationTokenSource;
 
     [ObservableProperty]
@@ -33,6 +36,9 @@ public sealed partial class PromptTestSessionItemViewModel : ViewModelBase
     private string _result;
 
     [ObservableProperty]
+    private string _error;
+
+    [ObservableProperty]
     private bool _isSuccess;
 
     /// <summary>
@@ -42,7 +48,8 @@ public sealed partial class PromptTestSessionItemViewModel : ViewModelBase
         IChatClient chatClient,
         int index,
         ChatSessionPreset preset,
-        string input)
+        string input,
+        string sourceInput)
     {
         _chatClient = chatClient;
         _logger = this.Get<ILogger<PromptTestSessionItemViewModel>>();
@@ -51,12 +58,42 @@ public sealed partial class PromptTestSessionItemViewModel : ViewModelBase
         Input = input;
         Title = string.Format(ResourceToolkit.GetLocalizedString(StringNames.TestName), index + 1);
         Session = _chatClient.CreateSession(preset);
+        _sourceInput = sourceInput;
     }
 
     /// <summary>
     /// 获取或设置会话.
     /// </summary>
     public ChatSession Session { get; private set; }
+
+    /// <summary>
+    /// 获取条目 JSON 字符串.
+    /// </summary>
+    /// <returns>JSON.</returns>
+    public string GetItemJson(string? context = default)
+    {
+        var question = _sourceInput;
+        var answer = Result;
+        if (answer.Contains("|R1|"))
+        {
+            var regex = new Regex(@"\|R1\|(.*?)\|R1\|", RegexOptions.Singleline);
+
+            var match = regex.Match(Result);
+            if (match.Success)
+            {
+                answer = match.Groups[1].Value.Trim();
+            }
+        }
+
+        var obj = new
+        {
+            question,
+            answer,
+            context = context?.ToLower(),
+        };
+
+        return JsonSerializer.Serialize(obj, new JsonSerializerOptions { WriteIndented = false, DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull });
+    }
 
     /// <inheritdoc/>
     public override bool Equals(object? obj) => obj is PromptTestSessionItemViewModel model && Index == model.Index;
@@ -88,15 +125,18 @@ public sealed partial class PromptTestSessionItemViewModel : ViewModelBase
         catch (TaskCanceledException)
         {
             State = InfoType.Warning;
+            Error = ResourceToolkit.GetLocalizedString(StringNames.UserCancelGenerate);
             return;
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, $"{Title} Failed.\n {Input}\n");
             State = InfoType.Error;
+            Error = ex.Message;
         }
     }
 
+    [RelayCommand]
     private void Cancel()
     {
         _cancellationTokenSource?.Cancel();

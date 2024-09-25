@@ -11,7 +11,7 @@
     mc:Ignorable="d">
 
     <Grid
-        Padding="12,8,12,12"
+        Padding="{x:Bind Padding, Mode=OneWay}"
         Background="{x:Bind Background, Mode=OneWay}"
         BorderBrush="{x:Bind BorderBrush, Mode=OneWay}"
         BorderThickness="{x:Bind BorderThickness, Mode=OneWay}"
@@ -48,8 +48,10 @@
                 Visibility="Collapsed" />
             <ProgressRing
                 x:Name="LoadingRing"
-                MinWidth="14"
-                MinHeight="14"
+                Width="12"
+                Height="12"
+                MinWidth="12"
+                MinHeight="12"
                 VerticalAlignment="Center"
                 IsActive="False"
                 Style="{StaticResource PageProgressRingStyle}"

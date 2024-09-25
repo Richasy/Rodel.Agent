@@ -7,6 +7,7 @@ using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels.Items;
 using RodelChat.Models.Client;
 using Windows.Storage;
+using Windows.System;
 
 namespace RodelAgent.UI.ViewModels.Pages;
 
@@ -15,6 +16,28 @@ namespace RodelAgent.UI.ViewModels.Pages;
 /// </summary>
 public sealed partial class PromptTestPageViewModel
 {
+    private static async Task<List<string>> ParseJsonLFileAsync(StorageFile file)
+    {
+        if (Path.GetExtension(file.Path) != ".jsonl")
+        {
+            return null;
+        }
+
+        var inputs = new List<string>();
+        var jsonLines = await FileIO.ReadLinesAsync(file);
+        foreach (var line in jsonLines)
+        {
+            var json = JsonDocument.Parse(line);
+            var root = json.RootElement;
+            if (root.TryGetProperty("question", out var textElement))
+            {
+                inputs.Add(textElement.GetString());
+            }
+        }
+
+        return inputs;
+    }
+
     [RelayCommand]
     private async Task ImportHistoryAsync()
     {
@@ -35,21 +58,21 @@ public sealed partial class PromptTestPageViewModel
         {
             PresetVariablesFilePath = file.Path;
             SettingsToolkit.WriteLocalSetting(SettingNames.PromptTestPresetVariablesFilePath, PresetVariablesFilePath);
+            Variables.Clear();
+            _variables.Clear();
             await ParsePresetVariablesAsync(PresetVariablesFilePath);
         }
     }
 
+    [RelayCommand]
     private async Task ImportInputsAsync()
     {
-        var jsonFile = await FileToolkit.PickFileAsync(".json", this.Get<AppViewModel>().ActivatedWindow);
+        var jsonFile = await FileToolkit.PickFileAsync(".json,.jsonl", this.Get<AppViewModel>().ActivatedWindow);
         if (jsonFile is StorageFile file)
         {
             InputFilePath = file.Path;
             SettingsToolkit.WriteLocalSetting(SettingNames.PromptTestInputFilePath, InputFilePath);
-            var json = await FileIO.ReadTextAsync(file);
-            _inputs = JsonSerializer.Deserialize<List<string>>(json);
-            InputsCount = _inputs.Count;
-            this.Get<AppViewModel>().ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.InputsImported), InfoType.Success));
+            await ParseInputAsync(InputFilePath);
         }
     }
 
@@ -163,6 +186,49 @@ public sealed partial class PromptTestPageViewModel
         {
             _logger.LogError(ex, "Failed to save history file.");
             await this.Get<AppViewModel>().ShowMessageDialogAsync(ex.Message);
+        }
+    }
+
+    [RelayCommand]
+    private async Task OpenInputFileAsync()
+        => await Launcher.LaunchFileAsync(await StorageFile.GetFileFromPathAsync(InputFilePath));
+
+    [RelayCommand]
+    private async Task OpenVariablesFileAsync()
+        => await Launcher.LaunchFileAsync(await StorageFile.GetFileFromPathAsync(PresetVariablesFilePath));
+
+    [RelayCommand]
+    private async Task OpenHistoryFileAsync()
+        => await Launcher.LaunchFileAsync(await StorageFile.GetFileFromPathAsync(MessageJsonFilePath));
+
+    private async Task ParseInputAsync(string filePath, bool showTip = true)
+    {
+        try
+        {
+            var file = await StorageFile.GetFileFromPathAsync(filePath);
+            if (Path.GetExtension(filePath) == ".jsonl")
+            {
+                _inputs = await ParseJsonLFileAsync(file);
+            }
+            else
+            {
+                var json = await FileIO.ReadTextAsync(file);
+                _inputs = JsonSerializer.Deserialize<List<string>>(json);
+            }
+
+            InputsCount = _inputs.Count;
+            if (showTip)
+            {
+                this.Get<AppViewModel>().ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.InputsImported), InfoType.Success));
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to parse input file.");
+            if (showTip)
+            {
+                await this.Get<AppViewModel>().ShowMessageDialogAsync(ex.Message);
+            }
         }
     }
 

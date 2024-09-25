@@ -59,6 +59,15 @@ public sealed partial class PromptTestPageViewModel : LayoutPageViewModelBase
             ChangeService(AvailableServices.FirstOrDefault());
         }
 
+        if (string.IsNullOrEmpty(InputFilePath))
+        {
+            InputFilePath = SettingsToolkit.ReadLocalSetting(SettingNames.PromptTestInputFilePath, string.Empty);
+            if (!string.IsNullOrEmpty(InputFilePath))
+            {
+                await ParseInputAsync(InputFilePath, false);
+            }
+        }
+
         if (string.IsNullOrEmpty(PresetVariablesFilePath))
         {
             PresetVariablesFilePath = SettingsToolkit.ReadLocalSetting(SettingNames.PromptTestPresetVariablesFilePath, string.Empty);
@@ -76,6 +85,8 @@ public sealed partial class PromptTestPageViewModel : LayoutPageViewModelBase
                 await ParseHistoryAsync(MessageJsonFilePath, false);
             }
         }
+
+        CheckSessionCount();
     }
 
     [RelayCommand]
@@ -129,6 +140,9 @@ public sealed partial class PromptTestPageViewModel : LayoutPageViewModelBase
 
         Preset = new ChatPresetItemViewModel(preset);
     }
+
+    private void CheckSessionCount()
+        => IsSessionsEmpty = Sessions is null || Sessions.Count == 0;
 
     partial void OnExtraColumnWidthChanged(double value)
     {

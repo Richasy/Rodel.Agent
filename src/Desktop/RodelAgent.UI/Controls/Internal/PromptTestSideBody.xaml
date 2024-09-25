@@ -7,6 +7,7 @@
     xmlns:chat="using:RodelAgent.UI.Controls.Chat"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
     xmlns:items="using:RodelAgent.UI.ViewModels.Items"
     xmlns:items1="using:RodelAgent.UI.Controls.Items"
     xmlns:local="using:RodelAgent.UI.Controls.Internal"
@@ -20,8 +21,11 @@
     </UserControl.Resources>
 
     <Grid>
-        <ScrollView Style="{StaticResource PageScrollViewStyle}">
+        <ScrollView IsEnabled="{x:Bind ViewModel.IsGenerating, Mode=OneWay, Converter={StaticResource ObjectToBoolReverseConverter}}" Style="{StaticResource PageScrollViewStyle}">
             <StackPanel Margin="12,8" Spacing="8">
+                <StackPanel.ChildrenTransitions>
+                    <RepositionThemeTransition IsStaggeringEnabled="False" />
+                </StackPanel.ChildrenTransitions>
                 <TextBlock
                     HorizontalAlignment="Left"
                     Style="{StaticResource CaptionTextBlockStyle}"
@@ -52,6 +56,43 @@
                     Margin="0,8,0,0"
                     Style="{StaticResource CaptionTextBlockStyle}"
                     Text="{ext:Locale Name=Dataset}" />
+                <base:SettingsExpander Header="{ext:Locale Name=ImportInputs}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <InfoBadge
+                            VerticalAlignment="Center"
+                            Style="{StaticResource InformationalValueInfoBadgeStyle}"
+                            Value="{x:Bind ViewModel.InputsCount, Mode=OneWay}" />
+                        <Button Command="{x:Bind ViewModel.ImportInputsCommand}" Content="{ext:Locale Name=Import}" />
+                    </StackPanel>
+
+                    <base:SettingsExpander.ItemsFooter>
+                        <Grid
+                            Padding="16,12"
+                            HorizontalAlignment="Stretch"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            ColumnSpacing="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                IsTextSelectionEnabled="True"
+                                Style="{StaticResource CaptionTextBlockStyle}"
+                                Text="{x:Bind ViewModel.InputFilePath, Mode=OneWay}" />
+                            <Button
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Command="{x:Bind ViewModel.OpenInputFileCommand}"
+                                Style="{StaticResource SmallIconButtonStyle}"
+                                ToolTipService.ToolTip="{ext:Locale Name=OpenFile}">
+                                <ic:SymbolIcon FontSize="14" Symbol="Open" />
+                            </Button>
+                        </Grid>
+                    </base:SettingsExpander.ItemsFooter>
+                </base:SettingsExpander>
                 <base:SettingsExpander Header="{ext:Locale Name=ImportHistory}">
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <InfoBadge
@@ -65,7 +106,12 @@
                         <Grid
                             Padding="16,12"
                             HorizontalAlignment="Stretch"
-                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            ColumnSpacing="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
                             <TextBlock
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
@@ -73,6 +119,14 @@
                                 IsTextSelectionEnabled="True"
                                 Style="{StaticResource CaptionTextBlockStyle}"
                                 Text="{x:Bind ViewModel.MessageJsonFilePath, Mode=OneWay}" />
+                            <Button
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Command="{x:Bind ViewModel.OpenHistoryFileCommand}"
+                                Style="{StaticResource SmallIconButtonStyle}"
+                                ToolTipService.ToolTip="{ext:Locale Name=OpenFile}">
+                                <ic:SymbolIcon FontSize="14" Symbol="Open" />
+                            </Button>
                         </Grid>
                     </base:SettingsExpander.ItemsFooter>
                 </base:SettingsExpander>
@@ -89,7 +143,12 @@
                         <Grid
                             Padding="16,12"
                             HorizontalAlignment="Stretch"
-                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            ColumnSpacing="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
                             <TextBlock
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
@@ -97,6 +156,14 @@
                                 IsTextSelectionEnabled="True"
                                 Style="{StaticResource CaptionTextBlockStyle}"
                                 Text="{x:Bind ViewModel.PresetVariablesFilePath, Mode=OneWay}" />
+                            <Button
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Command="{x:Bind ViewModel.OpenVariablesFileCommand}"
+                                Style="{StaticResource SmallIconButtonStyle}"
+                                ToolTipService.ToolTip="{ext:Locale Name=OpenFile}">
+                                <ic:SymbolIcon FontSize="14" Symbol="Open" />
+                            </Button>
                         </Grid>
                     </base:SettingsExpander.ItemsFooter>
                 </base:SettingsExpander>

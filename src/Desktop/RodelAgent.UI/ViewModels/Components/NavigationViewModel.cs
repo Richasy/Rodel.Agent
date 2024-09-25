@@ -13,6 +13,11 @@ namespace RodelAgent.UI.ViewModels.Components;
 /// </summary>
 public sealed partial class NavigationViewModel : ViewModelBase, INavServiceViewModel
 {
+#if DEBUG
+    private const bool IsDebug = true;
+#else
+    private const bool IsDebug = false;
+#endif
     private Frame? _navFrame;
     private Frame? _overFrame;
 
@@ -154,7 +159,7 @@ public sealed partial class NavigationViewModel : ViewModelBase, INavServiceView
             GetItem<SettingsPage>(StringNames.Settings, FluentIcons.Common.Symbol.Settings),
         };
 
-        if (SettingsToolkit.ReadLocalSetting(SettingNames.IsInternalPromptTest, false))
+        if (SettingsToolkit.ReadLocalSetting(SettingNames.IsInternalPromptTest, false) || IsDebug)
         {
             list.Insert(0, GetItem<PromptTestPage>(StringNames.PromptTest, FluentIcons.Common.Symbol.TextBulletListSquareEdit));
         }

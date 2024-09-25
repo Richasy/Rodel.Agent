@@ -31,9 +31,10 @@
             Grid.Column="2"
             VerticalAlignment="Center"
             Command="{x:Bind ViewModel.SaveHistoryJsonCommand}"
-            IsEnabled="{x:Bind ViewModel.CurrentSystemPrompt, Mode=OneWay, Converter={StaticResource ObjectToBoolConverter}}"
+            IsEnabled="{x:Bind ViewModel.IsGenerating, Mode=OneWay, Converter={StaticResource ObjectToBoolReverseConverter}}"
             Style="{StaticResource IconButtonStyle}"
-            ToolTipService.ToolTip="{ext:Locale Name=SaveAs}">
+            ToolTipService.ToolTip="{ext:Locale Name=SaveAs}"
+            Visibility="{x:Bind ViewModel.CurrentSystemPrompt, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
             <ic:SymbolIcon FontSize="14" Symbol="Save" />
             <Button.KeyboardAccelerators>
                 <KeyboardAccelerator

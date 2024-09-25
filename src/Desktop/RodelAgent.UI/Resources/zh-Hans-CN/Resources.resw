@@ -1232,4 +1232,25 @@
   <data name="TestName" xml:space="preserve">
     <value>测试 {0}</value>
   </data>
+  <data name="CheckResult" xml:space="preserve">
+    <value>检查结果</value>
+  </data>
+  <data name="ClickGenerate" xml:space="preserve">
+    <value>点击生成按钮</value>
+  </data>
+  <data name="ClickGenerateDescription" xml:space="preserve">
+    <value>调整完参数后点击生成按钮即可批量生成结果</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>导出</value>
+  </data>
+  <data name="ExportSuccess" xml:space="preserve">
+    <value>已成功导出</value>
+  </data>
+  <data name="OpenFile" xml:space="preserve">
+    <value>打开文件</value>
+  </data>
+  <data name="UserCancelGenerate" xml:space="preserve">
+    <value>生成操作被用户取消</value>
+  </data>
 </root>

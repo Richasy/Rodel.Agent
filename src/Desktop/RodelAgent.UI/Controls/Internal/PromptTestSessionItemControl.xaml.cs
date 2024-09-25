@@ -13,6 +13,9 @@ public sealed partial class PromptTestSessionItemControl : PromptTestSessionItem
     /// Initializes a new instance of the <see cref="PromptTestSessionItemControl"/> class.
     /// </summary>
     public PromptTestSessionItemControl() => InitializeComponent();
+
+    private void OnResultButtonClick(object sender, RoutedEventArgs e)
+        => FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
 }
 
 /// <summary>
