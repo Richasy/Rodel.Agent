@@ -40,9 +40,10 @@ public sealed partial class ModelClientEndpointConfigSettingSection : ChatServic
         PredefinedCard.Description = string.Format(ResourceToolkit.GetLocalizedString(Models.Constants.StringNames.PredefinedModelsDescription), newVM.Name);
 
         newVM.Config ??= CreateCurrentConfig();
-        if (newVM.Config is OllamaClientConfig)
+        if (newVM.Config is OllamaClientConfig ollama)
         {
             KeyCard.Visibility = Visibility.Collapsed;
+            EndpointBox.Text = ollama.Endpoint ?? string.Empty;
         }
 
         Debug.Assert(ViewModel.Config != null, "ViewModel.Config should not be null.");
