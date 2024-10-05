@@ -14,11 +14,10 @@
     mc:Ignorable="d">
 
     <Grid>
-        <controls:EmptyHolder
+        <base:EmptyHolder
             Title="{ext:Locale Name=NoAvailableService}"
             Description="{ext:Locale Name=NoAvailableServiceDescription}"
             Emoji="&#x1F3A8;"
-            Style="{StaticResource BasicEmptyHolderStyle}"
             Visibility="{x:Bind ViewModel.IsAvailableServicesEmpty, Mode=OneWay}" />
         <Grid Visibility="{x:Bind ViewModel.IsAvailableServicesEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
             <Grid.ColumnDefinitions>
@@ -78,11 +77,10 @@
                             VerticalAlignment="Stretch"
                             CornerRadius="{StaticResource OverlayCornerRadius}"
                             Visibility="{x:Bind ViewModel.Session.IsDrawing, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
-                        <controls:EmptyHolder
+                        <base:EmptyHolder
                             Title="{ext:Locale Name=NeedDrawImage}"
                             Description="{ext:Locale Name=NeedDrawImageDescription}"
                             Emoji="&#x270D;"
-                            Style="{StaticResource BasicEmptyHolderStyle}"
                             Visibility="{x:Bind ViewModel.Session.IsDrawing, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
                     </Grid>
                 </Grid>

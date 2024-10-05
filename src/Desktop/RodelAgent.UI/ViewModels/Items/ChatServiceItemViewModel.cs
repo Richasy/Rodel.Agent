@@ -132,7 +132,7 @@ public sealed partial class ChatServiceItemViewModel : ViewModelBase
             if (IsModelExist(model))
             {
                 this.Get<AppViewModel>()
-                    .ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(Models.Constants.StringNames.ModelAlreadyExist), Models.Constants.InfoType.Error));
+                    .ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(Models.Constants.StringNames.ModelAlreadyExist), InfoType.Error));
                 return;
             }
 

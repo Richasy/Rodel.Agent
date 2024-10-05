@@ -56,7 +56,7 @@ public sealed partial class TranslateSessionItemControl : TranslateSessionItemCo
         var dataPackage = new DataPackage();
         dataPackage.SetText(text);
         Clipboard.SetContent(dataPackage);
-        this.Get<AppViewModel>().ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(Models.Constants.StringNames.Copied), Models.Constants.InfoType.Success));
+        this.Get<AppViewModel>().ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(Models.Constants.StringNames.Copied), InfoType.Success));
     }
 }
 

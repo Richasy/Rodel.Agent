@@ -78,12 +78,6 @@
             Text="{Binding}" />
     </DataTemplate>
 
-    <Style x:Key="BasicEmptyHolderStyle" TargetType="controls:EmptyHolder">
-        <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="Margin" Value="0,-20,0,0" />
-    </Style>
-
     <Style x:Key="AccentSplitButtonStyle" TargetType="SplitButton">
         <Setter Property="Background" Value="{ThemeResource AccentButtonBackground}" />
         <Setter Property="Foreground" Value="{ThemeResource AccentButtonForeground}" />

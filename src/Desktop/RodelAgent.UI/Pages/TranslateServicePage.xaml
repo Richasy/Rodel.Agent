@@ -3,6 +3,7 @@
     x:Class="RodelAgent.UI.Pages.TranslateServicePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:base="using:Richasy.WinUI.Share.Base"
     xmlns:controls="using:RodelAgent.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:ext="using:RodelAgent.UI.Extensions"
@@ -12,11 +13,10 @@
     mc:Ignorable="d">
 
     <Grid>
-        <controls:EmptyHolder
+        <base:EmptyHolder
             Title="{ext:Locale Name=NoAvailableService}"
             Description="{ext:Locale Name=NoAvailableServiceDescription}"
             Emoji="&#x1F5FA;"
-            Style="{StaticResource BasicEmptyHolderStyle}"
             Visibility="{x:Bind ViewModel.IsAvailableServicesEmpty, Mode=OneWay}" />
         <Grid Visibility="{x:Bind ViewModel.IsAvailableServicesEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
             <Grid.RowDefinitions>

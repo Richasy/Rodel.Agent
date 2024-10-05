@@ -65,7 +65,7 @@ public sealed partial class ChatSessionViewModel
         if (string.IsNullOrEmpty(response))
         {
             this.Get<AppViewModel>()
-                .ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(UI.Models.Constants.StringNames.GenerateTitleFailed), UI.Models.Constants.InfoType.Error));
+                .ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(UI.Models.Constants.StringNames.GenerateTitleFailed), InfoType.Error));
             return;
         }
 
