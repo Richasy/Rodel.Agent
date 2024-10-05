@@ -232,7 +232,7 @@ ChatGLM 即出于此。
 
 ## Silicon Flow
 
-|文档|https://openrouter.ai/docs/quick-start|
+|文档|https://docs.siliconflow.cn/quickstart|
 |-|-| 
 |API 令牌|https://docs.siliconflow.cn/docs/4-api%E8%B0%83%E7%94%A8|
 
