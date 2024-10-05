@@ -20,11 +20,11 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <controls:StatusTip Status="{x:Bind ViewModel.State, Mode=OneWay}" Text="{x:Bind ViewModel.Title, Mode=OneWay}">
+        <base:StatusTip Status="{x:Bind ViewModel.State, Mode=OneWay}" Text="{x:Bind ViewModel.Title, Mode=OneWay}">
             <ToolTipService.ToolTip>
                 <ToolTip Content="{x:Bind ViewModel.Error, Mode=OneWay}" IsEnabled="{x:Bind ViewModel.Error, Mode=OneWay, Converter={StaticResource ObjectToBoolConverter}}" />
             </ToolTipService.ToolTip>
-        </controls:StatusTip>
+        </base:StatusTip>
         <base:TrimTextBlock
             Grid.Row="1"
             Margin="0,4,0,0"

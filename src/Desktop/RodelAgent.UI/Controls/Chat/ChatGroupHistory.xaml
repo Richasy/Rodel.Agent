@@ -4,22 +4,21 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animations="using:CommunityToolkit.WinUI.Animations"
+    xmlns:base="using:Richasy.WinUI.Share.Base"
     xmlns:controls="using:RodelAgent.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:ext="using:RodelAgent.UI.Extensions"
     xmlns:ic="using:FluentIcons.WinUI"
     xmlns:items="using:RodelAgent.UI.ViewModels.Items"
-    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:local="using:RodelAgent.UI.Controls.Chat"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
     <Grid>
-        <controls:EmptyHolder
+        <base:EmptyHolder
             Title="{ext:Locale Name=NoMessage}"
             Description="{ext:Locale Name=NoMessageDescription}"
             Emoji="&#x1F37B;"
-            Style="{StaticResource BasicEmptyHolderStyle}"
             Visibility="{x:Bind ViewModel.IsChatEmpty, Mode=OneWay}" />
         <ScrollViewer
             x:Name="MessageViewer"

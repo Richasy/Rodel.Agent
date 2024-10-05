@@ -93,7 +93,6 @@
     <None Remove="Controls\Items\ChatGroupItemControl\ChatGroupItemControl.xaml" />
     <None Remove="Controls\Items\ChatGroupPresetItemControl\ChatGroupPresetItemControl.xaml" />
     <None Remove="Controls\Items\ChatModelCard\ChatModelCard.xaml" />
-    <None Remove="Controls\Base\EmptyHolder.xaml" />
     <None Remove="Controls\Chat\AvailableChatServiceSection.xaml" />
     <None Remove="Controls\Chat\ChatMessageItemControl.xaml" />
     <None Remove="Controls\Chat\ChatModelSelection.xaml" />
@@ -699,11 +698,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\Chat\ChatSessionHistory.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Base\EmptyHolder.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

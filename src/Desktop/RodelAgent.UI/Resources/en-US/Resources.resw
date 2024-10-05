@@ -1259,4 +1259,7 @@ Choose a library folder and let's get started!</value>
   <data name="HideWhenCloseDescription" xml:space="preserve">
     <value>Hide the app when the window is closed instead of quitting</value>
   </data>
+  <data name="Reload" xml:space="preserve">
+    <value>Reload</value>
+  </data>
 </root>
