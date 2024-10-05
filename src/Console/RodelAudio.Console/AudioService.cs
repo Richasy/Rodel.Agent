@@ -38,7 +38,7 @@ public sealed class AudioService : IHostedService
     {
         try
         {
-            var provider = AskProvier();
+            var provider = AskProvider();
             await RunAsync(provider);
         }
         catch (Exception ex)
@@ -94,7 +94,7 @@ public sealed class AudioService : IHostedService
         Environment.Exit(0);
     }
 
-    private ProviderType AskProvier()
+    private ProviderType AskProvider()
     {
         var providers = AudioStatics.GetOnlineAudioServices();
         var provider = AnsiConsole.Prompt(

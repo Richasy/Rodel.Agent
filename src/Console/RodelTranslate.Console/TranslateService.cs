@@ -41,7 +41,7 @@ public sealed class TranslateService : IHostedService
     {
         try
         {
-            var provider = AskProvier();
+            var provider = AskProvider();
             await RunAsync(provider);
         }
         catch (Exception ex)
@@ -90,7 +90,7 @@ public sealed class TranslateService : IHostedService
         }
     }
 
-    private ProviderType AskProvier()
+    private ProviderType AskProvider()
     {
         var providers = TranslateStatics.GetOnlineTranslateServices();
         var provider = AnsiConsole.Prompt(

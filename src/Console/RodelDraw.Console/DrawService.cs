@@ -38,7 +38,7 @@ public sealed class DrawService : IHostedService
     {
         try
         {
-            var provider = AskProvier();
+            var provider = AskProvider();
             await RunAsync(provider);
         }
         catch (Exception ex)
@@ -92,7 +92,7 @@ public sealed class DrawService : IHostedService
         Environment.Exit(0);
     }
 
-    private ProviderType AskProvier()
+    private ProviderType AskProvider()
     {
         var providers = DrawStatics.GetOnlineDrawServices();
         var provider = AnsiConsole.Prompt(
