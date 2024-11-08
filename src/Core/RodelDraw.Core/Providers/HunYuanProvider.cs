@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
 using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Connectors.HunYuan;
 using RodelDraw.Interfaces.Client;
 using RodelDraw.Models.Client;
 
@@ -25,18 +24,13 @@ public sealed class HunYuanProvider : ProviderBase, IProvider
     private string Secret { get; set; }
 
     /// <inheritdoc/>
-    public DrawExecutionSettings ConvertExecutionSettings(DrawSession sessionData)
+    public DrawParameters ConvertDrawParameters(DrawSession sessionData)
     {
         var size = sessionData.Request?.Size ?? "1024x1024";
         var split = size.Split('x');
         var width = int.Parse(split[0]);
         var height = int.Parse(split[1]);
-        return new HunYuanDrawExecutionSettings
-        {
-            ModelId = sessionData.Model,
-            Width = width,
-            Height = height,
-        };
+        return new DrawParameters(sessionData.Model, width, height);
     }
 
     /// <inheritdoc/>

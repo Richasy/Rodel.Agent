@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
 using System.Diagnostics;
-using System.Text.Json;
-using RodelAgent.Models.Constants;
 using RodelAgent.UI.ViewModels.Items;
 using RodelDraw.Models.Client;
 
@@ -16,11 +14,7 @@ public sealed partial class AzureOpenAIDrawConfigSettingSection : DrawServiceCon
     /// <summary>
     /// Initializes a new instance of the <see cref="AzureOpenAIDrawConfigSettingSection"/> class.
     /// </summary>
-    public AzureOpenAIDrawConfigSettingSection()
-    {
-        InitializeComponent();
-        InitializeApiVersion();
-    }
+    public AzureOpenAIDrawConfigSettingSection() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnViewModelChanged(DrawServiceItemViewModel? oldValue, DrawServiceItemViewModel? newValue)
@@ -40,7 +34,6 @@ public sealed partial class AzureOpenAIDrawConfigSettingSection : DrawServiceCon
     {
         KeyBox.Password = ViewModel.Config?.Key ?? string.Empty;
         EndpointBox.Text = (ViewModel.Config as ClientEndpointConfigBase)?.Endpoint ?? string.Empty;
-        VersionComboBox.SelectedIndex = (int)((AzureOpenAIClientConfig)ViewModel.Config).Version;
         KeyBox.Focus(FocusState.Programmatic);
     }
 
@@ -54,25 +47,5 @@ public sealed partial class AzureOpenAIDrawConfigSettingSection : DrawServiceCon
     {
         ((ClientEndpointConfigBase)ViewModel.Config).Endpoint = EndpointBox.Text;
         ViewModel.CheckCurrentConfig();
-    }
-
-    private void InitializeApiVersion()
-    {
-        var versions = Enum.GetValues<AzureOpenAIVersion>();
-        var json = JsonSerializer.Serialize(versions);
-        var stringVersions = JsonSerializer.Deserialize<List<string>>(json);
-        VersionComboBox.ItemsSource = stringVersions;
-    }
-
-    private void OnVersionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        var index = VersionComboBox.SelectedIndex;
-        if (index < 0)
-        {
-            return;
-        }
-
-        var version = (AzureOpenAIVersion)index;
-        ((AzureOpenAIClientConfig)ViewModel.Config).Version = version;
     }
 }

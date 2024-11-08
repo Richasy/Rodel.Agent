@@ -135,7 +135,8 @@ public abstract class ProviderBase
     /// <param name="sessionData">会话.</param>
     /// <returns>执行设置.</returns>
     public virtual PromptExecutionSettings ConvertExecutionSettings(ChatSessionPreset sessionData)
-        => new OpenAIPromptExecutionSettings
+    {
+        var settings = new OpenAIPromptExecutionSettings
         {
             PresencePenalty = sessionData.Parameters.GetValueOrDefault<double>(nameof(OpenAIChatParameters.FrequencyPenalty)),
             FrequencyPenalty = sessionData.Parameters.GetValueOrDefault<double>(nameof(OpenAIChatParameters.PresencePenalty)),
@@ -149,6 +150,14 @@ public abstract class ProviderBase
             StopSequences = sessionData.StopSequences,
             ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions,
         };
+
+        if (settings.MaxTokens == 0)
+        {
+            settings.MaxTokens = null;
+        }
+
+        return settings;
+    }
 
     internal static string GetKernelModelId(Kernel? kernel)
     {

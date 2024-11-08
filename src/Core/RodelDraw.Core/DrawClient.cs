@@ -38,7 +38,7 @@ public sealed partial class DrawClient : IDrawClient
             session.Parameters ??= GetDrawParameters(session.Provider);
             var settings = GetExecutionSettings(session);
             var drawService = kernel.GetRequiredService<ITextToImageService>();
-            var result = await drawService.GenerateImageAsync(session.Request.Prompt, settings, cancellationToken: cancellationToken).ConfigureAwait(false);
+            var result = await drawService.GenerateImageAsync(session.Request.Prompt, settings.Width, settings.Height, cancellationToken: cancellationToken).ConfigureAwait(false);
             session.Time = DateTimeOffset.Now;
             if (result.StartsWith("http"))
             {

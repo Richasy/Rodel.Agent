@@ -36,7 +36,7 @@ public interface IProvider
     /// </summary>
     /// <param name="sessionData">会话.</param>
     /// <returns>执行设置.</returns>
-    DrawExecutionSettings ConvertExecutionSettings(DrawSession sessionData);
+    DrawParameters ConvertDrawParameters(DrawSession sessionData);
 
     /// <summary>
     /// 获取模型列表.

@@ -136,7 +136,6 @@ public sealed class MigrationUtils
             {
                 Key = metadata.First(p => p.Id == "AzureOpenAIAccessKey").Value,
                 Endpoint = metadata.First(p => p.Id == "AzureOpenAIEndpoint").Value,
-                Version = RodelAgent.Models.Constants.AzureOpenAIVersion.V2024_02_01,
             };
 
             var json = JsonSerializer.Serialize(aoaiConfig);
