@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
 using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Connectors.QianFan;
 using RodelDraw.Interfaces.Client;
 using RodelDraw.Models.Client;
 
@@ -25,19 +24,13 @@ public sealed class QianFanProvider : ProviderBase, IProvider
     private string SecretKey { get; }
 
     /// <inheritdoc/>
-    public DrawExecutionSettings ConvertExecutionSettings(DrawSession sessionData)
+    public DrawParameters ConvertDrawParameters(DrawSession sessionData)
     {
         var size = sessionData.Request?.Size ?? "768x768";
         var split = size.Split('x');
         var width = int.Parse(split[0]);
         var height = int.Parse(split[1]);
-        return new QianFanDrawExecutionSettings
-        {
-            ModelId = sessionData.Model,
-            Width = width,
-            Height = height,
-            NegativePrompt = sessionData?.Request?.NegativePrompt,
-        };
+        return new DrawParameters(sessionData.Model, width, height, sessionData?.Request?.NegativePrompt);
     }
 
     /// <inheritdoc/>

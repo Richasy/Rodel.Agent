@@ -296,7 +296,6 @@ public sealed partial class StartupPageViewModel : ViewModelBase
                                     {
                                         Endpoint = azureOpenAIConfig.Endpoint,
                                         Key = azureOpenAIConfig.Key,
-                                        Version = (RodelAgent.Models.Constants.AzureOpenAIVersion)(int)azureOpenAIConfig.Version,
                                     });
                                 }
                             }

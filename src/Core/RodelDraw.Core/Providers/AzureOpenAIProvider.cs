@@ -1,11 +1,8 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Connectors.OpenAI;
 using RodelAgent.Models.Abstractions;
-using RodelAgent.Models.Constants;
 using RodelDraw.Interfaces.Client;
 using RodelDraw.Models.Client;
 
@@ -23,28 +20,16 @@ public sealed class AzureOpenAIProvider : ProviderBase, IProvider
         : base(config.Key, config.CustomModels)
     {
         SetBaseUri(config.Endpoint);
-        Version = config.Version;
     }
 
-    /// <summary>
-    /// 获取 API 版本.
-    /// </summary>
-    private AzureOpenAIVersion Version { get; }
-
     /// <inheritdoc/>
-    public DrawExecutionSettings ConvertExecutionSettings(DrawSession sessionData)
+    public DrawParameters ConvertDrawParameters(DrawSession sessionData)
     {
         var size = sessionData.Request?.Size ?? "1024x1024";
         var split = size.Split('x');
         var width = int.Parse(split[0]);
         var height = int.Parse(split[1]);
-        return new OpenAIDrawExecutionSettings
-        {
-            ModelId = sessionData.Model,
-            Width = width,
-            Height = height,
-            Number = sessionData.Parameters.GetValueOrDefault<int>(nameof(AzureOpenAIDrawParameters.Number)),
-        };
+        return new DrawParameters(sessionData.Model, width, height);
     }
 
     /// <inheritdoc/>
@@ -53,7 +38,7 @@ public sealed class AzureOpenAIProvider : ProviderBase, IProvider
         if (ShouldRecreateKernel(modelId))
         {
             Kernel = Kernel.CreateBuilder()
-                .AddAzureOpenAITextToImage(modelId, endpoint: BaseUri.AbsoluteUri, apiKey: AccessKey, apiVersion: JsonSerializer.Serialize(Version), modelId: modelId)
+                .AddAzureOpenAITextToImage(modelId, endpoint: BaseUri.AbsoluteUri, apiKey: AccessKey, modelId: modelId)
                 .Build();
         }
 

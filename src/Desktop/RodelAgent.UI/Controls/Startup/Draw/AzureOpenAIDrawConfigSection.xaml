@@ -12,18 +12,5 @@
 
     <StackPanel Spacing="8">
         <local:DrawClientEndpointConfigSection x:Name="EndpointConfig" ViewModel="{x:Bind ViewModel}" />
-        <ComboBox
-            x:Name="VersionComboBox"
-            HorizontalAlignment="Stretch"
-            AutomationProperties.Name="{ext:Locale Name=ApiVersion}"
-            Header="{ext:Locale Name=ApiVersion}"
-            HeaderTemplate="{StaticResource InputHeaderTemplate}"
-            SelectionChanged="OnVersionChanged">
-            <ComboBox.ItemTemplate>
-                <DataTemplate x:DataType="x:String">
-                    <TextBlock Text="{x:Bind}" TextTrimming="CharacterEllipsis" />
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
     </StackPanel>
 </controls:DrawServiceConfigControlBase>

@@ -7,6 +7,7 @@
   </PropertyGroup>
     
   <ItemGroup>
+    <ProjectReference Include="..\..\Libs\semantic-kernel\dotnet\src\Connectors\Connectors.AzureOpenAI\Connectors.AzureOpenAI.csproj" />
     <ProjectReference Include="..\..\Libs\semantic-kernel\dotnet\src\Connectors\Connectors.HunYuan\Connectors.HunYuan.csproj" />
     <ProjectReference Include="..\..\Libs\semantic-kernel\dotnet\src\Connectors\Connectors.OpenAI\Connectors.OpenAI.csproj" />
     <ProjectReference Include="..\..\Libs\semantic-kernel\dotnet\src\Connectors\Connectors.QianFan\Connectors.QianFan.csproj" />

@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using RodelAgent.Models.Constants;
 
 namespace RodelChat.Models.Client;
 
@@ -149,12 +148,6 @@ public class OpenAIClientConfig : ClientEndpointConfigBase
 /// </summary>
 public class AzureOpenAIClientConfig : ClientEndpointConfigBase
 {
-    /// <summary>
-    /// 版本.
-    /// </summary>
-    [JsonPropertyName("version")]
-    public AzureOpenAIVersion Version { get; set; } = AzureOpenAIVersion.V2024_02_01;
-
     /// <inheritdoc/>
     public override bool IsValid()
     {

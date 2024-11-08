@@ -13,8 +13,8 @@ namespace RodelDraw.Core;
 /// </summary>
 public sealed partial class DrawClient
 {
-    private DrawExecutionSettings GetExecutionSettings(DrawSession session)
-        => GetProvider(session.Provider).ConvertExecutionSettings(session);
+    private DrawParameters GetExecutionSettings(DrawSession session)
+        => GetProvider(session.Provider).ConvertDrawParameters(session);
 
     private Kernel? FindKernelProvider(ProviderType type, string modelId)
         => GetProvider(type).GetOrCreateKernel(modelId);

@@ -2,7 +2,6 @@
 
 using System.Text.Json.Serialization;
 using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Connectors.OpenAI;
 using RodelAgent.Models.Abstractions;
 using RodelDraw.Interfaces.Client;
 using RodelDraw.Models.Client;
@@ -31,19 +30,13 @@ public sealed class OpenAIProvider : ProviderBase, IProvider
     private string OrganizationId { get; }
 
     /// <inheritdoc/>
-    public DrawExecutionSettings ConvertExecutionSettings(DrawSession sessionData)
+    public DrawParameters ConvertDrawParameters(DrawSession sessionData)
     {
         var size = sessionData.Request?.Size ?? "1024x1024";
         var split = size.Split('x');
         var width = int.Parse(split[0]);
         var height = int.Parse(split[1]);
-        return new OpenAIDrawExecutionSettings
-        {
-            ModelId = sessionData.Model,
-            Width = width,
-            Height = height,
-            Number = sessionData.Parameters.GetValueOrDefault<int>(nameof(OpenAIDrawParameters.Number)),
-        };
+        return new DrawParameters(sessionData.Model, width, height);
     }
 
     /// <inheritdoc/>
@@ -52,7 +45,7 @@ public sealed class OpenAIProvider : ProviderBase, IProvider
         if (ShouldRecreateKernel(modelId))
         {
             Kernel = Kernel.CreateBuilder()
-                .AddOpenAITextToImage(AccessKey, modelId, BaseUri, OrganizationId)
+                .AddOpenAITextToImage(AccessKey, OrganizationId, modelId, BaseUri?.ToString())
                 .Build();
         }
 

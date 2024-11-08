@@ -46,7 +46,7 @@ public sealed class OpenAIProvider : ProviderBase, IProvider
         if (ShouldRecreateKernel(modelId))
         {
             Kernel = Kernel.CreateBuilder()
-                .AddOpenAITextToAudio(AccessKey, modelId, BaseUri, OrganizationId)
+                .AddOpenAITextToAudio(AccessKey, modelId, BaseUri?.ToString(), OrganizationId)
                 .Build();
         }
 
