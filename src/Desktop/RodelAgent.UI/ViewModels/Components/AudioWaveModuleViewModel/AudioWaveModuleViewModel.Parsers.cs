@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
-using NAudio.Wave;
+using RodelAgent.UI.Extensions;
 using RodelAgent.UI.Toolkits;
 
 namespace RodelAgent.UI.ViewModels.Components;
@@ -61,76 +61,5 @@ public sealed partial class AudioWaveModuleViewModel
         {
             RedrawWave?.Invoke(this, EventArgs.Empty);
         });
-    }
-
-    private void ResetRecording(string sessionId)
-    {
-        _sessionId = sessionId;
-        _samples.Clear();
-        Seconds = 0;
-        var format = new WaveFormat(SampleRate, 1);
-        _waveFileWriter = !string.IsNullOrEmpty(_sessionId)
-            ? new WaveFileWriter(GetRecordingFilePath(_sessionId), format)
-            : default;
-
-        var waveIn = new WaveInEvent();
-        waveIn.WaveFormat = format;
-        waveIn.DataAvailable += async (sender, e) =>
-        {
-            if (!IsRecording)
-            {
-                _dispatcherQueue.TryEnqueue(() =>
-                {
-                    IsRecording = true;
-                });
-            }
-
-            var bytesPerSample = waveIn.WaveFormat.BitsPerSample / 8;
-            var sampleCount = e.BytesRecorded / bytesPerSample;
-            var floatBuffer = new float[sampleCount];
-            for (var index = 0; index < sampleCount; index++)
-            {
-                // Convert bytes to float
-                floatBuffer[index] = BitConverter.ToInt16(e.Buffer, index * bytesPerSample) / 32768f;
-            }
-
-            _samples.AddRange(floatBuffer);
-
-            _dispatcherQueue.TryEnqueue(() =>
-            {
-                Seconds = _samples.Count / (SampleRate * 1.0);
-                RedrawWave?.Invoke(this, EventArgs.Empty);
-            });
-
-            if (_waveFileWriter != null)
-            {
-                await WriteFileAsync(e.Buffer, e.BytesRecorded);
-            }
-        };
-
-        waveIn.RecordingStopped += (sender, e) =>
-        {
-            _waveIn.Dispose();
-            _waveFileWriter?.Dispose();
-            _waveIn = null;
-            _waveFileWriter = null;
-
-            _dispatcherQueue.TryEnqueue(() =>
-            {
-                IsRecording = false;
-            });
-        };
-
-        _waveIn = waveIn;
-    }
-
-    private async Task WriteFileAsync(byte[] buffer, int bytesRecorded)
-    {
-        if (_waveFileWriter == null)
-        {
-            return;
-        }
-
-        await _waveFileWriter.WriteAsync(buffer, 0, bytesRecorded);
     }
 }

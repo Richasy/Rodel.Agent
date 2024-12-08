@@ -37,11 +37,7 @@ public sealed partial class WavePanel : WavePanelBase
     {
         WaveCanvas.Draw += OnWaveCanvasDraw;
         ViewModel.RedrawWave += OnRedrawWave;
-        if (ViewModel.IsRecording)
-        {
-            ViewModel.StopRecordingCommand.Execute(default);
-        }
-        else if (ViewModel.IsPlaying)
+        if (ViewModel.IsPlaying)
         {
             ViewModel.ResetPositionCommand.Execute(default);
         }
@@ -52,11 +48,7 @@ public sealed partial class WavePanel : WavePanelBase
     {
         WaveCanvas.Draw -= OnWaveCanvasDraw;
         ViewModel.RedrawWave -= OnRedrawWave;
-        if (ViewModel.IsRecording)
-        {
-            ViewModel.StopRecordingCommand.Execute(default);
-        }
-        else if (ViewModel.IsPlaying)
+        if (ViewModel.IsPlaying)
         {
             ViewModel.TogglePlayPauseCommand.Execute(default);
         }
