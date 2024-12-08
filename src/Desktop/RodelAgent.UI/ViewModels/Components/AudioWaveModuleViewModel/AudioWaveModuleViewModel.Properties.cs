@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
 using Microsoft.UI.Dispatching;
-using NAudio.Wave;
 using Windows.Media.Playback;
 
 namespace RodelAgent.UI.ViewModels.Components;
@@ -15,9 +14,6 @@ public sealed partial class AudioWaveModuleViewModel
     private readonly DispatcherQueue _dispatcherQueue;
     private readonly ILogger<AudioWaveModuleViewModel> _logger;
     private List<float> _samples;
-    private WaveFileWriter _waveFileWriter;
-    private WaveInEvent _waveIn;
-    private string _sessionId;
     private MediaPlayer _mediaPlayer;
     private bool _isMediaEnded;
 

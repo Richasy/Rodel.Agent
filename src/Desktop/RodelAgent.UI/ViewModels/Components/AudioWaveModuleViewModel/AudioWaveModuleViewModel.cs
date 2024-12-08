@@ -2,7 +2,6 @@
 
 using System.Diagnostics;
 using Microsoft.UI.Dispatching;
-using NAudio.Wave;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Storage;
@@ -92,38 +91,7 @@ public sealed partial class AudioWaveModuleViewModel : ViewModelBase
 
     [RelayCommand]
     private void CheckRecording()
-        => IsRecordingSupported = WaveIn.DeviceCount > 0;
-
-    [RelayCommand]
-    private async Task StartRecordingAsync(string sessionId = default)
-    {
-        CheckRecording();
-        if (!IsRecordingSupported)
-        {
-            return;
-        }
-
-        if (_waveIn != null)
-        {
-            await StopRecordingAsync();
-        }
-
-        ResetRecording(sessionId);
-        await Task.Run(() =>
-        {
-            _waveIn.StartRecording();
-        });
-    }
-
-    [RelayCommand]
-    private async Task StopRecordingAsync()
-    {
-        Position = 0;
-        await Task.Run(() =>
-        {
-            _waveIn?.StopRecording();
-        });
-    }
+        => IsRecordingSupported = false;
 
     [RelayCommand]
     private void TogglePlayPause()

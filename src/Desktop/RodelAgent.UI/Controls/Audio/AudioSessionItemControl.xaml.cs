@@ -42,7 +42,7 @@ public sealed partial class AudioSessionItemControl : AudioSessionItemControlBas
     }
 
     private void OnSessionClick(object sender, RoutedEventArgs e)
-        => GetSessionViewModel().LoadSessionCommand.Execute(ViewModel);
+        => GetSessionViewModel().LoadSessionCommand.Execute(ViewModel.Data);
 
     private void OnOpenItemClick(object sender, RoutedEventArgs e)
         => GetSessionViewModel().OpenAudioCommand.Execute(AppToolkit.GetSpeechPath(ViewModel.Data.Id));
