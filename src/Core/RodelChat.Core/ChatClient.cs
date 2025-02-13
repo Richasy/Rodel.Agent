@@ -90,13 +90,13 @@ public sealed partial class ChatClient : IChatClient
     /// <param name="preset">预设会话.</param>
     /// <returns>会话对象.</returns>
     /// <exception cref="ArgumentException">预设不合规.</exception>
-    public ChatSession CreateSession(ChatSessionPreset preset)
+    public ChatSession CreateSession(ChatSessionPresetOld preset)
     {
         var id = Guid.NewGuid().ToString("N");
 
         // 需要重新序列化以创建新的对象.
         var presetJson = JsonSerializer.Serialize(preset);
-        var newPreset = JsonSerializer.Deserialize<ChatSessionPreset>(presetJson);
+        var newPreset = JsonSerializer.Deserialize<ChatSessionPresetOld>(presetJson);
         newPreset.Parameters = GetChatParameters(preset.Provider, preset.Parameters);
         var session = ChatSession.CreateSession(id, newPreset);
 
@@ -190,7 +190,7 @@ public sealed partial class ChatClient : IChatClient
     }
 
     /// <inheritdoc/>
-    public async Task SendGroupMessageAsync(string groupId, ChatMessage message, Action<ChatMessage> messageAction = null, List<ChatSessionPreset> agents = null, CancellationToken cancellationToken = default)
+    public async Task SendGroupMessageAsync(string groupId, ChatMessage message, Action<ChatMessage> messageAction = null, List<ChatSessionPresetOld> agents = null, CancellationToken cancellationToken = default)
     {
         var group = Groups.FirstOrDefault(g => g.Id == groupId)
             ?? throw new ArgumentException("Group not found.");

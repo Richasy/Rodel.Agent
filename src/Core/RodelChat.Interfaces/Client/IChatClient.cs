@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.AI;
 using Richasy.AgentKernel;
 using RodelAgent.Models.Abstractions;
 using RodelChat.Models.Client;
@@ -28,24 +29,17 @@ public interface IChatClient : IDisposable
     void LoadGroupSessions(List<ChatGroup> groups);
 
     /// <summary>
-    /// 获取预定义模型.
-    /// </summary>
-    /// <param name="type">供应商类型.</param>
-    /// <returns>预定义模型列表.</returns>
-    List<ChatModel> GetPredefinedModels(ChatProviderType type);
-
-    /// <summary>
     /// 创建新会话.
     /// </summary>
     /// <returns><see cref="ChatSession"/>.</returns>
-    ChatSession CreateSession(ChatProviderType providerType, BaseFieldParameters parameters = null, string? modelId = null);
+    ChatSession CreateSession(ChatProviderType providerType, ChatOptions? options = null, string? modelId = null);
 
     /// <summary>
     /// 创建新会话.
     /// </summary>
     /// <param name="preset">会话预设.</param>
     /// <returns>会话信息.</returns>
-    ChatSession CreateSession(ChatSessionPreset preset);
+    ChatSession CreateSession(ChatSessionPresetOld preset);
 
     /// <summary>
     /// 创建新群组会话.
@@ -90,6 +84,6 @@ public interface IChatClient : IDisposable
         string groupId,
         ChatMessage message,
         Action<ChatMessage> messageAction = default,
-        List<ChatSessionPreset> agents = default,
+        List<ChatSessionPresetOld> agents = default,
         CancellationToken cancellationToken = default);
 }

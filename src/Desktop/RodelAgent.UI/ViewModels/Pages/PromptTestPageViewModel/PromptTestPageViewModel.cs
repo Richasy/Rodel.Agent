@@ -129,7 +129,7 @@ public sealed partial class PromptTestPageViewModel : LayoutPageViewModelBase
         SettingsToolkit.WriteLocalSetting(SettingNames.PromptTestLastSelectedModel, model?.Data.Id.ToString() ?? string.Empty);
         SelectedModel = model;
 
-        var preset = new ChatSessionPreset
+        var preset = new ChatSessionPresetOld
         {
             Provider = SelectedService.ProviderType,
             Name = model?.Name,

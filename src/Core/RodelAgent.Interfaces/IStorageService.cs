@@ -165,21 +165,21 @@ public interface IStorageService
     /// 获取聊天会话预设.
     /// </summary>
     /// <returns>预设列表.</returns>
-    Task<List<ChatSessionPreset>> GetChatSessionPresetsAsync();
+    Task<List<ChatSessionPresetOld>> GetChatSessionPresetsAsync();
 
     /// <summary>
     /// 获取指定 ID 的聊天会话预设.
     /// </summary>
     /// <param name="presetId">预设 ID.</param>
-    /// <returns><see cref="ChatSessionPreset"/>.</returns>
-    Task<ChatSessionPreset> GetChatSessionPresetByIdAsync(string presetId);
+    /// <returns><see cref="ChatSessionPresetOld"/>.</returns>
+    Task<ChatSessionPresetOld> GetChatSessionPresetByIdAsync(string presetId);
 
     /// <summary>
     /// 添加或更新聊天会话预设.
     /// </summary>
     /// <param name="preset">预设.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task AddOrUpdateChatSessionPresetAsync(ChatSessionPreset preset);
+    Task AddOrUpdateChatSessionPresetAsync(ChatSessionPresetOld preset);
 
     /// <summary>
     /// 移除聊天会话预设.
@@ -192,14 +192,14 @@ public interface IStorageService
     /// 获取本地助理列表.
     /// </summary>
     /// <returns>助理列表.</returns>
-    Task<List<ChatSessionPreset>> GetChatAgentsAsync();
+    Task<List<ChatSessionPresetOld>> GetChatAgentsAsync();
 
     /// <summary>
     /// 添加或更新助理.
     /// </summary>
     /// <param name="agent">助理信息.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task AddOrUpdateChatAgentAsync(ChatSessionPreset agent);
+    Task AddOrUpdateChatAgentAsync(ChatSessionPresetOld agent);
 
     /// <summary>
     /// 移除助理.

@@ -31,7 +31,7 @@ public interface IProvider
     /// </summary>
     /// <param name="sessionData">会话.</param>
     /// <returns>执行设置.</returns>
-    ChatOptions ConvertExecutionSettings(ChatSessionPreset sessionData);
+    ChatOptions ConvertExecutionSettings(ChatSessionPresetOld sessionData);
 
     /// <summary>
     /// 获取模型列表.

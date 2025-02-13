@@ -30,8 +30,8 @@ public sealed partial class StorageService : IStorageService
     private readonly IAudioParametersFactory _audioParametersFactory;
     private readonly ITranslateParametersFactory _translateParametersFactory;
     private List<ChatSession> _chatSessions;
-    private List<ChatSessionPreset> _chatSessionPresets;
-    private List<ChatSessionPreset> _chatAgents;
+    private List<ChatSessionPresetOld> _chatSessionPresets;
+    private List<ChatSessionPresetOld> _chatAgents;
     private List<ChatGroupPreset> _chatGroupPresets;
     private List<ChatGroup> _chatGroups;
     private List<TranslateSession> _translateSessions;

@@ -7,7 +7,7 @@ namespace RodelAgent.UI.ViewModels.Items;
 /// <summary>
 /// 聊天预设项视图模型.
 /// </summary>
-public sealed partial class ChatPresetItemViewModel : ViewModelBase<ChatSessionPreset>
+public sealed partial class ChatPresetItemViewModel : ViewModelBase<ChatSessionPresetOld>
 {
     [ObservableProperty]
     private string _name;
@@ -18,7 +18,7 @@ public sealed partial class ChatPresetItemViewModel : ViewModelBase<ChatSessionP
     /// <summary>
     /// Initializes a new instance of the <see cref="ChatPresetItemViewModel"/> class.
     /// </summary>
-    public ChatPresetItemViewModel(ChatSessionPreset data)
+    public ChatPresetItemViewModel(ChatSessionPresetOld data)
         : base(data)
     {
         Name = data.Name;

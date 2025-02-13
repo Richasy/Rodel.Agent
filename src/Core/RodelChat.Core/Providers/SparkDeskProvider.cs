@@ -49,7 +49,7 @@ public sealed class SparkDeskProvider : ProviderBase, IProvider
     }
 
     /// <inheritdoc/>
-    public override PromptExecutionSettings ConvertExecutionSettings(ChatSessionPreset sessionData)
+    public override PromptExecutionSettings ConvertExecutionSettings(ChatSessionPresetOld sessionData)
         => new SparkDeskPromptExecutionSettings
         {
             MaxTokens = sessionData.Parameters.GetValueOrDefault<int>(nameof(SparkDeskChatParameters.MaxTokens)),

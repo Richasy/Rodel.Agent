@@ -98,7 +98,7 @@ public abstract class ProviderBase
     /// </summary>
     /// <param name="sessionData">会话.</param>
     /// <returns>执行设置.</returns>
-    public virtual ChatOptions ConvertExecutionSettings(ChatSessionPreset sessionData)
+    public virtual ChatOptions ConvertExecutionSettings(ChatSessionPresetOld sessionData)
     {
         var settings = new ChatOptions
         {

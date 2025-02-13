@@ -36,7 +36,7 @@ public sealed class DouBaoProvider : ProviderBase, IProvider
     }
 
     /// <inheritdoc/>
-    public override PromptExecutionSettings ConvertExecutionSettings(ChatSessionPreset sessionData)
+    public override PromptExecutionSettings ConvertExecutionSettings(ChatSessionPresetOld sessionData)
     {
         var maxTokens = sessionData.Parameters.GetValueOrDefault<int>(nameof(DouBaoChatParameters.MaxTokens));
         return new DouBaoPromptExecutionSettings

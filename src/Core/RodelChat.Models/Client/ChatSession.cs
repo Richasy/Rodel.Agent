@@ -9,7 +9,7 @@ namespace RodelChat.Models.Client;
 /// <summary>
 /// 聊天会话.
 /// </summary>
-public sealed class ChatSession : ChatSessionPreset
+public sealed class ChatSession : ChatSessionPresetOld
 {
     /// <summary>
     /// 获取或设置会话标题.
@@ -45,7 +45,7 @@ public sealed class ChatSession : ChatSessionPreset
     /// <param name="newId">会话 ID.</param>
     /// <param name="preset">预设.</param>
     /// <returns>会话.</returns>
-    public static ChatSession CreateSession(string newId, ChatSessionPreset preset)
+    public static ChatSession CreateSession(string newId, ChatSessionPresetOld preset)
     {
         return new ChatSession
         {

@@ -23,6 +23,7 @@
     <PackageVersion Include="NAudio" Version="2.2.1" />
     <PackageVersion Include="NAudio.Core" Version="2.2.1" />
     <PackageVersion Include="NAudio.Wasapi" Version="2.2.1" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.OpenAI" Version="0.0.1-preview9" />
     <PackageVersion Include="Richasy.AgentKernel.Definitions" Version="0.0.1-preview9" />
     <PackageVersion Include="Richasy.WinUIKernel.AI" Version="0.0.1-preview4" />
     <PackageVersion Include="RichasyKernel.Abstractions" Version="0.0.1" />

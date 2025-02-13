@@ -2,15 +2,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.AI;
 using Richasy.AgentKernel;
-using RodelAgent.Models.Abstractions;
 
 namespace RodelChat.Models.Client;
 
 /// <summary>
 /// 对话模型预设.
 /// </summary>
+[JsonConverter(typeof(ChatSessionPresetConverter))]
 public class ChatSessionPreset
 {
     /// <summary>
@@ -27,10 +29,10 @@ public class ChatSessionPreset
     public string Name { get; set; } = null!;
 
     /// <summary>
-    /// 会话参数.
+    /// 获取或设置会话选项.
     /// </summary>
-    [JsonPropertyName("parameters")]
-    public BaseFieldParameters? Parameters { get; set; }
+    [JsonPropertyName("options")]
+    public ChatOptions? Options { get; set; }
 
     /// <summary>
     /// 最大会话轮次.
@@ -77,14 +79,8 @@ public class ChatSessionPreset
     /// <summary>
     /// 获取或设置历史记录.
     /// </summary>
-    [JsonPropertyName("messages")]
-    public List<ChatMessage>? Messages { get; set; }
-
-    /// <summary>
-    /// 终止生成的令牌序列.
-    /// </summary>
-    [JsonPropertyName("stop_sequences")]
-    public IList<string>? StopSequences { get; set; }
+    [JsonPropertyName("history")]
+    public List<Microsoft.Extensions.AI.ChatMessage>? History { get; set; }
 
     /// <summary>
     /// 需要过滤掉的字符.
@@ -104,33 +100,156 @@ public class ChatSessionPreset
     [JsonPropertyName("emoji")]
     public string? Emoji { get; set; }
 
-    /// <summary>
-    /// 克隆当前实例.
-    /// </summary>
-    /// <returns><see cref="ChatSession"/>.</returns>
-    public ChatSessionPreset Clone()
-    {
-        return new ChatSessionPreset
-        {
-            Id = Id,
-            Name = Name,
-            Parameters = Parameters,
-            MaxRounds = MaxRounds,
-            UseStreamOutput = UseStreamOutput,
-            Provider = Provider,
-            Model = Model,
-            SystemInstruction = SystemInstruction,
-            Messages = Messages,
-            StopSequences = StopSequences,
-            FilterCharacters = FilterCharacters,
-            Plugins = Plugins,
-            Emoji = Emoji,
-        };
-    }
-
     /// <inheritdoc/>
-    public override bool Equals(object? obj) => obj is ChatSessionPreset preset && Id == preset.Id;
+    public override bool Equals(object? obj) => obj is ChatSessionPresetOld preset && Id == preset.Id;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Id);
+}
+
+internal class ChatSessionPresetConverter : JsonConverter<ChatSessionPreset>
+{
+    public override ChatSessionPreset? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        if (reader.TokenType != JsonTokenType.StartObject)
+        {
+            throw new JsonException();
+        }
+
+        var preset = new ChatSessionPreset();
+
+        while (reader.Read())
+        {
+            if (reader.TokenType == JsonTokenType.EndObject)
+            {
+                return preset;
+            }
+
+            if (reader.TokenType == JsonTokenType.PropertyName)
+            {
+                var propertyName = reader.GetString();
+                reader.Read();
+
+                switch (propertyName)
+                {
+                    case "id":
+                        preset.Id = reader.GetString();
+                        break;
+                    case "name":
+                        preset.Name = reader.GetString();
+                        break;
+                    case "options":
+                        preset.Options = DeserializeOptions(ref reader, preset.Provider, options);
+                        break;
+                    case "max_rounds":
+                        preset.MaxRounds = reader.GetInt32();
+                        break;
+                    case "stream":
+                        preset.UseStreamOutput = reader.GetBoolean();
+                        break;
+                    case "provider":
+                        preset.Provider = JsonSerializer.Deserialize<ChatProviderType>(ref reader, options);
+                        break;
+                    case "model":
+                        preset.Model = reader.GetString();
+                        break;
+                    case "system":
+                        preset.SystemInstruction = reader.GetString();
+                        break;
+                    case "history":
+                        preset.History = JsonSerializer.Deserialize<List<Microsoft.Extensions.AI.ChatMessage>>(ref reader, options);
+                        break;
+                    case "filter_chars":
+                        preset.FilterCharacters = JsonSerializer.Deserialize<IList<string>>(ref reader, options);
+                        break;
+                    case "plugins":
+                        preset.Plugins = JsonSerializer.Deserialize<IList<string>>(ref reader, options);
+                        break;
+                    case "emoji":
+                        preset.Emoji = reader.GetString();
+                        break;
+                    default:
+                        throw new JsonException($"Unknown property: {propertyName}");
+                }
+            }
+        }
+
+        throw new JsonException();
+    }
+
+    public override void Write(Utf8JsonWriter writer, ChatSessionPreset value, JsonSerializerOptions options)
+    {
+        writer.WriteStartObject();
+
+        writer.WriteString("id", value.Id);
+        writer.WriteString("name", value.Name);
+
+        if (value.Options != null)
+        {
+            writer.WritePropertyName("options");
+            SerializeOptions(writer, value.Options, value.Provider, options);
+        }
+
+        writer.WriteNumber("max_rounds", value.MaxRounds);
+        writer.WriteBoolean("stream", value.UseStreamOutput);
+        writer.WritePropertyName("provider");
+        JsonSerializer.Serialize(writer, value.Provider, options);
+
+        if (value.Model != null)
+        {
+            writer.WriteString("model", value.Model);
+        }
+
+        if (value.SystemInstruction != null)
+        {
+            writer.WriteString("system", value.SystemInstruction);
+        }
+
+        if (value.History != null)
+        {
+            writer.WritePropertyName("history");
+            JsonSerializer.Serialize(writer, value.History, options);
+        }
+
+        if (value.FilterCharacters != null)
+        {
+            writer.WritePropertyName("filter_chars");
+            JsonSerializer.Serialize(writer, value.FilterCharacters, options);
+        }
+
+        if (value.Plugins != null)
+        {
+            writer.WritePropertyName("plugins");
+            JsonSerializer.Serialize(writer, value.Plugins, options);
+        }
+
+        if (value.Emoji != null)
+        {
+            writer.WriteString("emoji", value.Emoji);
+        }
+
+        writer.WriteEndObject();
+    }
+
+    private static ChatOptions? DeserializeOptions(ref Utf8JsonReader reader, ChatProviderType provider, JsonSerializerOptions options)
+    {
+        return provider switch
+        {
+            ChatProviderType.OpenAI => JsonSerializer.Deserialize<ChatOptions>(ref reader, options),
+            _ => JsonSerializer.Deserialize<ChatOptions>(ref reader, options),
+        };
+    }
+
+    private static void SerializeOptions(Utf8JsonWriter writer, ChatOptions options, ChatProviderType provider, JsonSerializerOptions jsonOptions)
+    {
+        switch (provider)
+        {
+            case ChatProviderType.OpenAI:
+                JsonSerializer.Serialize(writer, options, jsonOptions);
+                break;
+            default:
+                JsonSerializer.Serialize(writer, options, jsonOptions);
+                break;
+        }
+    }
 }

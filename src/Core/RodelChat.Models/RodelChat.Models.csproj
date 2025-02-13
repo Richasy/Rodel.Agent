@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Richasy.AgentKernel.Connectors.OpenAI" />
     <PackageReference Include="Richasy.AgentKernel.Definitions" />
   </ItemGroup>
 

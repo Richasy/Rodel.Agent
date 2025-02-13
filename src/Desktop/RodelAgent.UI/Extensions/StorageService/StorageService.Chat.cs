@@ -51,14 +51,14 @@ public sealed partial class StorageService
     }
 
     /// <inheritdoc/>
-    public async Task<List<ChatSessionPreset>> GetChatSessionPresetsAsync()
+    public async Task<List<ChatSessionPresetOld>> GetChatSessionPresetsAsync()
     {
         await InitializePresetInternalAsync(chatConstants.ChatSessionPresetType.Session);
         return _chatSessionPresets;
     }
 
     /// <inheritdoc/>
-    public async Task<ChatSessionPreset> GetChatSessionPresetByIdAsync(string presetId)
+    public async Task<ChatSessionPresetOld> GetChatSessionPresetByIdAsync(string presetId)
     {
         await InitializePresetInternalAsync(chatConstants.ChatSessionPresetType.Session);
         await InitializePresetInternalAsync(chatConstants.ChatSessionPresetType.Agent);
@@ -66,7 +66,7 @@ public sealed partial class StorageService
     }
 
     /// <inheritdoc/>
-    public Task AddOrUpdateChatSessionPresetAsync(ChatSessionPreset preset)
+    public Task AddOrUpdateChatSessionPresetAsync(ChatSessionPresetOld preset)
         => AddOrUpdatePresetInternalAsync(chatConstants.ChatSessionPresetType.Session, preset);
 
     /// <inheritdoc/>
@@ -74,14 +74,14 @@ public sealed partial class StorageService
         => RemovePresetInternalAsync(chatConstants.ChatSessionPresetType.Session, presetId);
 
     /// <inheritdoc/>
-    public async Task<List<ChatSessionPreset>> GetChatAgentsAsync()
+    public async Task<List<ChatSessionPresetOld>> GetChatAgentsAsync()
     {
         await InitializePresetInternalAsync(chatConstants.ChatSessionPresetType.Agent);
         return _chatAgents;
     }
 
     /// <inheritdoc/>
-    public Task AddOrUpdateChatAgentAsync(ChatSessionPreset agent)
+    public Task AddOrUpdateChatAgentAsync(ChatSessionPresetOld agent)
         => AddOrUpdatePresetInternalAsync(chatConstants.ChatSessionPresetType.Agent, agent);
 
     /// <inheritdoc/>
@@ -263,11 +263,11 @@ public sealed partial class StorageService
 
         if (type == chatConstants.ChatSessionPresetType.Session)
         {
-            _chatSessionPresets = new List<ChatSessionPreset>();
+            _chatSessionPresets = new List<ChatSessionPresetOld>();
         }
         else if (type == chatConstants.ChatSessionPresetType.Agent)
         {
-            _chatAgents = new List<ChatSessionPreset>();
+            _chatAgents = new List<ChatSessionPresetOld>();
         }
 
         set = GetPresetListInternal(type);
@@ -283,7 +283,7 @@ public sealed partial class StorageService
             try
             {
                 var preset = await File.ReadAllTextAsync(file);
-                var presetObj = JsonSerializer.Deserialize<ChatSessionPreset>(preset);
+                var presetObj = JsonSerializer.Deserialize<ChatSessionPresetOld>(preset);
                 var parameters = _chatParametersFactory.CreateChatParameters(presetObj.Provider);
                 parameters.SetDictionary(presetObj.Parameters.ToDictionary());
                 presetObj.Parameters = parameters;
@@ -296,7 +296,7 @@ public sealed partial class StorageService
         }
     }
 
-    private async Task AddOrUpdatePresetInternalAsync(chatConstants.ChatSessionPresetType type, ChatSessionPreset preset)
+    private async Task AddOrUpdatePresetInternalAsync(chatConstants.ChatSessionPresetType type, ChatSessionPresetOld preset)
     {
         await InitializePresetInternalAsync(type);
         var set = GetPresetListInternal(type);
@@ -336,7 +336,7 @@ public sealed partial class StorageService
             _ => throw new ArgumentOutOfRangeException(nameof(type)),
         };
 
-    private List<ChatSessionPreset> GetPresetListInternal(chatConstants.ChatSessionPresetType type)
+    private List<ChatSessionPresetOld> GetPresetListInternal(chatConstants.ChatSessionPresetType type)
         => type switch
         {
             chatConstants.ChatSessionPresetType.Session => _chatSessionPresets,

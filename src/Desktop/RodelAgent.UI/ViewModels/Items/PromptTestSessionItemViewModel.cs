@@ -47,7 +47,7 @@ public sealed partial class PromptTestSessionItemViewModel : ViewModelBase
     public PromptTestSessionItemViewModel(
         IChatClient chatClient,
         int index,
-        ChatSessionPreset preset,
+        ChatSessionPresetOld preset,
         string input,
         string sourceInput)
     {

@@ -44,7 +44,7 @@ public sealed class HunYuanProvider : ProviderBase, IProvider
     }
 
     /// <inheritdoc/>
-    public override PromptExecutionSettings ConvertExecutionSettings(ChatSessionPreset sessionData)
+    public override PromptExecutionSettings ConvertExecutionSettings(ChatSessionPresetOld sessionData)
         => new HunYuanPromptExecutionSettings
         {
             Temperature = sessionData.Parameters.GetValueOrDefault<double>(nameof(HunYuanChatParameters.Temperature)),

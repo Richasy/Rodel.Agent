@@ -41,7 +41,7 @@ public sealed partial class ChatServicePageViewModel
         var lastProvider = AvailableServices.FirstOrDefault(p => p.IsSelected)?.ProviderType
             ?? AvailableServices.FirstOrDefault()?.ProviderType
             ?? ProviderType.OpenAI;
-        var tempAgent = new ChatSessionPreset
+        var tempAgent = new ChatSessionPresetOld
         {
             Id = Guid.NewGuid().ToString("N"),
             Provider = lastProvider,

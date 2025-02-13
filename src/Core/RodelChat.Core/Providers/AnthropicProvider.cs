@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
 using System.Text.Json.Serialization;
-using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Connectors.Anthropic;
 using RodelAgent.Models.Abstractions;
 using RodelChat.Interfaces.Client;
 using RodelChat.Models.Client;
@@ -38,7 +36,7 @@ public sealed class AnthropicProvider : ProviderBase, IProvider
     }
 
     /// <inheritdoc/>
-    public override PromptExecutionSettings ConvertExecutionSettings(ChatSessionPreset sessionData)
+    public override PromptExecutionSettings ConvertExecutionSettings(ChatSessionPresetOld sessionData)
         => new AnthropicPromptExecutionSettings
         {
             MaxTokens = sessionData.Parameters.GetValueOrDefault<int>(nameof(AnthropicChatParameters.MaxTokens)),
