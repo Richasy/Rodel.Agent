@@ -12,5 +12,5 @@ public interface IStringResourceToolkit
     /// </summary>
     /// <param name="key">资源名称.</param>
     /// <returns>文本资源.</returns>
-    string GetString(string key);
+    string GetLocalizedString(string key);
 }

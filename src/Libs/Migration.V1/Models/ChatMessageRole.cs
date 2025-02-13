@@ -1,4 +1,6 @@
-﻿namespace Migration.V1.Models;
+﻿// Copyright (c) Rodel. All rights reserved.
+
+namespace Migration.V1.Models;
 
 /// <summary>
 /// 聊天消息角色.

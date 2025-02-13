@@ -1,4 +1,6 @@
-﻿namespace Migration.V1.Models;
+﻿// Copyright (c) Rodel. All rights reserved.
+
+namespace Migration.V1.Models;
 
 /// <summary>
 /// 内核类型.

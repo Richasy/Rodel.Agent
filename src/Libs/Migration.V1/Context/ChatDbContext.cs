@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿// Copyright (c) Rodel. All rights reserved.
+
+using Microsoft.EntityFrameworkCore;
 using Migration.V1.Models;
 
 namespace Migration.V1.Context;

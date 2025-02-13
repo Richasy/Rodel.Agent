@@ -32,8 +32,10 @@ public sealed partial class AppViewModel : ViewModelBase
     /// <returns><see cref="Task"/>.</returns>
     public async Task ShowMessageDialogAsync(string message)
     {
-        var tipDialog = new TipDialog(message);
-        tipDialog.XamlRoot = ActivatedWindow.Content.XamlRoot;
+        var tipDialog = new TipDialog(message)
+        {
+            XamlRoot = ActivatedWindow.Content.XamlRoot,
+        };
         await tipDialog.ShowAsync();
     }
 

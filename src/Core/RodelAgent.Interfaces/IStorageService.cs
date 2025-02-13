@@ -1,15 +1,13 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
 using System.Collections.Generic;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading.Tasks;
+using Richasy.AgentKernel;
 using RodelAudio.Models.Client;
 using RodelChat.Models.Client;
 using RodelDraw.Models.Client;
 using RodelTranslate.Models.Client;
-using audioConstants = RodelAudio.Models.Constants;
-using chatConstants = RodelChat.Models.Constants;
-using drawConstants = RodelDraw.Models.Constants;
-using translateConstants = RodelTranslate.Models.Constants;
 
 namespace RodelAgent.Interfaces;
 
@@ -35,8 +33,9 @@ public interface IStorageService
     /// </summary>
     /// <typeparam name="T">供应商配置类型.</typeparam>
     /// <param name="type">供应商类型.</param>
+    /// <param name="typeInfo">类型信息.</param>
     /// <returns>配置.</returns>
-    Task<T> GetChatConfigAsync<T>(chatConstants.ProviderType type)
+    Task<T> GetChatConfigAsync<T>(ChatProviderType type, JsonTypeInfo<T> typeInfo)
         where T : class;
 
     /// <summary>
@@ -45,8 +44,9 @@ public interface IStorageService
     /// <typeparam name="T">供应商配置类型.</typeparam>
     /// <param name="type">供应商类型.</param>
     /// <param name="config">配置.</param>
+    /// <param name="typeInfo">类型信息.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task SetChatConfigAsync<T>(chatConstants.ProviderType type, T config)
+    Task SetChatConfigAsync<T>(ChatProviderType type, T config, JsonTypeInfo<T> typeInfo)
         where T : class;
 
     /// <summary>
@@ -54,8 +54,9 @@ public interface IStorageService
     /// </summary>
     /// <typeparam name="T">供应商配置类型.</typeparam>
     /// <param name="type">供应商类型.</param>
+    /// <param name="typeInfo">类型信息.</param>
     /// <returns>配置.</returns>
-    Task<T> GetTranslateConfigAsync<T>(translateConstants.ProviderType type)
+    Task<T> GetTranslateConfigAsync<T>(TranslateProviderType type, JsonTypeInfo<T> typeInfo)
         where T : class;
 
     /// <summary>
@@ -64,8 +65,9 @@ public interface IStorageService
     /// <typeparam name="T">供应商配置类型.</typeparam>
     /// <param name="type">供应商类型.</param>
     /// <param name="config">配置.</param>
+    /// <param name="typeInfo">类型信息.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task SetTranslateConfigAsync<T>(translateConstants.ProviderType type, T config)
+    Task SetTranslateConfigAsync<T>(TranslateProviderType type, T config, JsonTypeInfo<T> typeInfo)
         where T : class;
 
     /// <summary>
@@ -73,8 +75,9 @@ public interface IStorageService
     /// </summary>
     /// <typeparam name="T">供应商配置类型.</typeparam>
     /// <param name="type">供应商类型.</param>
+    /// <param name="typeInfo">类型信息.</param>
     /// <returns>配置.</returns>
-    Task<T> GetDrawConfigAsync<T>(drawConstants.ProviderType type)
+    Task<T> GetDrawConfigAsync<T>(DrawProviderType type, JsonTypeInfo<T> typeInfo)
         where T : class;
 
     /// <summary>
@@ -83,8 +86,9 @@ public interface IStorageService
     /// <typeparam name="T">供应商配置类型.</typeparam>
     /// <param name="type">供应商类型.</param>
     /// <param name="config">配置.</param>
+    /// <param name="typeInfo">类型信息.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task SetDrawConfigAsync<T>(drawConstants.ProviderType type, T config)
+    Task SetDrawConfigAsync<T>(DrawProviderType type, T config, JsonTypeInfo<T> typeInfo)
         where T : class;
 
     /// <summary>
@@ -92,8 +96,9 @@ public interface IStorageService
     /// </summary>
     /// <typeparam name="T">供应商配置类型.</typeparam>
     /// <param name="type">供应商类型.</param>
+    /// <param name="typeInfo">类型信息.</param>
     /// <returns>配置.</returns>
-    Task<T> GetAudioConfigAsync<T>(audioConstants.ProviderType type)
+    Task<T> GetAudioConfigAsync<T>(AudioProviderType type, JsonTypeInfo<T> typeInfo)
         where T : class;
 
     /// <summary>
@@ -102,8 +107,9 @@ public interface IStorageService
     /// <typeparam name="T">供应商配置类型.</typeparam>
     /// <param name="type">供应商类型.</param>
     /// <param name="config">配置.</param>
+    /// <param name="typeInfo">类型信息.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task SetAudioConfigAsync<T>(audioConstants.ProviderType type, T config)
+    Task SetAudioConfigAsync<T>(AudioProviderType type, T config, JsonTypeInfo<T> typeInfo)
         where T : class;
 
     /// <summary>
@@ -111,7 +117,7 @@ public interface IStorageService
     /// </summary>
     /// <param name="type">供应商类型.</param>
     /// <returns>会话列表.</returns>
-    Task<List<ChatSession>?> GetChatSessionsAsync(chatConstants.ProviderType type);
+    Task<List<ChatSession>?> GetChatSessionsAsync(ChatProviderType type);
 
     /// <summary>
     /// 获取指定预设的聊天会话.
@@ -234,7 +240,7 @@ public interface IStorageService
     /// </summary>
     /// <param name="type">供应商类型.</param>
     /// <returns>会话列表.</returns>
-    Task<List<TranslateSession>?> GetTranslateSessionsAsync(translateConstants.ProviderType type);
+    Task<List<TranslateSession>?> GetTranslateSessionsAsync(TranslateProviderType type);
 
     /// <summary>
     /// 添加或更新翻译会话.

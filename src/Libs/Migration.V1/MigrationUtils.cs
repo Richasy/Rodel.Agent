@@ -3,6 +3,8 @@
 using System.IO.Compression;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
+using Richasy.AgentKernel;
+using Richasy.AgentKernel.Models;
 using RodelAgent.Interfaces;
 
 namespace Migration.V1;
@@ -18,7 +20,7 @@ public sealed class MigrationUtils
     private readonly string _drawDbPath;
     private readonly IStorageService _storageService;
 
-    private RodelChat.Models.Constants.ProviderType _preferChatProvider = RodelChat.Models.Constants.ProviderType.OpenAI;
+    private ChatProviderType _preferChatProvider = ChatProviderType.OpenAI;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MigrationUtils"/> class.
@@ -132,7 +134,7 @@ public sealed class MigrationUtils
         // Azure Open AI Chat
         if (metadata.Any(p => p.Id == "AzureOpenAIAccessKey" && !string.IsNullOrEmpty(p.Value)))
         {
-            var aoaiConfig = new RodelChat.Models.Client.AzureOpenAIClientConfig
+            var aoaiConfig = new AzureOpenAIChatConfig
             {
                 Key = metadata.First(p => p.Id == "AzureOpenAIAccessKey").Value,
                 Endpoint = metadata.First(p => p.Id == "AzureOpenAIEndpoint").Value,
@@ -143,79 +145,95 @@ public sealed class MigrationUtils
             var defaultModel = metadata.FirstOrDefault(p => p.Id == "DefaultAzureOpenAIChatModelName")?.Value;
             if (!string.IsNullOrEmpty(defaultModel))
             {
-                aoaiConfig.CustomModels = new List<RodelChat.Models.Client.ChatModel>
+                aoaiConfig.CustomModels = new List<ChatModel>
                 {
-                    new RodelChat.Models.Client.ChatModel
+                    new ChatModel
                     {
                         Id = defaultModel,
-                        DisplayName = defaultModel,
-                        IsCustomModel = true,
+                        Name = defaultModel,
                     }
                 };
             }
 
-            _preferChatProvider = RodelChat.Models.Constants.ProviderType.AzureOpenAI;
-            await _storageService.SetChatConfigAsync(RodelChat.Models.Constants.ProviderType.AzureOpenAI, aoaiConfig);
+            _preferChatProvider = ChatProviderType.AzureOpenAI;
+            await _storageService.SetChatConfigAsync(ChatProviderType.AzureOpenAI, aoaiConfig ?? new(), JsonGenContext.Default.AzureOpenAIChatConfig);
 
-            var drawAoaiConfig = JsonSerializer.Deserialize<RodelDraw.Models.Client.AzureOpenAIClientConfig>(json);
-            var audioAoaiConfig = JsonSerializer.Deserialize<RodelAudio.Models.Client.AzureOpenAIClientConfig>(json);
-            await _storageService.SetDrawConfigAsync(RodelDraw.Models.Constants.ProviderType.AzureOpenAI, drawAoaiConfig!);
-            await _storageService.SetAudioConfigAsync(RodelAudio.Models.Constants.ProviderType.AzureOpenAI, audioAoaiConfig!);
+            var drawAoaiConfig = new AzureOpenAIDrawConfig
+            {
+                Key = aoaiConfig.Key,
+                Endpoint = aoaiConfig.Endpoint,
+            };
+            var audioAoaiConfig =new AzureOpenAIAudioConfig
+            {
+                Key = aoaiConfig.Key,
+                Endpoint = aoaiConfig.Endpoint,
+            };
+            await _storageService.SetDrawConfigAsync(DrawProviderType.AzureOpenAI, drawAoaiConfig ?? new(), JsonGenContext.Default.AzureOpenAIDrawConfig);
+            await _storageService.SetAudioConfigAsync(AudioProviderType.AzureOpenAI, audioAoaiConfig ?? new(), JsonGenContext.Default.AzureOpenAIAudioConfig);
         }
 
         // Open AI Chat
         if (metadata.Any(p => p.Id == "OpenAIAccessKey" && !string.IsNullOrEmpty(p.Value)))
         {
-            var oaiConfig = new RodelChat.Models.Client.OpenAIClientConfig
+            var oaiConfig = new OpenAIChatConfig
             {
                 Key = metadata.First(p => p.Id == "OpenAIAccessKey").Value,
                 Endpoint = metadata.First(p => p.Id == "OpenAICustomEndpoint").Value,
                 OrganizationId = metadata.First(p => p.Id == "OpenAIOrganization").Value,
             };
 
-            var json = JsonSerializer.Serialize(oaiConfig);
-            var drawOaiConfig = JsonSerializer.Deserialize<RodelDraw.Models.Client.OpenAIClientConfig>(json);
-            var audioOaiConfig = JsonSerializer.Deserialize<RodelAudio.Models.Client.OpenAIClientConfig>(json);
+            var drawOaiConfig = new OpenAIDrawConfig
+            {
+                Key = oaiConfig.Key,
+                Endpoint = oaiConfig.Endpoint,
+                OrganizationId = oaiConfig.OrganizationId,
+            };
+            var audioOaiConfig = new OpenAIAudioConfig
+            {
+                Key = oaiConfig.Key,
+                Endpoint = oaiConfig.Endpoint,
+                OrganizationId = oaiConfig.OrganizationId,
+            };
 
-            await _storageService.SetChatConfigAsync(RodelChat.Models.Constants.ProviderType.OpenAI, oaiConfig);
-            await _storageService.SetDrawConfigAsync(RodelDraw.Models.Constants.ProviderType.OpenAI, drawOaiConfig!);
-            await _storageService.SetAudioConfigAsync(RodelAudio.Models.Constants.ProviderType.OpenAI, audioOaiConfig!);
+            await _storageService.SetChatConfigAsync(ChatProviderType.OpenAI, oaiConfig, JsonGenContext.Default.OpenAIChatConfig);
+            await _storageService.SetDrawConfigAsync(DrawProviderType.OpenAI, drawOaiConfig, JsonGenContext.Default.OpenAIDrawConfig);
+            await _storageService.SetAudioConfigAsync(AudioProviderType.OpenAI, audioOaiConfig, JsonGenContext.Default.OpenAIAudioConfig);
         }
 
         // Azure Speech
         if (metadata.Any(p => p.Id == "AzureSpeechKey" && !string.IsNullOrEmpty(p.Value)))
         {
-            var azureSpeechConfig = new RodelAudio.Models.Client.AzureSpeechClientConfig
+            var azureSpeechConfig = new AzureAudioConfig
             {
                 Key = metadata.First(p => p.Id == "AzureSpeechKey").Value,
                 Region = metadata.First(p => p.Id == "AzureSpeechRegion").Value,
             };
 
-            await _storageService.SetAudioConfigAsync(RodelAudio.Models.Constants.ProviderType.AzureSpeech, azureSpeechConfig);
+            await _storageService.SetAudioConfigAsync(AudioProviderType.Azure, azureSpeechConfig, JsonGenContext.Default.AzureAudioConfig);
         }
 
         // Azure Translator
         if (metadata.Any(p => p.Id == "AzureTranslateKey" && !string.IsNullOrEmpty(p.Value)))
         {
-            var azureTranslatorConfig = new RodelTranslate.Models.Client.AzureClientConfig
+            var azureTranslatorConfig = new AzureTranslateConfig
             {
                 Key = metadata.First(p => p.Id == "AzureTranslateKey").Value,
                 Region = metadata.First(p => p.Id == "AzureTranslateRegion").Value,
             };
 
-            await _storageService.SetTranslateConfigAsync(RodelTranslate.Models.Constants.ProviderType.Azure, azureTranslatorConfig);
+            await _storageService.SetTranslateConfigAsync(TranslateProviderType.Azure, azureTranslatorConfig, JsonGenContext.Default.AzureTranslateConfig);
         }
 
         // Baidu Translator
         if (metadata.Any(p => p.Id == "BaiduTranslateAppKey" && !string.IsNullOrEmpty(p.Value)))
         {
-            var baiduTranslatorConfig = new RodelTranslate.Models.Client.BaiduClientConfig
+            var baiduTranslatorConfig = new BaiduTranslateConfig
             {
                 AppId = metadata.First(p => p.Id == "BaiduTranslateAppId").Value,
                 Key = metadata.First(p => p.Id == "BaiduTranslateAppKey").Value,
             };
 
-            await _storageService.SetTranslateConfigAsync(RodelTranslate.Models.Constants.ProviderType.Baidu, baiduTranslatorConfig);
+            await _storageService.SetTranslateConfigAsync(TranslateProviderType.Baidu, baiduTranslatorConfig, JsonGenContext.Default.BaiduTranslateConfig);
         }
     }
 

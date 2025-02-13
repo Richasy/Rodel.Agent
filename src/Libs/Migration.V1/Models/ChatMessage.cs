@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿// Copyright (c) Rodel. All rights reserved.
+
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Migration.V1.Models;

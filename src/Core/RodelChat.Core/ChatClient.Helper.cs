@@ -84,7 +84,7 @@ public sealed partial class ChatClient
         => GetProvider(session.Provider).ConvertExecutionSettings(session);
 
     private Kernel? FindKernelProvider(ProviderType type, string modelId)
-        => GetProvider(type).GetOrCreateKernel(modelId);
+        => GetProvider(type).GetChatService(modelId);
 
     private IProvider GetProvider(ProviderType type)
         => _providerFactory.GetOrCreateProvider(type);

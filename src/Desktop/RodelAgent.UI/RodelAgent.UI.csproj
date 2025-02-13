@@ -240,7 +240,11 @@
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" />
     <PackageReference Include="NAudio.Core" />
     <PackageReference Include="NLog.Extensions.Logging" />
+    <PackageReference Include="Richasy.WinUIKernel.AI" />
     <PackageReference Include="Roman-Numerals" />
+    <PackageReference Include="Serilog" />
+    <PackageReference Include="Serilog.Extensions.Logging" />
+    <PackageReference Include="Serilog.Sinks.File" />
     <PackageReference Include="Tiktoken" />
     <PackageReference Include="WinUIEx" />
     <Manifest Include="$(ApplicationManifest)" />
@@ -265,7 +269,6 @@
     <ProjectReference Include="..\..\Core\RodelTranslate.Core\RodelTranslate.Core.csproj" />
     <ProjectReference Include="..\..\Core\RodelTranslate.Interfaces\RodelTranslate.Interfaces.csproj" />
     <ProjectReference Include="..\..\Libs\Migration.V1\Migration.V1.csproj" />
-    <ProjectReference Include="..\..\Libs\WinUI.Share\src\Richasy.WinUI.Share.csproj" />
     <ProjectReference Include="..\RodelAgent.UI.Models\RodelAgent.UI.Models.csproj" />
   </ItemGroup>
   <ItemGroup>

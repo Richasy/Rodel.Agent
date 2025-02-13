@@ -26,11 +26,11 @@ public sealed class TogetherAIProvider : ProviderBase, IProvider
     {
         if (ShouldRecreateKernel(modelId))
         {
-            Kernel = Kernel.CreateBuilder()
+            Service = Service.CreateBuilder()
                 .AddOpenAIChatCompletion(modelId, BaseUri, AccessKey)
                 .Build();
         }
 
-        return Kernel;
+        return Service;
     }
 }

@@ -35,12 +35,12 @@ public sealed class HunYuanProvider : ProviderBase, IProvider
     {
         if (ShouldRecreateKernel(modelId))
         {
-            Kernel = Kernel.CreateBuilder()
+            Service = Service.CreateBuilder()
                 .AddHunYuanChatCompletion(modelId, SecretId, AccessKey)
                 .Build();
         }
 
-        return Kernel;
+        return Service;
     }
 
     /// <inheritdoc/>

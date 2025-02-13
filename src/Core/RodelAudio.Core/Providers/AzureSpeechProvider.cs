@@ -66,7 +66,7 @@ public sealed class AzureSpeechProvider : ProviderBase, IProvider
     {
         try
         {
-            var storageService = GlobalStatics.ServiceProvider.GetRequiredService<IStorageService>();
+            var storageService = GlobalStatics.Kernel.GetRequiredService<IStorageService>();
             var localJson = await storageService.RetrieveAzureSpeechVoicesAsync();
             if (string.IsNullOrEmpty(localJson))
             {
@@ -115,7 +115,7 @@ public sealed class AzureSpeechProvider : ProviderBase, IProvider
         }
         catch (Exception ex)
         {
-            GlobalStatics.ServiceProvider.GetService<ILogger<AzureSpeechProvider>>()?.LogError(ex, "Failed to initialize Azure speech voices.");
+            GlobalStatics.Kernel.GetService<ILogger<AzureSpeechProvider>>()?.LogError(ex, "Failed to initialize Azure speech voices.");
         }
 
         return false;

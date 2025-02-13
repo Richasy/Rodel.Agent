@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
 using System.Collections.Generic;
-using Microsoft.SemanticKernel;
+using Microsoft.Extensions.AI;
+using Richasy.AgentKernel.Chat;
 using RodelChat.Models.Client;
 
 namespace RodelChat.Interfaces.Client;
@@ -16,13 +17,7 @@ public interface IProvider
     /// </summary>
     /// <param name="modelId">要使用的模型标识符.</param>
     /// <returns>内核.</returns>
-    Kernel? GetOrCreateKernel(string modelId);
-
-    /// <summary>
-    /// 获取当前内核.
-    /// </summary>
-    /// <returns>如果有，则返回当前正在使用的内核.</returns>
-    Kernel? GetCurrentKernel();
+    IChatService GetChatService(string modelId);
 
     /// <summary>
     /// 获取模型信息.
@@ -36,7 +31,7 @@ public interface IProvider
     /// </summary>
     /// <param name="sessionData">会话.</param>
     /// <returns>执行设置.</returns>
-    PromptExecutionSettings ConvertExecutionSettings(ChatSessionPreset sessionData);
+    ChatOptions ConvertExecutionSettings(ChatSessionPreset sessionData);
 
     /// <summary>
     /// 获取模型列表.

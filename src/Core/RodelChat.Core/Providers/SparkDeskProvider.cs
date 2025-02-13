@@ -40,12 +40,12 @@ public sealed class SparkDeskProvider : ProviderBase, IProvider
     {
         if (ShouldRecreateKernel(modelId))
         {
-            Kernel = Kernel.CreateBuilder()
+            Service = Service.CreateBuilder()
                 .AddSparkDeskChatCompletion(AccessKey, Secret, AppId, modelId)
                 .Build();
         }
 
-        return Kernel;
+        return Service;
     }
 
     /// <inheritdoc/>

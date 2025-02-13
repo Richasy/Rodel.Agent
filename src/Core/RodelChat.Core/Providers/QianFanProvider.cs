@@ -35,12 +35,12 @@ public sealed class QianFanProvider : ProviderBase, IProvider
     {
         if (ShouldRecreateKernel(modelId))
         {
-            Kernel = Kernel.CreateBuilder()
+            Service = Service.CreateBuilder()
                 .AddQianFanChatCompletion(modelId, AccessKey, Secret)
                 .Build();
         }
 
-        return Kernel;
+        return Service;
     }
 
     /// <inheritdoc/>

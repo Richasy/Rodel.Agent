@@ -27,12 +27,12 @@ public sealed class MistralAIProvider : ProviderBase, IProvider
         if (ShouldRecreateKernel(modelId))
         {
 #pragma warning disable SKEXP0070 // 类型仅用于评估，在将来的更新中可能会被更改或删除。取消此诊断以继续。
-            Kernel = Kernel.CreateBuilder()
+            Service = Service.CreateBuilder()
                 .AddMistralChatCompletion(modelId, AccessKey)
                 .Build();
 #pragma warning restore SKEXP0070 // 类型仅用于评估，在将来的更新中可能会被更改或删除。取消此诊断以继续。
         }
 
-        return Kernel;
+        return Service;
     }
 }

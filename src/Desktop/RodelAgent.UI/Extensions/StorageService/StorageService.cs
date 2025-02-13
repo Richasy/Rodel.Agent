@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
 using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
+using Richasy.AgentKernel;
 using RodelAgent.Context;
 using RodelAgent.Interfaces;
 using RodelAgent.UI.Models.Constants;
@@ -13,10 +15,6 @@ using RodelDraw.Interfaces.Client;
 using RodelDraw.Models.Client;
 using RodelTranslate.Interfaces.Client;
 using RodelTranslate.Models.Client;
-using audioConstants = RodelAudio.Models.Constants;
-using chatConstants = RodelChat.Models.Constants;
-using drawConstants = RodelDraw.Models.Constants;
-using transConstants = RodelTranslate.Models.Constants;
 
 namespace RodelAgent.UI.Extensions;
 
@@ -60,7 +58,7 @@ public sealed partial class StorageService : IStorageService
     }
 
     /// <inheritdoc/>
-    public async Task<T> GetChatConfigAsync<T>(chatConstants.ProviderType type)
+    public async Task<T> GetChatConfigAsync<T>(ChatProviderType type, JsonTypeInfo<T> typeInfo)
         where T : class
     {
         var json = await _dbService.GetSecretAsync("Chat_" + type.ToString());
@@ -68,19 +66,19 @@ public sealed partial class StorageService : IStorageService
             ? json as T
             : json is null
                 ? default
-                : JsonSerializer.Deserialize<T>(json);
+                : JsonSerializer.Deserialize(json, typeInfo);
     }
 
     /// <inheritdoc/>
-    public async Task SetChatConfigAsync<T>(chatConstants.ProviderType type, T config)
+    public async Task SetChatConfigAsync<T>(ChatProviderType type, T config, JsonTypeInfo<T> typeInfo)
         where T : class
     {
-        var json = typeof(T).Equals(typeof(string)) ? config as string : JsonSerializer.Serialize(config);
+        var json = typeof(T).Equals(typeof(string)) ? config as string : JsonSerializer.Serialize(config, typeInfo);
         await _dbService.SetSecretAsync("Chat_" + type.ToString(), json);
     }
 
     /// <inheritdoc/>
-    public async Task<T> GetTranslateConfigAsync<T>(transConstants.ProviderType type)
+    public async Task<T> GetTranslateConfigAsync<T>(TranslateProviderType type, JsonTypeInfo<T> typeInfo)
         where T : class
     {
         var json = await _dbService.GetSecretAsync("Trans_" + type.ToString());
@@ -88,19 +86,19 @@ public sealed partial class StorageService : IStorageService
             ? json as T
             : json is null
                 ? default
-                : JsonSerializer.Deserialize<T>(json);
+                : JsonSerializer.Deserialize<T>(json, typeInfo);
     }
 
     /// <inheritdoc/>
-    public async Task SetTranslateConfigAsync<T>(transConstants.ProviderType type, T config)
+    public async Task SetTranslateConfigAsync<T>(TranslateProviderType type, T config, JsonTypeInfo<T> typeInfo)
         where T : class
     {
-        var json = typeof(T).Equals(typeof(string)) ? config as string : JsonSerializer.Serialize(config);
+        var json = typeof(T).Equals(typeof(string)) ? config as string : JsonSerializer.Serialize(config, typeInfo);
         await _dbService.SetSecretAsync("Trans_" + type.ToString(), json);
     }
 
     /// <inheritdoc/>
-    public async Task<T> GetDrawConfigAsync<T>(drawConstants.ProviderType type)
+    public async Task<T> GetDrawConfigAsync<T>(DrawProviderType type, JsonTypeInfo<T> typeInfo)
         where T : class
     {
         var json = await _dbService.GetSecretAsync("Draw_" + type.ToString());
@@ -108,19 +106,19 @@ public sealed partial class StorageService : IStorageService
             ? json as T
             : json is null
                 ? default
-                : JsonSerializer.Deserialize<T>(json);
+                : JsonSerializer.Deserialize<T>(json, typeInfo);
     }
 
     /// <inheritdoc/>
-    public async Task SetDrawConfigAsync<T>(drawConstants.ProviderType type, T config)
+    public async Task SetDrawConfigAsync<T>(DrawProviderType type, T config, JsonTypeInfo<T> typeInfo)
         where T : class
     {
-        var json = typeof(T).Equals(typeof(string)) ? config as string : JsonSerializer.Serialize(config);
+        var json = typeof(T).Equals(typeof(string)) ? config as string : JsonSerializer.Serialize(config, typeInfo);
         await _dbService.SetSecretAsync("Draw_" + type.ToString(), json);
     }
 
     /// <inheritdoc/>
-    public async Task<T> GetAudioConfigAsync<T>(audioConstants.ProviderType type)
+    public async Task<T> GetAudioConfigAsync<T>(AudioProviderType type, JsonTypeInfo<T> typeInfo)
         where T : class
     {
         var json = await _dbService.GetSecretAsync("Audio_" + type.ToString());
@@ -128,14 +126,14 @@ public sealed partial class StorageService : IStorageService
             ? json as T
             : json is null
                 ? default
-                : JsonSerializer.Deserialize<T>(json);
+                : JsonSerializer.Deserialize<T>(json, typeInfo);
     }
 
     /// <inheritdoc/>
-    public async Task SetAudioConfigAsync<T>(audioConstants.ProviderType type, T config)
+    public async Task SetAudioConfigAsync<T>(AudioProviderType type, T config, JsonTypeInfo<T> typeInfo)
         where T : class
     {
-        var json = typeof(T).Equals(typeof(string)) ? config as string : JsonSerializer.Serialize(config);
+        var json = typeof(T).Equals(typeof(string)) ? config as string : JsonSerializer.Serialize(config, typeInfo);
         await _dbService.SetSecretAsync("Audio_" + type.ToString(), json);
     }
 

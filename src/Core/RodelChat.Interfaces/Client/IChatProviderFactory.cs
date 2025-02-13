@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
-using RodelChat.Models.Client;
-using RodelChat.Models.Constants;
+using Richasy.AgentKernel;
 
 namespace RodelChat.Interfaces.Client;
 
@@ -15,7 +14,7 @@ public interface IChatProviderFactory
     /// </summary>
     /// <param name="type">服务商类型.</param>
     /// <returns>服务商.</returns>
-    IProvider GetOrCreateProvider(ProviderType type);
+    IProvider GetOrCreateProvider(ChatProviderType type);
 
     /// <summary>
     /// 清除所有服务商.

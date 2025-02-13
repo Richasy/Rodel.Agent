@@ -29,12 +29,12 @@ public sealed class AnthropicProvider : ProviderBase, IProvider
     {
         if (ShouldRecreateKernel(modelId))
         {
-            Kernel = Kernel.CreateBuilder()
+            Service = Service.CreateBuilder()
                 .AddAnthropicChatCompletion(modelId, AccessKey, BaseUri)
                 .Build();
         }
 
-        return Kernel;
+        return Service;
     }
 
     /// <inheritdoc/>

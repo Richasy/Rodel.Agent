@@ -1,13 +1,11 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
 using System.Text.Json.Serialization;
-using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.ChatCompletion;
-using Microsoft.SemanticKernel.Connectors.OpenAI;
-using Microsoft.SemanticKernel.Services;
+using Microsoft.Extensions.AI;
+using Richasy.AgentKernel;
+using Richasy.AgentKernel.Chat;
 using RodelAgent.Models.Abstractions;
 using RodelChat.Models.Client;
-using RodelChat.Models.Constants;
 
 namespace RodelChat.Core.Providers;
 
@@ -16,8 +14,6 @@ namespace RodelChat.Core.Providers;
 /// </summary>
 public abstract class ProviderBase
 {
-    private Kernel? _kernel;
-
     /// <summary>
     /// Initializes a new instance of the <see cref="ProviderBase"/> class.
     /// </summary>
@@ -30,16 +26,6 @@ public abstract class ProviderBase
             CustomModels = customModels;
         }
     }
-
-    /// <summary>
-    /// 工具调用事件.
-    /// </summary>
-    public event EventHandler<ToolInvokingEventArgs>? ToolInvoking;
-
-    /// <summary>
-    /// 工具调用完成事件.
-    /// </summary>
-    public event EventHandler<ToolInvokedEventArgs>? ToolInvoked;
 
     /// <summary>
     /// 自定义的模型列表.
@@ -59,15 +45,7 @@ public abstract class ProviderBase
     /// <summary>
     /// 内核.
     /// </summary>
-    protected Kernel? Kernel
-    {
-        get => _kernel;
-        set
-        {
-            _kernel = value;
-            RegisterKernelFilters();
-        }
-    }
+    protected IChatService? Service { get; set; }
 
     /// <summary>
     /// 基础 URL.
@@ -77,21 +55,7 @@ public abstract class ProviderBase
     /// <summary>
     /// 服务商类型.
     /// </summary>
-    protected ProviderType Type { get; init; }
-
-    /// <summary>
-    /// 获取当前模型 ID.
-    /// </summary>
-    /// <returns>模型 ID.</returns>
-    public string? GetCurrentModelId()
-        => GetKernelModelId(Kernel);
-
-    /// <summary>
-    /// 获取当前内核.
-    /// </summary>
-    /// <returns>当前内核.</returns>
-    public Kernel? GetCurrentKernel()
-        => Kernel;
+    protected ChatProviderType Type { get; init; }
 
     /// <summary>
     /// 获取模型信息.
@@ -120,68 +84,42 @@ public abstract class ProviderBase
             models.AddRange(CustomModels);
         }
 
-        return models.Distinct().OrderByDescending(p => p.IsCustomModel).ToList();
+        return [.. models.Distinct().OrderByDescending(p => p.IsCustomModel)];
     }
 
     /// <summary>
     /// 释放资源.
     /// </summary>
     public void Release()
-        => Kernel = default;
+        => Service = default;
 
     /// <summary>
     /// 转换执行设置.
     /// </summary>
     /// <param name="sessionData">会话.</param>
     /// <returns>执行设置.</returns>
-    public virtual PromptExecutionSettings ConvertExecutionSettings(ChatSessionPreset sessionData)
+    public virtual ChatOptions ConvertExecutionSettings(ChatSessionPreset sessionData)
     {
-        var settings = new OpenAIPromptExecutionSettings
+        var settings = new ChatOptions
         {
-            PresencePenalty = sessionData.Parameters.GetValueOrDefault<double>(nameof(OpenAIChatParameters.FrequencyPenalty)),
-            FrequencyPenalty = sessionData.Parameters.GetValueOrDefault<double>(nameof(OpenAIChatParameters.PresencePenalty)),
-            MaxTokens = sessionData.Parameters.GetValueOrDefault<int>(nameof(OpenAIChatParameters.MaxTokens)),
-            Temperature = sessionData.Parameters.GetValueOrDefault<double>(nameof(OpenAIChatParameters.Temperature)),
-            TopP = sessionData.Parameters.GetValueOrDefault<double>(nameof(OpenAIChatParameters.TopP)),
+            PresencePenalty = (float)sessionData.Parameters.GetValueOrDefault<double>(nameof(OpenAIChatParameters.FrequencyPenalty)),
+            FrequencyPenalty = (float)sessionData.Parameters.GetValueOrDefault<double>(nameof(OpenAIChatParameters.PresencePenalty)),
+            MaxOutputTokens = sessionData.Parameters.GetValueOrDefault<int>(nameof(OpenAIChatParameters.MaxTokens)),
+            Temperature = (float)sessionData.Parameters.GetValueOrDefault<double>(nameof(OpenAIChatParameters.Temperature)),
+            TopP = (float)sessionData.Parameters.GetValueOrDefault<double>(nameof(OpenAIChatParameters.TopP)),
             Seed = sessionData.Parameters.GetValueOrDefault<long>(nameof(OpenAIChatParameters.Seed)),
-            ResponseFormat = sessionData.Parameters.GetValueOrDefault<string>(nameof(OpenAIChatParameters.ResponseFormat)),
-            ChatSystemPrompt = sessionData.SystemInstruction,
+            ResponseFormat = sessionData.Parameters.GetValueOrDefault<string>(nameof(OpenAIChatParameters.ResponseFormat)) is "json_object" ? ChatResponseFormat.Json : ChatResponseFormat.Text,
             ModelId = sessionData.Model,
             StopSequences = sessionData.StopSequences,
-            ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions,
         };
 
-        if (settings.MaxTokens == 0)
+        if (settings.MaxOutputTokens == 0)
         {
-            settings.MaxTokens = null;
+            settings.MaxOutputTokens = null;
         }
 
         return settings;
     }
-
-    internal static string GetKernelModelId(Kernel? kernel)
-    {
-        if (kernel == null)
-        {
-            return null;
-        }
-
-        var chatService = kernel.GetRequiredService<IChatCompletionService>();
-        return chatService?.Attributes?.GetValueOrDefault(AIServiceExtensions.ModelIdKey)?.ToString() ?? default;
-    }
-
-    internal void RaiseToolInvoking(ToolInvokingEventArgs args)
-        => ToolInvoking?.Invoke(this, args);
-
-    internal void RaiseToolInvoked(ToolInvokedEventArgs args)
-        => ToolInvoked?.Invoke(this, args);
-
-    /// <summary>
-    /// 是否需要重新创建内核.
-    /// </summary>
-    /// <returns>是否需要.</returns>
-    protected bool ShouldRecreateKernel(string modelId)
-        => Kernel == null || GetCurrentModelId() != modelId;
 
     /// <summary>
     /// 设置基础 URL.
@@ -200,20 +138,6 @@ public abstract class ProviderBase
         {
             BaseUri = uri;
         }
-    }
-
-    /// <summary>
-    /// 注册内核过滤器.
-    /// </summary>
-    protected virtual void RegisterKernelFilters()
-    {
-        if (Kernel == null)
-        {
-            return;
-        }
-
-        Kernel.FunctionInvocationFilters.Clear();
-        Kernel.FunctionInvocationFilters.Add(new ProviderFunctionInvocationFilter(this));
     }
 
     /// <summary>
@@ -270,18 +194,5 @@ public abstract class ProviderBase
         [JsonPropertyName("seed")]
         [RangeLongField(0, int.MaxValue)]
         public long Seed { get; set; } = 0;
-    }
-
-    internal class ProviderFunctionInvocationFilter(ProviderBase provider) : IFunctionInvocationFilter
-    {
-        public async Task OnFunctionInvocationAsync(FunctionInvocationContext context, Func<FunctionInvocationContext, Task> next)
-        {
-            var modelId = GetKernelModelId(provider.Kernel);
-            var invokingArgs = new ToolInvokingEventArgs(context, modelId);
-            provider.RaiseToolInvoking(invokingArgs);
-            await next(context);
-            var invokedArgs = new ToolInvokedEventArgs(context, modelId);
-            provider.RaiseToolInvoked(invokedArgs);
-        }
     }
 }

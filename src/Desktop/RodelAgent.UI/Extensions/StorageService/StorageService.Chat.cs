@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
 using System.Text.Json;
+using Richasy.AgentKernel;
 using RodelChat.Models.Client;
 using chatConstants = RodelChat.Models.Constants;
 
@@ -12,7 +13,7 @@ namespace RodelAgent.UI.Extensions;
 public sealed partial class StorageService
 {
     /// <inheritdoc/>
-    public async Task<List<ChatSession>?> GetChatSessionsAsync(chatConstants.ProviderType type)
+    public async Task<List<ChatSession>?> GetChatSessionsAsync(ChatProviderType type)
     {
         await InitializeChatSessionsAsync();
         var sessions = _chatSessions.Where(s => s.Provider == type).ToList();

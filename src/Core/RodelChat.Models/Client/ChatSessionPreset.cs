@@ -3,8 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Richasy.AgentKernel;
 using RodelAgent.Models.Abstractions;
-using RodelChat.Models.Constants;
 
 namespace RodelChat.Models.Client;
 
@@ -57,7 +57,7 @@ public class ChatSessionPreset
     /// 服务商.
     /// </summary>
     [JsonPropertyName("provider")]
-    public ProviderType Provider { get; set; }
+    public ChatProviderType Provider { get; set; }
 
     /// <summary>
     /// 指定的模型.

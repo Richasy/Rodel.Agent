@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Rodel. All rights reserved.
 
+using Richasy.AgentKernel;
 using RodelAgent.Models.Abstractions;
-using RodelChat.Models.Constants;
 
 namespace RodelChat.Interfaces.Client;
 
@@ -15,5 +15,5 @@ public interface IChatParametersFactory
     /// </summary>
     /// <param name="provider">聊天供应商.</param>
     /// <returns>参数.</returns>
-    BaseFieldParameters CreateChatParameters(ProviderType provider);
+    BaseFieldParameters CreateChatParameters(ChatProviderType provider);
 }

@@ -29,12 +29,12 @@ public sealed class GeminiProvider : ProviderBase, IProvider
     {
         if (ShouldRecreateKernel(modelId))
         {
-            Kernel = Kernel.CreateBuilder()
+            Service = Service.CreateBuilder()
                 .AddGoogleAIGeminiChatCompletion(modelId, BaseUri, AccessKey)
                 .Build();
         }
 
-        return Kernel;
+        return Service;
     }
 
     /// <inheritdoc/>
