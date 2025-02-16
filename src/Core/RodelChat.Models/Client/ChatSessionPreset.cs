@@ -148,7 +148,7 @@ internal class ChatSessionPresetConverter : JsonConverter<ChatSessionPreset>
                         preset.UseStreamOutput = reader.GetBoolean();
                         break;
                     case "provider":
-                        preset.Provider = JsonSerializer.Deserialize<ChatProviderType>(ref reader, options);
+                        preset.Provider = JsonSerializer.Deserialize(ref reader, JsonGenContext.Default.ChatProviderType);
                         break;
                     case "model":
                         preset.Model = reader.GetString();
@@ -157,13 +157,13 @@ internal class ChatSessionPresetConverter : JsonConverter<ChatSessionPreset>
                         preset.SystemInstruction = reader.GetString();
                         break;
                     case "history":
-                        preset.History = JsonSerializer.Deserialize<List<Microsoft.Extensions.AI.ChatMessage>>(ref reader, options);
+                        preset.History = JsonSerializer.Deserialize(ref reader, JsonGenContext.Default.ListChatMessage);
                         break;
                     case "filter_chars":
-                        preset.FilterCharacters = JsonSerializer.Deserialize<IList<string>>(ref reader, options);
+                        preset.FilterCharacters = JsonSerializer.Deserialize(ref reader, JsonGenContext.Default.IListString);
                         break;
                     case "plugins":
-                        preset.Plugins = JsonSerializer.Deserialize<IList<string>>(ref reader, options);
+                        preset.Plugins = JsonSerializer.Deserialize(ref reader, JsonGenContext.Default.IListString);
                         break;
                     case "emoji":
                         preset.Emoji = reader.GetString();
@@ -193,7 +193,7 @@ internal class ChatSessionPresetConverter : JsonConverter<ChatSessionPreset>
         writer.WriteNumber("max_rounds", value.MaxRounds);
         writer.WriteBoolean("stream", value.UseStreamOutput);
         writer.WritePropertyName("provider");
-        JsonSerializer.Serialize(writer, value.Provider, options);
+        JsonSerializer.Serialize(writer, value.Provider, JsonGenContext.Default.ChatProviderType);
 
         if (value.Model != null)
         {
@@ -208,19 +208,19 @@ internal class ChatSessionPresetConverter : JsonConverter<ChatSessionPreset>
         if (value.History != null)
         {
             writer.WritePropertyName("history");
-            JsonSerializer.Serialize(writer, value.History, options);
+            JsonSerializer.Serialize(writer, value.History, JsonGenContext.Default.ListChatMessage);
         }
 
         if (value.FilterCharacters != null)
         {
             writer.WritePropertyName("filter_chars");
-            JsonSerializer.Serialize(writer, value.FilterCharacters, options);
+            JsonSerializer.Serialize(writer, value.FilterCharacters, JsonGenContext.Default.IListString);
         }
 
         if (value.Plugins != null)
         {
             writer.WritePropertyName("plugins");
-            JsonSerializer.Serialize(writer, value.Plugins, options);
+            JsonSerializer.Serialize(writer, value.Plugins, JsonGenContext.Default.IListString);
         }
 
         if (value.Emoji != null)
@@ -235,8 +235,13 @@ internal class ChatSessionPresetConverter : JsonConverter<ChatSessionPreset>
     {
         return provider switch
         {
-            ChatProviderType.OpenAI => JsonSerializer.Deserialize<ChatOptions>(ref reader, options),
-            _ => JsonSerializer.Deserialize<ChatOptions>(ref reader, options),
+            ChatProviderType.OpenAI => JsonSerializer.Deserialize(ref reader, JsonGenContext.Default.OpenAIChatOptions),
+            ChatProviderType.Qwen => JsonSerializer.Deserialize(ref reader, JsonGenContext.Default.QwenChatOptions),
+            ChatProviderType.Ernie => JsonSerializer.Deserialize(ref reader, JsonGenContext.Default.ErnieChatOptions),
+            ChatProviderType.Groq => JsonSerializer.Deserialize(ref reader, JsonGenContext.Default.GroqChatOptions),
+            ChatProviderType.Hunyuan => JsonSerializer.Deserialize(ref reader, JsonGenContext.Default.HunyuanChatOptions),
+            ChatProviderType.ZhiPu => JsonSerializer.Deserialize(ref reader, JsonGenContext.Default.ZhiPuChatOptions),
+            _ => JsonSerializer.Deserialize(ref reader, JsonGenContext.Default.ChatOptions),
         };
     }
 
@@ -245,10 +250,25 @@ internal class ChatSessionPresetConverter : JsonConverter<ChatSessionPreset>
         switch (provider)
         {
             case ChatProviderType.OpenAI:
-                JsonSerializer.Serialize(writer, options, jsonOptions);
+                JsonSerializer.Serialize(writer, options, JsonGenContext.Default.OpenAIChatOptions);
+                break;
+            case ChatProviderType.Qwen:
+                JsonSerializer.Serialize(writer, options, JsonGenContext.Default.QwenChatOptions);
+                break;
+            case ChatProviderType.Ernie:
+                JsonSerializer.Serialize(writer, options, JsonGenContext.Default.ErnieChatOptions);
+                break;
+            case ChatProviderType.Groq:
+                JsonSerializer.Serialize(writer, options, JsonGenContext.Default.GroqChatOptions);
+                break;
+            case ChatProviderType.Hunyuan:
+                JsonSerializer.Serialize(writer, options, JsonGenContext.Default.HunyuanChatOptions);
+                break;
+            case ChatProviderType.ZhiPu:
+                JsonSerializer.Serialize(writer, options, JsonGenContext.Default.ZhiPuChatOptions);
                 break;
             default:
-                JsonSerializer.Serialize(writer, options, jsonOptions);
+                JsonSerializer.Serialize(writer, options, JsonGenContext.Default.ChatOptions);
                 break;
         }
     }

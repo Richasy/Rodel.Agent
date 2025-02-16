@@ -178,7 +178,8 @@ internal sealed class ChatMessageContentListConverter : JsonConverter<List<ChatM
         }
         else
         {
-            return JsonSerializer.Deserialize<List<ChatMessageContent>>(ref reader, options);
+            // return JsonSerializer.Deserialize<List<ChatMessageContent>>(ref reader, options);
+            return default;
         }
     }
 
@@ -191,7 +192,7 @@ internal sealed class ChatMessageContentListConverter : JsonConverter<List<ChatM
         }
         else
         {
-            JsonSerializer.Serialize(writer, value, options);
+            // JsonSerializer.Serialize(writer, value, options);
         }
     }
 }

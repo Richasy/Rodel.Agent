@@ -4,10 +4,16 @@
     <TargetFramework>net9.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
+    <IsAotCompatible>true</IsAotCompatible>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Richasy.AgentKernel.Connectors.Ali" />
+    <PackageReference Include="Richasy.AgentKernel.Connectors.Baidu" />
+    <PackageReference Include="Richasy.AgentKernel.Connectors.Groq" />
     <PackageReference Include="Richasy.AgentKernel.Connectors.OpenAI" />
+    <PackageReference Include="Richasy.AgentKernel.Connectors.Tencent" />
+    <PackageReference Include="Richasy.AgentKernel.Connectors.ZhiPu" />
     <PackageReference Include="Richasy.AgentKernel.Definitions" />
   </ItemGroup>
 

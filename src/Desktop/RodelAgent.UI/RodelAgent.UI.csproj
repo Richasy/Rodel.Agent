@@ -263,7 +263,7 @@
     <ProjectReference Include="..\..\Core\RodelAgent.Statics\RodelAgent.Statics.csproj" />
     <ProjectReference Include="..\..\Core\RodelAudio.Core\RodelAudio.Core.csproj" />
     <ProjectReference Include="..\..\Core\RodelAudio.Interfaces\RodelAudio.Interfaces.csproj" />
-    <ProjectReference Include="..\..\Core\RodelChat.Core\RodelChat.Core.csproj" />
+    <ProjectReference Include="..\..\Core\RodelChat.Models\RodelChat.Models.csproj" />
     <ProjectReference Include="..\..\Core\RodelDraw.Core\RodelDraw.Core.csproj" />
     <ProjectReference Include="..\..\Core\RodelDraw.Interfaces\RodelDraw.Interfaces.csproj" />
     <ProjectReference Include="..\..\Core\RodelTranslate.Core\RodelTranslate.Core.csproj" />
