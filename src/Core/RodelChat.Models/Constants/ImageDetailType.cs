@@ -1,6 +1,5 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -33,7 +32,7 @@ internal sealed class ImageDetailTypeConverter : JsonConverter<ImageDetailType>
     public override ImageDetailType Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var value = reader.GetString();
-        return value.ToLower() switch
+        return value?.ToLowerInvariant() switch
         {
             "auto" => ImageDetailType.Auto,
             "low" => ImageDetailType.Low,

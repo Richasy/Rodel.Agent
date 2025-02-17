@@ -7,13 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Libs\semantic-kernel\dotnet\src\SemanticKernel.Abstractions\SemanticKernel.Abstractions.csproj" />
-    <ProjectReference Include="..\..\Libs\semantic-kernel\dotnet\src\Translators\Translators.Ali\Translators.Ali.csproj" />
-    <ProjectReference Include="..\..\Libs\semantic-kernel\dotnet\src\Translators\Translators.Azure\Translators.Azure.csproj" />
-    <ProjectReference Include="..\..\Libs\semantic-kernel\dotnet\src\Translators\Translators.Baidu\Translators.Baidu.csproj" />
-    <ProjectReference Include="..\..\Libs\semantic-kernel\dotnet\src\Translators\Translators.Tencent\Translators.Tencent.csproj" />
-    <ProjectReference Include="..\..\Libs\semantic-kernel\dotnet\src\Translators\Translators.Volcano\Translators.Volcano.csproj" />
-    <ProjectReference Include="..\..\Libs\semantic-kernel\dotnet\src\Translators\Translators.Youdao\Translators.Youdao.csproj" />
     <ProjectReference Include="..\RodelTranslate.Interfaces\RodelTranslate.Interfaces.csproj" />
     <ProjectReference Include="..\RodelTranslate.Models\RodelTranslate.Models.csproj" />
   </ItemGroup>

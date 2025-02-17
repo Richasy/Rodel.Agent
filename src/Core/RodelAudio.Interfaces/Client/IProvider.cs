@@ -1,7 +1,5 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System.Collections.Generic;
-using Microsoft.SemanticKernel;
 using RodelAudio.Models.Client;
 
 namespace RodelAudio.Interfaces.Client;

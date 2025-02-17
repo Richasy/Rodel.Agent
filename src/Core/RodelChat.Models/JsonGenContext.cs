@@ -1,7 +1,5 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
 using Microsoft.Extensions.AI;
 using Richasy.AgentKernel;
 using Richasy.AgentKernel.Connectors.Ali.Models;
@@ -11,6 +9,7 @@ using Richasy.AgentKernel.Connectors.OpenAI.Models;
 using Richasy.AgentKernel.Connectors.Tencent.Models;
 using Richasy.AgentKernel.Connectors.ZhiPu.Models;
 using RodelChat.Models.Client;
+using System.Text.Json.Serialization;
 
 namespace RodelChat.Models;
 

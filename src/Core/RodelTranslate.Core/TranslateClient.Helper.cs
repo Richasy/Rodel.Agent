@@ -1,7 +1,5 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using Microsoft.SemanticKernel;
-using RodelAgent.Models.Abstractions;
 using RodelTranslate.Interfaces.Client;
 using RodelTranslate.Models.Client;
 using RodelTranslate.Models.Constants;

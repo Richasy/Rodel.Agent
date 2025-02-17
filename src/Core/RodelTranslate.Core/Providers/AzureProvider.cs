@@ -1,12 +1,8 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System.Text.Json.Serialization;
-using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Translators.Azure;
-using Microsoft.SemanticKernel.Translators.Azure.Models;
-using RodelAgent.Models.Abstractions;
 using RodelTranslate.Interfaces.Client;
 using RodelTranslate.Models.Client;
+using System.Text.Json.Serialization;
 
 namespace RodelTranslate.Core.Providers;
 

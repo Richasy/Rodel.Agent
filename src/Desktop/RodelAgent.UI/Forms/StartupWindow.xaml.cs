@@ -1,17 +1,18 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
 using Microsoft.UI.Windowing;
+using Microsoft.UI.Xaml.Media.Animation;
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Pages;
 using RodelAgent.UI.Toolkits;
-using RodelAgent.UI.ViewModels;
+using RodelAgent.UI.ViewModels.Core;
 
 namespace RodelAgent.UI.Forms;
 
 /// <summary>
-/// 初始化启动窗口，用于进行初始化配置.
+/// 初始引导窗口.
 /// </summary>
-public sealed partial class StartupWindow : WindowBase, ITipWindow
+public sealed partial class StartupWindow : WindowBase
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="StartupWindow"/> class.
@@ -22,37 +23,24 @@ public sealed partial class StartupWindow : WindowBase, ITipWindow
         IsMaximizable = false;
         IsMinimizable = false;
         IsResizable = false;
-
-        Title = ResourceToolkit.GetLocalizedString(StringNames.AppName);
-        this.SetIcon("Assets/logo.ico");
         AppWindow.SetPresenter(AppWindowPresenterKind.CompactOverlay);
 
         Width = 720;
         Height = 460;
 
+        Title = ResourceToolkit.GetLocalizedString(StringNames.AppName);
+
         this.CenterOnScreen();
-        _ = MainFrame.Navigate(typeof(StartupPage));
-        this.Get<AppViewModel>().DisplayWindows.Add(this);
+        this.SetIcon("Assets/logo.ico");
+        this.SetTitleBar(TitleBar);
+        this.Get<AppViewModel>().Windows.Add(this);
         this.Get<AppViewModel>().ActivatedWindow = this;
-        Activated += OnWindowActivated;
+
+        Activated += OnActivated;
+
+        RootFrame.Navigate(typeof(StartupPage), default, new SuppressNavigationTransitionInfo());
     }
 
-    /// <inheritdoc/>
-    public async Task ShowTipAsync(string text, InfoType type = InfoType.Error)
-    {
-        var popup = new TipPopup() { Text = text };
-        TipContainer.Visibility = Visibility.Visible;
-        TipContainer.Children.Add(popup);
-        await popup.ShowAsync(type);
-        TipContainer.Children.Remove(popup);
-        TipContainer.Visibility = Visibility.Collapsed;
-    }
-
-    private void OnWindowActivated(object sender, WindowActivatedEventArgs args)
-    {
-        if (args.WindowActivationState != WindowActivationState.Deactivated)
-        {
-            this.Get<AppViewModel>().ActivatedWindow = this;
-        }
-    }
+    private void OnActivated(object sender, WindowActivatedEventArgs args)
+        => this.Get<AppViewModel>().ActivatedWindow = this;
 }

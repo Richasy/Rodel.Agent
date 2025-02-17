@@ -1,11 +1,10 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
 using System.Security;
 using System.Text;
 using System.Xml;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
 
 namespace RodelAgent.UI.ResourceGenerator;
 
@@ -21,11 +20,8 @@ public class ResourceGenerator : IIncrementalGenerator
         // 如果需要调试，取消下面的注释
         // if (!Debugger.IsAttached) Debugger.Launch();
         var additionalFiles = context.AdditionalTextsProvider.Where(f => f.Path.EndsWith(".resw", StringComparison.OrdinalIgnoreCase));
-        var contents = additionalFiles.Select((file, cancellationToken) => file.GetText(cancellationToken).ToString());
-        context.RegisterSourceOutput(contents, (spc, content) =>
-        {
-            ProcessResourceFile(content, spc);
-        });
+        var contents = additionalFiles.Select((file, cancellationToken) => file!.GetText(cancellationToken)!.ToString());
+        context.RegisterSourceOutput(contents, (spc, content) => ProcessResourceFile(content, spc));
     }
 
     private static void ProcessResourceFile(string content, SourceProductionContext context)
@@ -64,7 +60,7 @@ public class ResourceGenerator : IIncrementalGenerator
         foreach (XmlNode dataNode in dataNodes)
         {
             var name = dataNode.Attributes["name"].Value;
-            var value = dataNode.SelectSingleNode("value").InnerText;
+            var value = dataNode.SelectSingleNode("value").InnerText.Replace("\r", "\n");
             _ = sb.AppendLine("    /// <summary>");
             if (value.Contains("\n"))
             {

@@ -1,0 +1,1265 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AboutThisApp" xml:space="preserve">
+    <value>关于此应用</value>
+  </data>
+  <data name="AccessKey" xml:space="preserve">
+    <value>访问密钥</value>
+  </data>
+  <data name="AccessKeyDescription" xml:space="preserve">
+    <value>填入来自 {0} 的 API 密钥</value>
+  </data>
+  <data name="AccessKeyPlaceholder" xml:space="preserve">
+    <value>{0} API 密钥</value>
+  </data>
+  <data name="AccessKeySecret" xml:space="preserve">
+    <value>访问密文（AccessKey Secret）</value>
+  </data>
+  <data name="AddAgent" xml:space="preserve">
+    <value>添加助理</value>
+  </data>
+  <data name="AddPreset" xml:space="preserve">
+    <value>添加预设</value>
+  </data>
+  <data name="AddSize" xml:space="preserve">
+    <value>添加尺寸</value>
+  </data>
+  <data name="AddText" xml:space="preserve">
+    <value>添加文本</value>
+  </data>
+  <data name="AddToken" xml:space="preserve">
+    <value>添加标记</value>
+  </data>
+  <data name="AddYourCustomModel" xml:space="preserve">
+    <value>使用的模型不在列表中？那就创建一个吧！</value>
+  </data>
+  <data name="Agents" xml:space="preserve">
+    <value>助理</value>
+  </data>
+  <data name="AliAccessKeyDescription" xml:space="preserve">
+    <value>在阿里云中注册并获取密钥</value>
+  </data>
+  <data name="AliSecretDescription" xml:space="preserve">
+    <value>在阿里云中注册并获取 Secret</value>
+  </data>
+  <data name="AliTranslate" xml:space="preserve">
+    <value>阿里云翻译</value>
+  </data>
+  <data name="ApiKey" xml:space="preserve">
+    <value>API 密钥（API Key）</value>
+  </data>
+  <data name="ApiVersion" xml:space="preserve">
+    <value>API 版本</value>
+  </data>
+  <data name="AppId" xml:space="preserve">
+    <value>应用 ID</value>
+  </data>
+  <data name="AppIdDescription" xml:space="preserve">
+    <value>输入注册的应用标识符</value>
+  </data>
+  <data name="AppLog" xml:space="preserve">
+    <value>应用日志</value>
+  </data>
+  <data name="AppLogDescription" xml:space="preserve">
+    <value>应用日志相关的配置项</value>
+  </data>
+  <data name="AppName" xml:space="preserve">
+    <value>小幻助理</value>
+  </data>
+  <data name="AppSearchPlaceholder" xml:space="preserve">
+    <value>找找你想要的</value>
+  </data>
+  <data name="AppTheme" xml:space="preserve">
+    <value>应用程序主题</value>
+  </data>
+  <data name="AppThemeDescription" xml:space="preserve">
+    <value>选择要显示的应用主题</value>
+  </data>
+  <data name="Assistant" xml:space="preserve">
+    <value>助理</value>
+  </data>
+  <data name="AssistantTemplate" xml:space="preserve">
+    <value>助理回复模板</value>
+  </data>
+  <data name="AssistantTemplateDescription" xml:space="preserve">
+    <value>表示助理/机器人/模型回复的标记，默认为 Assistant: {{assistant}}</value>
+  </data>
+  <data name="AudioCount" xml:space="preserve">
+    <value>音频数</value>
+  </data>
+  <data name="AudioHistory" xml:space="preserve">
+    <value>音频历史</value>
+  </data>
+  <data name="AudioInputPlaceholder" xml:space="preserve">
+    <value>请输入需要转换成语音的文本</value>
+  </data>
+  <data name="AudioServices" xml:space="preserve">
+    <value>语音服务</value>
+  </data>
+  <data name="AutoDetected" xml:space="preserve">
+    <value>自动选择</value>
+  </data>
+  <data name="AvailableService" xml:space="preserve">
+    <value>可用服务</value>
+  </data>
+  <data name="Avatar" xml:space="preserve">
+    <value>头像</value>
+  </data>
+  <data name="AvatarDropTip" xml:space="preserve">
+    <value>拖放到此以设置头像</value>
+  </data>
+  <data name="AzureApiVersionDescription" xml:space="preserve">
+    <value>选择合适的 Azure Open AI 的 API 版本</value>
+  </data>
+  <data name="AzureOpenAIAccessKeyDescription" xml:space="preserve">
+    <value>在 Azure 门户相应资源的 "密钥与终结点" 中找到此值，可用 KEY1 或 KEY2</value>
+  </data>
+  <data name="AzureOpenAIEndpointDescription" xml:space="preserve">
+    <value>在 Azure 门户相应资源的 "密钥与终结点" 中找到此值</value>
+  </data>
+  <data name="AzureRegionDescription" xml:space="preserve">
+    <value>在 Azure 门户相应资源的 "密钥与终结点" 中找到此值</value>
+  </data>
+  <data name="AzureSpeech" xml:space="preserve">
+    <value>Azure 语音</value>
+  </data>
+  <data name="AzureTranslate" xml:space="preserve">
+    <value>Azure / 必应翻译</value>
+  </data>
+  <data name="BaiduTranslate" xml:space="preserve">
+    <value>百度翻译</value>
+  </data>
+  <data name="CallingToolTemplate" xml:space="preserve">
+    <value>正在调用：{0}</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="CancelDeletePlugin" xml:space="preserve">
+    <value>保留插件</value>
+  </data>
+  <data name="CanNotCreateGroupWithAgents" xml:space="preserve">
+    <value>您必须要有两个以上的助理才能创建群组</value>
+  </data>
+  <data name="CanNotLoadAgentWarning" xml:space="preserve">
+    <value>无法加载助理，其对应的服务可能已经注销，请检查后再试。</value>
+  </data>
+  <data name="CanNotLoadLocalModelWarning" xml:space="preserve">
+    <value>无法加载该本地模型，可能是模型已经被删除或者缺少默认预设，请尝试删除该模型后重新导入。</value>
+  </data>
+  <data name="CanNotLoadSessionPresetWarning" xml:space="preserve">
+    <value>无法加载会话预设，可能是对应的服务已经注销，请检查后再试</value>
+  </data>
+  <data name="ChangeDirectory" xml:space="preserve">
+    <value>更改目录</value>
+  </data>
+  <data name="ChangeLanguageTip" xml:space="preserve">
+    <value>您更改了应用语言，需要重启应用以生效</value>
+  </data>
+  <data name="ChatInputPlaceholder" xml:space="preserve">
+    <value>请输入聊天内容...</value>
+  </data>
+  <data name="ChatModelsSettings" xml:space="preserve">
+    <value>对话模型设置</value>
+  </data>
+  <data name="ChatServices" xml:space="preserve">
+    <value>对话服务</value>
+  </data>
+  <data name="ChatService_Full" xml:space="preserve">
+    <value>聊天与对话服务</value>
+  </data>
+  <data name="ChatService_Slim" xml:space="preserve">
+    <value>聊天</value>
+  </data>
+  <data name="ChatTurn" xml:space="preserve">
+    <value>对话轮次</value>
+  </data>
+  <data name="ChooseServiceOrAgent" xml:space="preserve">
+    <value>选择一个服务或助理吧</value>
+  </data>
+  <data name="ChooseServiceOrAgentDescription" xml:space="preserve">
+    <value>开启一场建设性会谈！</value>
+  </data>
+  <data name="CleanChatMessagesWarning" xml:space="preserve">
+    <value>是否要清空当前的聊天记录？</value>
+  </data>
+  <data name="CleanMessages" xml:space="preserve">
+    <value>清空消息</value>
+  </data>
+  <data name="ClickToRename" xml:space="preserve">
+    <value>点击以重命名</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="CloseDirectory" xml:space="preserve">
+    <value>关闭目录</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="ContextLength" xml:space="preserve">
+    <value>上下文窗口长度</value>
+  </data>
+  <data name="ContextLengthDescription" xml:space="preserve">
+    <value>指在一次会话中，模型能接受的内容最大长度。用户输入与模型输出都算在整个上下文窗口内</value>
+  </data>
+  <data name="ContextLength_128K" xml:space="preserve">
+    <value>131072 个令牌（Token），约合 6 万个汉字</value>
+  </data>
+  <data name="ContextLength_12K" xml:space="preserve">
+    <value>12288 个令牌（Token），约合 6 千个汉字</value>
+  </data>
+  <data name="ContextLength_16K" xml:space="preserve">
+    <value>16385 个令牌（Token），约合 8 千个汉字</value>
+  </data>
+  <data name="ContextLength_256K" xml:space="preserve">
+    <value>262144 个令牌（Token）, 约合 13 万个汉字</value>
+  </data>
+  <data name="ContextLength_2K" xml:space="preserve">
+    <value>2048 个令牌（Token），约合 1 千个汉字</value>
+  </data>
+  <data name="ContextLength_32K" xml:space="preserve">
+    <value>32768 个令牌（Token），约合 1 万 6 千个汉字</value>
+  </data>
+  <data name="ContextLength_4K" xml:space="preserve">
+    <value>4096 个令牌（Token），约合 2 千个汉字</value>
+  </data>
+  <data name="ContextLength_8K" xml:space="preserve">
+    <value>8124 个令牌（Token），约合 4 千个汉字</value>
+  </data>
+  <data name="ContextLength_Unknown" xml:space="preserve">
+    <value>未知的上下文窗口长度，应用不会给出超限提醒，直到服务返回错误</value>
+  </data>
+  <data name="Copied" xml:space="preserve">
+    <value>已复制</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>复制</value>
+  </data>
+  <data name="CopyImage" xml:space="preserve">
+    <value>复制图像</value>
+  </data>
+  <data name="CopyrightTemplate" xml:space="preserve">
+    <value>{0} Richasy。保留所有权利。</value>
+  </data>
+  <data name="CopySourceText" xml:space="preserve">
+    <value>复制源文本</value>
+  </data>
+  <data name="CopyTranslatedText" xml:space="preserve">
+    <value>复制翻译文本</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>创建</value>
+  </data>
+  <data name="CreateCopyFromThis" xml:space="preserve">
+    <value>创建副本</value>
+  </data>
+  <data name="CreateCustomModel" xml:space="preserve">
+    <value>创建自定义模型</value>
+  </data>
+  <data name="CreateGroup" xml:space="preserve">
+    <value>创建群组</value>
+  </data>
+  <data name="CreateNewSize" xml:space="preserve">
+    <value>添加一个新的尺寸吧</value>
+  </data>
+  <data name="CustomModel" xml:space="preserve">
+    <value>自定义模型</value>
+  </data>
+  <data name="DarkTheme" xml:space="preserve">
+    <value>深色</value>
+  </data>
+  <data name="DashScope" xml:space="preserve">
+    <value>阿里灵积</value>
+  </data>
+  <data name="DatabaseMissed" xml:space="preserve">
+    <value>数据库缺失</value>
+  </data>
+  <data name="DatabaseMissedDescription" xml:space="preserve">
+    <value>看上去在数据库初始化的过程中出现了问题，未在你的工作目录中检测到必须的数据库。请点击下方的按钮查看如何修复这个问题</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="DisableSearch" xml:space="preserve">
+    <value>禁用实时搜索功能</value>
+  </data>
+  <data name="DouBao" xml:space="preserve">
+    <value>字节豆包</value>
+  </data>
+  <data name="DrawCount" xml:space="preserve">
+    <value>绘图张数</value>
+  </data>
+  <data name="DrawFailed" xml:space="preserve">
+    <value>图像生成失败，请稍后再试</value>
+  </data>
+  <data name="DrawHistory" xml:space="preserve">
+    <value>绘图历史</value>
+  </data>
+  <data name="DrawInputPlaceholder" xml:space="preserve">
+    <value>请输入绘图提示词</value>
+  </data>
+  <data name="DrawServices" xml:space="preserve">
+    <value>绘图服务</value>
+  </data>
+  <data name="DrawSize" xml:space="preserve">
+    <value>绘图尺寸</value>
+  </data>
+  <data name="DrawSizeCanNotBeEmpty" xml:space="preserve">
+    <value>必须要设置备选的绘图尺寸</value>
+  </data>
+  <data name="DropPresetImageTip" xml:space="preserve">
+    <value>点击图片区域或者将图片拖拽到框内，以此创建预设图片</value>
+  </data>
+  <data name="EmojiAvatar" xml:space="preserve">
+    <value>Emoji 头像</value>
+  </data>
+  <data name="EnableCitation" xml:space="preserve">
+    <value>上角标返回</value>
+  </data>
+  <data name="EnableCitationDescription" xml:space="preserve">
+    <value>开启后，有概率触发搜索溯源信息</value>
+  </data>
+  <data name="EnableTrace" xml:space="preserve">
+    <value>搜索溯源信息</value>
+  </data>
+  <data name="EnableTraceDescription" xml:space="preserve">
+    <value>如果开启，在触发了搜索增强的场景下，会返回搜索溯源信息</value>
+  </data>
+  <data name="Endpoint" xml:space="preserve">
+    <value>终结点（API）</value>
+  </data>
+  <data name="EndpointDescription" xml:space="preserve">
+    <value>必须包含 http(s)://</value>
+  </data>
+  <data name="EndpointPlaceholder" xml:space="preserve">
+    <value>如 https://api.openai.com/v1</value>
+  </data>
+  <data name="EndTemplate" xml:space="preserve">
+    <value>对话结尾内容</value>
+  </data>
+  <data name="EndTemplateDescription" xml:space="preserve">
+    <value>表示当聊天记录被转换成上下文发送给模型时追加的内容，默认为 Assistant: </value>
+  </data>
+  <data name="ExceedTextLimit" xml:space="preserve">
+    <value>超出文本长度限制</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="ExitAppDescription" xml:space="preserve">
+    <value>你也可以选择隐藏应用，并在需要时快速切回来。你可以随时在系统托盘中退出应用</value>
+  </data>
+  <data name="ExitAppTitle" xml:space="preserve">
+    <value>退出应用？</value>
+  </data>
+  <data name="FilterCharactersDescription" xml:space="preserve">
+    <value>大模型可能会产出一些意外的字符，你可以在这里添加它们，应用会在展示内容前移除这些字符</value>
+  </data>
+  <data name="FilterCharacters_Optional" xml:space="preserve">
+    <value>过滤字符（可选）</value>
+  </data>
+  <data name="Finish" xml:space="preserve">
+    <value>完成</value>
+  </data>
+  <data name="FinishDescription" xml:space="preserve">
+    <value>小幻助理将基于您的配置为您提供 AI 服务，您随时可以在设置中修改你的配置，祝您使用愉快！</value>
+  </data>
+  <data name="FinishTitle" xml:space="preserve">
+    <value>您完成了所有配置！</value>
+  </data>
+  <data name="FrequencyPenalty" xml:space="preserve">
+    <value>语句重复惩罚</value>
+  </data>
+  <data name="FrequencyPenaltyDescription" xml:space="preserve">
+    <value>值越大，模型逐字重复相同语句的可能性越低</value>
+  </data>
+  <data name="FunctionCount" xml:space="preserve">
+    <value>包含的方法个数</value>
+  </data>
+  <data name="FunctionList" xml:space="preserve">
+    <value>方法列表</value>
+  </data>
+  <data name="GenerateCancelled" xml:space="preserve">
+    <value>你取消了内容生成</value>
+  </data>
+  <data name="GenerateTitleFailed" xml:space="preserve">
+    <value>尝试生成标题时失败</value>
+  </data>
+  <data name="Generating" xml:space="preserve">
+    <value>生成中...</value>
+  </data>
+  <data name="Generic" xml:space="preserve">
+    <value>通用</value>
+  </data>
+  <data name="GenericSettings" xml:space="preserve">
+    <value>通用设置</value>
+  </data>
+  <data name="GoogleTranslate" xml:space="preserve">
+    <value>谷歌翻译</value>
+  </data>
+  <data name="GroupName" xml:space="preserve">
+    <value>群组名称</value>
+  </data>
+  <data name="GroupNamePlaceholder" xml:space="preserve">
+    <value>一个易懂的名称</value>
+  </data>
+  <data name="GroupOptions" xml:space="preserve">
+    <value>群组选项</value>
+  </data>
+  <data name="Groups" xml:space="preserve">
+    <value>群组</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>高度</value>
+  </data>
+  <data name="Hide" xml:space="preserve">
+    <value>隐藏</value>
+  </data>
+  <data name="History" xml:space="preserve">
+    <value>历史记录</value>
+  </data>
+  <data name="HunYuan" xml:space="preserve">
+    <value>腾讯混元</value>
+  </data>
+  <data name="HunYuanSecretDescription" xml:space="preserve">
+    <value>从腾讯云控制台的 "API密钥管理" 中获取密钥</value>
+  </data>
+  <data name="ImageGenerate_Full" xml:space="preserve">
+    <value>图像生成</value>
+  </data>
+  <data name="ImageGenerate_Slim" xml:space="preserve">
+    <value>图像</value>
+  </data>
+  <data name="ImageNotFound" xml:space="preserve">
+    <value>图片不存在</value>
+  </data>
+  <data name="ImportLocalModel" xml:space="preserve">
+    <value>导入本地模型</value>
+  </data>
+  <data name="ImportPlugin" xml:space="preserve">
+    <value>导入插件</value>
+  </data>
+  <data name="InputToken" xml:space="preserve">
+    <value>输入标记</value>
+  </data>
+  <data name="InputWordCount" xml:space="preserve">
+    <value>输入字数</value>
+  </data>
+  <data name="InsertImage" xml:space="preserve">
+    <value>插入图片</value>
+  </data>
+  <data name="JoinQQGroup" xml:space="preserve">
+    <value>加入 QQ 群</value>
+  </data>
+  <data name="JustAddMessage" xml:space="preserve">
+    <value>仅添加消息</value>
+  </data>
+  <data name="JustAddMessageDescription" xml:space="preserve">
+    <value>只将当前内容添加到消息列表，不要求模型回应</value>
+  </data>
+  <data name="KeyId" xml:space="preserve">
+    <value>密钥 ID</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>语言</value>
+  </data>
+  <data name="LanguageSetting" xml:space="preserve">
+    <value>应用程序语言</value>
+  </data>
+  <data name="LanguageSettingDescription" xml:space="preserve">
+    <value>选择应用程序的首选语言</value>
+  </data>
+  <data name="LaunchApp" xml:space="preserve">
+    <value>启动应用</value>
+  </data>
+  <data name="LightTheme" xml:space="preserve">
+    <value>浅色</value>
+  </data>
+  <data name="LingYi" xml:space="preserve">
+    <value>零一万物</value>
+  </data>
+  <data name="LocalModels" xml:space="preserve">
+    <value>本地模型</value>
+  </data>
+  <data name="MaxOutputTokens" xml:space="preserve">
+    <value>最大输出标记数</value>
+  </data>
+  <data name="MaxOutputTokensDescription" xml:space="preserve">
+    <value>要生成内容的最大值，中文下大约2个标记对应1个汉字</value>
+  </data>
+  <data name="MaxRounds" xml:space="preserve">
+    <value>最大会话轮次</value>
+  </data>
+  <data name="MaxTokens" xml:space="preserve">
+    <value>最大标记数</value>
+  </data>
+  <data name="MaxTokensDescription" xml:space="preserve">
+    <value>要生成内容的最大值，中文下大约2个标记对应1个汉字</value>
+  </data>
+  <data name="MaxTurnDescription" xml:space="preserve">
+    <value>一问一答谓之一轮，默认为0，表示不限轮次。
+你可以手动调整限值，应用将在当前会话中截取指定轮次作为上下文传递给模型</value>
+  </data>
+  <data name="Model" xml:space="preserve">
+    <value>模型</value>
+  </data>
+  <data name="ModelAlreadyExist" xml:space="preserve">
+    <value>模型已经存在，请勿重复创建</value>
+  </data>
+  <data name="ModelAlreadyImported" xml:space="preserve">
+    <value>该模型已经导入</value>
+  </data>
+  <data name="ModelId" xml:space="preserve">
+    <value>模型 ID</value>
+  </data>
+  <data name="ModelIdDescription" xml:space="preserve">
+    <value>模型 ID 是该模型的真实标识名称，AI 服务通过此标识确定模型</value>
+  </data>
+  <data name="ModelIdPlaceholder" xml:space="preserve">
+    <value>如 "gpt-3.5-turbo"</value>
+  </data>
+  <data name="ModelList" xml:space="preserve">
+    <value>模型列表</value>
+  </data>
+  <data name="ModelName" xml:space="preserve">
+    <value>模型名称</value>
+  </data>
+  <data name="ModelNameDescription" xml:space="preserve">
+    <value>模型名称是应用内部显示在界面上的可读名称</value>
+  </data>
+  <data name="ModelNameOrIdCanNotBeEmpty" xml:space="preserve">
+    <value>模型 ID 或名称不能为空</value>
+  </data>
+  <data name="ModelNamePlaceholder" xml:space="preserve">
+    <value>如 "ChatGPT 3.5"</value>
+  </data>
+  <data name="ModelNotSupportImage" xml:space="preserve">
+    <value>该模型并不支持图片消息</value>
+  </data>
+  <data name="Modify" xml:space="preserve">
+    <value>修改</value>
+  </data>
+  <data name="ModifyAgent" xml:space="preserve">
+    <value>修改助理</value>
+  </data>
+  <data name="ModifyCustomModel" xml:space="preserve">
+    <value>修改自定义模型</value>
+  </data>
+  <data name="ModifyDefaultPreset" xml:space="preserve">
+    <value>修改默认预设</value>
+  </data>
+  <data name="ModifyGroup" xml:space="preserve">
+    <value>修改群组</value>
+  </data>
+  <data name="ModifyModel" xml:space="preserve">
+    <value>修改模型</value>
+  </data>
+  <data name="ModifyPreset" xml:space="preserve">
+    <value>修改预设</value>
+  </data>
+  <data name="Moonshot" xml:space="preserve">
+    <value>月之暗面</value>
+  </data>
+  <data name="MoreOptions" xml:space="preserve">
+    <value>更多选项</value>
+  </data>
+  <data name="MustFillRequireFields" xml:space="preserve">
+    <value>请填写必要的配置项</value>
+  </data>
+  <data name="MyChat" xml:space="preserve">
+    <value>我的对话</value>
+  </data>
+  <data name="NeedAgents" xml:space="preserve">
+    <value>请添加助理</value>
+  </data>
+  <data name="NeedDrawImage" xml:space="preserve">
+    <value>开始画图吧！</value>
+  </data>
+  <data name="NeedDrawImageDescription" xml:space="preserve">
+    <value>描述你想要的内容，剩下的交给 AI</value>
+  </data>
+  <data name="NeedGenerateSpeech" xml:space="preserve">
+    <value>转成语音</value>
+  </data>
+  <data name="NeedGenerateSpeechDescription" xml:space="preserve">
+    <value>输入内容，让 AI 开口说话</value>
+  </data>
+  <data name="NegativePrompt" xml:space="preserve">
+    <value>负面提示词</value>
+  </data>
+  <data name="NeverAskMeAgain" xml:space="preserve">
+    <value>不再询问我</value>
+  </data>
+  <data name="NewAgent" xml:space="preserve">
+    <value>新的助理</value>
+  </data>
+  <data name="NewSession" xml:space="preserve">
+    <value>新会话</value>
+  </data>
+  <data name="NextStep" xml:space="preserve">
+    <value>下一步</value>
+  </data>
+  <data name="NoAgents" xml:space="preserve">
+    <value>没有可用的助理</value>
+  </data>
+  <data name="NoAudioHistory" xml:space="preserve">
+    <value>还没有音频记录，快去生成一个吧~</value>
+  </data>
+  <data name="NoAvailableService" xml:space="preserve">
+    <value>没有可用的服务</value>
+  </data>
+  <data name="NoAvailableServiceDescription" xml:space="preserve">
+    <value>请在设置页面中添加对应的服务</value>
+  </data>
+  <data name="NoDrawHistory" xml:space="preserve">
+    <value>还没有绘图记录呢，快去画一张吧~</value>
+  </data>
+  <data name="NoLocalModels" xml:space="preserve">
+    <value>暂无本地模型</value>
+  </data>
+  <data name="NoMessage" xml:space="preserve">
+    <value>开始对话吧！</value>
+  </data>
+  <data name="NoMessageDescription" xml:space="preserve">
+    <value>在下方的文本框中输入内容发送消息吧！</value>
+  </data>
+  <data name="NoPlugins" xml:space="preserve">
+    <value>暂无插件</value>
+  </data>
+  <data name="NoPluginsDescription" xml:space="preserve">
+    <value>你可以在顶部菜单中导入新的插件</value>
+  </data>
+  <data name="NoSessionHistory" xml:space="preserve">
+    <value>开启新的对话吧！</value>
+  </data>
+  <data name="NoTranslationHistory" xml:space="preserve">
+    <value>没有翻译历史记录</value>
+  </data>
+  <data name="OnlineAudioServices" xml:space="preserve">
+    <value>在线音频服务</value>
+  </data>
+  <data name="OnlineAudioServicesDescription" xml:space="preserve">
+    <value>选择适用的音频服务进行配置，然后点击下一步</value>
+  </data>
+  <data name="OnlineChatServices" xml:space="preserve">
+    <value>在线对话服务</value>
+  </data>
+  <data name="OnlineChatServicesDescription" xml:space="preserve">
+    <value>选择适用的对话服务进行配置，然后点击下一步</value>
+  </data>
+  <data name="OnlineDrawServices" xml:space="preserve">
+    <value>在线绘图服务</value>
+  </data>
+  <data name="OnlineDrawServicesDescription" xml:space="preserve">
+    <value>选择适用的绘图服务进行配置，然后点击下一步</value>
+  </data>
+  <data name="OnlineTranslateServices" xml:space="preserve">
+    <value>在线翻译服务</value>
+  </data>
+  <data name="OnlineTranslateServicesDescription" xml:space="preserve">
+    <value>选择适用的翻译服务进行配置，然后点击下一步</value>
+  </data>
+  <data name="OpenAudio" xml:space="preserve">
+    <value>打开音频</value>
+  </data>
+  <data name="OpenDirectory" xml:space="preserve">
+    <value>打开目录</value>
+  </data>
+  <data name="OpenImage" xml:space="preserve">
+    <value>打开图片</value>
+  </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>打开日志文件夹</value>
+  </data>
+  <data name="OptionalPlaceholder" xml:space="preserve">
+    <value>如果没有则不填</value>
+  </data>
+  <data name="Organization_Optional" xml:space="preserve">
+    <value>组织（可选）</value>
+  </data>
+  <data name="OtherProjects" xml:space="preserve">
+    <value>开发者的其他项目</value>
+  </data>
+  <data name="PenaltyScore" xml:space="preserve">
+    <value>语句重复惩罚</value>
+  </data>
+  <data name="PenaltyScoreDescription" xml:space="preserve">
+    <value>通过对已生成的token增加惩罚，减少重复生成的现象，值越大，惩罚越大</value>
+  </data>
+  <data name="PluginDllNotFound" xml:space="preserve">
+    <value>没有找到与压缩包名匹配的 DLL 文件</value>
+  </data>
+  <data name="PluginFolderNotFound" xml:space="preserve">
+    <value>没有找到对应的插件目录</value>
+  </data>
+  <data name="PluginManagement" xml:space="preserve">
+    <value>插件管理</value>
+  </data>
+  <data name="Plugins" xml:space="preserve">
+    <value>插件列表</value>
+  </data>
+  <data name="PredefinedModels" xml:space="preserve">
+    <value>预定义模型</value>
+  </data>
+  <data name="PredefinedModelsDescription" xml:space="preserve">
+    <value>查看 {0} 的内置模型列表</value>
+  </data>
+  <data name="PresencePenalty" xml:space="preserve">
+    <value>话题重复惩罚</value>
+  </data>
+  <data name="PresencePenaltyDescription" xml:space="preserve">
+    <value>值越大，模型输出新主题的可能性越高</value>
+  </data>
+  <data name="PresetMessages" xml:space="preserve">
+    <value>预设消息</value>
+  </data>
+  <data name="PresetName" xml:space="preserve">
+    <value>预设名称</value>
+  </data>
+  <data name="PresetNamePlaceholder" xml:space="preserve">
+    <value>一个好记的名字</value>
+  </data>
+  <data name="PressCtrlEnterSend" xml:space="preserve">
+    <value>按 Ctrl + Enter 键发送</value>
+  </data>
+  <data name="PressEnterToSend" xml:space="preserve">
+    <value>按 Enter 键发送</value>
+  </data>
+  <data name="PrevStep" xml:space="preserve">
+    <value>上一步</value>
+  </data>
+  <data name="ProjectHomePage" xml:space="preserve">
+    <value>项目主页</value>
+  </data>
+  <data name="ProviderNotSupported" xml:space="preserve">
+    <value>没有提供对应服务的实现，请切换服务</value>
+  </data>
+  <data name="QianFan" xml:space="preserve">
+    <value>百度千帆</value>
+  </data>
+  <data name="QianFanSecretDescription" xml:space="preserve">
+    <value>从百度千帆大模型平台的 "应用接入" 中获取 Secret Key</value>
+  </data>
+  <data name="QuitApp" xml:space="preserve">
+    <value>退出应用</value>
+  </data>
+  <data name="RAG_Full" xml:space="preserve">
+    <value>检索增强生成</value>
+  </data>
+  <data name="RAG_Slim" xml:space="preserve">
+    <value>RAG</value>
+  </data>
+  <data name="RandomChat" xml:space="preserve">
+    <value>随便聊聊</value>
+  </data>
+  <data name="ReadDocument" xml:space="preserve">
+    <value>阅读文档</value>
+  </data>
+  <data name="Regenerate" xml:space="preserve">
+    <value>重新生成</value>
+  </data>
+  <data name="Region" xml:space="preserve">
+    <value>位置/区域</value>
+  </data>
+  <data name="RemainderUsage" xml:space="preserve">
+    <value>剩余可用</value>
+  </data>
+  <data name="RemoveAllSessions" xml:space="preserve">
+    <value>清除所有会话</value>
+  </data>
+  <data name="Rename" xml:space="preserve">
+    <value>重命名</value>
+  </data>
+  <data name="RenameSessionPlaceholder" xml:space="preserve">
+    <value>为这场伟大的对话命名吧！</value>
+  </data>
+  <data name="ReplaceImage" xml:space="preserve">
+    <value>替换图像</value>
+  </data>
+  <data name="ResponseFormat" xml:space="preserve">
+    <value>响应格式</value>
+  </data>
+  <data name="ResponseFormatDescription" xml:space="preserve">
+    <value>指示模型需要以何种格式返回响应（特殊格式需要模型支持）</value>
+  </data>
+  <data name="Restart" xml:space="preserve">
+    <value>重启</value>
+  </data>
+  <data name="RestartAppToEffectTip" xml:space="preserve">
+    <value>操作将在重启应用后生效</value>
+  </data>
+  <data name="RightClickDelete" xml:space="preserve">
+    <value>右键单击以删除</value>
+  </data>
+  <data name="SaveAs" xml:space="preserve">
+    <value>另存为</value>
+  </data>
+  <data name="Saved" xml:space="preserve">
+    <value>已保存</value>
+  </data>
+  <data name="SavePreset" xml:space="preserve">
+    <value>将当前会话保存为预设</value>
+  </data>
+  <data name="Secret" xml:space="preserve">
+    <value>密文（Secret）</value>
+  </data>
+  <data name="SecretId" xml:space="preserve">
+    <value>密文 ID（Secret ID）</value>
+  </data>
+  <data name="SecretKey" xml:space="preserve">
+    <value>密文密钥（Secret Key）</value>
+  </data>
+  <data name="SeeAllModels" xml:space="preserve">
+    <value>查看全部模型</value>
+  </data>
+  <data name="Seed" xml:space="preserve">
+    <value>随机种子</value>
+  </data>
+  <data name="SeedDescription" xml:space="preserve">
+    <value>模型会尽量保持相同的种子具有相同的相应内容（需要模型支持）</value>
+  </data>
+  <data name="SeeDocument" xml:space="preserve">
+    <value>查看文档</value>
+  </data>
+  <data name="SelectFolder" xml:space="preserve">
+    <value>选择文件夹</value>
+  </data>
+  <data name="SelectWorkDirectory" xml:space="preserve">
+    <value>选择库文件夹</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>发送</value>
+  </data>
+  <data name="SendFeedback" xml:space="preserve">
+    <value>发送反馈</value>
+  </data>
+  <data name="ServiceAndAgent" xml:space="preserve">
+    <value>服务与助理</value>
+  </data>
+  <data name="Services" xml:space="preserve">
+    <value>服务</value>
+  </data>
+  <data name="SessionList" xml:space="preserve">
+    <value>会话列表</value>
+  </data>
+  <data name="SessionOptions" xml:space="preserve">
+    <value>会话选项</value>
+  </data>
+  <data name="SessionPreset" xml:space="preserve">
+    <value>会话预设</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="Share" xml:space="preserve">
+    <value>分享</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>显示</value>
+  </data>
+  <data name="ShowInformation" xml:space="preserve">
+    <value>查看说明</value>
+  </data>
+  <data name="SmartRename" xml:space="preserve">
+    <value>智能重命名</value>
+  </data>
+  <data name="Solution" xml:space="preserve">
+    <value>解决方案</value>
+  </data>
+  <data name="SourceLanguage" xml:space="preserve">
+    <value>源语言</value>
+  </data>
+  <data name="SourceTextPlaceholder" xml:space="preserve">
+    <value>请输入要翻译的文本</value>
+  </data>
+  <data name="SparkDesk" xml:space="preserve">
+    <value>讯飞星火</value>
+  </data>
+  <data name="SparkDeskAppIdDescription" xml:space="preserve">
+    <value>在讯飞开放平台中注册应用并获取 APPID</value>
+  </data>
+  <data name="SparkDeskSecretDescription" xml:space="preserve">
+    <value>在讯飞开放平台中注册应用并获取 Secret</value>
+  </data>
+  <data name="SpeechInput" xml:space="preserve">
+    <value>语音输入</value>
+  </data>
+  <data name="StopSequencesDescription" xml:space="preserve">
+    <value>添加特定的字符以辅助模型停止生成内容</value>
+  </data>
+  <data name="StopSequences_Optional" xml:space="preserve">
+    <value>终止标记（可选）</value>
+  </data>
+  <data name="StreamOutput" xml:space="preserve">
+    <value>流式输出</value>
+  </data>
+  <data name="StreamOutputDescription" xml:space="preserve">
+    <value>模型会逐字逐句生成响应（打字机模式）</value>
+  </data>
+  <data name="SupportFileUpload" xml:space="preserve">
+    <value>支持文件上传</value>
+  </data>
+  <data name="SupportSizes" xml:space="preserve">
+    <value>支持的尺寸</value>
+  </data>
+  <data name="SupportTool" xml:space="preserve">
+    <value>支持工具调用</value>
+  </data>
+  <data name="SupportVision" xml:space="preserve">
+    <value>支持视觉</value>
+  </data>
+  <data name="SyncConfig" xml:space="preserve">
+    <value>同步配置</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>使用系统设置</value>
+  </data>
+  <data name="SystemInstruction" xml:space="preserve">
+    <value>系统指令</value>
+  </data>
+  <data name="SystemInstructionPlaceholder" xml:space="preserve">
+    <value>写入对话背景/角色描述/心理预期等引导模型回答的内容</value>
+  </data>
+  <data name="SystemTemplate" xml:space="preserve">
+    <value>系统指令模板</value>
+  </data>
+  <data name="SystemTemplateDescription" xml:space="preserve">
+    <value>表示系统指令的特殊标记，默认为 System: {{system}}</value>
+  </data>
+  <data name="TargetLanguage" xml:space="preserve">
+    <value>目标语言</value>
+  </data>
+  <data name="TargetLanguageCanNotBeEmpty" xml:space="preserve">
+    <value>目标语言不能为空</value>
+  </data>
+  <data name="TargetTextPlaceholder" xml:space="preserve">
+    <value>翻译后的文本将显示在这里</value>
+  </data>
+  <data name="Temperature" xml:space="preserve">
+    <value>采样温度</value>
+  </data>
+  <data name="TemperatureDescription" xml:space="preserve">
+    <value>较高的值将使输出更随机，而较低的值将使结果更加集中和确定性（通常不与核采样因子混用）</value>
+  </data>
+  <data name="TencentAccessKeyDescription" xml:space="preserve">
+    <value>在腾讯云中注册并获取访问密钥</value>
+  </data>
+  <data name="TencentSecretIdDescription" xml:space="preserve">
+    <value>在腾讯云中注册并获取 Secret Id</value>
+  </data>
+  <data name="TencentTranslate" xml:space="preserve">
+    <value>腾讯云翻译</value>
+  </data>
+  <data name="TerminateText" xml:space="preserve">
+    <value>终止文本</value>
+  </data>
+  <data name="TerminateTextDescription" xml:space="preserve">
+    <value>一旦生成结果出现该文本，则立刻结束会话</value>
+  </data>
+  <data name="Tip" xml:space="preserve">
+    <value>提醒</value>
+  </data>
+  <data name="Token" xml:space="preserve">
+    <value>标记</value>
+  </data>
+  <data name="TokenUsage" xml:space="preserve">
+    <value>标记记录</value>
+  </data>
+  <data name="Tools" xml:space="preserve">
+    <value>工具</value>
+  </data>
+  <data name="TopK" xml:space="preserve">
+    <value>候选数目</value>
+  </data>
+  <data name="TopKDescription" xml:space="preserve">
+    <value>从指定数目的标记候选中随机选择⼀个（非等概率）</value>
+  </data>
+  <data name="TopP" xml:space="preserve">
+    <value>核采样因子</value>
+  </data>
+  <data name="TopPDescription" xml:space="preserve">
+    <value>只考虑较高质量的标记结果，例如 0.1 时，模型仅考虑包含概率质量前 10% 的标记（通常不与采样温度混用）</value>
+  </data>
+  <data name="TotalUsage" xml:space="preserve">
+    <value>总计使用</value>
+  </data>
+  <data name="Translate" xml:space="preserve">
+    <value>翻译</value>
+  </data>
+  <data name="TranslateRecord" xml:space="preserve">
+    <value>翻译记录</value>
+  </data>
+  <data name="TranslateRecordDescription" xml:space="preserve">
+    <value>关闭后，应用不会记录新的机器翻译历史</value>
+  </data>
+  <data name="TranslateServices" xml:space="preserve">
+    <value>翻译服务</value>
+  </data>
+  <data name="TranslateService_Full" xml:space="preserve">
+    <value>翻译服务</value>
+  </data>
+  <data name="TranslateService_Slim" xml:space="preserve">
+    <value>翻译</value>
+  </data>
+  <data name="TranslationFailed" xml:space="preserve">
+    <value>翻译失败，请稍后再试</value>
+  </data>
+  <data name="TypePresetMessagePlaceholder" xml:space="preserve">
+    <value>请输入预设的信息</value>
+  </data>
+  <data name="Unknow" xml:space="preserve">
+    <value>未知</value>
+  </data>
+  <data name="UnknowError" xml:space="preserve">
+    <value>发生了未知错误，请稍后重试</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>用户</value>
+  </data>
+  <data name="UserTemplate" xml:space="preserve">
+    <value>用户消息模板</value>
+  </data>
+  <data name="UserTemplateDescription" xml:space="preserve">
+    <value>表示用户发送的消息的标记，默认为 User: {{user}}</value>
+  </data>
+  <data name="V1Migrating" xml:space="preserve">
+    <value>正在迁移旧版本数据，请勿关闭应用，稍后会自动重启</value>
+  </data>
+  <data name="Voice" xml:space="preserve">
+    <value>声音</value>
+  </data>
+  <data name="VoiceGenerate_Full" xml:space="preserve">
+    <value>音频生成</value>
+  </data>
+  <data name="VoiceGenerate_Slim" xml:space="preserve">
+    <value>音频</value>
+  </data>
+  <data name="VolcanoAccessKeyDescription" xml:space="preserve">
+    <value>在火山引擎的 "API访问密钥" 中获取 Secret Access Key</value>
+  </data>
+  <data name="VolcanoKeyIdDescription" xml:space="preserve">
+    <value>在火山引擎的 "API访问密钥" 中获取 Access Key ID</value>
+  </data>
+  <data name="VolcanoTranslate" xml:space="preserve">
+    <value>火山翻译</value>
+  </data>
+  <data name="WelcomeDescription" xml:space="preserve">
+    <value>随心所欲，畅玩 AI。
+选择一个库文件夹，我们马上开始！</value>
+  </data>
+  <data name="WelcomeTitle" xml:space="preserve">
+    <value>欢迎使用小幻助理</value>
+  </data>
+  <data name="Width" xml:space="preserve">
+    <value>宽度</value>
+  </data>
+  <data name="WorkDirectory" xml:space="preserve">
+    <value>库目录</value>
+  </data>
+  <data name="WorkingDirectorySetting" xml:space="preserve">
+    <value>工作目录设置</value>
+  </data>
+  <data name="WrapLine" xml:space="preserve">
+    <value>换行</value>
+  </data>
+  <data name="YoudaoTranslate" xml:space="preserve">
+    <value>有道翻译</value>
+  </data>
+  <data name="ZhiPu" xml:space="preserve">
+    <value>智谱 AI</value>
+  </data>
+  <data name="PromptTest" xml:space="preserve">
+    <value>提示词测试</value>
+  </data>
+  <data name="HistoryImported" xml:space="preserve">
+    <value>历史记录已导入，共计 {0} 条数据</value>
+  </data>
+  <data name="Dataset" xml:space="preserve">
+    <value>数据集</value>
+  </data>
+  <data name="FailedToImportHistory" xml:space="preserve">
+    <value>导入历史记录失败，数据格式有误或者消息列表为空</value>
+  </data>
+  <data name="FileNotExist" xml:space="preserve">
+    <value>文件不存在</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>导入</value>
+  </data>
+  <data name="ImportHistory" xml:space="preserve">
+    <value>导入历史记录文件</value>
+  </data>
+  <data name="Variables" xml:space="preserve">
+    <value>变量列表</value>
+  </data>
+  <data name="Generate" xml:space="preserve">
+    <value>生成</value>
+  </data>
+  <data name="GenerateResult" xml:space="preserve">
+    <value>生成结果</value>
+  </data>
+  <data name="ImportInputs" xml:space="preserve">
+    <value>导入输入源</value>
+  </data>
+  <data name="ImportVariables" xml:space="preserve">
+    <value>导入变量</value>
+  </data>
+  <data name="InputsImported" xml:space="preserve">
+    <value>输入源已导入</value>
+  </data>
+  <data name="InstructionAndTemplate" xml:space="preserve">
+    <value>指令与模板</value>
+  </data>
+  <data name="TestName" xml:space="preserve">
+    <value>测试 {0}</value>
+  </data>
+  <data name="CheckResult" xml:space="preserve">
+    <value>检查结果</value>
+  </data>
+  <data name="ClickGenerate" xml:space="preserve">
+    <value>点击生成按钮</value>
+  </data>
+  <data name="ClickGenerateDescription" xml:space="preserve">
+    <value>调整完参数后点击生成按钮即可批量生成结果</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>导出</value>
+  </data>
+  <data name="ExportSuccess" xml:space="preserve">
+    <value>已成功导出</value>
+  </data>
+  <data name="OpenFile" xml:space="preserve">
+    <value>打开文件</value>
+  </data>
+  <data name="UserCancelGenerate" xml:space="preserve">
+    <value>生成操作被用户取消</value>
+  </data>
+  <data name="HideWhenClose" xml:space="preserve">
+    <value>关闭时隐藏</value>
+  </data>
+  <data name="HideWhenCloseDescription" xml:space="preserve">
+    <value>关闭窗口时隐藏应用而非退出</value>
+  </data>
+  <data name="Reload" xml:space="preserve">
+    <value>重新载入</value>
+  </data>
+</root>

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
 using Microsoft.EntityFrameworkCore;
 
@@ -24,7 +24,7 @@ public static class MigrationUtils
     /// <returns><see cref="SecretDbContext"/>.</returns>
     public static async Task<SecretDbContext> GetSecretDbAsync(string workDir)
     {
-        await CheckDatabaseExistInternalAsync("secret.db", workDir);
+        await CheckDatabaseExistInternalAsync("secret.db", workDir).ConfigureAwait(false);
         return new SecretDbContext(Path.Combine(workDir, "secret.db"));
     }
 
@@ -35,9 +35,9 @@ public static class MigrationUtils
     /// <returns><see cref="ChatDbContext"/>.</returns>
     public static async Task<ChatDbContext> GetChatDbAsync(string workDir)
     {
-        await CheckDatabaseExistInternalAsync("chat.db", workDir);
+        await CheckDatabaseExistInternalAsync("chat.db", workDir).ConfigureAwait(false);
         var chatDbContext = new ChatDbContext(Path.Combine(workDir, "chat.db"));
-        await chatDbContext.Database.MigrateAsync();
+        await chatDbContext.Database.MigrateAsync().ConfigureAwait(false);
         return chatDbContext;
     }
 
@@ -48,7 +48,7 @@ public static class MigrationUtils
     /// <returns><see cref="TranslateDbContext"/>.</returns>
     public static async Task<TranslateDbContext> GetTranslateDbAsync(string workDir)
     {
-        await CheckDatabaseExistInternalAsync("trans.db", workDir);
+        await CheckDatabaseExistInternalAsync("trans.db", workDir).ConfigureAwait(false);
         return new TranslateDbContext(Path.Combine(workDir, "trans.db"));
     }
 
@@ -59,7 +59,7 @@ public static class MigrationUtils
     /// <returns><see cref="DrawDbContext"/>.</returns>
     public static async Task<DrawDbContext> GetDrawDbAsync(string workDir)
     {
-        await CheckDatabaseExistInternalAsync("draw.db", workDir);
+        await CheckDatabaseExistInternalAsync("draw.db", workDir).ConfigureAwait(false);
         return new DrawDbContext(Path.Combine(workDir, "draw.db"));
     }
 
@@ -70,7 +70,7 @@ public static class MigrationUtils
     /// <returns><see cref="AudioDbContext"/>.</returns>
     public static async Task<AudioDbContext> GetAudioDbAsync(string workDir)
     {
-        await CheckDatabaseExistInternalAsync("audio.db", workDir);
+        await CheckDatabaseExistInternalAsync("audio.db", workDir).ConfigureAwait(false);
         return new AudioDbContext(Path.Combine(workDir, "audio.db"));
     }
 
@@ -81,7 +81,7 @@ public static class MigrationUtils
         {
             var rootPath = string.IsNullOrEmpty(_rootPath) ? AppContext.BaseDirectory : _rootPath;
             var emptyDb = Path.Combine(rootPath, "Assets", dbName);
-            await Task.Run(() => File.Copy(emptyDb, targetDbPath));
+            await Task.Run(() => File.Copy(emptyDb, targetDbPath)).ConfigureAwait(false);
         }
     }
 }

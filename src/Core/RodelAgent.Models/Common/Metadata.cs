@@ -1,6 +1,5 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace RodelAgent.Models.Common;

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
 using Microsoft.EntityFrameworkCore;
 using RodelAgent.Models.Common;
@@ -31,8 +31,8 @@ public sealed class DbService
     /// <returns>字符串.</returns>
     public async Task<string?> GetSecretAsync(string key)
     {
-        _secretDb ??= await MigrationUtils.GetSecretDbAsync(_workingDirectory);
-        var data = await _secretDb.Metadata.FirstOrDefaultAsync(x => x.Id == key);
+        _secretDb ??= await MigrationUtils.GetSecretDbAsync(_workingDirectory).ConfigureAwait(false);
+        var data = await _secretDb.Metadata.FirstOrDefaultAsync(x => x.Id == key).ConfigureAwait(false);
         return data?.Value;
     }
 
@@ -42,11 +42,11 @@ public sealed class DbService
     /// <returns><see cref="Task"/>.</returns>
     public async Task SetSecretAsync(string key, string value)
     {
-        _secretDb ??= await MigrationUtils.GetSecretDbAsync(_workingDirectory);
-        var data = await _secretDb.Metadata.FirstOrDefaultAsync(x => x.Id == key);
+        _secretDb ??= await MigrationUtils.GetSecretDbAsync(_workingDirectory).ConfigureAwait(false);
+        var data = await _secretDb.Metadata.FirstOrDefaultAsync(x => x.Id == key).ConfigureAwait(false);
         if (data is null)
         {
-            await _secretDb.Metadata.AddAsync(new Metadata { Id = key, Value = value });
+            await _secretDb.Metadata.AddAsync(new Metadata { Id = key, Value = value }).ConfigureAwait(false);
         }
         else
         {
@@ -54,7 +54,7 @@ public sealed class DbService
             _secretDb.Metadata.Update(data);
         }
 
-        await _secretDb.SaveChangesAsync();
+        await _secretDb.SaveChangesAsync().ConfigureAwait(false);
     }
 
     /// <summary>
@@ -63,8 +63,8 @@ public sealed class DbService
     /// <returns>JSON 列表.</returns>
     public async Task<List<string>> GetAllChatSessionAsync()
     {
-        _chatDb ??= await MigrationUtils.GetChatDbAsync(_workingDirectory);
-        return await _chatDb.Sessions.Select(p => p.Value).ToListAsync();
+        _chatDb ??= await MigrationUtils.GetChatDbAsync(_workingDirectory).ConfigureAwait(false);
+        return await _chatDb.Sessions.Select(p => p.Value).ToListAsync().ConfigureAwait(false);
     }
 
     /// <summary>
@@ -73,8 +73,8 @@ public sealed class DbService
     /// <returns>JSON 列表.</returns>
     public async Task<List<string>> GetAllChatGroupAsync()
     {
-        _chatDb ??= await MigrationUtils.GetChatDbAsync(_workingDirectory);
-        return await _chatDb.Groups.Select(p => p.Value).ToListAsync();
+        _chatDb ??= await MigrationUtils.GetChatDbAsync(_workingDirectory).ConfigureAwait(false);
+        return await _chatDb.Groups.Select(p => p.Value).ToListAsync().ConfigureAwait(false);
     }
 
     /// <summary>
@@ -86,12 +86,12 @@ public sealed class DbService
     /// <returns><see cref="Task"/>.</returns>
     public async Task AddOrUpdateChatDataAsync(string dataId, string value, bool isGroup = false)
     {
-        _chatDb ??= await MigrationUtils.GetChatDbAsync(_workingDirectory);
+        _chatDb ??= await MigrationUtils.GetChatDbAsync(_workingDirectory).ConfigureAwait(false);
         var dataset = isGroup ? _chatDb.Groups : _chatDb.Sessions;
-        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId);
+        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId).ConfigureAwait(false);
         if (data is null)
         {
-            await dataset.AddAsync(new Metadata { Id = dataId, Value = value });
+            await dataset.AddAsync(new Metadata { Id = dataId, Value = value }).ConfigureAwait(false);
         }
         else
         {
@@ -99,7 +99,7 @@ public sealed class DbService
             dataset.Update(data);
         }
 
-        await _chatDb.SaveChangesAsync();
+        await _chatDb.SaveChangesAsync().ConfigureAwait(false);
     }
 
     /// <summary>
@@ -110,13 +110,13 @@ public sealed class DbService
     /// <returns><see cref="Task"/>.</returns>
     public async Task RemoveChatDataAsync(string dataId, bool isGroup = false)
     {
-        _chatDb ??= await MigrationUtils.GetChatDbAsync(_workingDirectory);
+        _chatDb ??= await MigrationUtils.GetChatDbAsync(_workingDirectory).ConfigureAwait(false);
         var dataset = isGroup ? _chatDb.Groups : _chatDb.Sessions;
-        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId);
+        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId).ConfigureAwait(false);
         if (data is not null)
         {
             dataset.Remove(data);
-            await _chatDb.SaveChangesAsync();
+            await _chatDb.SaveChangesAsync().ConfigureAwait(false);
         }
     }
 
@@ -126,8 +126,8 @@ public sealed class DbService
     /// <returns>JSON 列表.</returns>
     public async Task<List<string>> GetAllTranslateSessionAsync()
     {
-        _translateDb ??= await MigrationUtils.GetTranslateDbAsync(_workingDirectory);
-        return await _translateDb.Sessions.Select(p => p.Value).ToListAsync();
+        _translateDb ??= await MigrationUtils.GetTranslateDbAsync(_workingDirectory).ConfigureAwait(false);
+        return await _translateDb.Sessions.Select(p => p.Value).ToListAsync().ConfigureAwait(false);
     }
 
     /// <summary>
@@ -138,12 +138,12 @@ public sealed class DbService
     /// <returns><see cref="Task"/>.</returns>
     public async Task AddOrUpdateTranslateDataAsync(string dataId, string value)
     {
-        _translateDb ??= await MigrationUtils.GetTranslateDbAsync(_workingDirectory);
+        _translateDb ??= await MigrationUtils.GetTranslateDbAsync(_workingDirectory).ConfigureAwait(false);
         var dataset = _translateDb.Sessions;
-        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId);
+        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId).ConfigureAwait(false);
         if (data is null)
         {
-            await dataset.AddAsync(new Metadata { Id = dataId, Value = value });
+            await dataset.AddAsync(new Metadata { Id = dataId, Value = value }).ConfigureAwait(false);
         }
         else
         {
@@ -151,7 +151,7 @@ public sealed class DbService
             dataset.Update(data);
         }
 
-        await _translateDb.SaveChangesAsync();
+        await _translateDb.SaveChangesAsync().ConfigureAwait(false);
     }
 
     /// <summary>
@@ -161,13 +161,13 @@ public sealed class DbService
     /// <returns><see cref="Task"/>.</returns>
     public async Task RemoveTranslateDataAsync(string dataId)
     {
-        _translateDb ??= await MigrationUtils.GetTranslateDbAsync(_workingDirectory);
+        _translateDb ??= await MigrationUtils.GetTranslateDbAsync(_workingDirectory).ConfigureAwait(false);
         var dataset = _translateDb.Sessions;
-        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId);
+        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId).ConfigureAwait(false);
         if (data is not null)
         {
             dataset.Remove(data);
-            await _translateDb.SaveChangesAsync();
+            await _translateDb.SaveChangesAsync().ConfigureAwait(false);
         }
     }
 
@@ -177,8 +177,8 @@ public sealed class DbService
     /// <returns>JSON 列表.</returns>
     public async Task<List<string>> GetAllDrawSessionAsync()
     {
-        _drawDb ??= await MigrationUtils.GetDrawDbAsync(_workingDirectory);
-        return await _drawDb.Sessions.Select(p => p.Value).ToListAsync();
+        _drawDb ??= await MigrationUtils.GetDrawDbAsync(_workingDirectory).ConfigureAwait(false);
+        return await _drawDb.Sessions.Select(p => p.Value).ToListAsync().ConfigureAwait(false);
     }
 
     /// <summary>
@@ -189,12 +189,12 @@ public sealed class DbService
     /// <returns><see cref="Task"/>.</returns>
     public async Task AddOrUpdateDrawDataAsync(string dataId, string value)
     {
-        _drawDb ??= await MigrationUtils.GetDrawDbAsync(_workingDirectory);
+        _drawDb ??= await MigrationUtils.GetDrawDbAsync(_workingDirectory).ConfigureAwait(false);
         var dataset = _drawDb.Sessions;
-        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId);
+        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId).ConfigureAwait(false);
         if (data is null)
         {
-            await dataset.AddAsync(new Metadata { Id = dataId, Value = value });
+            await dataset.AddAsync(new Metadata { Id = dataId, Value = value }).ConfigureAwait(false);
         }
         else
         {
@@ -202,7 +202,7 @@ public sealed class DbService
             dataset.Update(data);
         }
 
-        await _drawDb.SaveChangesAsync();
+        await _drawDb.SaveChangesAsync().ConfigureAwait(false);
     }
 
     /// <summary>
@@ -212,13 +212,13 @@ public sealed class DbService
     /// <returns><see cref="Task"/>.</returns>
     public async Task RemoveDrawDataAsync(string dataId)
     {
-        _drawDb ??= await MigrationUtils.GetDrawDbAsync(_workingDirectory);
+        _drawDb ??= await MigrationUtils.GetDrawDbAsync(_workingDirectory).ConfigureAwait(false);
         var dataset = _drawDb.Sessions;
-        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId);
+        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId).ConfigureAwait(false);
         if (data is not null)
         {
             dataset.Remove(data);
-            await _drawDb.SaveChangesAsync();
+            await _drawDb.SaveChangesAsync().ConfigureAwait(false);
         }
     }
 
@@ -228,8 +228,8 @@ public sealed class DbService
     /// <returns>JSON 列表.</returns>
     public async Task<List<string>> GetAllAudioSessionAsync()
     {
-        _audioDb ??= await MigrationUtils.GetAudioDbAsync(_workingDirectory);
-        return await _audioDb.Sessions.Select(p => p.Value).ToListAsync();
+        _audioDb ??= await MigrationUtils.GetAudioDbAsync(_workingDirectory).ConfigureAwait(false);
+        return await _audioDb.Sessions.Select(p => p.Value).ToListAsync().ConfigureAwait(false);
     }
 
     /// <summary>
@@ -240,12 +240,12 @@ public sealed class DbService
     /// <returns><see cref="Task"/>.</returns>
     public async Task AddOrUpdateAudioDataAsync(string dataId, string value)
     {
-        _audioDb ??= await MigrationUtils.GetAudioDbAsync(_workingDirectory);
+        _audioDb ??= await MigrationUtils.GetAudioDbAsync(_workingDirectory).ConfigureAwait(false);
         var dataset = _audioDb.Sessions;
-        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId);
+        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId).ConfigureAwait(false);
         if (data is null)
         {
-            await dataset.AddAsync(new Metadata { Id = dataId, Value = value });
+            await dataset.AddAsync(new Metadata { Id = dataId, Value = value }).ConfigureAwait(false);
         }
         else
         {
@@ -253,7 +253,7 @@ public sealed class DbService
             dataset.Update(data);
         }
 
-        await _audioDb.SaveChangesAsync();
+        await _audioDb.SaveChangesAsync().ConfigureAwait(false);
     }
 
     /// <summary>
@@ -263,13 +263,13 @@ public sealed class DbService
     /// <returns><see cref="Task"/>.</returns>
     public async Task RemoveAudioDataAsync(string dataId)
     {
-        _audioDb ??= await MigrationUtils.GetAudioDbAsync(_workingDirectory);
+        _audioDb ??= await MigrationUtils.GetAudioDbAsync(_workingDirectory).ConfigureAwait(false);
         var dataset = _audioDb.Sessions;
-        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId);
+        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId).ConfigureAwait(false);
         if (data is not null)
         {
             dataset.Remove(data);
-            await _audioDb.SaveChangesAsync();
+            await _audioDb.SaveChangesAsync().ConfigureAwait(false);
         }
     }
 

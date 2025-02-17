@@ -1,8 +1,5 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Services;
-using Microsoft.SemanticKernel.TextToImage;
 using RodelDraw.Models.Client;
 using RodelDraw.Models.Constants;
 

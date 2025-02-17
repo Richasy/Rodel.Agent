@@ -1,7 +1,7 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System.ComponentModel;
 using Microsoft.SemanticKernel;
+using System.ComponentModel;
 
 namespace RodelAgent.Samples.Plugin;
 

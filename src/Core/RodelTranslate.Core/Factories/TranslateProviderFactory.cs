@@ -1,4 +1,4 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
 using RodelTranslate.Interfaces.Client;
 using RodelTranslate.Models.Client;

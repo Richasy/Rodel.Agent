@@ -1,12 +1,10 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System.Reflection;
 using Microsoft.Extensions.Logging;
-using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Translate;
 using RodelTranslate.Interfaces.Client;
 using RodelTranslate.Models.Client;
 using RodelTranslate.Models.Constants;
+using System.Reflection;
 
 namespace RodelTranslate.Core;
 

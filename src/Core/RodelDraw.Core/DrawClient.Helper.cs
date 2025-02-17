@@ -1,7 +1,5 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using Microsoft.SemanticKernel;
-using RodelAgent.Models.Abstractions;
 using RodelDraw.Interfaces.Client;
 using RodelDraw.Models.Client;
 using RodelDraw.Models.Constants;

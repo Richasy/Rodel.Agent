@@ -1,7 +1,8 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
 using Richasy.WinUIKernel.Share.Toolkits;
 using RodelAgent.UI.Models.Constants;
+using Windows.Globalization;
 using Windows.Graphics;
 
 namespace RodelAgent.UI.Toolkits;
@@ -9,7 +10,7 @@ namespace RodelAgent.UI.Toolkits;
 /// <summary>
 /// 应用工具箱.
 /// </summary>
-public sealed class AppToolkit : SharedAppToolkit
+internal sealed class AppToolkit : SharedAppToolkit
 {
     private static readonly string[] _supportImageExtensions = [".png", ".jpg", ".jpeg", ".bmp", ".gif", ".ico"];
 
@@ -61,7 +62,7 @@ public sealed class AppToolkit : SharedAppToolkit
     /// </summary>
     /// <param name="id">插件 ID.</param>
     /// <returns>插件路径.</returns>
-    public static string GetPluginAvatarPath(string id)
+    public static string? GetPluginAvatarPath(string id)
     {
         var actualId = id.Split("<|>").First();
         var pluginFolder = Path.Combine(GetChatPluginFolder(), actualId);
@@ -71,8 +72,7 @@ public sealed class AppToolkit : SharedAppToolkit
         }
 
         var files = Directory.GetFiles(pluginFolder);
-        var logoFile = files.FirstOrDefault(p => Path.GetFileName(p).StartsWith("favicon", StringComparison.InvariantCultureIgnoreCase) && _supportImageExtensions.Contains(Path.GetExtension(p)));
-        return logoFile;
+        return Array.Find(files, p => Path.GetFileName(p).StartsWith("favicon", StringComparison.InvariantCultureIgnoreCase) && _supportImageExtensions.Contains(Path.GetExtension(p)));
     }
 
     /// <summary>
@@ -115,5 +115,12 @@ public sealed class AppToolkit : SharedAppToolkit
     {
         var drawFolder = GetSpeechFolderPath();
         return Path.Combine(drawFolder, $"{id}.wav");
+    }
+
+    public static string GetDocumentLink(string path)
+    {
+        var isEn = ApplicationLanguages.Languages[0].StartsWith("en", StringComparison.OrdinalIgnoreCase);
+        var baseUrl = isEn ? "https://agent.richasy.net/en" : "https://agent.richasy.net";
+        return $"{baseUrl}/{path.TrimStart('/')}";
     }
 }

@@ -1,6 +1,4 @@
-﻿// Copyright (c) Rodel. All rights reserved.
-
-using System;
+﻿// Copyright (c) Richasy. All rights reserved.
 
 namespace RodelTranslate.Models.Client;
 

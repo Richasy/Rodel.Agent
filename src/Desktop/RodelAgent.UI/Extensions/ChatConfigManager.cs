@@ -1,6 +1,5 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System.Diagnostics.CodeAnalysis;
 using Connectors.DeepSeek.Models;
 using Richasy.AgentKernel;
 using Richasy.AgentKernel.Connectors.Ali.Models;
@@ -24,13 +23,14 @@ using Richasy.AgentKernel.Connectors.XAI.Models;
 using Richasy.AgentKernel.Connectors.ZhiPu.Models;
 using Richasy.AgentKernel.Models;
 using RodelAgent.Interfaces;
+using System.Diagnostics.CodeAnalysis;
 
 namespace RodelAgent.UI.Extensions;
 
 /// <summary>
 /// Chat service configuration manager.
 /// </summary>
-public sealed class ChatConfigManager : ChatConfigManagerBase
+internal sealed class ChatConfigManager : ChatConfigManagerBase
 {
     /// <inheritdoc/>
     protected override AIServiceConfig? ConvertToConfig(ChatClientConfigBase? config)

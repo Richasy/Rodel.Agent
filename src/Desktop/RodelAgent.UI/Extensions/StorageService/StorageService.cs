@@ -1,166 +1,57 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System.Text.Json;
-using System.Text.Json.Serialization.Metadata;
 using Richasy.AgentKernel;
-using RodelAgent.Context;
+
+// Copyright (c) Richasy. All rights reserved.
+
 using RodelAgent.Interfaces;
-using RodelAgent.UI.Models.Constants;
-using RodelAgent.UI.Toolkits;
-using RodelAudio.Interfaces.Client;
 using RodelAudio.Models.Client;
-using RodelChat.Interfaces.Client;
 using RodelChat.Models.Client;
-using RodelDraw.Interfaces.Client;
 using RodelDraw.Models.Client;
-using RodelTranslate.Interfaces.Client;
 using RodelTranslate.Models.Client;
+using System.Text.Json.Serialization.Metadata;
 
 namespace RodelAgent.UI.Extensions;
 
-/// <summary>
-/// 存储服务.
-/// </summary>
-public sealed partial class StorageService : IStorageService
+internal sealed partial class StorageService : IStorageService
 {
-    private const string AzureSpeechVoicesKey = "AzureSpeechVoices.json";
-    private readonly DbService _dbService;
-    private readonly IChatParametersFactory _chatParametersFactory;
-    private readonly IDrawParametersFactory _drawParametersFactory;
-    private readonly IAudioParametersFactory _audioParametersFactory;
-    private readonly ITranslateParametersFactory _translateParametersFactory;
-    private List<ChatSession> _chatSessions;
-    private List<ChatSessionPresetOld> _chatSessionPresets;
-    private List<ChatSessionPresetOld> _chatAgents;
-    private List<ChatGroupPreset> _chatGroupPresets;
-    private List<ChatGroup> _chatGroups;
-    private List<TranslateSession> _translateSessions;
-    private List<DrawSession> _drawSessions;
-    private List<AudioSession> _audioSessions;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="StorageService"/> class.
-    /// </summary>
-    /// <param name="dbService">数据服务.</param>
-    public StorageService(
-        DbService dbService,
-        IChatParametersFactory chatParametersFactory,
-        ITranslateParametersFactory translateParameterFactory,
-        IDrawParametersFactory drawParametersFactory,
-        IAudioParametersFactory audioParametersFactory)
-    {
-        _dbService = dbService;
-        _dbService.SetWorkingDirectory(GetWorkingDirectory());
-        _chatParametersFactory = chatParametersFactory;
-        _translateParametersFactory = translateParameterFactory;
-        _drawParametersFactory = drawParametersFactory;
-        _audioParametersFactory = audioParametersFactory;
-    }
-
-    /// <inheritdoc/>
-    public async Task<T> GetChatConfigAsync<T>(ChatProviderType type, JsonTypeInfo<T> typeInfo)
-        where T : class
-    {
-        var json = await _dbService.GetSecretAsync("Chat_" + type.ToString());
-        return typeof(T).Equals(typeof(string))
-            ? json as T
-            : json is null
-                ? default
-                : JsonSerializer.Deserialize(json, typeInfo);
-    }
-
-    /// <inheritdoc/>
-    public async Task SetChatConfigAsync<T>(ChatProviderType type, T config, JsonTypeInfo<T> typeInfo)
-        where T : class
-    {
-        var json = typeof(T).Equals(typeof(string)) ? config as string : JsonSerializer.Serialize(config, typeInfo);
-        await _dbService.SetSecretAsync("Chat_" + type.ToString(), json);
-    }
-
-    /// <inheritdoc/>
-    public async Task<T> GetTranslateConfigAsync<T>(TranslateProviderType type, JsonTypeInfo<T> typeInfo)
-        where T : class
-    {
-        var json = await _dbService.GetSecretAsync("Trans_" + type.ToString());
-        return typeof(T).Equals(typeof(string))
-            ? json as T
-            : json is null
-                ? default
-                : JsonSerializer.Deserialize<T>(json, typeInfo);
-    }
-
-    /// <inheritdoc/>
-    public async Task SetTranslateConfigAsync<T>(TranslateProviderType type, T config, JsonTypeInfo<T> typeInfo)
-        where T : class
-    {
-        var json = typeof(T).Equals(typeof(string)) ? config as string : JsonSerializer.Serialize(config, typeInfo);
-        await _dbService.SetSecretAsync("Trans_" + type.ToString(), json);
-    }
-
-    /// <inheritdoc/>
-    public async Task<T> GetDrawConfigAsync<T>(DrawProviderType type, JsonTypeInfo<T> typeInfo)
-        where T : class
-    {
-        var json = await _dbService.GetSecretAsync("Draw_" + type.ToString());
-        return typeof(T).Equals(typeof(string))
-            ? json as T
-            : json is null
-                ? default
-                : JsonSerializer.Deserialize<T>(json, typeInfo);
-    }
-
-    /// <inheritdoc/>
-    public async Task SetDrawConfigAsync<T>(DrawProviderType type, T config, JsonTypeInfo<T> typeInfo)
-        where T : class
-    {
-        var json = typeof(T).Equals(typeof(string)) ? config as string : JsonSerializer.Serialize(config, typeInfo);
-        await _dbService.SetSecretAsync("Draw_" + type.ToString(), json);
-    }
-
-    /// <inheritdoc/>
-    public async Task<T> GetAudioConfigAsync<T>(AudioProviderType type, JsonTypeInfo<T> typeInfo)
-        where T : class
-    {
-        var json = await _dbService.GetSecretAsync("Audio_" + type.ToString());
-        return typeof(T).Equals(typeof(string))
-            ? json as T
-            : json is null
-                ? default
-                : JsonSerializer.Deserialize<T>(json, typeInfo);
-    }
-
-    /// <inheritdoc/>
-    public async Task SetAudioConfigAsync<T>(AudioProviderType type, T config, JsonTypeInfo<T> typeInfo)
-        where T : class
-    {
-        var json = typeof(T).Equals(typeof(string)) ? config as string : JsonSerializer.Serialize(config, typeInfo);
-        await _dbService.SetSecretAsync("Audio_" + type.ToString(), json);
-    }
-
-    /// <inheritdoc/>
-    public string GetWorkingDirectory()
-        => SettingsToolkit.ReadLocalSetting(SettingNames.WorkingDirectory, string.Empty);
-
-    /// <inheritdoc/>
-    public void SetWorkingDirectory(string workingDirectory)
-    {
-        SettingsToolkit.WriteLocalSetting(SettingNames.WorkingDirectory, workingDirectory);
-        _dbService.SetWorkingDirectory(workingDirectory);
-    }
-
-    /// <inheritdoc/>
-    public Task<string> RetrieveAzureSpeechVoicesAsync()
-    {
-        var path = Path.Combine(GetWorkingDirectory(), AzureSpeechVoicesKey);
-        return File.Exists(path)
-            ? File.ReadAllTextAsync(path)
-            : Task.FromResult(string.Empty);
-    }
-
-    /// <inheritdoc/>
-    public Task SaveAzureSpeechVoicesAsync(string json)
-    {
-        var path = Path.Combine(GetWorkingDirectory(), AzureSpeechVoicesKey);
-        return File.WriteAllTextAsync(path, json);
-    }
+    public Task AddOrUpdateAudioSessionAsync(AudioSession session, byte[]? audioData) => throw new NotImplementedException();
+    public Task AddOrUpdateChatAgentAsync(ChatSessionPreset agent) => throw new NotImplementedException();
+    public Task AddOrUpdateChatGroupPresetAsync(ChatGroupPreset preset) => throw new NotImplementedException();
+    public Task AddOrUpdateChatGroupSessionAsync(ChatGroup session) => throw new NotImplementedException();
+    public Task AddOrUpdateChatSessionAsync(ChatSession session) => throw new NotImplementedException();
+    public Task AddOrUpdateChatSessionPresetAsync(ChatSessionPreset preset) => throw new NotImplementedException();
+    public Task AddOrUpdateDrawSessionAsync(DrawSession session, byte[]? imageData) => throw new NotImplementedException();
+    public Task AddOrUpdateTranslateSessionAsync(TranslateSession session) => throw new NotImplementedException();
+    public Task<T> GetAudioConfigAsync<T>(AudioProviderType type, JsonTypeInfo<T> typeInfo) where T : class => throw new NotImplementedException();
+    public Task<List<AudioSession>?> GetAudioSessionsAsync() => throw new NotImplementedException();
+    public Task<List<ChatSessionPreset>> GetChatAgentsAsync() => throw new NotImplementedException();
+    public Task<T> GetChatConfigAsync<T>(ChatProviderType type, JsonTypeInfo<T> typeInfo) where T : class => throw new NotImplementedException();
+    public Task<ChatGroupPreset> GetChatGroupPresetByIdAsync(string presetId) => throw new NotImplementedException();
+    public Task<List<ChatGroupPreset>> GetChatGroupPresetsAsync() => throw new NotImplementedException();
+    public Task<List<ChatGroup>?> GetChatGroupSessionsAsync(string presetId) => throw new NotImplementedException();
+    public Task<ChatSessionPreset> GetChatSessionPresetByIdAsync(string presetId) => throw new NotImplementedException();
+    public Task<List<ChatSessionPreset>> GetChatSessionPresetsAsync() => throw new NotImplementedException();
+    public Task<List<ChatSession>?> GetChatSessionsAsync(ChatProviderType type) => throw new NotImplementedException();
+    public Task<List<ChatSession>?> GetChatSessionsAsync(string presetId) => throw new NotImplementedException();
+    public Task<T> GetDrawConfigAsync<T>(DrawProviderType type, JsonTypeInfo<T> typeInfo) where T : class => throw new NotImplementedException();
+    public Task<List<DrawSession>?> GetDrawSessionsAsync() => throw new NotImplementedException();
+    public Task<T> GetTranslateConfigAsync<T>(TranslateProviderType type, JsonTypeInfo<T> typeInfo) where T : class => throw new NotImplementedException();
+    public Task<List<TranslateSession>?> GetTranslateSessionsAsync(TranslateProviderType type) => throw new NotImplementedException();
+    public string GetWorkingDirectory() => throw new NotImplementedException();
+    public Task RemoveAudioSessionAsync(string sessionId) => throw new NotImplementedException();
+    public Task RemoveChatAgentAsync(string agentId) => throw new NotImplementedException();
+    public Task RemoveChatGroupPresetAsync(string presetId) => throw new NotImplementedException();
+    public Task RemoveChatGroupSessionAsync(string sessionId) => throw new NotImplementedException();
+    public Task RemoveChatSessionAsync(string sessionId) => throw new NotImplementedException();
+    public Task RemoveChatSessionPresetAsync(string presetId) => throw new NotImplementedException();
+    public Task RemoveDrawSessionAsync(string sessionId) => throw new NotImplementedException();
+    public Task RemoveTranslateSessionAsync(string sessionId) => throw new NotImplementedException();
+    public Task<string> RetrieveAzureSpeechVoicesAsync() => throw new NotImplementedException();
+    public Task SaveAzureSpeechVoicesAsync(string json) => throw new NotImplementedException();
+    public Task SetAudioConfigAsync<T>(AudioProviderType type, T config, JsonTypeInfo<T> typeInfo) where T : class => throw new NotImplementedException();
+    public Task SetChatConfigAsync<T>(ChatProviderType type, T config, JsonTypeInfo<T> typeInfo) where T : class => throw new NotImplementedException();
+    public Task SetDrawConfigAsync<T>(DrawProviderType type, T config, JsonTypeInfo<T> typeInfo) where T : class => throw new NotImplementedException();
+    public Task SetTranslateConfigAsync<T>(TranslateProviderType type, T config, JsonTypeInfo<T> typeInfo) where T : class => throw new NotImplementedException();
+    public void SetWorkingDirectory(string workingDirectory) => throw new NotImplementedException();
 }

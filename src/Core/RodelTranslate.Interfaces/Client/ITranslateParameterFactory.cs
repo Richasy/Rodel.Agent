@@ -1,6 +1,5 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using RodelAgent.Models.Abstractions;
 using RodelTranslate.Models.Constants;
 
 namespace RodelTranslate.Interfaces.Client;

@@ -1,15 +1,13 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System.Text.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Speakers.Azure;
 using RodelAgent.Interfaces;
 using RodelAgent.Statics;
 using RodelAudio.Interfaces.Client;
 using RodelAudio.Models.Client;
 using RodelAudio.Models.Constants;
+using System.Text.Json;
 
 namespace RodelAudio.Core.Providers;
 

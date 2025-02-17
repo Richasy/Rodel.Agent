@@ -1,256 +1,39 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
+	<LangVersion>preview</LangVersion>
     <TargetFramework>net9.0-windows10.0.22621.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
-    <WindowsSdkPackageVersion>10.0.22621.38</WindowsSdkPackageVersion>
     <RootNamespace>RodelAgent.UI</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Platforms>x86;x64;ARM64</Platforms>
-    <RuntimeIdentifiers Condition="$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &gt;= 8">win-x86;win-x64;win-arm64</RuntimeIdentifiers>
-    <RuntimeIdentifiers Condition="$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &lt; 8">win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
     <PublishProfile>win-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
-    <DefaultLanguage>en-US</DefaultLanguage>
-    <ApplicationIcon>Assets\logo.ico</ApplicationIcon>
-    <NoWarn>$(NoWarn);CS1591;CS1574;CS1573;NU1903;MVVMTK0045</NoWarn>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Assets\Emoji\**" />
-    <Content Remove="Assets\Emoji\**" />
-    <EmbeddedResource Remove="Assets\Emoji\**" />
-    <None Remove="Assets\Emoji\**" />
-    <Page Remove="Assets\Emoji\**" />
-  </ItemGroup>
-  <ItemGroup>
+    <None Remove="Assets\big-logo.png" />
     <None Remove="Assets\logo.ico" />
-    <None Remove="Assets\party_popper_3d.png" />
-    <None Remove="Assets\Providers\anthropic-avatar.png" />
-    <None Remove="Assets\Providers\azureopenai-avatar.png" />
-    <None Remove="Assets\Providers\dashscope-avatar.png" />
-    <None Remove="Assets\Providers\deepseek-avatar.png" />
-    <None Remove="Assets\Providers\gemini-avatar.png" />
-    <None Remove="Assets\Providers\groq-avatar.png" />
-    <None Remove="Assets\Providers\hunyuan-avatar.png" />
-    <None Remove="Assets\Providers\lingyi-avatar.png" />
-    <None Remove="Assets\Providers\mistralai-avatar.png" />
-    <None Remove="Assets\Providers\moonshot-avatar.png" />
-    <None Remove="Assets\Providers\ollama-avatar.png" />
-    <None Remove="Assets\Providers\openai-avatar.png" />
-    <None Remove="Assets\Providers\openrouter-avatar.png" />
-    <None Remove="Assets\Providers\perplexity-avatar.png" />
-    <None Remove="Assets\Providers\qianfan-avatar.png" />
-    <None Remove="Assets\Providers\sparkdesk-avatar.png" />
-    <None Remove="Assets\Providers\togetherai-avatar.png" />
-    <None Remove="Assets\Providers\zhipu-avatar.png" />
-    <None Remove="Assets\qq_group_dark.jpg" />
-    <None Remove="Assets\qq_group_light.jpg" />
-    <None Remove="Controls\Audio\AudioHistorySection.xaml" />
-    <None Remove="Controls\Audio\AudioServiceHeader.xaml" />
-    <None Remove="Controls\Audio\AudioSessionInput.xaml" />
-    <None Remove="Controls\Audio\AudioSessionItemControl.xaml" />
-    <None Remove="Controls\Audio\AudioSessionPresenter.xaml" />
-    <None Remove="Controls\Base\ColorfulBorder.xaml" />
-    <None Remove="Controls\Base\ColumnSplitter.xaml" />
-    <None Remove="Controls\Base\EmojiPanel.xaml" />
-    <None Remove="Controls\Base\EnterWrapTip.xaml" />
-    <None Remove="Controls\Base\PluginAvatar.xaml" />
-    <None Remove="Controls\Base\PresetAvatar.xaml" />
-    <None Remove="Controls\Base\TipDialog.xaml" />
-    <None Remove="Controls\Base\VisibilityToggleButton.xaml" />
-    <None Remove="Controls\Base\WavePanel.xaml" />
-    <None Remove="Controls\Chat\AgentsSection.xaml" />
-    <None Remove="Controls\Chat\ChatGroupHeader.xaml" />
-    <None Remove="Controls\Chat\ChatGroupHistory.xaml" />
-    <None Remove="Controls\Chat\ChatGroupInput.xaml" />
-    <None Remove="Controls\Chat\ChatGroupListPanel.xaml" />
-    <None Remove="Controls\Chat\ChatGroupPanel.xaml" />
-    <None Remove="Controls\Chat\ChatPluginSection.xaml" />
-    <None Remove="Controls\Chat\ChatPluginSelection.xaml" />
-    <None Remove="Controls\Chat\ChatSessionTokenUsageControl.xaml" />
-    <None Remove="Controls\Chat\GroupAgentsPanel.xaml" />
-    <None Remove="Controls\Chat\GroupOptionsPanel.xaml" />
-    <None Remove="Controls\Chat\GroupPresetSettingsDialog.xaml" />
-    <None Remove="Controls\Chat\GroupsSection.xaml" />
-    <None Remove="Controls\Chat\PresetGroupPanel.xaml" />
-    <None Remove="Controls\Chat\SessionPresetsSection.xaml" />
-    <None Remove="Controls\Draw\DrawHistorySection.xaml" />
-    <None Remove="Controls\Draw\DrawProviderOptionPanel.xaml" />
-    <None Remove="Controls\Draw\DrawServiceHeader.xaml" />
-    <None Remove="Controls\Draw\DrawSessionInput.xaml" />
-    <None Remove="Controls\Draw\DrawSessionItemControl.xaml" />
-    <None Remove="Controls\Draw\DrawSessionPresenter.xaml" />
-    <None Remove="Controls\Draw\LocalDrawImage.xaml" />
-    <None Remove="Controls\Internal\PromptTestExtraBody.xaml" />
-    <None Remove="Controls\Internal\PromptTestExtraHeader.xaml" />
-    <None Remove="Controls\Internal\PromptTestMainBody.xaml" />
-    <None Remove="Controls\Internal\PromptTestMainHeader.xaml" />
-    <None Remove="Controls\Internal\PromptTestSessionItemControl.xaml" />
-    <None Remove="Controls\Internal\PromptTestSideBody.xaml" />
-    <None Remove="Controls\Items\AudioModelCard\AudioModelCard.xaml" />
-    <None Remove="Controls\Items\AudioServiceItemControl\AudioServiceItemControl.xaml" />
-    <None Remove="Controls\Items\ChatGroupItemControl\ChatGroupItemControl.xaml" />
-    <None Remove="Controls\Items\ChatGroupPresetItemControl\ChatGroupPresetItemControl.xaml" />
-    <None Remove="Controls\Items\ChatModelCard\ChatModelCard.xaml" />
-    <None Remove="Controls\Chat\AvailableChatServiceSection.xaml" />
-    <None Remove="Controls\Chat\ChatMessageItemControl.xaml" />
-    <None Remove="Controls\Chat\ChatModelSelection.xaml" />
-    <None Remove="Controls\Chat\ChatPresetSettingsDialog.xaml" />
-    <None Remove="Controls\Chat\ChatProviderOptionPanel.xaml" />
-    <None Remove="Controls\Chat\ChatServiceHeader.xaml" />
-    <None Remove="Controls\Chat\ChatSessionHeader.xaml" />
-    <None Remove="Controls\Chat\ChatSessionHistory.xaml" />
-    <None Remove="Controls\Chat\ChatSessionInput.xaml" />
-    <None Remove="Controls\Chat\ChatSessionListPanel.xaml" />
-    <None Remove="Controls\Chat\ChatSessionPanel.xaml" />
-    <None Remove="Controls\Chat\PresetDetailPanel.xaml" />
-    <None Remove="Controls\Chat\PresetModelPanel.xaml" />
-    <None Remove="Controls\Chat\SessionRenameDialog.xaml" />
-    <None Remove="Controls\Chat\SystemInstructionPanel.xaml" />
-    <None Remove="Controls\CloseWindowTipDialog.xaml" />
-    <None Remove="Controls\CommentHeader.xaml" />
-    <None Remove="Controls\Config\AzureOpenAIConfigSection.xaml" />
-    <None Remove="Controls\Config\ChatConfigurationSection.xaml" />
-    <None Remove="Controls\Config\ClientConfigSection.xaml" />
-    <None Remove="Controls\Config\ClientEndpointConfigSection.xaml" />
-    <None Remove="Controls\Config\CustomChatModelDialog.xaml" />
-    <None Remove="Controls\Config\CustomChatModelSection.xaml" />
-    <None Remove="Controls\Config\HunYuanConfigSection.xaml" />
-    <None Remove="Controls\Config\OpenAIConfigSection.xaml" />
-    <None Remove="Controls\Config\PredefinedChatModelSection.xaml" />
-    <None Remove="Controls\Config\QianFanConfigSection.xaml" />
-    <None Remove="Controls\Config\SparkDeskConfigSection.xaml" />
-    <None Remove="Controls\Items\ChatPluginItemControl\ChatPluginItemControl.xaml" />
-    <None Remove="Controls\Items\ChatServiceItemControl\ChatServiceItemControl.xaml" />
-    <None Remove="Controls\Items\ChatSessionItemControl\ChatSessionItemControl.xaml" />
-    <None Remove="Controls\Items\ChatSessionPresetItemControl\ChatSessionPresetItemControl.xaml" />
-    <None Remove="Controls\Items\DrawModelCard\DrawModelCard.xaml" />
-    <None Remove="Controls\Items\DrawServiceItemControl\DrawServiceItemControl.xaml" />
-    <None Remove="Controls\Items\NavigationPanel.xaml" />
-    <None Remove="Controls\Items\TranslateServiceItemControl\TranslateServiceItemControl.xaml" />
-    <None Remove="Controls\ProviderLogo.xaml" />
-    <None Remove="Controls\RootLayout.xaml" />
-    <None Remove="Controls\Settings\AboutSettingSection.xaml" />
-    <None Remove="Controls\Settings\AliTranslateConfigSettingSection.xaml" />
-    <None Remove="Controls\Settings\AppLogSettingSection.xaml" />
-    <None Remove="Controls\Settings\AzureOpenAIAudioConfigSettingSection.xaml" />
-    <None Remove="Controls\Settings\AzureOpenAIChatConfigSettingSection.xaml" />
-    <None Remove="Controls\Settings\AzureOpenAIDrawConfigSettingSection.xaml" />
-    <None Remove="Controls\Settings\AzureSpeechConfigSettingSection.xaml" />
-    <None Remove="Controls\Settings\AzureTranslateConfigSettingSection.xaml" />
-    <None Remove="Controls\Settings\CloseBehaviorSettingSection.xaml" />
-    <None Remove="Controls\Settings\DouBaoChatConfigSettingSection.xaml" />
-    <None Remove="Controls\Settings\HunYuanChatConfigSettingSection.xaml" />
-    <None Remove="Controls\Settings\HunYuanDrawConfigSettingSection.xaml" />
-    <None Remove="Controls\Settings\LanguageSettingSection.xaml" />
-    <None Remove="Controls\Settings\LibrarySettingSection.xaml" />
-    <None Remove="Controls\Settings\ModelClientConfigSettingSection.xaml" />
-    <None Remove="Controls\Settings\ModelClientEndpointConfigSettingSection.xaml" />
-    <None Remove="Controls\Settings\OpenAIAudioConfigSettingSection.xaml" />
-    <None Remove="Controls\Settings\OpenAIChatConfigSettingSection.xaml" />
-    <None Remove="Controls\Settings\OpenAIDrawConfigSettingSection.xaml" />
-    <None Remove="Controls\Settings\QianFanChatConfigSettingSection.xaml" />
-    <None Remove="Controls\Settings\QianFanDrawConfigSettingSection.xaml" />
-    <None Remove="Controls\Settings\SparkDeskChatConfigSettingSection.xaml" />
-    <None Remove="Controls\Settings\SparkDeskDrawConfigSettingSection.xaml" />
-    <None Remove="Controls\Settings\TencentTranslateConfigSettingSection.xaml" />
-    <None Remove="Controls\Settings\ThemeSettingSection.xaml" />
-    <None Remove="Controls\Settings\TranslateAppClientConfigSettingSection.xaml" />
-    <None Remove="Controls\Settings\TranslateRecordSettingSection.xaml" />
-    <None Remove="Controls\Settings\VolcanoTranslateConfigSettingSection.xaml" />
-    <None Remove="Controls\Startup\AliTranslateConfigSection.xaml" />
-    <None Remove="Controls\Startup\Audio\AudioClientConfigSection.xaml" />
-    <None Remove="Controls\Startup\Audio\AudioClientEndpointConfigSection.xaml" />
-    <None Remove="Controls\Startup\Audio\AudioConfigurationSection.xaml" />
-    <None Remove="Controls\Startup\Audio\AzureOpenAIAudioConfigSection.xaml" />
-    <None Remove="Controls\Startup\Audio\AzureSpeechAudioConfigSection.xaml" />
-    <None Remove="Controls\Startup\Audio\OpenAIAudioConfigSection.xaml" />
-    <None Remove="Controls\Startup\Audio\PredefinedAudioModelSection.xaml" />
-    <None Remove="Controls\Startup\AzureTranslateConfigSection.xaml" />
-    <None Remove="Controls\Startup\Chat\DouBaoChatConfigSection.xaml" />
-    <None Remove="Controls\Startup\CustomDrawModelDialog.xaml" />
-    <None Remove="Controls\Startup\DrawClientConfigSection.xaml" />
-    <None Remove="Controls\Startup\Draw\AzureOpenAIDrawConfigSection.xaml" />
-    <None Remove="Controls\Startup\Draw\CustomDrawModelSection.xaml" />
-    <None Remove="Controls\Startup\Draw\DrawClientEndpointConfigSection.xaml" />
-    <None Remove="Controls\Startup\Draw\DrawConfigurationSection.xaml" />
-    <None Remove="Controls\Startup\Draw\HunYuanDrawConfigSection.xaml" />
-    <None Remove="Controls\Startup\Draw\OpenAIDrawConfigSection.xaml" />
-    <None Remove="Controls\Startup\Draw\PredefinedDrawModelSection.xaml" />
-    <None Remove="Controls\Startup\Draw\QianFanDrawConfigSection.xaml" />
-    <None Remove="Controls\Startup\Draw\SparkDeskDrawConfigSection.xaml" />
-    <None Remove="Controls\Startup\StartupAudioSection.xaml" />
-    <None Remove="Controls\Startup\StartupChatSection.xaml" />
-    <None Remove="Controls\Startup\StartupDrawSection.xaml" />
-    <None Remove="Controls\Startup\StartupFinishSection.xaml" />
-    <None Remove="Controls\Startup\StartupPageFooter.xaml" />
-    <None Remove="Controls\Startup\StartupTranslateSection.xaml" />
-    <None Remove="Controls\Startup\StartupWelcomeSection.xaml" />
-    <None Remove="Controls\Startup\TencentTranslateConfigSection.xaml" />
-    <None Remove="Controls\Startup\TranslateAppClientConfigSection.xaml" />
-    <None Remove="Controls\Startup\TranslateClientConfigSection.xaml" />
-    <None Remove="Controls\Startup\TranslateConfigurationSection.xaml" />
-    <None Remove="Controls\Startup\VolcanoTranslateConfigSection.xaml" />
-    <None Remove="Controls\StatusTip.xaml" />
-    <None Remove="Controls\TipPopup.xaml" />
-    <None Remove="Controls\Translation\SourceTextSection.xaml" />
-    <None Remove="Controls\Translation\TargetTextSection.xaml" />
-    <None Remove="Controls\Translation\TranslateSessionItemControl.xaml" />
-    <None Remove="Controls\Translation\TranslationServiceHeader.xaml" />
+    <None Remove="Assets\small-logo.png" />
+    <None Remove="Controls\Startup\StartupBody.xaml" />
+    <None Remove="Controls\Startup\StartupFooter.xaml" />
     <None Remove="Forms\StartupWindow.xaml" />
-    <None Remove="Pages\AudioServicePage.xaml" />
-    <None Remove="Pages\ChatServicePage.xaml" />
-    <None Remove="Pages\DrawServicePage.xaml" />
-    <None Remove="Pages\Internal\PromptTestPage.xaml" />
-    <None Remove="Pages\RAGPage.xaml" />
-    <None Remove="Pages\SettingsPage.xaml" />
-    <None Remove="Pages\Settings\AudioServicesPage.xaml" />
-    <None Remove="Pages\Settings\ChatServicesPage.xaml" />
-    <None Remove="Pages\Settings\DrawServicesPage.xaml" />
-    <None Remove="Pages\Settings\GenericSettingsPage.xaml" />
-    <None Remove="Pages\Settings\TranslateServicesPage.xaml" />
     <None Remove="Pages\StartupPage.xaml" />
-    <None Remove="Pages\Startup\AudioConfigurationPage.xaml" />
-    <None Remove="Pages\Startup\ChatConfigurationPage.xaml" />
-    <None Remove="Pages\Startup\DrawConfigurationPage.xaml" />
-    <None Remove="Pages\Startup\TranslateConfigurationPage.xaml" />
-    <None Remove="Pages\TranslateServicePage.xaml" />
-    <None Remove="Styles\Overwrites.xaml" />
-    <None Remove="Styles\TrayResources.xaml" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ColorCode.WinUI" />
-    <PackageReference Include="CommunityToolkit.WinUI.Animations" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.ImageCropper" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.Sizers" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.TokenizingTextBox" />
-    <PackageReference Include="FluentIcons.WinUI" />
-    <PackageReference Include="H.NotifyIcon.WinUI" />
-    <PackageReference Include="HtmlAgilityPack" />
-    <PackageReference Include="Markdig" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
-    <PackageReference Include="Microsoft.Graphics.Win2D" />
-    <PackageReference Include="Microsoft.Windows.CsWin32">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.WindowsAppSDK" />
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" />
-    <PackageReference Include="NAudio.Core" />
-    <PackageReference Include="NLog.Extensions.Logging" />
-    <PackageReference Include="Richasy.WinUIKernel.AI" />
-    <PackageReference Include="Roman-Numerals" />
-    <PackageReference Include="Serilog" />
-    <PackageReference Include="Serilog.Extensions.Logging" />
-    <PackageReference Include="Serilog.Sinks.File" />
-    <PackageReference Include="Tiktoken" />
-    <PackageReference Include="WinUIEx" />
+  	<None Update="$(UserProfile)\.nuget\packages\richasy.winuikernel.ai\*\contentFiles\any\net9.0-windows10.0.22621\Assets\**\*">
+  		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  	</None>
+  </ItemGroup>
+
+  <ItemGroup>
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
 
-  <!-- 
+  <!--
     Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
     Tools extension to be activated for this project even if the Windows App SDK Nuget
     package has not yet been restored.
@@ -259,30 +42,35 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" />
+    <PackageReference Include="FluentIcons.WinUI" />
+    <PackageReference Include="H.NotifyIcon.WinUI" />
+    <PackageReference Include="Microsoft.Graphics.Win2D" />
+    <PackageReference Include="Richasy.WinUIKernel.AI" />
+    <PackageReference Include="Serilog" />
+    <PackageReference Include="Serilog.Extensions.Logging" />
+    <PackageReference Include="Serilog.Sinks.File" />
+    <PackageReference Include="SimpleTrayIcon" />
+    <PackageReference Include="WinUIEx" />
+    <PackageReference Include="Microsoft.Windows.CsWin32">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\Core\RodelAgent.Context\RodelAgent.Context.csproj" />
+    <ProjectReference Include="..\..\Core\RodelAgent.Interfaces\RodelAgent.Interfaces.csproj" />
     <ProjectReference Include="..\..\Core\RodelAgent.Statics\RodelAgent.Statics.csproj" />
-    <ProjectReference Include="..\..\Core\RodelAudio.Core\RodelAudio.Core.csproj" />
-    <ProjectReference Include="..\..\Core\RodelAudio.Interfaces\RodelAudio.Interfaces.csproj" />
-    <ProjectReference Include="..\..\Core\RodelChat.Models\RodelChat.Models.csproj" />
-    <ProjectReference Include="..\..\Core\RodelDraw.Core\RodelDraw.Core.csproj" />
-    <ProjectReference Include="..\..\Core\RodelDraw.Interfaces\RodelDraw.Interfaces.csproj" />
-    <ProjectReference Include="..\..\Core\RodelTranslate.Core\RodelTranslate.Core.csproj" />
-    <ProjectReference Include="..\..\Core\RodelTranslate.Interfaces\RodelTranslate.Interfaces.csproj" />
-    <ProjectReference Include="..\..\Libs\Migration.V1\Migration.V1.csproj" />
     <ProjectReference Include="..\RodelAgent.UI.Models\RodelAgent.UI.Models.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Pages\StartupPage.xaml">
+    <Page Update="Controls\Startup\StartupFooter.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Styles\TrayResources.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\CloseWindowTipDialog.xaml">
+    <Page Update="Controls\Startup\StartupBody.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
@@ -292,624 +80,26 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Styles\Overwrites.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Config\ClientConfigSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Startup\StartupChatSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Startup\StartupWelcomeSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Startup\StartupPageFooter.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\ProviderLogo.xaml">
+    <Page Update="Pages\StartupPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
 
-  <!-- 
-    Defining the "HasPackageAndPublishMenuAddedByProject" property here allows the Solution 
-    Explorer "Package and Publish" context menu entry to be enabled for this project even if 
+  <!--
+    Defining the "HasPackageAndPublishMenuAddedByProject" property here allows the Solution
+    Explorer "Package and Publish" context menu entry to be enabled for this project even if
     the Windows App SDK Nuget package has not yet been restored.
   -->
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>
-  <ItemGroup>
-    <Page Update="Controls\CommentHeader.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomAdditionalCompileInputs Remove="Controls\Config\CustomChatModelSection.xaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Remove="Controls\Config\CustomChatModelSection.xaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Chat\ChatProviderOptionPanel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Chat\SystemInstructionPanel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Chat\ChatSessionListPanel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Items\ChatSessionItemControl\ChatSessionItemControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Chat\SessionRenameDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Chat\ChatModelSelection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Chat\PresetDetailPanel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Chat\ChatPresetSettingsDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Chat\PresetModelPanel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Base\ColorfulBorder.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Base\TipDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Chat\AgentsSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Base\PresetAvatar.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Chat\SessionPresetsSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Chat\ChatPluginSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Base\PluginAvatar.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Items\ChatPluginItemControl\ChatPluginItemControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Chat\ChatPluginSelection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Settings\TranslateRecordSettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Settings\AzureTranslateConfigSettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Settings\TranslateAppClientConfigSettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Settings\AliTranslateConfigSettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Settings\TencentTranslateConfigSettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Settings\VolcanoTranslateConfigSettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Items\TranslateServiceItemControl\TranslateServiceItemControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\StartupTranslateSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\TranslateConfigurationSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\TranslateClientConfigSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\TranslateAppClientConfigSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\AliTranslateConfigSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\AzureTranslateConfigSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\TencentTranslateConfigSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\VolcanoTranslateConfigSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Translation\TranslationServiceHeader.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Translation\SourceTextSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Base\EnterWrapTip.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Translation\TargetTextSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Translation\TranslateSessionItemControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\CustomDrawModelDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\DrawClientConfigSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\Draw\OpenAIDrawConfigSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\Draw\AzureOpenAIDrawConfigSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\Draw\HunYuanDrawConfigSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\Draw\QianFanDrawConfigSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\Draw\SparkDeskDrawConfigSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\Draw\PredefinedDrawModelSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Items\DrawModelCard\DrawModelCard.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\Draw\CustomDrawModelSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Items\DrawServiceItemControl\DrawServiceItemControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\Draw\DrawConfigurationSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Settings\OpenAIDrawConfigSettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Settings\AzureOpenAIDrawConfigSettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Settings\HunYuanDrawConfigSettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Settings\QianFanDrawConfigSettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Settings\SparkDeskDrawConfigSettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Draw\DrawServiceHeader.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Draw\LocalDrawImage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Draw\DrawSessionInput.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Draw\DrawSessionPresenter.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Draw\DrawSessionItemControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Draw\DrawHistorySection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Draw\DrawProviderOptionPanel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Settings\OpenAIAudioConfigSettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\Audio\PredefinedAudioModelSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Items\AudioModelCard\AudioModelCard.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Items\AudioServiceItemControl\AudioServiceItemControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Settings\AzureOpenAIAudioConfigSettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Settings\AzureSpeechConfigSettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\Audio\AudioClientConfigSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\Audio\AudioClientEndpointConfigSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\Audio\OpenAIAudioConfigSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\Audio\AzureOpenAIAudioConfigSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\Audio\AzureSpeechAudioConfigSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\StartupAudioSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\Audio\AudioConfigurationSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\Draw\DrawClientEndpointConfigSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Audio\AudioServiceHeader.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Audio\AudioSessionInput.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Audio\AudioSessionPresenter.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Audio\AudioSessionItemControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Audio\AudioHistorySection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Base\EmojiPanel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Chat\GroupPresetSettingsDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Chat\PresetGroupPanel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Items\ChatSessionPresetItemControl\ChatSessionPresetItemControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Items\ChatGroupPresetItemControl\ChatGroupPresetItemControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Chat\GroupsSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Chat\ChatGroupPanel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Chat\ChatGroupHeader.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Chat\ChatGroupInput.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Chat\ChatGroupHistory.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Chat\ChatGroupListPanel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Items\ChatGroupItemControl\ChatGroupItemControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Chat\GroupOptionsPanel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Settings\LanguageSettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Base\VisibilityToggleButton.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Settings\DouBaoChatConfigSettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Startup\Chat\DouBaoChatConfigSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Chat\ChatSessionTokenUsageControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\RootLayout.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Base\ColumnSplitter.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Base\WavePanel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Internal\PromptTestSideBody.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Internal\PromptTestMainHeader.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Internal\PromptTestMainBody.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Internal\PromptTestSessionItemControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Internal\PromptTestExtraHeader.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Internal\PromptTestExtraBody.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\Settings\CloseBehaviorSettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <None Update="NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <Page Update="Pages\Internal\PromptTestPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Pages\Startup\AudioConfigurationPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Pages\Settings\AudioServicesPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Pages\Settings\DrawServicesPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Pages\Startup\DrawConfigurationPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Pages\Startup\TranslateConfigurationPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Pages\Settings\TranslateServicesPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Chat\ChatMessageItemControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Chat\ChatSessionHistory.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Chat\ChatSessionInput.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Chat\ChatSessionPanel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Chat\ChatSessionHeader.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Chat\ChatServiceHeader.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Items\ChatServiceItemControl\ChatServiceItemControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Settings\SparkDeskChatConfigSettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Settings\HunYuanChatConfigSettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Settings\QianFanChatConfigSettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Settings\AzureOpenAIChatConfigSettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Settings\OpenAIChatConfigSettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Settings\ModelClientEndpointConfigSettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Settings\ModelClientConfigSettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Settings\ThemeSettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Settings\LibrarySettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Settings\AppLogSettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Settings\AboutSettingSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Pages\Settings\ChatServicesPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Pages\Settings\GenericSettingsPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Pages\SettingsPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\TipPopup.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\StatusTip.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Items\NavigationPanel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Pages\TranslateServicePage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Pages\AudioServicePage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Pages\ChatServicePage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Pages\DrawServicePage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Pages\RAGPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Startup\StartupFinishSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Config\HunYuanConfigSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Config\SparkDeskConfigSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Config\QianFanConfigSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Config\AzureOpenAIConfigSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Config\OpenAIConfigSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Config\ClientEndpointConfigSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Config\PredefinedChatModelSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Pages\Startup\ChatConfigurationPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Config\ChatConfigurationSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Chat\AvailableChatServiceSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controls\Startup\Translate\" />
-  </ItemGroup>
-  <ItemGroup>
-    <CustomAdditionalCompileInputs Remove="Controls\Startup\StartupDrawSection.xaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Remove="Controls\Startup\StartupDrawSection.xaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <CustomAdditionalCompileInputs Remove="Controls\Chat\GroupAgentsPanel.xaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Remove="Controls\Chat\GroupAgentsPanel.xaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Remove="Assets\Emoji\**" />
-  </ItemGroup>
+
+  <!-- Publish Properties -->
+  <PropertyGroup>
+    <PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>
+    <PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">False</PublishReadyToRun>
+    <PublishAot Condition="'$(Configuration)' == 'Debug'">True</PublishAot>
+    <PublishAot Condition="'$(Configuration)' != 'Debug'">True</PublishAot>
+    <DefaultLanguage>zh-Hans-CN</DefaultLanguage>
+  </PropertyGroup>
 </Project>

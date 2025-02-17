@@ -1,4 +1,4 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
 using Microsoft.UI.Xaml.Markup;
 using RodelAgent.UI.Models.Constants;
@@ -10,7 +10,7 @@ namespace RodelAgent.UI.Extensions;
 /// Localized text extension.
 /// </summary>
 [MarkupExtensionReturnType(ReturnType = typeof(string))]
-public sealed class LocaleExtension : MarkupExtension
+public sealed partial class LocaleExtension : MarkupExtension
 {
     /// <summary>
     /// Language name.

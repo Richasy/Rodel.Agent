@@ -1,7 +1,7 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System.Text.Json.Serialization;
 using Richasy.AgentKernel;
+using System.Text.Json.Serialization;
 
 namespace Migration.V1;
 

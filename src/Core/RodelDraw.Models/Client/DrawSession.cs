@@ -1,9 +1,7 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System;
-using System.Text.Json.Serialization;
-using RodelAgent.Models.Abstractions;
 using RodelDraw.Models.Constants;
+using System.Text.Json.Serialization;
 
 namespace RodelDraw.Models.Client;
 
@@ -17,12 +15,6 @@ public sealed class DrawSession
     /// </summary>
     [JsonPropertyName("id")]
     public string Id { get; set; }
-
-    /// <summary>
-    /// 会话参数.
-    /// </summary>
-    [JsonPropertyName("parameters")]
-    public BaseFieldParameters? Parameters { get; set; }
 
     /// <summary>
     /// 服务商.

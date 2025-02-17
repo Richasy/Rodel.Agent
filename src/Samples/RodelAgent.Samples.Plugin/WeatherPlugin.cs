@@ -1,7 +1,7 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System.ComponentModel;
 using Microsoft.SemanticKernel;
+using System.ComponentModel;
 
 #pragma warning disable CA1822 // 将成员标记为 static
 
@@ -23,7 +23,7 @@ public sealed class WeatherPlugin
     [KernelFunction]
     [Description("Get the weather of a city.")]
     public async Task<string> GetWeatherAsync(
-        [Description("City name")]string city,
+        [Description("City name")] string city,
         CancellationToken cancellationToken = default)
     {
         // Mock data.

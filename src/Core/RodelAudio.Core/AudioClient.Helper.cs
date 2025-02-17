@@ -1,7 +1,5 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using Microsoft.SemanticKernel;
-using RodelAgent.Models.Abstractions;
 using RodelAudio.Interfaces.Client;
 using RodelAudio.Models.Client;
 using RodelAudio.Models.Constants;

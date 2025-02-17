@@ -1,11 +1,10 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System.Reflection;
 using Microsoft.Extensions.Logging;
-using Microsoft.SemanticKernel.TextToImage;
 using RodelDraw.Interfaces.Client;
 using RodelDraw.Models.Client;
 using RodelDraw.Models.Constants;
+using System.Reflection;
 
 namespace RodelDraw.Core;
 

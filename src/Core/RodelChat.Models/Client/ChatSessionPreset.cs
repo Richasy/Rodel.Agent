@@ -1,11 +1,9 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Microsoft.Extensions.AI;
 using Richasy.AgentKernel;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace RodelChat.Models.Client;
 
@@ -101,13 +99,13 @@ public class ChatSessionPreset
     public string? Emoji { get; set; }
 
     /// <inheritdoc/>
-    public override bool Equals(object? obj) => obj is ChatSessionPresetOld preset && Id == preset.Id;
+    public override bool Equals(object? obj) => obj is ChatSessionPreset preset && Id == preset.Id;
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Id);
 }
 
-internal class ChatSessionPresetConverter : JsonConverter<ChatSessionPreset>
+internal sealed class ChatSessionPresetConverter : JsonConverter<ChatSessionPreset>
 {
     public override ChatSessionPreset? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
@@ -133,10 +131,10 @@ internal class ChatSessionPresetConverter : JsonConverter<ChatSessionPreset>
                 switch (propertyName)
                 {
                     case "id":
-                        preset.Id = reader.GetString();
+                        preset.Id = reader.GetString()!;
                         break;
                     case "name":
-                        preset.Name = reader.GetString();
+                        preset.Name = reader.GetString()!;
                         break;
                     case "options":
                         preset.Options = DeserializeOptions(ref reader, preset.Provider, options);

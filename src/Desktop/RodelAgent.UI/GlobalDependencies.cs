@@ -1,6 +1,5 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.UI.Dispatching;
 using Richasy.AgentKernel;
 using Richasy.WinUIKernel.AI;
@@ -12,33 +11,18 @@ using RodelAgent.Interfaces;
 using RodelAgent.Statics;
 using RodelAgent.UI.Extensions;
 using RodelAgent.UI.Toolkits;
-using RodelAgent.UI.ViewModels;
-using RodelAgent.UI.ViewModels.Components;
-using RodelAgent.UI.ViewModels.Pages;
-using RodelAudio.Core;
-using RodelAudio.Interfaces.Client;
-using RodelChat.Core;
-using RodelChat.Interfaces.Client;
-using RodelChat.Models.Client;
-using RodelDraw.Core;
-using RodelDraw.Interfaces.Client;
-using RodelTranslate.Core;
-using RodelTranslate.Interfaces.Client;
+using RodelAgent.UI.ViewModels.Core;
+using RodelAgent.UI.ViewModels.View;
 using Serilog;
+using System.Diagnostics.CodeAnalysis;
 using Windows.Storage;
 
 namespace RodelAgent.UI;
 
-/// <summary>
-/// 全局依赖项.
-/// </summary>
 internal static class GlobalDependencies
 {
     public static Kernel Kernel { get; private set; }
 
-    /// <summary>
-    /// 初始化.
-    /// </summary>
     public static void Initialize()
     {
         if (Kernel is not null)
@@ -90,48 +74,18 @@ internal static class GlobalDependencies
             .AddMistralChatService()
             .AddPerplexityChatService()
 
-            .AddAzureOpenAIDrawService()
-            .AddOpenAIDrawService()
-            .AddErnieDrawService()
-            .AddHunyuanDrawService()
-            .AddSparkDrawService()
-
             .AddSingleton<IStringResourceToolkit, ResourceToolkit>()
-            .AddSingleton<IChatParametersFactory, ChatParametersFactory>()
-            .AddSingleton<IChatClient, ChatClient>()
-            .AddSingleton<ITranslateParametersFactory, TranslateParameterFactory>()
-            .AddSingleton<ITranslateClient, TranslateClient>()
-            .AddSingleton<IDrawParametersFactory, DrawParametersFactory>()
-            .AddSingleton<IDrawClient, DrawClient>()
-            .AddSingleton<IAudioParametersFactory, AudioParametersFactory>()
-            .AddSingleton<IAudioClient, AudioClient>()
             .AddSingleton<DbService>()
             .AddSingleton<IStorageService, StorageService>()
             .AddSingleton<AppViewModel>()
-            .AddSingleton<NavigationViewModel>()
-            .AddSingleton<AudioWaveModuleViewModel>()
             .AddSingleton<StartupPageViewModel>()
-            .AddSingleton<ChatPresetModuleViewModel>()
-            .AddSingleton<GroupPresetModuleViewModel>()
-            .AddSingleton<ChatServicePageViewModel>()
-            .AddSingleton<DrawSessionViewModel>()
-            .AddSingleton<DrawServicePageViewModel>()
-            .AddSingleton<AudioSessionViewModel>()
-            .AddSingleton<AudioServicePageViewModel>()
-            .AddSingleton<TranslateSessionViewModel>()
-            .AddSingleton<TranslateServicePageViewModel>()
-            .AddSingleton<PromptTestPageViewModel>()
-            .AddSingleton<SettingsPageViewModel>()
+            .AddNotificationViewModel()
             .Build();
 
         Kernel.InitializeShareKernel();
         Kernel.InitializeAIKernel();
         GlobalStatics.SetKernel(Kernel);
     }
-
-    public static T Get<T>(this object ele)
-        where T : class
-        => Kernel.GetRequiredService<T>();
 
     public static IKernelBuilder AddSingleton<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(this IKernelBuilder builder)
         where T : class
@@ -140,18 +94,11 @@ internal static class GlobalDependencies
         return builder;
     }
 
-    public static IKernelBuilder AddSingleton<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TInterface, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TImplementation>(this IKernelBuilder builder)
-        where TInterface : class
-        where TImplementation : class, TInterface
+    public static IKernelBuilder AddSingleton<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TService, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TImplementation>(this IKernelBuilder builder)
+        where TService : class
+        where TImplementation : class, TService
     {
-        builder.Services.AddSingleton<TInterface, TImplementation>();
-        return builder;
-    }
-
-    public static IKernelBuilder AddDispatcherQueue(this IKernelBuilder builder)
-    {
-        var queue = DispatcherQueue.GetForCurrentThread();
-        builder.Services.AddSingleton(queue);
+        builder.Services.AddSingleton<TService, TImplementation>();
         return builder;
     }
 
@@ -183,7 +130,8 @@ internal static class GlobalDependencies
         builder.Services.AddSingleton<IAppToolkit, AppToolkit>()
             .AddSingleton<ISettingsToolkit, SettingsToolkit>()
             .AddSingleton<IFileToolkit, SharedFileToolkit>()
-            .AddSingleton<IResourceToolkit, ResourceToolkit>();
+            .AddSingleton<IResourceToolkit, ResourceToolkit>()
+            .AddSingleton<IFontToolkit, SharedFontToolkit>();
         return builder;
     }
 
@@ -198,20 +146,19 @@ internal static class GlobalDependencies
         builder.Services
             .AddSingleton<IAudioConfigManager, AudioConfigManager>()
             .AddSingleton<IChatConfigManager, ChatConfigManager>()
-            .AddSingleton<ITranslateConfigManager, TranslateConfigManager>()
-            .AddSingleton<IDrawConfigManager, DrawConfigManager>();
+            .AddSingleton<IDrawConfigManager, DrawConfigManager>()
+            .AddSingleton<ITranslateConfigManager, TranslateConfigManager>();
         return builder;
     }
 
-    private static void ToolInvoking(ToolInvokingEventArgs args)
+    public static IKernelBuilder AddDispatcherQueue(this IKernelBuilder builder)
     {
-        var chatPageVM = ServiceProvider.GetService<ChatServicePageViewModel>();
-        chatPageVM.CurrentSession?.ToolInvokingHandleCommand.Execute(args);
+        var queue = DispatcherQueue.GetForCurrentThread();
+        builder.Services.AddSingleton(queue);
+        return builder;
     }
 
-    private static void ToolInvoked(ToolInvokedEventArgs args)
-    {
-        var chatPageVM = ServiceProvider.GetService<ChatServicePageViewModel>();
-        chatPageVM.CurrentSession?.ToolInvokedHandleCommand.Execute(args);
-    }
+    public static T Get<T>(this object ele)
+        where T : class
+        => Kernel.GetRequiredService<T>();
 }

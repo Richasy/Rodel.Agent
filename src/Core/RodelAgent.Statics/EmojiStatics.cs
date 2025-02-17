@@ -1,6 +1,4 @@
-﻿// Copyright (c) Rodel. All rights reserved.
-
-using System.Collections.Generic;
+﻿// Copyright (c) Richasy. All rights reserved.
 
 namespace RodelAgent.Statics;
 

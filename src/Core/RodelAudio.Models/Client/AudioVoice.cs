@@ -1,10 +1,7 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json.Serialization;
 using RodelAudio.Models.Constants;
+using System.Text.Json.Serialization;
 
 namespace RodelAudio.Models.Client;
 

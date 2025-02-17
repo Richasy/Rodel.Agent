@@ -1,7 +1,5 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Translators.Youdao;
 using RodelTranslate.Interfaces.Client;
 using RodelTranslate.Models.Client;
 

@@ -1,7 +1,5 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System;
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace RodelChat.Models.Client;

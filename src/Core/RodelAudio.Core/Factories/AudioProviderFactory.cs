@@ -1,4 +1,4 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
 using RodelAudio.Interfaces.Client;
 using RodelAudio.Models.Client;

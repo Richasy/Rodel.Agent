@@ -6,13 +6,12 @@
     xmlns:base="using:Richasy.WinUIKernel.Share.Base"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:RodelAgent.UI.Forms"
-    xmlns:markdown="using:RodelAgent.UI.Controls.Markdown"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="StartupWindow"
     mc:Ignorable="d">
 
     <Grid>
         <base:AppTitleBar x:Name="TitleBar" VerticalAlignment="Top" />
-        <Frame x:Name="MainFrame" />
-        <Grid x:Name="TipContainer" Visibility="Collapsed" />
+        <Frame x:Name="RootFrame" />
     </Grid>
 </base:WindowBase>

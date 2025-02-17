@@ -1,4 +1,4 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
 using Richasy.AgentKernel;
 using Richasy.AgentKernel.Connectors.Azure.Models;

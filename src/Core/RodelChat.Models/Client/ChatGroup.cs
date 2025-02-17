@@ -1,6 +1,6 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System.Collections.Generic;
+using Microsoft.Extensions.AI;
 using System.Text.Json.Serialization;
 
 namespace RodelChat.Models.Client;
@@ -40,7 +40,7 @@ public sealed class ChatGroup : ChatGroupPreset
         {
             Id = id,
             PresetId = preset.Id,
-            Messages = new List<ChatMessage>(),
+            Messages = [],
             Agents = preset.Agents,
             Emoji = preset.Emoji,
             Name = preset.Name,

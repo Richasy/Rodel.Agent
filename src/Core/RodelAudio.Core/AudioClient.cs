@@ -1,12 +1,11 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System.Reflection;
 using Microsoft.Extensions.Logging;
-using Microsoft.SemanticKernel.TextToAudio;
 using RodelAudio.Core.Providers;
 using RodelAudio.Interfaces.Client;
 using RodelAudio.Models.Client;
 using RodelAudio.Models.Constants;
+using System.Reflection;
 
 namespace RodelAudio.Core;
 

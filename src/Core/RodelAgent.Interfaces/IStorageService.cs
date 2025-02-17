@@ -1,13 +1,11 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System.Collections.Generic;
-using System.Text.Json.Serialization.Metadata;
-using System.Threading.Tasks;
 using Richasy.AgentKernel;
 using RodelAudio.Models.Client;
 using RodelChat.Models.Client;
 using RodelDraw.Models.Client;
 using RodelTranslate.Models.Client;
+using System.Text.Json.Serialization.Metadata;
 
 namespace RodelAgent.Interfaces;
 
@@ -165,21 +163,21 @@ public interface IStorageService
     /// 获取聊天会话预设.
     /// </summary>
     /// <returns>预设列表.</returns>
-    Task<List<ChatSessionPresetOld>> GetChatSessionPresetsAsync();
+    Task<List<ChatSessionPreset>> GetChatSessionPresetsAsync();
 
     /// <summary>
     /// 获取指定 ID 的聊天会话预设.
     /// </summary>
     /// <param name="presetId">预设 ID.</param>
-    /// <returns><see cref="ChatSessionPresetOld"/>.</returns>
-    Task<ChatSessionPresetOld> GetChatSessionPresetByIdAsync(string presetId);
+    /// <returns><see cref="ChatSessionPreset"/>.</returns>
+    Task<ChatSessionPreset> GetChatSessionPresetByIdAsync(string presetId);
 
     /// <summary>
     /// 添加或更新聊天会话预设.
     /// </summary>
     /// <param name="preset">预设.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task AddOrUpdateChatSessionPresetAsync(ChatSessionPresetOld preset);
+    Task AddOrUpdateChatSessionPresetAsync(ChatSessionPreset preset);
 
     /// <summary>
     /// 移除聊天会话预设.
@@ -192,14 +190,14 @@ public interface IStorageService
     /// 获取本地助理列表.
     /// </summary>
     /// <returns>助理列表.</returns>
-    Task<List<ChatSessionPresetOld>> GetChatAgentsAsync();
+    Task<List<ChatSessionPreset>> GetChatAgentsAsync();
 
     /// <summary>
     /// 添加或更新助理.
     /// </summary>
     /// <param name="agent">助理信息.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task AddOrUpdateChatAgentAsync(ChatSessionPresetOld agent);
+    Task AddOrUpdateChatAgentAsync(ChatSessionPreset agent);
 
     /// <summary>
     /// 移除助理.

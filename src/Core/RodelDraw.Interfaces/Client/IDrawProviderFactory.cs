@@ -1,4 +1,4 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
 using RodelDraw.Models.Client;
 using RodelDraw.Models.Constants;

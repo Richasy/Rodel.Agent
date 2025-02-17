@@ -1,17 +1,14 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System.Web;
-using H.NotifyIcon;
 using Microsoft.UI.Dispatching;
 using Microsoft.Windows.AppLifecycle;
-using NLog;
-using RodelAgent.UI.Controls;
-using RodelAgent.UI.Forms;
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Toolkits;
+using RodelAgent.UI.ViewModels.Core;
+using SimpleTrayIcon;
+using System.Runtime.InteropServices;
+using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Globalization;
-using Windows.Storage;
 
 namespace RodelAgent.UI;
 
@@ -21,8 +18,8 @@ namespace RodelAgent.UI;
 public partial class App : Application
 {
     private const string Id = "Richasy.RodelAgent";
-    private DispatcherQueue _dispatcherQueue;
-    private WindowBase _window;
+    private static TrayMenu _trayMenu;
+    private readonly DispatcherQueue _dispatcherQueue;
 
     /// <summary>
     /// Initializes the singleton application object.  This is the first line of authored code
@@ -31,26 +28,16 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
-        RodelAgent.Context.MigrationUtils.SetRootPath(Windows.ApplicationModel.Package.Current.InstalledPath);
-        var language = SettingsToolkit.ReadLocalSetting(SettingNames.AppLanguage, "default");
-        ApplicationLanguages.PrimaryLanguageOverride = language != "default"
-            ? language
-            : string.Empty;
-
+        _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
         FluentIcons.WinUI.Extensions.UseSegoeMetrics(this);
-        var mainAppInstance = AppInstance.FindOrRegisterForKey(Id);
-        mainAppInstance.Activated += OnAppInstanceActivated;
         UnhandledException += OnUnhandledException;
     }
 
     /// <summary>
-    /// Gets the service provider instance.
+    /// 关闭托盘菜单.
     /// </summary>
-    internal static IServiceProvider ServiceProvider => GlobalDependencies.ServiceProvider;
-
-    private TaskbarIcon TrayIcon { get; set; }
-
-    private bool HandleCloseEvents { get; set; }
+    public static void CloseTrayMenu()
+        => _trayMenu?.Dispose();
 
     /// <summary>
     /// Invoked when the application is launched.
@@ -58,193 +45,97 @@ public partial class App : Application
     /// <param name="args">Details about the launch request and process.</param>
     protected override async void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
     {
-        var instance = AppInstance.FindOrRegisterForKey(Id);
+        var instance = Microsoft.Windows.AppLifecycle.AppInstance.FindOrRegisterForKey(Id);
         if (instance.IsCurrent)
         {
-            _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-            var rootFolder = ApplicationData.Current.LocalFolder;
-            var fullPath = $"{rootFolder.Path}\\Logger";
-            NLog.GlobalDiagnosticsContext.Set("LogPath", fullPath);
-
+            instance.Activated += OnInstanceActivated;
             GlobalDependencies.Initialize();
+
+            if (RuntimeInformation.ProcessArchitecture != Architecture.Arm64)
+            {
+                try
+                {
+                    var packagePath = Package.Current.InstalledPath;
+                    var icon = new System.Drawing.Icon(Path.Combine(packagePath, "Assets", "logo.ico"));
+                    _trayMenu = new TrayMenu(icon, ResourceToolkit.GetLocalizedString(StringNames.AppName));
+                    var showItem = new TrayMenuItem { Content = ResourceToolkit.GetLocalizedString(StringNames.Show) };
+                    var exitItem = new TrayMenuItem { Content = ResourceToolkit.GetLocalizedString(StringNames.Exit) };
+                    showItem.Click += OnTrayShowItemClick;
+                    exitItem.Click += OnTrayExitItemClick;
+                    _trayMenu.Items.Add(showItem);
+                    _trayMenu.Items.Add(exitItem);
+                    _trayMenu.DoubleClick += OnTrayMenuDoubleClick;
+                    GlobalDependencies.Kernel.GetRequiredService<AppViewModel>().IsTraySupport = true;
+                }
+                catch (Exception)
+                {
+                    GlobalDependencies.Kernel.GetRequiredService<AppViewModel>().IsTraySupport = false;
+                }
+            }
         }
 
         var eventArgs = instance.GetActivatedEventArgs();
         var data = eventArgs.Data is IActivatedEventArgs
             ? eventArgs.Data as IActivatedEventArgs
             : args.UWPLaunchActivatedEventArgs;
-
         await LaunchWindowAsync(data);
     }
 
-    /// <summary>
-    /// Try activating the window and bringing it to the foreground.
-    /// </summary>
-    private void ActivateWindow(AppActivationArguments arguments = default)
+    private static async Task LaunchWindowAsync(IActivatedEventArgs? args = default)
     {
-        _ = _dispatcherQueue.TryEnqueue(async () =>
-        {
-            if (_window == null)
-            {
-                await LaunchWindowAsync();
-            }
-            else if (_window.Visible && HandleCloseEvents && arguments?.Data == null)
-            {
-                _ = _window.Hide();
-            }
-            else
-            {
-                _window.Activate();
-                _ = _window.SetForegroundWindow();
-            }
-        });
-    }
-
-    private void InitializeTrayIcon()
-    {
-        if (TrayIcon != null)
-        {
-            return;
-        }
-
-        var showHideWindowCommand = (XamlUICommand)Resources["ShowHideWindowCommand"];
-        showHideWindowCommand.ExecuteRequested += OnShowHideWindowCommandExecuteRequested;
-
-        var exitApplicationCommand = (XamlUICommand)Resources["QuitCommand"];
-        exitApplicationCommand.ExecuteRequested += OnQuitCommandExecuteRequested;
-
-        try
-        {
-            TrayIcon = (TaskbarIcon)Resources["TrayIcon"];
-            TrayIcon.ForceCreate();
-        }
-        catch (Exception)
-        {
-            var logger = LogManager.GetCurrentClassLogger();
-            logger.Error("Failed to initialize tray icon");
-        }
-    }
-
-    private async Task LaunchWindowAsync(IActivatedEventArgs args = default)
-    {
-        var instance = AppInstance.FindOrRegisterForKey(Id);
         if (args is IProtocolActivatedEventArgs protocolArgs
             && !string.IsNullOrEmpty(protocolArgs.Uri.Host))
         {
-            if (protocolArgs.Uri.Host == "internal")
-            {
-                var query = protocolArgs.Uri.Query;
-                var queryItems = HttpUtility.ParseQueryString(query);
-                var feature = queryItems["feature"]?.ToLower() ?? string.Empty;
-                if (!string.IsNullOrEmpty(feature))
-                {
-                    if (feature == "prompt-test")
-                    {
-                        SettingsToolkit.WriteLocalSetting(SettingNames.IsInternalPromptTest, true);
-                    }
-                    else if(feature == "clear")
-                    {
-                        SettingsToolkit.WriteLocalSetting(SettingNames.IsInternalPromptTest, false);
-                    }
-                }
-            }
-        }
-
-        // If the current instance is not the previously registered instance
-        if (!instance.IsCurrent)
-        {
-            var activatedArgs = AppInstance.GetCurrent().GetActivatedEventArgs();
-
-            // Redirect to the existing instance
-            await instance.RedirectActivationToAsync(activatedArgs);
-
-            // Kill the current instance
-            Current.Exit();
-            return;
-        }
-
-        var shouldSkipStartup = SettingsToolkit.ReadLocalSetting(SettingNames.ShouldSkipStartup, false);
-        if (!shouldSkipStartup)
-        {
-            var window = new StartupWindow();
-            window.Activate();
+            // TODO: Handle protocol activation.
         }
         else
         {
-            _window = new MainWindow();
-            _window.Closed += OnMainWindowClosedAsync;
+            var instance = Microsoft.Windows.AppLifecycle.AppInstance.FindOrRegisterForKey(Id);
 
-            HandleCloseEvents = SettingsToolkit.ReadLocalSetting(SettingNames.HideWhenCloseWindow, true);
-            if (HandleCloseEvents)
+            // If the current instance is not the previously registered instance
+            if (!instance.IsCurrent)
             {
-                InitializeTrayIcon();
+                var activatedArgs = Microsoft.Windows.AppLifecycle.AppInstance.GetCurrent().GetActivatedEventArgs();
+
+                // Redirect to the existing instance
+                await instance.RedirectActivationToAsync(activatedArgs);
+
+                // Kill the current instance
+                Current.Exit();
+                return;
             }
 
-            _window.Activate();
+            GlobalDependencies.Kernel.GetRequiredService<AppViewModel>().LaunchCommand.Execute(default);
         }
     }
 
-    private async void OnMainWindowClosedAsync(object sender, WindowEventArgs args)
+    private static void ShowWindowsInternal()
     {
-        HandleCloseEvents = SettingsToolkit.ReadLocalSetting(SettingNames.HideWhenCloseWindow, true);
-        if (HandleCloseEvents)
+        foreach (var wnd in GlobalDependencies.Kernel.GetRequiredService<AppViewModel>().Windows)
         {
-            args.Handled = true;
-
-            var shouldAsk = SettingsToolkit.ReadLocalSetting(SettingNames.ShouldAskBeforeWindowClosed, true);
-            if (shouldAsk)
-            {
-                _window.Activate();
-                var dialog = new CloseWindowTipDialog
-                {
-                    XamlRoot = _window.Content.XamlRoot,
-                };
-                var result = await dialog.ShowAsync();
-                if (result == ContentDialogResult.None)
-                {
-                    return;
-                }
-
-                var shouldHide = result == ContentDialogResult.Secondary;
-                if (dialog.IsNeverAskChecked)
-                {
-                    SettingsToolkit.WriteLocalSetting(SettingNames.ShouldAskBeforeWindowClosed, false);
-                    SettingsToolkit.WriteLocalSetting(SettingNames.HideWhenCloseWindow, shouldHide);
-                }
-
-                if (!shouldHide)
-                {
-                    ExitApp();
-                    return;
-                }
-            }
-
-            InitializeTrayIcon();
-            _ = _window.Hide();
+            wnd.SetForegroundWindow();
+            wnd.Activate();
         }
     }
 
-    private void ExitApp()
-    {
-        HandleCloseEvents = false;
-        TrayIcon?.Dispose();
-        _window?.Close();
-        Environment.Exit(0);
-    }
+    private void OnInstanceActivated(object? sender, AppActivationArguments e)
+        => _dispatcherQueue.TryEnqueue(() => GlobalDependencies.Kernel.GetRequiredService<AppViewModel>().CheckActivateArgumentsCommand.Execute(default));
 
     private void OnUnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
     {
-        var logger = GlobalDependencies.ServiceProvider.GetRequiredService<ILogger<App>>();
-        logger.LogError(e.Exception, "An exception occurred while the application was running");
+        GlobalDependencies.Kernel.GetRequiredService<ILogger<App>>().LogError(e.Exception, "Unhandled exception occurred.");
         e.Handled = true;
     }
 
-    private void OnQuitCommandExecuteRequested(XamlUICommand sender, ExecuteRequestedEventArgs args)
-        => ExitApp();
+    private void OnTrayExitItemClick(object? sender, TrayMenuItemClickedEventArgs e)
+    {
+        this.Get<AppViewModel>().ExitFromTray = true;
+        this.Get<AppViewModel>().Windows.Find(p => p is MainWindow)?.Close();
+    }
 
-    private void OnShowHideWindowCommandExecuteRequested(XamlUICommand sender, ExecuteRequestedEventArgs args)
-        => ActivateWindow();
+    private void OnTrayShowItemClick(object? sender, TrayMenuItemClickedEventArgs e)
+        => ShowWindowsInternal();
 
-    private void OnAppInstanceActivated(object sender, AppActivationArguments e)
-        => ActivateWindow(e);
+    private void OnTrayMenuDoubleClick(object? sender, EventArgs e)
+        => ShowWindowsInternal();
 }

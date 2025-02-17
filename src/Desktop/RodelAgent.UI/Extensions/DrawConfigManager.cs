@@ -1,4 +1,4 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
 using Richasy.AgentKernel;
 using Richasy.AgentKernel.Connectors.Azure.Models;
@@ -14,7 +14,7 @@ namespace RodelAgent.UI.Extensions;
 /// <summary>
 /// 绘制配置管理器.
 /// </summary>
-public sealed class DrawConfigManager : DrawConfigManagerBase
+internal sealed class DrawConfigManager : DrawConfigManagerBase
 {
     /// <inheritdoc/>
     protected override AIServiceConfig? ConvertToConfig(DrawClientConfigBase? config)

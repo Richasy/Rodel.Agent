@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "RodelAgent.UI (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "RodelAgent.UI (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

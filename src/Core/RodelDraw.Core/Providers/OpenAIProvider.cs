@@ -1,10 +1,8 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System.Text.Json.Serialization;
-using Microsoft.SemanticKernel;
-using RodelAgent.Models.Abstractions;
 using RodelDraw.Interfaces.Client;
 using RodelDraw.Models.Client;
+using System.Text.Json.Serialization;
 
 namespace RodelDraw.Core.Providers;
 
