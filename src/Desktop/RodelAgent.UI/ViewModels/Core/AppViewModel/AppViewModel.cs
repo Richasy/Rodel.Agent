@@ -1,7 +1,10 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
+using Richasy.WinUIKernel.Share.Toolkits;
 using RodelAgent.UI.Forms;
+using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Toolkits;
+using Windows.System;
 
 namespace RodelAgent.UI.ViewModels.Core;
 
@@ -58,5 +61,48 @@ public sealed partial class AppViewModel : ViewModelBase
         // TODO: Check if the app is activated with arguments.
         _ = this;
         await Task.CompletedTask;
+    }
+
+    [RelayCommand]
+    private void ChangeTheme(ElementTheme theme)
+    {
+        foreach (var window in Windows)
+        {
+            (window.Content as FrameworkElement)!.RequestedTheme = theme;
+        }
+    }
+
+    [RelayCommand]
+    private void CheckUpdate()
+    {
+        var localVersion = SettingsToolkit.ReadLocalSetting(SettingNames.AppVersion, string.Empty);
+        var currentVersion = this.Get<IAppToolkit>().GetPackageVersion();
+        if (localVersion != currentVersion)
+        {
+            SettingsToolkit.WriteLocalSetting(SettingNames.AppVersion, currentVersion);
+            IsUpdateShown = true;
+        }
+    }
+
+    [RelayCommand]
+    private void HideUpdate()
+        => IsUpdateShown = false;
+
+    [RelayCommand]
+    private async Task ShowUpdateAsync()
+    {
+        var packVersion = this.Get<IAppToolkit>().GetPackageVersion();
+        var url = $"https://github.com/Richasy/Rodel.Agent/releases/tag/v{packVersion}";
+        await Launcher.LaunchUriAsync(new Uri(url));
+        HideUpdate();
+    }
+
+    [RelayCommand]
+    private void HideAllWindows()
+    {
+        foreach (var wnd in Windows)
+        {
+            wnd.Hide();
+        }
     }
 }

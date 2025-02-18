@@ -17,10 +17,17 @@
     <None Remove="Assets\big-logo.png" />
     <None Remove="Assets\logo.ico" />
     <None Remove="Assets\small-logo.png" />
+    <None Remove="Controls\RootLayout.xaml" />
     <None Remove="Controls\Startup\StartupBody.xaml" />
     <None Remove="Controls\Startup\StartupFooter.xaml" />
     <None Remove="Forms\StartupWindow.xaml" />
+    <None Remove="Pages\ChatPage.xaml" />
+    <None Remove="Pages\DrawPage.xaml" />
+    <None Remove="Pages\SettingsPage.xaml" />
+    <None Remove="Pages\SpeechPage.xaml" />
     <None Remove="Pages\StartupPage.xaml" />
+    <None Remove="Pages\TranslatePage.xaml" />
+    <None Remove="Styles\Overrides.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -65,6 +72,36 @@
     <ProjectReference Include="..\RodelAgent.UI.Models\RodelAgent.UI.Models.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Controls\RootLayout.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\SettingsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\SpeechPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\TranslatePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\DrawPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\ChatPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="Controls\Startup\StartupFooter.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -81,6 +118,11 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\StartupPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Styles\Overrides.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

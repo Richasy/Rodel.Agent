@@ -10,6 +10,9 @@ public sealed partial class AppViewModel
     [ObservableProperty]
     public partial Window ActivatedWindow { get; set; }
 
+    [ObservableProperty]
+    public partial bool IsUpdateShown { get; set; }
+
     /// <summary>
     /// 是否支持托盘.
     /// </summary>

@@ -78,7 +78,12 @@ internal static class GlobalDependencies
             .AddSingleton<DbService>()
             .AddSingleton<IStorageService, StorageService>()
             .AddSingleton<AppViewModel>()
+            .AddSingleton<NavigationViewModel>()
             .AddSingleton<StartupPageViewModel>()
+            .AddSingleton<ChatPageViewModel>()
+            .AddSingleton<DrawPageViewModel>()
+            .AddSingleton<SpeechPageViewModel>()
+            .AddSingleton<SettingsPageViewModel>()
             .AddNotificationViewModel()
             .Build();
 

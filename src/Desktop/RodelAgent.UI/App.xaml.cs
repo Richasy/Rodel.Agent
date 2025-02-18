@@ -130,7 +130,7 @@ public partial class App : Application
     private void OnTrayExitItemClick(object? sender, TrayMenuItemClickedEventArgs e)
     {
         this.Get<AppViewModel>().ExitFromTray = true;
-        this.Get<AppViewModel>().Windows.Find(p => p is MainWindow)?.Close();
+        this.Get<AppViewModel>().Windows.Find(p => p is Forms.MainWindow)?.Close();
     }
 
     private void OnTrayShowItemClick(object? sender, TrayMenuItemClickedEventArgs e)
