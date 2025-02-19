@@ -8,6 +8,7 @@ using RodelAudio.Models.Client;
 using RodelChat.Models.Client;
 using RodelDraw.Models.Client;
 using RodelTranslate.Models.Client;
+using Windows.ApplicationModel;
 
 namespace RodelAgent.UI.Extensions;
 
@@ -22,6 +23,7 @@ internal sealed partial class StorageService : IStorageService
     {
         _dbService = dbService;
         _dbService.SetWorkingDirectory(GetWorkingDirectory());
+        _dbService.SetPackageDirectory(Package.Current.InstalledPath);
     }
 
     /// <inheritdoc/>

@@ -51,6 +51,12 @@ internal static class GlobalDependencies
             .AddOpenAIAudioService()
             .AddWindowsAudioService()
 
+            .AddAzureOpenAIDrawService()
+            .AddErnieDrawService()
+            .AddHunyuanDrawService()
+            .AddOpenAIDrawService()
+            .AddSparkDrawService()
+
             .AddOpenAIChatService()
             .AddAzureOpenAIChatService()
             .AddAzureAIChatService()

@@ -235,7 +235,7 @@
     <value>这里有详细的文档，请点击右侧按钮查看</value>
   </data>
   <data name="ServiceSettingHeaderTitle" xml:space="preserve">
-    <value>对话服务如何配置？</value>
+    <value>服务如何配置？</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>设置</value>

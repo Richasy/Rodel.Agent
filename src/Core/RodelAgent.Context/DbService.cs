@@ -10,12 +10,13 @@ namespace RodelAgent.Context;
 /// </summary>
 public sealed class DbService
 {
-    private SecretDbContext? _secretDb;
+    private SecretDataService? _secretService;
     private ChatDbContext? _chatDb;
     private TranslateDbContext? _translateDb;
     private DrawDbContext? _drawDb;
     private AudioDbContext? _audioDb;
     private string _workingDirectory;
+    private string _packageDirectory;
 
     /// <summary>
     /// 设置工作目录.
@@ -25,14 +26,21 @@ public sealed class DbService
         => _workingDirectory = workingDirectory;
 
     /// <summary>
+    /// 设置包目录.
+    /// </summary>
+    /// <param name="packageDirectory">包目录.</param>
+    public void SetPackageDirectory(string packageDirectory)
+        => _packageDirectory = packageDirectory;
+
+    /// <summary>
     /// 获取机密配置.
     /// </summary>
     /// <param name="key">名称.</param>
     /// <returns>字符串.</returns>
     public async Task<string?> GetSecretAsync(string key)
     {
-        _secretDb ??= await MigrationUtils.GetSecretDbAsync(_workingDirectory).ConfigureAwait(false);
-        var data = await _secretDb.Metadata.FirstOrDefaultAsync(x => x.Id == key).ConfigureAwait(false);
+        await InitializeSecretServiceAsync().ConfigureAwait(false);
+        var data = await _secretService!.GetSecretAsync(key).ConfigureAwait(false);
         return data?.Value;
     }
 
@@ -42,19 +50,8 @@ public sealed class DbService
     /// <returns><see cref="Task"/>.</returns>
     public async Task SetSecretAsync(string key, string value)
     {
-        _secretDb ??= await MigrationUtils.GetSecretDbAsync(_workingDirectory).ConfigureAwait(false);
-        var data = await _secretDb.Metadata.FirstOrDefaultAsync(x => x.Id == key).ConfigureAwait(false);
-        if (data is null)
-        {
-            await _secretDb.Metadata.AddAsync(new Metadata { Id = key, Value = value }).ConfigureAwait(false);
-        }
-        else
-        {
-            data.Value = value;
-            _secretDb.Metadata.Update(data);
-        }
-
-        await _secretDb.SaveChangesAsync().ConfigureAwait(false);
+        await InitializeSecretServiceAsync().ConfigureAwait(false);
+        await _secretService!.AddOrUpdateSecretAsync(new Metadata { Id = key, Value = value }).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -278,16 +275,31 @@ public sealed class DbService
     /// </summary>
     public void ResetAllDbConnections()
     {
-        _secretDb?.Dispose();
         _chatDb?.Dispose();
         _translateDb?.Dispose();
         _drawDb?.Dispose();
         _audioDb?.Dispose();
 
-        _secretDb = null;
+        _secretService = null;
         _chatDb = null;
         _translateDb = null;
         _drawDb = null;
         _audioDb = null;
+    }
+
+    private async Task InitializeSecretServiceAsync()
+    {
+        if (_secretService is not null)
+        {
+            return;
+        }
+
+        if (string.IsNullOrEmpty(_workingDirectory) || string.IsNullOrEmpty(_packageDirectory))
+        {
+            throw new InvalidOperationException("Working directory or package directory is not set.");
+        }
+
+        _secretService = new SecretDataService(_workingDirectory, _packageDirectory);
+        await _secretService.InitializeAsync().ConfigureAwait(false);
     }
 }

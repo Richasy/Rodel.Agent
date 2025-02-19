@@ -74,6 +74,7 @@
     <ProjectReference Include="..\..\Core\RodelAgent.Context\RodelAgent.Context.csproj" />
     <ProjectReference Include="..\..\Core\RodelAgent.Interfaces\RodelAgent.Interfaces.csproj" />
     <ProjectReference Include="..\..\Core\RodelAgent.Statics\RodelAgent.Statics.csproj" />
+    <ProjectReference Include="..\..\Libs\Migration.V2\Migration.V2.csproj" />
     <ProjectReference Include="..\RodelAgent.UI.Models\RodelAgent.UI.Models.csproj" />
   </ItemGroup>
   <ItemGroup>

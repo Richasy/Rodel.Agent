@@ -18,17 +18,6 @@ public static class MigrationUtils
     public static void SetRootPath(string rootPath) => _rootPath = rootPath;
 
     /// <summary>
-    /// 获取密钥数据库.
-    /// </summary>
-    /// <param name="workDir">工作目录.</param>
-    /// <returns><see cref="SecretDbContext"/>.</returns>
-    public static async Task<SecretDbContext> GetSecretDbAsync(string workDir)
-    {
-        await CheckDatabaseExistInternalAsync("secret.db", workDir).ConfigureAwait(false);
-        return new SecretDbContext(Path.Combine(workDir, "secret.db"));
-    }
-
-    /// <summary>
     /// 获取聊天数据库.
     /// </summary>
     /// <param name="workDir">工作目录.</param>

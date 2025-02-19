@@ -63,7 +63,7 @@ public sealed partial class SettingsPage : SettingsPageBase
         else if (index == 2)
         {
             GenericContainer.Visibility = Visibility.Collapsed;
-            TranslateContainer.Visibility = Visibility.Visible;
+            TranslateContainer.Visibility = Visibility.Collapsed;
             SpeechContainer.Visibility = Visibility.Collapsed;
             ChatContainer.Visibility = Visibility.Collapsed;
             DrawContainer.Visibility = Visibility.Visible;
