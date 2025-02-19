@@ -123,8 +123,29 @@
   <data name="AppName" xml:space="preserve">
     <value>小幻助理</value>
   </data>
+  <data name="AppSettings" xml:space="preserve">
+    <value>应用设置</value>
+  </data>
+  <data name="AppTheme" xml:space="preserve">
+    <value>应用程序主题</value>
+  </data>
+  <data name="AppThemeDescription" xml:space="preserve">
+    <value>选择要显示的应用主题</value>
+  </data>
+  <data name="BiliHomePage" xml:space="preserve">
+    <value>B站主页</value>
+  </data>
   <data name="Chat" xml:space="preserve">
     <value>对话</value>
+  </data>
+  <data name="ChatService" xml:space="preserve">
+    <value>对话服务</value>
+  </data>
+  <data name="CloseWorkingDirectory" xml:space="preserve">
+    <value>关闭工作目录</value>
+  </data>
+  <data name="Copyright" xml:space="preserve">
+    <value>© {0} Richasy。保留全部权利。</value>
   </data>
   <data name="CreateWorkingDirectory" xml:space="preserve">
     <value>创建新目录</value>
@@ -132,11 +153,20 @@
   <data name="CreateWorkingDirectoryDescription" xml:space="preserve">
     <value>选择一个空文件夹，您的对话记录或其他数据都会在该目录中存档</value>
   </data>
+  <data name="DarkTheme" xml:space="preserve">
+    <value>深色</value>
+  </data>
   <data name="Draw" xml:space="preserve">
     <value>绘图</value>
   </data>
+  <data name="DrawService" xml:space="preserve">
+    <value>绘图服务</value>
+  </data>
   <data name="Exit" xml:space="preserve">
     <value>退出</value>
+  </data>
+  <data name="Generic" xml:space="preserve">
+    <value>通用</value>
   </data>
   <data name="HasUpdate" xml:space="preserve">
     <value>您已更新到新版本</value>
@@ -144,8 +174,35 @@
   <data name="HasUpdateDescription" xml:space="preserve">
     <value>点击下方按钮来查看更新内容吧！</value>
   </data>
+  <data name="HideWhenClose" xml:space="preserve">
+    <value>关闭时隐藏</value>
+  </data>
+  <data name="HideWhenCloseDescription" xml:space="preserve">
+    <value>关闭窗口时隐藏应用而非退出</value>
+  </data>
   <data name="InvalidDirectoryPath" xml:space="preserve">
     <value>工作目录已失效</value>
+  </data>
+  <data name="JoinQQGroup" xml:space="preserve">
+    <value>加入QQ群</value>
+  </data>
+  <data name="LightTheme" xml:space="preserve">
+    <value>浅色</value>
+  </data>
+  <data name="Link" xml:space="preserve">
+    <value>链接</value>
+  </data>
+  <data name="LoggerModule" xml:space="preserve">
+    <value>日志记录</value>
+  </data>
+  <data name="LoggerModuleDescription" xml:space="preserve">
+    <value>查看应用日志或清除日志记录</value>
+  </data>
+  <data name="OpenFolder" xml:space="preserve">
+    <value>打开文件夹</value>
+  </data>
+  <data name="OpenSourceRepo" xml:space="preserve">
+    <value>开放源代码库</value>
   </data>
   <data name="OpenUpdate" xml:space="preserve">
     <value>查看更新</value>
@@ -159,8 +216,26 @@
   <data name="OpenWorkingDirectoryFailed" xml:space="preserve">
     <value>这似乎不是一个有效的工作目录，请选择由小幻助理创建的库文件夹</value>
   </data>
+  <data name="OtherApp" xml:space="preserve">
+    <value>开发者的其它应用</value>
+  </data>
+  <data name="ProjectHomePage" xml:space="preserve">
+    <value>项目主页</value>
+  </data>
   <data name="ReadDocument" xml:space="preserve">
     <value>阅读文档</value>
+  </data>
+  <data name="SeeDetail" xml:space="preserve">
+    <value>查看详情</value>
+  </data>
+  <data name="SendFeedback" xml:space="preserve">
+    <value>发送反馈</value>
+  </data>
+  <data name="ServiceSettingHeaderDescription" xml:space="preserve">
+    <value>这里有详细的文档，请点击右侧按钮查看</value>
+  </data>
+  <data name="ServiceSettingHeaderTitle" xml:space="preserve">
+    <value>对话服务如何配置？</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>设置</value>
@@ -171,8 +246,17 @@
   <data name="Speech" xml:space="preserve">
     <value>语音</value>
   </data>
+  <data name="SpeechService" xml:space="preserve">
+    <value>语音服务</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>使用系统设置</value>
+  </data>
   <data name="Translate" xml:space="preserve">
     <value>翻译</value>
+  </data>
+  <data name="TranslateService" xml:space="preserve">
+    <value>翻译服务</value>
   </data>
   <data name="Version" xml:space="preserve">
     <value>版本号</value>
@@ -182,6 +266,9 @@
   </data>
   <data name="WelcomeTitle" xml:space="preserve">
     <value>欢迎使用小幻助理</value>
+  </data>
+  <data name="WorkingDirectorySetting" xml:space="preserve">
+    <value>工作目录设置</value>
   </data>
   <data name="WorkingDirectoryShouldBeEmpty" xml:space="preserve">
     <value>新创建的工作目录应该为空文件夹</value>

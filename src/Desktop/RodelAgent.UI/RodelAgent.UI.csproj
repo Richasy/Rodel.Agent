@@ -18,6 +18,11 @@
     <None Remove="Assets\logo.ico" />
     <None Remove="Assets\small-logo.png" />
     <None Remove="Controls\RootLayout.xaml" />
+    <None Remove="Controls\Settings\AboutSettingControl.xaml" />
+    <None Remove="Controls\Settings\HideWindowSettingControl.xaml" />
+    <None Remove="Controls\Settings\LoggerSettingControl.xaml" />
+    <None Remove="Controls\Settings\ThemeSettingControl.xaml" />
+    <None Remove="Controls\Settings\WorkingDirectorySettingControl.xaml" />
     <None Remove="Controls\Startup\StartupBody.xaml" />
     <None Remove="Controls\Startup\StartupFooter.xaml" />
     <None Remove="Forms\StartupWindow.xaml" />
@@ -70,6 +75,31 @@
     <ProjectReference Include="..\..\Core\RodelAgent.Interfaces\RodelAgent.Interfaces.csproj" />
     <ProjectReference Include="..\..\Core\RodelAgent.Statics\RodelAgent.Statics.csproj" />
     <ProjectReference Include="..\RodelAgent.UI.Models\RodelAgent.UI.Models.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Settings\ThemeSettingControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Settings\LoggerSettingControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Settings\WorkingDirectorySettingControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Settings\HideWindowSettingControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Settings\AboutSettingControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\RootLayout.xaml">

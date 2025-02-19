@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:SettingsPageControlBase
+    x:Class="RodelAgent.UI.Controls.Settings.WorkingDirectorySettingControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:base="using:Richasy.WinUIKernel.Share.Base"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:local="using:RodelAgent.UI.Controls.Settings"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <base:SettingsCard Description="{x:Bind ViewModel.WorkingDirectory, Mode=OneWay}" Header="{ext:Locale Name=WorkingDirectorySetting}">
+        <base:SettingsCard.HeaderIcon>
+            <ic:SymbolIcon Symbol="Library" />
+        </base:SettingsCard.HeaderIcon>
+        <StackPanel Orientation="Horizontal" Spacing="4">
+            <Button
+                Command="{x:Bind ViewModel.OpenWorkingDirectoryCommand}"
+                Style="{StaticResource SmallIconButtonStyle}"
+                ToolTipService.ToolTip="{ext:Locale Name=OpenFolder}">
+                <ic:SymbolIcon FontSize="14" Symbol="FolderOpen" />
+            </Button>
+            <Button
+                MinWidth="120"
+                VerticalAlignment="Center"
+                Command="{x:Bind ViewModel.CloseLibraryCommand}"
+                Content="{ext:Locale Name=CloseWorkingDirectory}" />
+        </StackPanel>
+    </base:SettingsCard>
+</local:SettingsPageControlBase>

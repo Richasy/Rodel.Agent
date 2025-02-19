@@ -83,6 +83,7 @@ internal static class GlobalDependencies
             .AddSingleton<ChatPageViewModel>()
             .AddSingleton<DrawPageViewModel>()
             .AddSingleton<SpeechPageViewModel>()
+            .AddSingleton<TranslatePageViewModel>()
             .AddSingleton<SettingsPageViewModel>()
             .AddNotificationViewModel()
             .Build();

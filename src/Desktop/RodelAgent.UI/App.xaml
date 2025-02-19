@@ -13,6 +13,18 @@
                 <ResourceDictionary Source="ms-appx:///Styles/Overrides.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Default">
+                    <BitmapImage x:Key="QQGroup" UriSource="ms-appx:///Assets/qq_group_dark.jpg" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Light">
+                    <BitmapImage x:Key="QQGroup" UriSource="ms-appx:///Assets/qq_group_light.jpg" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="HighContrast">
+                    <BitmapImage x:Key="QQGroup" UriSource="ms-appx:///Assets/qq_group_dark.jpg" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+
             <x:Double x:Key="WindowNarrowMinWidth">850</x:Double>
 
             <share:BoolToIconVariantConverter x:Key="IconVariantConverter" />

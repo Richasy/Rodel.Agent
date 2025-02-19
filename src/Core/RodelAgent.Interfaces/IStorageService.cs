@@ -33,7 +33,7 @@ public interface IStorageService
     /// <param name="type">供应商类型.</param>
     /// <param name="typeInfo">类型信息.</param>
     /// <returns>配置.</returns>
-    Task<T> GetChatConfigAsync<T>(ChatProviderType type, JsonTypeInfo<T> typeInfo)
+    Task<T?> GetChatConfigAsync<T>(ChatProviderType type, JsonTypeInfo<T> typeInfo)
         where T : class;
 
     /// <summary>
@@ -54,7 +54,7 @@ public interface IStorageService
     /// <param name="type">供应商类型.</param>
     /// <param name="typeInfo">类型信息.</param>
     /// <returns>配置.</returns>
-    Task<T> GetTranslateConfigAsync<T>(TranslateProviderType type, JsonTypeInfo<T> typeInfo)
+    Task<T?> GetTranslateConfigAsync<T>(TranslateProviderType type, JsonTypeInfo<T> typeInfo)
         where T : class;
 
     /// <summary>
@@ -75,7 +75,7 @@ public interface IStorageService
     /// <param name="type">供应商类型.</param>
     /// <param name="typeInfo">类型信息.</param>
     /// <returns>配置.</returns>
-    Task<T> GetDrawConfigAsync<T>(DrawProviderType type, JsonTypeInfo<T> typeInfo)
+    Task<T?> GetDrawConfigAsync<T>(DrawProviderType type, JsonTypeInfo<T> typeInfo)
         where T : class;
 
     /// <summary>
@@ -96,7 +96,7 @@ public interface IStorageService
     /// <param name="type">供应商类型.</param>
     /// <param name="typeInfo">类型信息.</param>
     /// <returns>配置.</returns>
-    Task<T> GetAudioConfigAsync<T>(AudioProviderType type, JsonTypeInfo<T> typeInfo)
+    Task<T?> GetAudioConfigAsync<T>(AudioProviderType type, JsonTypeInfo<T> typeInfo)
         where T : class;
 
     /// <summary>
