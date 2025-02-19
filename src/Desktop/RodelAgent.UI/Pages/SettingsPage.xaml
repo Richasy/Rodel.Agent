@@ -15,7 +15,6 @@
         <Style x:Key="ServiceTipStyle" TargetType="InfoBar">
             <Setter Property="IsOpen" Value="True" />
             <Setter Property="IsClosable" Value="False" />
-            <Setter Property="Margin" Value="0,0,0,8" />
             <Setter Property="Severity" Value="Informational" />
             <Setter Property="Title" Value="{ext:Locale Name=ServiceSettingHeaderTitle}" />
             <Setter Property="Message" Value="{ext:Locale Name=ServiceSettingHeaderDescription}" />
@@ -130,7 +129,10 @@
             Padding="16,0"
             Style="{StaticResource PageScrollViewerStyle}"
             Visibility="Collapsed">
-            <StackPanel Margin="0,12">
+            <StackPanel
+                x:Name="ChatPanel"
+                Margin="0,12"
+                Spacing="4">
                 <StackPanel.ChildrenTransitions>
                     <RepositionThemeTransition IsStaggeringEnabled="False" />
                 </StackPanel.ChildrenTransitions>
@@ -142,11 +144,6 @@
                         <HyperlinkButton Click="OnChatDetailButtonClick" Content="{ext:Locale Name=SeeDetail}" />
                     </InfoBar.ActionButton>
                 </InfoBar>
-                <StackPanel x:Name="ChatPanel" Spacing="4">
-                    <StackPanel.ChildrenTransitions>
-                        <RepositionThemeTransition IsStaggeringEnabled="False" />
-                    </StackPanel.ChildrenTransitions>
-                </StackPanel>
             </StackPanel>
         </ScrollViewer>
 
