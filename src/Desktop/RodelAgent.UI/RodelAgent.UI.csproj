@@ -17,6 +17,7 @@
     <None Remove="Assets\big-logo.png" />
     <None Remove="Assets\logo.ico" />
     <None Remove="Assets\small-logo.png" />
+    <None Remove="Controls\Draw\DrawMainHeader.xaml" />
     <None Remove="Controls\EnterWrapTip.xaml" />
     <None Remove="Controls\RootLayout.xaml" />
     <None Remove="Controls\Settings\AboutSettingControl.xaml" />
@@ -178,6 +179,11 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\Translate\TranslateMainHeader.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Draw\DrawMainHeader.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

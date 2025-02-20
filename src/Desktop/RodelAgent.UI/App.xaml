@@ -3,6 +3,7 @@
     x:Class="RodelAgent.UI.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="using:RodelAgent.UI.Converters"
     xmlns:local="using:RodelAgent.UI"
     xmlns:share="using:Richasy.WinUIKernel.Share.Converters">
     <Application.Resources>
@@ -34,6 +35,7 @@
             <share:ObjectToBoolConverter x:Key="ObjectToBoolReverseConverter" IsReverse="True" />
             <share:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
             <share:ObjectToVisibilityConverter x:Key="ObjectToVisibilityReverseConverter" IsReverse="True" />
+            <converters:GridLengthConverter x:Key="GridLengthConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

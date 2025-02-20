@@ -2,6 +2,7 @@
 
 using Richasy.AgentKernel;
 using Richasy.WinUIKernel.AI.ViewModels;
+using RodelAgent.UI.ViewModels.Core;
 
 namespace RodelAgent.UI.ViewModels.View;
 
@@ -77,6 +78,7 @@ public sealed partial class SettingsPageViewModel
         var configManager = this.Get<IChatConfigManager>();
         var dict = ChatServices.Where(p => p.Config != null).ToDictionary(item => item.ProviderType, item => item.Config!);
         await configManager.SaveChatConfigAsync(dict);
+        this.Get<AppViewModel>().TryReloadChatServicesCommand.Execute(default);
     }
 
     /// <inheritdoc/>
@@ -86,6 +88,7 @@ public sealed partial class SettingsPageViewModel
         var configManager = this.Get<IAudioConfigManager>();
         var dict = AudioServices.Where(p => p.Config != null).ToDictionary(item => item.ProviderType, item => item.Config!);
         await configManager.SaveAudioConfigAsync(dict);
+        this.Get<AppViewModel>().TryReloadSpeechServicesCommand.Execute(default);
     }
 
     /// <inheritdoc/>
@@ -95,6 +98,7 @@ public sealed partial class SettingsPageViewModel
         var configManager = this.Get<IDrawConfigManager>();
         var dict = DrawServices.Where(p => p.Config != null).ToDictionary(item => item.ProviderType, item => item.Config!);
         await configManager.SaveDrawConfigAsync(dict);
+        this.Get<AppViewModel>().TryReloadDrawServicesCommand.Execute(default);
     }
 
     /// <inheritdoc/>
@@ -104,5 +108,6 @@ public sealed partial class SettingsPageViewModel
         var configManager = this.Get<ITranslateConfigManager>();
         var dict = TranslateServices.Where(p => p.Config != null).ToDictionary(item => item.ProviderType, item => item.Config!);
         await configManager.SaveTranslateConfigAsync(dict);
+        this.Get<AppViewModel>().TryReloadTranslateServicesCommand.Execute(default);
     }
 }

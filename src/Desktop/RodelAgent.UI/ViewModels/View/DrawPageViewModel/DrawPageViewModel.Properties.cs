@@ -1,5 +1,9 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
+using Richasy.AgentKernel.Draw;
+using Richasy.WinUIKernel.AI.ViewModels;
+using RodelAgent.UI.ViewModels.Items;
+
 namespace RodelAgent.UI.ViewModels.View;
 
 /// <summary>
@@ -7,4 +11,33 @@ namespace RodelAgent.UI.ViewModels.View;
 /// </summary>
 public sealed partial class DrawPageViewModel
 {
+    private IDrawService _drawService;
+
+    [ObservableProperty]
+    public partial List<DrawServiceItemViewModel> Services { get; set; }
+
+    [ObservableProperty]
+    public partial DrawServiceItemViewModel SelectedService { get; set; }
+
+    [ObservableProperty]
+    public partial DrawSizeItemViewModel? SelectedSize { get; set; }
+
+    [ObservableProperty]
+    public partial DrawModelItemViewModel? SelectedModel { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsNoService { get; private set; }
+
+    [ObservableProperty]
+    public partial bool IsEnterSend { get; set; }
+
+    /// <summary>
+    /// 尺寸列表.
+    /// </summary>
+    public ObservableCollection<DrawSizeItemViewModel> Sizes { get; } = [];
+
+    /// <summary>
+    /// 模型列表.
+    /// </summary>
+    public ObservableCollection<DrawModelItemViewModel> Models { get; } = [];
 }

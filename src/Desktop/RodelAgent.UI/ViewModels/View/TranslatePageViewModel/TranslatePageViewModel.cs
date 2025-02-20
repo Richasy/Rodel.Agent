@@ -6,6 +6,7 @@ using Richasy.WinUIKernel.AI.ViewModels;
 using Richasy.WinUIKernel.Share.Toolkits;
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Toolkits;
+using RodelAgent.UI.ViewModels.Core;
 using RodelAgent.UI.ViewModels.Items;
 using System.Globalization;
 using Windows.ApplicationModel.DataTransfer;
@@ -35,6 +36,7 @@ public sealed partial class TranslatePageViewModel(ILogger<TranslatePageViewMode
     {
         if (Services == null)
         {
+            this.Get<AppViewModel>().RequestReloadTranslateServices += (_, _) => ReloadAvailableServicesCommand.Execute(default);
             await ReloadAvailableServicesAsync();
         }
     }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:DrawPageControlBase
+    x:Class="RodelAgent.UI.Controls.Draw.DrawMainHeader"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ai="using:Richasy.WinUIKernel.AI"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:local="using:RodelAgent.UI.Controls.Draw"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="using:Richasy.WinUIKernel.AI.ViewModels"
+    mc:Ignorable="d">
+
+    <Grid Padding="16,0" ColumnSpacing="12">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <TextBlock
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            FontWeight="Bold"
+            Text="{ext:Locale Name=DrawService}" />
+        <StackPanel
+            Grid.Column="1"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
+            <ComboBox
+                x:Name="ServiceComboBox"
+                MinWidth="160"
+                VerticalAlignment="Center"
+                ItemsSource="{x:Bind ViewModel.Services, Mode=OneWay}"
+                SelectionChanged="OnServiceSelectionChanged">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="viewmodels:DrawServiceItemViewModel">
+                        <Grid Padding="4,2" ColumnSpacing="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <ai:AILogo
+                                Width="24"
+                                Height="24"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                AvatarPadding="4"
+                                IsAvatar="True"
+                                Provider="{x:Bind ProviderType}" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="0,-2,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                MaxLines="1"
+                                Text="{x:Bind Name}"
+                                TextTrimming="CharacterEllipsis" />
+                        </Grid>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </StackPanel>
+    </Grid>
+</local:DrawPageControlBase>

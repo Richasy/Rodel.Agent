@@ -105,4 +105,48 @@ public sealed partial class AppViewModel : ViewModelBase
             wnd.Hide();
         }
     }
+
+    [RelayCommand]
+    private void TryReloadChatServices()
+    {
+        if (IsClosing)
+        {
+            return;
+        }
+
+        RequestReloadChatServices?.Invoke(this, EventArgs.Empty);
+    }
+
+    [RelayCommand]
+    private void TryReloadDrawServices()
+    {
+        if (IsClosing)
+        {
+            return;
+        }
+
+        RequestReloadDrawServices?.Invoke(this, EventArgs.Empty);
+    }
+
+    [RelayCommand]
+    private void TryReloadSpeechServices()
+    {
+        if (IsClosing)
+        {
+            return;
+        }
+
+        RequestReloadSpeechServices?.Invoke(this, EventArgs.Empty);
+    }
+
+    [RelayCommand]
+    private void TryReloadTranslateServices()
+    {
+        if (IsClosing)
+        {
+            return;
+        }
+
+        RequestReloadTranslateServices?.Invoke(this, EventArgs.Empty);
+    }
 }

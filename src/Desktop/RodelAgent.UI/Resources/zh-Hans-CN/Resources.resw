@@ -186,6 +186,9 @@
   <data name="HasUpdateDescription" xml:space="preserve">
     <value>点击下方按钮来查看更新内容吧！</value>
   </data>
+  <data name="Hide" xml:space="preserve">
+    <value>隐藏</value>
+  </data>
   <data name="HideWhenClose" xml:space="preserve">
     <value>关闭时隐藏</value>
   </data>

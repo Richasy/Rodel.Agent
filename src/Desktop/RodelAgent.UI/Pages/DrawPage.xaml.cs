@@ -13,6 +13,10 @@ public sealed partial class DrawPage : DrawPageBase
     /// Initializes a new instance of the <see cref="DrawPage"/> class.
     /// </summary>
     public DrawPage() => InitializeComponent();
+
+    /// <inheritdoc/>
+    protected override void OnPageLoaded()
+        => ViewModel.InitializeCommand.Execute(default);
 }
 
 /// <summary>
