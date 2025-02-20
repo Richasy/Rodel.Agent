@@ -173,4 +173,8 @@ internal static class GlobalDependencies
     public static T Get<T>(this object ele)
         where T : class
         => Kernel.GetRequiredService<T>();
+
+    public static T Get<T>(this object ele, string key)
+        where T : class
+        => Kernel.GetRequiredService<T>(key);
 }

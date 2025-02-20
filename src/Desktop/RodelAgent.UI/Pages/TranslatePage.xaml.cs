@@ -13,6 +13,10 @@ public sealed partial class TranslatePage : TranslatePageBase
     /// Initializes a new instance of the <see cref="TranslatePage"/> class.
     /// </summary>
     public TranslatePage() => InitializeComponent();
+
+    /// <inheritdoc/>
+    protected override void OnPageLoaded()
+        => ViewModel.InitializeCommand.Execute(default);
 }
 
 /// <summary>

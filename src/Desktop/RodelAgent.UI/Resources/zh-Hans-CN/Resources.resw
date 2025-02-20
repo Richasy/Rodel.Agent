@@ -132,8 +132,14 @@
   <data name="AppThemeDescription" xml:space="preserve">
     <value>选择要显示的应用主题</value>
   </data>
+  <data name="AutoLanguage" xml:space="preserve">
+    <value>自动选择</value>
+  </data>
   <data name="BiliHomePage" xml:space="preserve">
     <value>B站主页</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>取消</value>
   </data>
   <data name="Chat" xml:space="preserve">
     <value>对话</value>
@@ -144,8 +150,14 @@
   <data name="CloseWorkingDirectory" xml:space="preserve">
     <value>关闭工作目录</value>
   </data>
+  <data name="Copied" xml:space="preserve">
+    <value>已复制</value>
+  </data>
   <data name="Copyright" xml:space="preserve">
     <value>© {0} Richasy。保留全部权利。</value>
+  </data>
+  <data name="CopyTranslatedText" xml:space="preserve">
+    <value>复制翻译后的文本</value>
   </data>
   <data name="CreateWorkingDirectory" xml:space="preserve">
     <value>创建新目录</value>
@@ -228,6 +240,9 @@
   <data name="SeeDetail" xml:space="preserve">
     <value>查看详情</value>
   </data>
+  <data name="Send" xml:space="preserve">
+    <value>发送</value>
+  </data>
   <data name="SendFeedback" xml:space="preserve">
     <value>发送反馈</value>
   </data>
@@ -243,6 +258,12 @@
   <data name="Show" xml:space="preserve">
     <value>显示</value>
   </data>
+  <data name="SourceLanguage" xml:space="preserve">
+    <value>源语言</value>
+  </data>
+  <data name="SourceTextPlaceholder" xml:space="preserve">
+    <value>请输入要翻译的文本</value>
+  </data>
   <data name="Speech" xml:space="preserve">
     <value>语音</value>
   </data>
@@ -251,6 +272,12 @@
   </data>
   <data name="SystemDefault" xml:space="preserve">
     <value>使用系统设置</value>
+  </data>
+  <data name="TargetLanguage" xml:space="preserve">
+    <value>目标语言</value>
+  </data>
+  <data name="TargetTextPlaceholder" xml:space="preserve">
+    <value>翻译后的文本将显示在这里</value>
   </data>
   <data name="Translate" xml:space="preserve">
     <value>翻译</value>
@@ -272,5 +299,8 @@
   </data>
   <data name="WorkingDirectoryShouldBeEmpty" xml:space="preserve">
     <value>新创建的工作目录应该为空文件夹</value>
+  </data>
+  <data name="WrapLine" xml:space="preserve">
+    <value>换行</value>
   </data>
 </root>

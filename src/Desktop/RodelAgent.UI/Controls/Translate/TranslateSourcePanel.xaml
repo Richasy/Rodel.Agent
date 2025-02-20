@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:TranslatePageControlBase
+    x:Class="RodelAgent.UI.Controls.Translate.TranslateSourcePanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:RodelAgent.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:items="using:RodelAgent.UI.ViewModels.Items"
+    xmlns:local="using:RodelAgent.UI.Controls.Translate"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid RowSpacing="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ComboBox
+            MinWidth="200"
+            HorizontalAlignment="Left"
+            Header="{ext:Locale Name=SourceLanguage}"
+            IsEnabled="{x:Bind ViewModel.IsTranslating, Mode=OneWay, Converter={StaticResource ObjectToBoolReverseConverter}}"
+            ItemsSource="{x:Bind ViewModel.SourceLanguages, Mode=OneWay}"
+            SelectedItem="{x:Bind ViewModel.SelectedSourceLanguage, Mode=OneWay}"
+            SelectionChanged="OnSourceLanguageChanged">
+            <ComboBox.ItemTemplate>
+                <DataTemplate x:DataType="items:TranslateLanguageItemViewModel">
+                    <TextBlock Text="{x:Bind Name}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <TextBox
+            x:Name="InputBox"
+            Grid.Row="1"
+            Padding="12,8,12,12"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            AcceptsReturn="True"
+            FontSize="18"
+            IsEnabled="{x:Bind ViewModel.IsTranslating, Mode=OneWay, Converter={StaticResource ObjectToBoolReverseConverter}}"
+            IsSpellCheckEnabled="False"
+            PlaceholderText="{ext:Locale Name=SourceTextPlaceholder}"
+            PreviewKeyDown="OnInputBoxPreviewKeyDown"
+            Text="{x:Bind ViewModel.SourceText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            TextWrapping="Wrap" />
+        <Grid Grid.Row="2" ColumnSpacing="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                Style="{StaticResource CaptionTextBlockStyle}"
+                TextTrimming="CharacterEllipsis">
+                <Run x:Name="CurrentTextLengthRun" Text="{x:Bind ViewModel.SourceTextLength, Mode=OneWay}" />
+                <Run Text="/" />
+                <Run Text="{x:Bind ViewModel.MaxTextLength, Mode=OneWay}" />
+            </TextBlock>
+            <StackPanel
+                Grid.Column="1"
+                Orientation="Horizontal"
+                Spacing="12">
+                <controls:EnterWrapTip VerticalAlignment="Center" IsEnterSend="True" />
+                <Grid VerticalAlignment="Center">
+                    <Button
+                        MinWidth="120"
+                        AutomationProperties.Name="{ext:Locale Name=Translate}"
+                        Command="{x:Bind ViewModel.StartTranslateCommand, Mode=OneWay}"
+                        Style="{StaticResource AccentButtonStyle}"
+                        Visibility="{x:Bind ViewModel.IsTranslating, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <ic:SymbolIcon FontSize="14" Symbol="ArrowSwap" />
+                            <TextBlock VerticalAlignment="Center" Text="{ext:Locale Name=Translate}" />
+                        </StackPanel>
+                    </Button>
+                    <Button
+                        MinWidth="120"
+                        AutomationProperties.Name="{ext:Locale Name=Cancel}"
+                        Command="{x:Bind ViewModel.CancelTranslateCommand, Mode=OneWay}"
+                        Style="{StaticResource AccentButtonStyle}"
+                        Visibility="{x:Bind ViewModel.IsTranslating, Mode=OneWay}">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <ProgressRing
+                                Width="16"
+                                Height="16"
+                                VerticalAlignment="Center"
+                                Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}" />
+                            <TextBlock VerticalAlignment="Center" Text="{ext:Locale Name=Cancel}" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </StackPanel>
+        </Grid>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualStateGroup.States>
+                    <VisualState x:Name="NormalState" />
+                    <VisualState x:Name="ExceedState">
+                        <VisualState.Setters>
+                            <Setter Target="CurrentTextLengthRun.Foreground" Value="{ThemeResource SystemFillColorCriticalBrush}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup.States>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </Grid>
+</local:TranslatePageControlBase>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:TranslatePageControlBase
+    x:Class="RodelAgent.UI.Controls.Translate.TranslateResultPanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:items="using:RodelAgent.UI.ViewModels.Items"
+    xmlns:local="using:RodelAgent.UI.Controls.Translate"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid RowSpacing="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ComboBox
+            MinWidth="200"
+            HorizontalAlignment="Left"
+            Header="{ext:Locale Name=TargetLanguage}"
+            IsEnabled="{x:Bind ViewModel.IsTranslating, Mode=OneWay, Converter={StaticResource ObjectToBoolReverseConverter}}"
+            ItemsSource="{x:Bind ViewModel.TargetLanguages, Mode=OneWay}"
+            SelectedItem="{x:Bind ViewModel.SelectedTargetLanguage, Mode=OneWay}"
+            SelectionChanged="OnTargetLanguageChanged">
+            <ComboBox.ItemTemplate>
+                <DataTemplate x:DataType="items:TranslateLanguageItemViewModel">
+                    <TextBlock Text="{x:Bind Name}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <TextBox
+            x:Name="InputBox"
+            Grid.Row="1"
+            Padding="12,8,12,12"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            AcceptsReturn="True"
+            FontSize="18"
+            IsReadOnly="True"
+            IsSpellCheckEnabled="False"
+            PlaceholderText="{ext:Locale Name=TargetTextPlaceholder}"
+            Text="{x:Bind ViewModel.ResultText, Mode=OneWay}"
+            TextWrapping="Wrap" />
+        <Grid Grid.Row="2" Height="32">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <Button
+                    AutomationProperties.Name="{ext:Locale Name=CopyTranslatedText}"
+                    Command="{x:Bind ViewModel.CopyResultTextCommand}"
+                    Style="{StaticResource SmallIconButtonStyle}"
+                    ToolTipService.ToolTip="{ext:Locale Name=CopyTranslatedText}"
+                    Visibility="{x:Bind ViewModel.ResultText, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
+                    <ic:SymbolIcon FontSize="14" Symbol="CopyArrowRight" />
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</local:TranslatePageControlBase>
