@@ -43,11 +43,12 @@
                                 Height="24"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
-                                AvatarPadding="2"
+                                AvatarPadding="4"
                                 IsAvatar="True"
                                 Provider="{x:Bind ProviderType}" />
                             <TextBlock
                                 Grid.Column="1"
+                                Margin="0,-2,0,0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 MaxLines="1"

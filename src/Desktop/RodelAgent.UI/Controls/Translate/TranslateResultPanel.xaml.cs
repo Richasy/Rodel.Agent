@@ -14,12 +14,16 @@ public sealed partial class TranslateResultPanel : TranslatePageControlBase
 
     private void OnTargetLanguageChanged(object sender, SelectionChangedEventArgs e)
     {
-        var language = (sender as ComboBox)?.SelectedItem as ViewModels.Items.TranslateLanguageItemViewModel;
-        if (language == null || ViewModel.SelectedTargetLanguage == language)
+        if ((sender as ComboBox)?.SelectedItem is not ViewModels.Items.TranslateLanguageItemViewModel language
+            || ViewModel.SelectedTargetLanguage == language)
         {
             return;
         }
 
         ViewModel.SelectedTargetLanguage = language;
+        if (!string.IsNullOrEmpty(ViewModel.SourceText) && !string.IsNullOrEmpty(ViewModel.ResultText))
+        {
+            ViewModel.StartTranslateCommand.Execute(default);
+        }
     }
 }
