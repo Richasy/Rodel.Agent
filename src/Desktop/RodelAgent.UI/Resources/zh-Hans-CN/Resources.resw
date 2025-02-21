@@ -213,6 +213,12 @@
   <data name="LoggerModuleDescription" xml:space="preserve">
     <value>查看应用日志或清除日志记录</value>
   </data>
+  <data name="Migrating" xml:space="preserve">
+    <value>正在进行数据迁移...</value>
+  </data>
+  <data name="MigrationFailed" xml:space="preserve">
+    <value>数据迁移失败，请重试</value>
+  </data>
   <data name="OpenFolder" xml:space="preserve">
     <value>打开文件夹</value>
   </data>

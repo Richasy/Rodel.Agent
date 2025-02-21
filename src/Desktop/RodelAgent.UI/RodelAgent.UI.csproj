@@ -14,6 +14,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <Content Remove="Assets\Database\secret.ddb" />
+    <Content Remove="Assets\SqliteJson\arm64\SqliteJson.exe" />
+    <Content Remove="Assets\SqliteJson\x64\SQLite.Interop.dll" />
+    <Content Remove="Assets\SqliteJson\x64\SqliteJson.exe" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Assets\big-logo.png" />
     <None Remove="Assets\logo.ico" />
     <None Remove="Assets\small-logo.png" />
@@ -44,6 +50,23 @@
   	<None Update="$(UserProfile)\.nuget\packages\richasy.winuikernel.ai\*\contentFiles\any\net9.0-windows10.0.22621\Assets\**\*">
   		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   	</None>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Platform)' == 'x64'">
+  	<None Update="Assets\SqliteJson\x64\SQLite.Interop.dll">
+  	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  	</None>
+	<None Update="Assets\SqliteJson\x64\SqliteJson.exe">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</None>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Platform)' == 'ARM64'">
+	<None Update="Assets\SqliteJson\arm64\SQLite.Interop.dll">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</None>
+	<None Update="Assets\SqliteJson\arm64\SqliteJson.exe">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</None>
   </ItemGroup>
 
   <ItemGroup>
@@ -81,6 +104,11 @@
     <ProjectReference Include="..\..\Core\RodelAgent.Statics\RodelAgent.Statics.csproj" />
     <ProjectReference Include="..\..\Libs\Migration.V2\Migration.V2.csproj" />
     <ProjectReference Include="..\RodelAgent.UI.Models\RodelAgent.UI.Models.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Assets\Database\secret.ddb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\Translate\TranslateResultPanel.xaml">

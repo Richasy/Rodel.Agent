@@ -13,7 +13,8 @@
     <Grid
         Padding="28,16"
         BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
-        BorderThickness="0,1,0,0">
+        BorderThickness="0,1,0,0"
+        ColumnSpacing="12">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="Auto" />
@@ -28,21 +29,50 @@
             <Run Text=":" />
             <Run Text="{x:Bind ViewModel.Version, Mode=OneWay}" />
         </TextBlock>
-        <HyperlinkButton
+        <StackPanel
+            Grid.Column="1"
+            Orientation="Horizontal"
+            Spacing="8"
+            Visibility="{x:Bind ViewModel.IsMigrating, Mode=OneWay}">
+            <ProgressRing
+                Width="16"
+                Height="16"
+                VerticalAlignment="Center"
+                IsActive="True" />
+            <TextBlock
+                VerticalAlignment="Center"
+                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                Style="{StaticResource CaptionTextBlockStyle}"
+                Text="{ext:Locale Name=Migrating}" />
+        </StackPanel>
+        <StackPanel
             Grid.Column="2"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Stretch"
-            Click="OnDocumentButtonClick">
-            <StackPanel Orientation="Horizontal" Spacing="8">
-                <ic:SymbolIcon
-                    VerticalAlignment="Center"
-                    FontSize="14"
-                    Symbol="Book" />
-                <TextBlock
-                    VerticalAlignment="Center"
-                    FontSize="12"
-                    Text="{ext:Locale Name=ReadDocument}" />
-            </StackPanel>
-        </HyperlinkButton>
+            Orientation="Horizontal"
+            Spacing="12">
+            <HyperlinkButton VerticalAlignment="Center" Click="OnOpenLoggerClick">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <ic:SymbolIcon
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Symbol="FolderOpen" />
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontSize="12"
+                        Text="{ext:Locale Name=LoggerModule}" />
+                </StackPanel>
+            </HyperlinkButton>
+            <HyperlinkButton VerticalAlignment="Center" Click="OnDocumentButtonClick">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <ic:SymbolIcon
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Symbol="Book" />
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontSize="12"
+                        Text="{ext:Locale Name=ReadDocument}" />
+                </StackPanel>
+            </HyperlinkButton>
+        </StackPanel>
     </Grid>
 </local:StartupPageControlBase>

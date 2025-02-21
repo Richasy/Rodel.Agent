@@ -14,7 +14,7 @@ public sealed partial class SecretDataService
         await Task.Run(() =>
         {
             _freeSql = new FreeSql.FreeSqlBuilder()
-                .UseConnectionString(FreeSql.DataType.Sqlite, $"Data Source={path}", typeof(FreeSql.Sqlite.SqliteProvider<>))
+                .UseConnectionString(FreeSql.DataType.DuckDB, $"DataSource={path}")
                 .UseAutoSyncStructure(true)
                 .UseLazyLoading(true)
                 .Build();

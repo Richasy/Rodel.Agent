@@ -15,11 +15,9 @@ public sealed partial class LoggerSettingControl : SettingsPageControlBase
     /// </summary>
     public LoggerSettingControl() => InitializeComponent();
 
-    private static string LoggerFolder => Path.Combine(ApplicationData.Current.LocalFolder.Path, "Logger");
-
     private async void OnOpenLoggerFolderButtonClick(object sender, RoutedEventArgs e)
     {
-        var folder = await StorageFolder.GetFolderFromPathAsync(LoggerFolder).AsTask();
+        var folder = await StorageFolder.GetFolderFromPathAsync(Path.Combine(ApplicationData.Current.LocalFolder.Path, "Logger")).AsTask();
         _ = await Launcher.LaunchFolderAsync(folder).AsTask();
     }
 }

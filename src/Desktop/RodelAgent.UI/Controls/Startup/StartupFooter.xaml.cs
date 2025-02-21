@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
 using RodelAgent.UI.Toolkits;
+using Windows.Storage;
+using Windows.System;
 
 namespace RodelAgent.UI.Controls.Startup;
 
@@ -14,8 +16,12 @@ public sealed partial class StartupFooter : StartupPageControlBase
     /// </summary>
     public StartupFooter() => InitializeComponent();
 
-#pragma warning disable VSTHRD100 // Avoid async void methods
     private async void OnDocumentButtonClick(object sender, RoutedEventArgs e)
-#pragma warning restore VSTHRD100 // Avoid async void methods
         => await Windows.System.Launcher.LaunchUriAsync(new Uri(AppToolkit.GetDocumentLink(string.Empty))).AsTask();
+
+    private async void OnOpenLoggerClick(object sender, RoutedEventArgs e)
+    {
+        var folder = await StorageFolder.GetFolderFromPathAsync(Path.Combine(ApplicationData.Current.LocalFolder.Path, "Logger")).AsTask();
+        _ = await Launcher.LaunchFolderAsync(folder).AsTask();
+    }
 }

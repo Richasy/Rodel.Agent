@@ -7,9 +7,9 @@ namespace RodelAgent.Context;
 /// <summary>
 /// Provides methods to access secret data.
 /// </summary>
-public sealed partial class SecretDataService(string workingDir, string packageDir)
+public sealed partial class SecretDataService(string workingDir, string packageDir) : IDisposable
 {
-    private const string DbName = "secret.db";
+    private const string DbName = "secret.ddb";
     private IFreeSql? _freeSql;
 
     public async Task InitializeAsync()
@@ -22,6 +22,9 @@ public sealed partial class SecretDataService(string workingDir, string packageD
         var path = Path.Combine(workingDir, DbName);
         await DbTool.InitializeAsync(DbName, packageDir, workingDir, InitializeDbContextAsync).ConfigureAwait(false);
     }
+
+    public async Task BatchAddSecretsAsync(List<Metadata> metadataList)
+        => await _freeSql!.Insert<Metadata>().AppendData(metadataList).ExecuteAffrowsAsync().ConfigureAwait(false);
 
     public async Task<Metadata?> GetSecretAsync(string id)
         => (await _freeSql!.Select<Metadata>().Where(p => p.Id == id).ToListAsync().ConfigureAwait(false)).FirstOrDefault();
@@ -39,4 +42,7 @@ public sealed partial class SecretDataService(string workingDir, string packageD
 
     public async Task RemoveSecretAsync(string id)
         => await _freeSql!.Delete<Metadata>().Where(p => p.Id == id).ExecuteAffrowsAsync().ConfigureAwait(false);
+
+    public void Dispose()
+        => _freeSql?.Dispose();
 }

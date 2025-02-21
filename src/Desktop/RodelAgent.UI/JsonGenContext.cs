@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
 using Richasy.AgentKernel;
+using RodelAgent.Models.Common;
 using System.Text.Json.Serialization;
 
 namespace RodelAgent.UI;
@@ -10,6 +11,7 @@ namespace RodelAgent.UI;
 [JsonSerializable(typeof(AudioClientConfiguration))]
 [JsonSerializable(typeof(DrawClientConfiguration))]
 [JsonSerializable(typeof(TranslateClientConfiguration))]
+[JsonSerializable(typeof(List<Metadata>))]
 internal sealed partial class JsonGenContext : JsonSerializerContext
 {
 }
