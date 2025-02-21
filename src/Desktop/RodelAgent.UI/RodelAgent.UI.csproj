@@ -14,16 +14,17 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <Content Remove="Assets\Database\secret.ddb" />
-    <Content Remove="Assets\SqliteJson\arm64\SqliteJson.exe" />
-    <Content Remove="Assets\SqliteJson\x64\SQLite.Interop.dll" />
-    <Content Remove="Assets\SqliteJson\x64\SqliteJson.exe" />
+    <Content Remove="Assets\Database\*.ddb" />
+	<Content Remove="Assets\SqliteJson\**\*" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Assets\big-logo.png" />
     <None Remove="Assets\logo.ico" />
     <None Remove="Assets\small-logo.png" />
+    <None Remove="Controls\Draw\DrawImage.xaml" />
     <None Remove="Controls\Draw\DrawMainHeader.xaml" />
+    <None Remove="Controls\Draw\DrawSideBody.xaml" />
+    <None Remove="Controls\Draw\DrawSideHeader.xaml" />
     <None Remove="Controls\EnterWrapTip.xaml" />
     <None Remove="Controls\RootLayout.xaml" />
     <None Remove="Controls\Settings\AboutSettingControl.xaml" />
@@ -49,6 +50,12 @@
   <ItemGroup>
   	<None Update="$(UserProfile)\.nuget\packages\richasy.winuikernel.ai\*\contentFiles\any\net9.0-windows10.0.22621\Assets\**\*">
   		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  	</None>
+  </ItemGroup>
+
+  <ItemGroup>
+  	<None Update="Assets\Database\*.ddb">
+  	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   	</None>
   </ItemGroup>
 
@@ -82,6 +89,7 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Humanizer.Core.zh-Hans" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" />
     <PackageReference Include="Microsoft.WindowsAppSDK" />
     <PackageReference Include="FluentIcons.WinUI" />
@@ -106,9 +114,19 @@
     <ProjectReference Include="..\RodelAgent.UI.Models\RodelAgent.UI.Models.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="Assets\Database\secret.ddb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Page Update="Controls\Draw\DrawImage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Draw\DrawSideBody.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Draw\DrawSideHeader.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\Translate\TranslateResultPanel.xaml">

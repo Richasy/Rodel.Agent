@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
 using Microsoft.UI.Windowing;
+using RodelAgent.Context;
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels.Core;
@@ -102,13 +103,14 @@ public sealed partial class MainWindow : WindowBase, ITipWindow
             Activated -= OnActivated;
             Closed -= OnClosed;
 
-            GlobalDependencies.Kernel.GetRequiredService<AppViewModel>().Windows.Remove(this);
+            this.Get<AppViewModel>().Windows.Remove(this);
             SaveCurrentWindowStats();
 
             _shouldExit = true;
             this.Hide();
             App.CloseTrayMenu();
             this.Get<NavigationViewModel>().QuickUnloadIfInSettings();
+            this.Get<DbService>().Dispose();
             await this.Get<SettingsPageViewModel>().CheckSaveServicesAsync();
             App.Current?.Exit();
             Environment.Exit(0);

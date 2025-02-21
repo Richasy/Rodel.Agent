@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
 using Richasy.AgentKernel;
+using RodelAgent.Models.Common;
 using RodelAudio.Models.Client;
 using RodelChat.Models.Client;
-using RodelDraw.Models.Client;
 using RodelTranslate.Models.Client;
 using System.Text.Json.Serialization.Metadata;
 
@@ -258,7 +258,7 @@ public interface IStorageService
     /// 获取所有绘图会话.
     /// </summary>
     /// <returns>会话列表.</returns>
-    Task<List<DrawSession>?> GetDrawSessionsAsync();
+    Task<List<DrawRecord>?> GetDrawSessionsAsync();
 
     /// <summary>
     /// 添加或更新绘图会话.
@@ -266,7 +266,7 @@ public interface IStorageService
     /// <param name="session">会话.</param>
     /// <param name="imageData">图像数据.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task AddOrUpdateDrawSessionAsync(DrawSession session, byte[]? imageData);
+    Task AddOrUpdateDrawSessionAsync(DrawRecord session, byte[]? imageData);
 
     /// <summary>
     /// 移除绘图会话.

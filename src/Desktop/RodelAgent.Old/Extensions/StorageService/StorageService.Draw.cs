@@ -64,7 +64,7 @@ public sealed partial class StorageService
         if (_drawSessions == null)
         {
             var drawSessions = new List<DrawSession>();
-            var allSessions = await _dbService.GetAllDrawSessionAsync();
+            var allSessions = await _dbService.GetAllDrawSessionsAsync();
             foreach (var session in allSessions)
             {
                 try

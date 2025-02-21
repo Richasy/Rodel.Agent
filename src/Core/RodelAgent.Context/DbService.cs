@@ -8,15 +8,22 @@ namespace RodelAgent.Context;
 /// <summary>
 /// 数据库服务.
 /// </summary>
-public sealed class DbService
+public sealed class DbService : IDisposable
 {
     private SecretDataService? _secretService;
+    private DrawDataService? _drawService;
     private ChatDbContext? _chatDb;
     private TranslateDbContext? _translateDb;
-    private DrawDbContext? _drawDb;
     private AudioDbContext? _audioDb;
     private string _workingDirectory;
     private string _packageDirectory;
+
+    /// <inheritdoc/>
+    public void Dispose()
+    {
+        _secretService?.Dispose();
+        _drawService?.Dispose();
+    }
 
     /// <summary>
     /// 设置工作目录.
@@ -40,7 +47,7 @@ public sealed class DbService
     public async Task<string?> GetSecretAsync(string key)
     {
         await InitializeSecretServiceAsync().ConfigureAwait(false);
-        var data = await _secretService!.GetSecretAsync(key).ConfigureAwait(false);
+        var data = await _secretService!.GetMetadataAsync(key).ConfigureAwait(false);
         return data?.Value;
     }
 
@@ -51,7 +58,7 @@ public sealed class DbService
     public async Task SetSecretAsync(string key, string value)
     {
         await InitializeSecretServiceAsync().ConfigureAwait(false);
-        await _secretService!.AddOrUpdateSecretAsync(new Metadata { Id = key, Value = value }).ConfigureAwait(false);
+        await _secretService!.AddOrUpdateMetadataAsync(new Metadata { Id = key, Value = value }).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -172,10 +179,10 @@ public sealed class DbService
     /// 获取所有绘图记录.
     /// </summary>
     /// <returns>JSON 列表.</returns>
-    public async Task<List<string>> GetAllDrawSessionAsync()
+    public async Task<List<string>> GetAllDrawSessionsAsync()
     {
-        _drawDb ??= await MigrationUtils.GetDrawDbAsync(_workingDirectory).ConfigureAwait(false);
-        return await _drawDb.Sessions.Select(p => p.Value).ToListAsync().ConfigureAwait(false);
+        await InitializeDrawServiceAsync().ConfigureAwait(false);
+        return await _drawService!.GetAllSessionsAsync().ConfigureAwait(false);
     }
 
     /// <summary>
@@ -186,20 +193,8 @@ public sealed class DbService
     /// <returns><see cref="Task"/>.</returns>
     public async Task AddOrUpdateDrawDataAsync(string dataId, string value)
     {
-        _drawDb ??= await MigrationUtils.GetDrawDbAsync(_workingDirectory).ConfigureAwait(false);
-        var dataset = _drawDb.Sessions;
-        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId).ConfigureAwait(false);
-        if (data is null)
-        {
-            await dataset.AddAsync(new Metadata { Id = dataId, Value = value }).ConfigureAwait(false);
-        }
-        else
-        {
-            data.Value = value;
-            dataset.Update(data);
-        }
-
-        await _drawDb.SaveChangesAsync().ConfigureAwait(false);
+        await InitializeDrawServiceAsync().ConfigureAwait(false);
+        await _drawService!.AddOrUpdateMetadataAsync(new(dataId, value)).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -209,14 +204,8 @@ public sealed class DbService
     /// <returns><see cref="Task"/>.</returns>
     public async Task RemoveDrawDataAsync(string dataId)
     {
-        _drawDb ??= await MigrationUtils.GetDrawDbAsync(_workingDirectory).ConfigureAwait(false);
-        var dataset = _drawDb.Sessions;
-        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId).ConfigureAwait(false);
-        if (data is not null)
-        {
-            dataset.Remove(data);
-            await _drawDb.SaveChangesAsync().ConfigureAwait(false);
-        }
+        await InitializeDrawServiceAsync().ConfigureAwait(false);
+        await _drawService!.RemoveMetadataAsync(dataId).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -270,23 +259,6 @@ public sealed class DbService
         }
     }
 
-    /// <summary>
-    /// 重置所有数据库连接.
-    /// </summary>
-    public void ResetAllDbConnections()
-    {
-        _chatDb?.Dispose();
-        _translateDb?.Dispose();
-        _drawDb?.Dispose();
-        _audioDb?.Dispose();
-
-        _secretService = null;
-        _chatDb = null;
-        _translateDb = null;
-        _drawDb = null;
-        _audioDb = null;
-    }
-
     private async Task InitializeSecretServiceAsync()
     {
         if (_secretService is not null)
@@ -301,5 +273,21 @@ public sealed class DbService
 
         _secretService = new SecretDataService(_workingDirectory, _packageDirectory);
         await _secretService.InitializeAsync().ConfigureAwait(false);
+    }
+
+    private async Task InitializeDrawServiceAsync()
+    {
+        if (_drawService is not null)
+        {
+            return;
+        }
+
+        if (string.IsNullOrEmpty(_workingDirectory) || string.IsNullOrEmpty(_packageDirectory))
+        {
+            throw new InvalidOperationException("Working directory or package directory is not set.");
+        }
+
+        _drawService = new DrawDataService(_workingDirectory, _packageDirectory);
+        await _drawService.InitializeAsync().ConfigureAwait(false);
     }
 }

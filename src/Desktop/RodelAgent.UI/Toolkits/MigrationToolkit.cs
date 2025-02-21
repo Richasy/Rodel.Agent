@@ -43,6 +43,10 @@ public static class MigrationToolkit
                 {
                     await MigrateSecretDbAsync(dbFile);
                 }
+                else if (dbFileName == "draw.db")
+                {
+                    await MigrateDrawDbAsync(dbFile);
+                }
 
                 await File.Create(delFile).DisposeAsync();
             }
@@ -62,7 +66,17 @@ public static class MigrationToolkit
         var libPath = SettingsToolkit.ReadLocalSetting(Models.Constants.SettingNames.WorkingDirectory, string.Empty);
         using var service = new SecretDataService(libPath, Package.Current.InstalledPath);
         await service.InitializeAsync();
-        await service.BatchAddSecretsAsync(metadatas ?? []);
+        await service.BatchAddMetadataAsync(metadatas ?? []);
+    }
+
+    private static async Task MigrateDrawDbAsync(string dbPath)
+    {
+        var json = await GetJsonFromDatabaseAsync(dbPath, "Sessions");
+        var metadatas = JsonSerializer.Deserialize(json, JsonGenContext.Default.ListMetadata);
+        var libPath = SettingsToolkit.ReadLocalSetting(Models.Constants.SettingNames.WorkingDirectory, string.Empty);
+        using var service = new DrawDataService(libPath, Package.Current.InstalledPath);
+        await service.InitializeAsync();
+        await service.BatchAddMetadataAsync(metadatas ?? []);
     }
 
     private static async Task<string> GetJsonFromDatabaseAsync(string dbPath, string tableName)

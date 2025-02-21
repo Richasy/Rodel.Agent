@@ -4,11 +4,14 @@ using Richasy.AgentKernel;
 using Richasy.AgentKernel.Draw;
 using Richasy.WinUIKernel.AI.ViewModels;
 using Richasy.WinUIKernel.Share.Toolkits;
+using RodelAgent.Interfaces;
+using RodelAgent.Models.Common;
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Pages;
 using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels.Core;
 using RodelAgent.UI.ViewModels.Items;
+using Windows.Storage;
 
 namespace RodelAgent.UI.ViewModels.View;
 
@@ -85,7 +88,8 @@ public sealed partial class DrawPageViewModel : LayoutPageViewModelBase
         models.ForEach(Models.Add);
         var lastSelectedModel = this.Get<ISettingsToolkit>().ReadLocalSetting($"{service.ProviderType}LastSelectedDrawModel", string.Empty);
         var model = Models.FirstOrDefault(p => p.Id == lastSelectedModel) ?? Models.FirstOrDefault();
-
+        SelectModelCommand.Execute(model);
+        ReloadHistoryCommand.Execute(default);
     }
 
     [RelayCommand]
@@ -111,6 +115,73 @@ public sealed partial class DrawPageViewModel : LayoutPageViewModelBase
         SelectedSize = string.IsNullOrEmpty(lastSelectedSize) || !sizes.Any(p => p.ToString() == lastSelectedSize)
             ? sizes.FirstOrDefault()
             : sizes.Find(p => p.ToString() == lastSelectedSize);
+    }
+
+    [RelayCommand]
+    private static async Task OpenDrawFolderAsync()
+    {
+        if (!Directory.Exists(AppToolkit.GetDrawFolderPath()))
+        {
+            Directory.CreateDirectory(AppToolkit.GetDrawFolderPath());
+        }
+
+        var folder = await StorageFolder.GetFolderFromPathAsync(AppToolkit.GetDrawFolderPath());
+        await Windows.System.Launcher.LaunchFolderAsync(folder);
+    }
+
+    [RelayCommand]
+    private async Task ReloadHistoryAsync()
+    {
+        if (SelectedService is null)
+        {
+            return;
+        }
+
+        var history = await this.Get<IStorageService>().GetDrawSessionsAsync();
+        SyncDrawHistory(history ?? []);
+    }
+
+    private void SyncDrawHistory(List<DrawRecord> list)
+    {
+        // 边界情况处理
+        ArgumentNullException.ThrowIfNull(list);
+        ArgumentNullException.ThrowIfNull(History);
+
+        var listDict = list.ToDictionary(item => item.Id);
+
+        for (var i = History.Count - 1; i >= 0; i--)
+        {
+            var item = History[i];
+            if (!listDict.ContainsKey(item.Data.Id))
+            {
+                History.RemoveAt(i);
+            }
+        }
+
+        for (var i = 0; i < list.Count; i++)
+        {
+            var listItem = list[i];
+            if (i < History.Count)
+            {
+                var collectionItem = History[i];
+                if (!Equals(listItem.Id, collectionItem.Data.Id))
+                {
+                    History.Insert(i, new(listItem));
+                }
+            }
+            else
+            {
+                History.Add(new(listItem));
+            }
+        }
+
+        CheckHistoryCount();
+    }
+
+    private void CheckHistoryCount()
+    {
+        HistoryCount = History.Count;
+        IsHistoryEmpty = History.Count == 0;
     }
 
     partial void OnSelectedSizeChanged(DrawSizeItemViewModel? value)

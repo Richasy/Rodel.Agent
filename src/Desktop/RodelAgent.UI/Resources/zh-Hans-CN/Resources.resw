@@ -171,6 +171,9 @@
   <data name="Draw" xml:space="preserve">
     <value>绘图</value>
   </data>
+  <data name="DrawHistory" xml:space="preserve">
+    <value>绘图历史</value>
+  </data>
   <data name="DrawService" xml:space="preserve">
     <value>绘图服务</value>
   </data>
@@ -194,6 +197,9 @@
   </data>
   <data name="HideWhenCloseDescription" xml:space="preserve">
     <value>关闭窗口时隐藏应用而非退出</value>
+  </data>
+  <data name="ImageCount" xml:space="preserve">
+    <value>图片数</value>
   </data>
   <data name="InvalidDirectoryPath" xml:space="preserve">
     <value>工作目录已失效</value>

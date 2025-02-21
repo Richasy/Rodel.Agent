@@ -31,6 +31,12 @@ public sealed partial class DrawPageViewModel
     [ObservableProperty]
     public partial bool IsEnterSend { get; set; }
 
+    [ObservableProperty]
+    public partial int HistoryCount { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsHistoryEmpty { get; set; }
+
     /// <summary>
     /// 尺寸列表.
     /// </summary>
@@ -40,4 +46,9 @@ public sealed partial class DrawPageViewModel
     /// 模型列表.
     /// </summary>
     public ObservableCollection<DrawModelItemViewModel> Models { get; } = [];
+
+    /// <summary>
+    /// 历史记录.
+    /// </summary>
+    public ObservableCollection<DrawRecordItemViewModel> History { get; } = [];
 }

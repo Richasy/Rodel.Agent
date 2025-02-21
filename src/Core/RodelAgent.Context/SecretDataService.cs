@@ -7,22 +7,23 @@ namespace RodelAgent.Context;
 /// <summary>
 /// Provides methods to access secret data.
 /// </summary>
-public sealed partial class SecretDataService
+public sealed partial class SecretDataService(string workingDir, string packageDir)
+    : MetadataServiceBase(workingDir, packageDir, "secret.ddb")
 {
-    private async Task InitializeDbContextAsync(string path)
+    protected override async Task InitializeDbContextAsync(string path)
     {
         await Task.Run(() =>
         {
-            _freeSql = new FreeSql.FreeSqlBuilder()
+            Sql = new FreeSql.FreeSqlBuilder()
                 .UseConnectionString(FreeSql.DataType.DuckDB, $"DataSource={path}")
                 .UseAutoSyncStructure(true)
                 .UseLazyLoading(true)
                 .Build();
 
-            _freeSql.CodeFirst
+            Sql.CodeFirst
                 .ConfigEntity<Metadata>(p =>
                 {
-                    p.Name("Metadata");
+                    p.Name("Secrets");
                     p.Property(x => x.Id).IsIdentity(true);
                 });
         }).ConfigureAwait(false);

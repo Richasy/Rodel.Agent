@@ -42,17 +42,6 @@ public static class MigrationUtils
     }
 
     /// <summary>
-    /// 获取绘图数据库.
-    /// </summary>
-    /// <param name="workDir">工作目录.</param>
-    /// <returns><see cref="DrawDbContext"/>.</returns>
-    public static async Task<DrawDbContext> GetDrawDbAsync(string workDir)
-    {
-        await CheckDatabaseExistInternalAsync("draw.db", workDir).ConfigureAwait(false);
-        return new DrawDbContext(Path.Combine(workDir, "draw.db"));
-    }
-
-    /// <summary>
     /// 获取音频数据库.
     /// </summary>
     /// <param name="workDir">工作目录.</param>

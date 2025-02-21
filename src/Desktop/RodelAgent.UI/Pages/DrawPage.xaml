@@ -31,6 +31,17 @@
             Grid.ColumnSpan="3"
             Style="{StaticResource SplitLineStyle}" />
 
+        <draw:DrawSideHeader
+            Grid.Column="2"
+            Margin="-6,0,0,0"
+            Visibility="{x:Bind ViewModel.IsNavColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
+
+        <draw:DrawSideBody
+            Grid.Row="2"
+            Grid.Column="2"
+            Margin="-6,0,0,0"
+            Visibility="{x:Bind ViewModel.IsNavColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
+
         <!--  右侧分栏大小控制器  -->
         <base:ColumnSplitter
             Grid.RowSpan="3"

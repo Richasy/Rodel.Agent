@@ -6,7 +6,6 @@ using RodelAgent.Interfaces;
 using RodelAgent.UI.Models.Constants;
 using RodelAudio.Models.Client;
 using RodelChat.Models.Client;
-using RodelDraw.Models.Client;
 using RodelTranslate.Models.Client;
 using Windows.ApplicationModel;
 
@@ -43,7 +42,7 @@ internal sealed partial class StorageService : IStorageService
     public Task AddOrUpdateChatGroupSessionAsync(ChatGroup session) => throw new NotImplementedException();
     public Task AddOrUpdateChatSessionAsync(ChatSession session) => throw new NotImplementedException();
     public Task AddOrUpdateChatSessionPresetAsync(ChatSessionPreset preset) => throw new NotImplementedException();
-    public Task AddOrUpdateDrawSessionAsync(DrawSession session, byte[]? imageData) => throw new NotImplementedException();
+    
     public Task AddOrUpdateTranslateSessionAsync(TranslateSession session) => throw new NotImplementedException();
     
     public Task<List<AudioSession>?> GetAudioSessionsAsync() => throw new NotImplementedException();
@@ -57,7 +56,7 @@ internal sealed partial class StorageService : IStorageService
     public Task<List<ChatSession>?> GetChatSessionsAsync(ChatProviderType type) => throw new NotImplementedException();
     public Task<List<ChatSession>?> GetChatSessionsAsync(string presetId) => throw new NotImplementedException();
     
-    public Task<List<DrawSession>?> GetDrawSessionsAsync() => throw new NotImplementedException();
+    
     
     public Task<List<TranslateSession>?> GetTranslateSessionsAsync(TranslateProviderType type) => throw new NotImplementedException();
     public Task RemoveAudioSessionAsync(string sessionId) => throw new NotImplementedException();
@@ -66,7 +65,7 @@ internal sealed partial class StorageService : IStorageService
     public Task RemoveChatGroupSessionAsync(string sessionId) => throw new NotImplementedException();
     public Task RemoveChatSessionAsync(string sessionId) => throw new NotImplementedException();
     public Task RemoveChatSessionPresetAsync(string presetId) => throw new NotImplementedException();
-    public Task RemoveDrawSessionAsync(string sessionId) => throw new NotImplementedException();
+    
     public Task RemoveTranslateSessionAsync(string sessionId) => throw new NotImplementedException();
     public Task<string> RetrieveAzureSpeechVoicesAsync() => throw new NotImplementedException();
     public Task SaveAzureSpeechVoicesAsync(string json) => throw new NotImplementedException();
