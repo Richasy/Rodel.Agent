@@ -47,6 +47,10 @@ public static class MigrationToolkit
                 {
                     await MigrateDrawDbAsync(dbFile);
                 }
+                else if (dbFileName == "audio.db")
+                {
+                    await MigrateAudioDbAsync(dbFile);
+                }
 
                 await File.Create(delFile).DisposeAsync();
             }
@@ -75,6 +79,16 @@ public static class MigrationToolkit
         var metadatas = JsonSerializer.Deserialize(json, JsonGenContext.Default.ListDrawMeta);
         var libPath = SettingsToolkit.ReadLocalSetting(Models.Constants.SettingNames.WorkingDirectory, string.Empty);
         using var service = new DrawDataService(libPath, Package.Current.InstalledPath);
+        await service.InitializeAsync();
+        await service.BatchAddMetadataAsync(metadatas ?? []);
+    }
+
+    private static async Task MigrateAudioDbAsync(string dbPath)
+    {
+        var json = await GetJsonFromDatabaseAsync(dbPath, "Sessions");
+        var metadatas = JsonSerializer.Deserialize(json, JsonGenContext.Default.ListAudioMeta);
+        var libPath = SettingsToolkit.ReadLocalSetting(Models.Constants.SettingNames.WorkingDirectory, string.Empty);
+        using var service = new AudioDataService(libPath, Package.Current.InstalledPath);
         await service.InitializeAsync();
         await service.BatchAddMetadataAsync(metadatas ?? []);
     }

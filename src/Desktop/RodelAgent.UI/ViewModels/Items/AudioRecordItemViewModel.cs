@@ -59,6 +59,11 @@ public sealed partial class AudioRecordItemViewModel : ViewModelBase<AudioRecord
     private async Task DeleteAsync()
     {
         await this.Get<IStorageService>().RemoveAudioSessionAsync(Data.Id);
-        this.Get<AudioPageViewModel>().ReloadHistoryCommand.Execute(default);
+        var pageVM = this.Get<AudioPageViewModel>();
+        pageVM.ReloadHistoryCommand.Execute(default);
+        if (pageVM.AudioPath == AudioPath)
+        {
+            pageVM.AudioPath = string.Empty;
+        }
     }
 }

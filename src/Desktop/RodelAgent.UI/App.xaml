@@ -36,6 +36,7 @@
             <share:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
             <share:ObjectToVisibilityConverter x:Key="ObjectToVisibilityReverseConverter" IsReverse="True" />
             <converters:GridLengthConverter x:Key="GridLengthConverter" />
+            <converters:SecondsToTimeConverter x:Key="SecondsToTimeConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -26,10 +26,12 @@
     <None Remove="Assets\big-logo.png" />
     <None Remove="Assets\logo.ico" />
     <None Remove="Assets\small-logo.png" />
+    <None Remove="Controls\Audio\AudioMainBody.xaml" />
     <None Remove="Controls\Audio\AudioMainFooter.xaml" />
     <None Remove="Controls\Audio\AudioMainHeader.xaml" />
     <None Remove="Controls\Audio\AudioSideBody.xaml" />
     <None Remove="Controls\Audio\AudioSideHeader.xaml" />
+    <None Remove="Controls\Audio\WavePanel.xaml" />
     <None Remove="Controls\Draw\DrawImage.xaml" />
     <None Remove="Controls\Draw\DrawMainBody.xaml" />
     <None Remove="Controls\Draw\DrawMainFooter.xaml" />
@@ -105,6 +107,8 @@
     <PackageReference Include="FluentIcons.WinUI" />
     <PackageReference Include="H.NotifyIcon.WinUI" />
     <PackageReference Include="Microsoft.Graphics.Win2D" />
+    <PackageReference Include="NAudio.Core" />
+    <PackageReference Include="NAudio.WinMM" />
     <PackageReference Include="Richasy.WinUIKernel.AI" />
     <PackageReference Include="Serilog" />
     <PackageReference Include="Serilog.Extensions.Logging" />
@@ -121,6 +125,16 @@
     <ProjectReference Include="..\..\Core\RodelAgent.Interfaces\RodelAgent.Interfaces.csproj" />
     <ProjectReference Include="..\..\Core\RodelAgent.Statics\RodelAgent.Statics.csproj" />
     <ProjectReference Include="..\RodelAgent.UI.Models\RodelAgent.UI.Models.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Audio\AudioMainBody.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Audio\WavePanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\Audio\AudioSideBody.xaml">

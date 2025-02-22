@@ -90,6 +90,13 @@ public sealed partial class DrawRecordItemViewModel : ViewModelBase<DrawRecord>
     private async Task DeleteAsync()
     {
         await this.Get<IStorageService>().RemoveDrawSessionAsync(Data.Id);
-        this.Get<DrawPageViewModel>().ReloadHistoryCommand.Execute(default);
+        var pageVM = this.Get<DrawPageViewModel>();
+        pageVM.ReloadHistoryCommand.Execute(default);
+        if (pageVM.Image?.LocalPath.Contains(Data.Id, StringComparison.OrdinalIgnoreCase) == true)
+        {
+            pageVM.Image = null;
+            pageVM.PresenterProportion = 1d;
+            pageVM.PresenterTime = string.Empty;
+        }
     }
 }

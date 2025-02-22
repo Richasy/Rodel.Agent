@@ -27,6 +27,7 @@
             <RepositionThemeTransition IsStaggeringEnabled="False" />
         </Grid.ChildrenTransitions>
         <audio:AudioMainHeader Margin="0,0,-6,0" />
+        <audio:AudioMainBody Grid.Row="2" Margin="0,0,-6,0" />
         <audio:AudioMainFooter Grid.Row="3" Margin="0,0,-6,0" />
         <Border
             Grid.Row="1"

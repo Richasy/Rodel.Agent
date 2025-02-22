@@ -256,7 +256,7 @@
     <value>没有可用的服务</value>
   </data>
   <data name="NoAvailableServiceDescription" xml:space="preserve">
-    <value>请在设置页面中添加对应的服务</value>
+    <value>请在设置页面添加对应的服务</value>
   </data>
   <data name="NoDrawHistory" xml:space="preserve">
     <value>暂无绘图记录</value>
@@ -389,5 +389,11 @@
   </data>
   <data name="OpenAudio" xml:space="preserve">
     <value>打开音频</value>
+  </data>
+  <data name="NeedGenerateAudio" xml:space="preserve">
+    <value>转成语音</value>
+  </data>
+  <data name="NeedGenerateAudioDescription" xml:space="preserve">
+    <value>输入内容，让 AI 开口说话</value>
   </data>
 </root>

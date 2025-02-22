@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
-using Richasy.AgentKernel;
 using Richasy.AgentKernel.Audio;
 using Richasy.WinUIKernel.AI.ViewModels;
 using RodelAgent.UI.ViewModels.Items;
@@ -47,12 +46,6 @@ public sealed partial class AudioPageViewModel
 
     [ObservableProperty]
     public partial string? AudioPath { get; set; }
-
-    [ObservableProperty]
-    public partial AudioProviderType PresenterProvider { get; set; }
-
-    [ObservableProperty]
-    public partial string PresenterTime { get; set; }
 
     /// <summary>
     /// 模型列表.

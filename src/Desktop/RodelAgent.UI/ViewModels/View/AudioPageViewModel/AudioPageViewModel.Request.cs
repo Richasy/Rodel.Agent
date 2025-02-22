@@ -76,7 +76,6 @@ public sealed partial class AudioPageViewModel
     {
         Text = record.Text ?? string.Empty;
         AudioPath = AppToolkit.GetAudioPath(record.Id);
-        PresenterProvider = record.Provider;
-        PresenterTime = record.Time?.ToString("yyyy-MM-dd HH:mm:ss") ?? string.Empty;
+        this.Get<AudioWaveViewModel>().LoadFileCommand.Execute(AudioPath);
     }
 }

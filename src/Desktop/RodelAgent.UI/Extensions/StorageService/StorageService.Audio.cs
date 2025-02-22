@@ -69,10 +69,15 @@ internal sealed partial class StorageService
             return;
         }
 
-        var audioPath = AppToolkit.GetAudioPath(session.Id);
+        var audioPath = AppToolkit.GetAudioPath(session.Id, true);
         if (!Directory.Exists(Path.GetDirectoryName(audioPath)))
         {
             Directory.CreateDirectory(Path.GetDirectoryName(audioPath)!);
+        }
+
+        if (session.Provider == AudioProviderType.Edge)
+        {
+            audioPath = audioPath.Replace(".wav", ".mp3", StringComparison.OrdinalIgnoreCase);
         }
 
         await File.WriteAllBytesAsync(audioPath, audioData);

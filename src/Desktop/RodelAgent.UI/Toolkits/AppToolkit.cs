@@ -92,7 +92,7 @@ internal sealed class AppToolkit : SharedAppToolkit
     public static string GetAudioFolderPath()
     {
         var workDir = SettingsToolkit.ReadLocalSetting(SettingNames.WorkingDirectory, string.Empty);
-        return Path.Combine(workDir, "Audio");
+        return Path.Combine(workDir, "Speech");
     }
 
     /// <summary>
@@ -110,11 +110,21 @@ internal sealed class AppToolkit : SharedAppToolkit
     /// 获取生成音频的路径.
     /// </summary>
     /// <param name="id">音频 Id.</param>
+    /// <param name="forceWav">是否强制为 wav 格式.</param>
     /// <returns>音频路径.</returns>
-    public static string GetAudioPath(string id)
+    public static string GetAudioPath(string id, bool forceWav = false)
     {
-        var drawFolder = GetAudioFolderPath();
-        return Path.Combine(drawFolder, $"{id}.wav");
+        var folder = GetAudioFolderPath();
+
+        if (forceWav)
+        {
+            return Path.Combine(folder, $"{id}.wav");
+        }
+
+        // 查找文件夹下包含此id的文件.
+        var files = Directory.GetFiles(folder);
+        var file = Array.Find(files, p => Path.GetFileName(p).StartsWith(id, StringComparison.InvariantCultureIgnoreCase));
+        return file ?? string.Empty;
     }
 
     public static string GetDocumentLink(string path)

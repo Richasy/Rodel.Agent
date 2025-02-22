@@ -22,6 +22,7 @@
     <PackageVersion Include="NAudio" Version="2.2.1" />
     <PackageVersion Include="NAudio.Core" Version="2.2.1" />
     <PackageVersion Include="NAudio.Wasapi" Version="2.2.1" />
+    <PackageVersion Include="NAudio.WinMM" Version="2.2.1" />
     <PackageVersion Include="Richasy.AgentKernel.Connectors.Ali" Version="0.0.3-preview3" />
     <PackageVersion Include="Richasy.AgentKernel.Connectors.Anthropic" Version="0.0.3-preview3" />
     <PackageVersion Include="Richasy.AgentKernel.Connectors.Azure" Version="0.0.3-preview3" />
