@@ -103,7 +103,7 @@ public sealed partial class AudioPageViewModel(ILogger<AudioPageViewModel> logge
 
         SelectedModel = model;
         this.Get<ISettingsToolkit>().WriteLocalSetting($"{SelectedService!.ProviderType}LastSelectedAudioModel", model.Id);
-        var languages = model.Data.Voices.SelectMany(p => p.Languages).Distinct().ToList().ConvertAll(p => new LanguageItemViewModel(p, new(p)));
+        var languages = model.Data.Voices.SelectMany(p => p.Languages).Distinct().ToList().ConvertAll(p => new LanguageItemViewModel(p, new(p))).OrderBy(p => p.Name).ToList();
         languages.ForEach(Languages.Add);
         var currentUILang = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
         var lastSelectedLanguage = this.Get<ISettingsToolkit>().ReadLocalSetting($"{SelectedService.ProviderType}_{model.Id}_LastSelectedLanguage", string.Empty);
@@ -127,7 +127,7 @@ public sealed partial class AudioPageViewModel(ILogger<AudioPageViewModel> logge
         SelectedLanguage = language;
         this.Get<ISettingsToolkit>().WriteLocalSetting($"{SelectedService!.ProviderType}_{SelectedModel!.Id}_LastSelectedLanguage", language.Code);
         var voices = SelectedModel?.Data.Voices.Where(p => p.Languages.Contains(language.Code)).ToList().ConvertAll(p => new AudioVoiceItemViewModel(p)) ?? [];
-        voices.ForEach(Voices.Add);
+        voices.OrderBy(p => p.Data.Gender).ThenBy(p => p.Data.DisplayName).ToList().ForEach(Voices.Add);
         var lastSelectedVoice = this.Get<ISettingsToolkit>().ReadLocalSetting($"{SelectedService.ProviderType}_{SelectedModel!.Id}_LastSelectedVoice", string.Empty);
         SelectedVoice = voices.FirstOrDefault(p => p.Data.Id == lastSelectedVoice) ?? voices.FirstOrDefault();
         var config = await this.Get<IAudioConfigManager>().GetServiceConfigAsync(SelectedService.ProviderType, SelectedModel.Data);
