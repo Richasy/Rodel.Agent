@@ -88,7 +88,7 @@ public sealed partial class SettingsPageViewModel
         var configManager = this.Get<IAudioConfigManager>();
         var dict = AudioServices.Where(p => p.Config != null).ToDictionary(item => item.ProviderType, item => item.Config!);
         await configManager.SaveAudioConfigAsync(dict);
-        this.Get<AppViewModel>().TryReloadSpeechServicesCommand.Execute(default);
+        this.Get<AppViewModel>().TryReloadAudioServicesCommand.Execute(default);
     }
 
     /// <inheritdoc/>

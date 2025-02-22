@@ -29,8 +29,6 @@ public sealed partial class DrawRecordItemViewModel : ViewModelBase<DrawRecord>
         Image = new Uri($"file://{imagePath}");
         Time = data.Time.Humanize();
         Proportion = (double)(data.Size?.Width ?? 1d) / data.Size?.Height ?? 1d;
-        Width = data.Size?.Width ?? 1;
-        Height = data.Size?.Height ?? 1;
     }
 
     /// <summary>
@@ -50,16 +48,6 @@ public sealed partial class DrawRecordItemViewModel : ViewModelBase<DrawRecord>
     /// </summary>
     [ObservableProperty]
     public partial double Proportion { get; set; }
-
-    /// <summary>
-    /// 宽度.
-    /// </summary>
-    public int Width { get; }
-
-    /// <summary>
-    /// 高度.
-    /// </summary>
-    public int Height { get; }
 
     [RelayCommand]
     private void Display()

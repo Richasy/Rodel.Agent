@@ -139,14 +139,14 @@ public sealed partial class AppViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void TryReloadSpeechServices()
+    private void TryReloadAudioServices()
     {
         if (IsClosing)
         {
             return;
         }
 
-        RequestReloadSpeechServices?.Invoke(this, EventArgs.Empty);
+        RequestReloadAudioServices?.Invoke(this, EventArgs.Empty);
     }
 
     [RelayCommand]

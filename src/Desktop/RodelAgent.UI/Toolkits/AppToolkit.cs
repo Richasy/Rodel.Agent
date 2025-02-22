@@ -89,10 +89,10 @@ internal sealed class AppToolkit : SharedAppToolkit
     /// 获取语音文件夹.
     /// </summary>
     /// <returns>文件夹路径.</returns>
-    public static string GetSpeechFolderPath()
+    public static string GetAudioFolderPath()
     {
         var workDir = SettingsToolkit.ReadLocalSetting(SettingNames.WorkingDirectory, string.Empty);
-        return Path.Combine(workDir, "Speech");
+        return Path.Combine(workDir, "Audio");
     }
 
     /// <summary>
@@ -111,9 +111,9 @@ internal sealed class AppToolkit : SharedAppToolkit
     /// </summary>
     /// <param name="id">音频 Id.</param>
     /// <returns>音频路径.</returns>
-    public static string GetSpeechPath(string id)
+    public static string GetAudioPath(string id)
     {
-        var drawFolder = GetSpeechFolderPath();
+        var drawFolder = GetAudioFolderPath();
         return Path.Combine(drawFolder, $"{id}.wav");
     }
 

@@ -88,7 +88,7 @@ internal static class GlobalDependencies
             .AddSingleton<StartupPageViewModel>()
             .AddSingleton<ChatPageViewModel>()
             .AddSingleton<DrawPageViewModel>()
-            .AddSingleton<SpeechPageViewModel>()
+            .AddSingleton<AudioPageViewModel>()
             .AddSingleton<TranslatePageViewModel>()
             .AddSingleton<SettingsPageViewModel>()
             .AddNotificationViewModel()

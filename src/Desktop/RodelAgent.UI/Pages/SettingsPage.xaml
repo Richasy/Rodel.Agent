@@ -53,7 +53,7 @@
             <SelectorBarItem
                 AccessKey="S"
                 Tag="3"
-                Text="{ext:Locale Name=SpeechService}" />
+                Text="{ext:Locale Name=AudioService}" />
             <SelectorBarItem
                 AccessKey="T"
                 Tag="4"
@@ -172,13 +172,13 @@
         </ScrollViewer>
 
         <ScrollViewer
-            x:Name="SpeechContainer"
+            x:Name="AudioContainer"
             Grid.Row="2"
             Padding="16,0"
             Style="{StaticResource PageScrollViewerStyle}"
             Visibility="Collapsed">
             <StackPanel
-                x:Name="SpeechPanel"
+                x:Name="AudioPanel"
                 Margin="0,12"
                 Spacing="4">
                 <StackPanel.ChildrenTransitions>
@@ -189,7 +189,7 @@
                         <ic:SymbolIconSource Symbol="DocumentSparkle" />
                     </InfoBar.IconSource>
                     <InfoBar.ActionButton>
-                        <HyperlinkButton Click="OnSpeechDetailButtonClick" Content="{ext:Locale Name=SeeDetail}" />
+                        <HyperlinkButton Click="OnAudioDetailButtonClick" Content="{ext:Locale Name=SeeDetail}" />
                     </InfoBar.ActionButton>
                 </InfoBar>
             </StackPanel>

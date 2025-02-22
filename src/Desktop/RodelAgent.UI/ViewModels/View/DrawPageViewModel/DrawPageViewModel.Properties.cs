@@ -19,7 +19,7 @@ public sealed partial class DrawPageViewModel
     public partial List<DrawServiceItemViewModel> Services { get; set; }
 
     [ObservableProperty]
-    public partial DrawServiceItemViewModel SelectedService { get; set; }
+    public partial DrawServiceItemViewModel? SelectedService { get; set; }
 
     [ObservableProperty]
     public partial DrawSizeItemViewModel? SelectedSize { get; set; }

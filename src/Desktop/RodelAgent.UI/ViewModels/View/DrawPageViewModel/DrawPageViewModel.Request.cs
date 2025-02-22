@@ -44,7 +44,7 @@ public sealed partial class DrawPageViewModel
                 Size = SelectedSize?.Data,
                 Model = SelectedModel?.Data.Id,
                 Time = DateTimeOffset.Now,
-                Provider = SelectedService.ProviderType,
+                Provider = SelectedService!.ProviderType,
             };
 
             await this.Get<IStorageService>().AddOrUpdateDrawSessionAsync(record, result.ToArray());

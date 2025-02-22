@@ -327,10 +327,10 @@
   <data name="SourceTextPlaceholder" xml:space="preserve">
     <value>请输入要翻译的文本</value>
   </data>
-  <data name="Speech" xml:space="preserve">
+  <data name="Audio" xml:space="preserve">
     <value>语音</value>
   </data>
-  <data name="SpeechService" xml:space="preserve">
+  <data name="AudioService" xml:space="preserve">
     <value>语音服务</value>
   </data>
   <data name="SystemDefault" xml:space="preserve">
@@ -365,5 +365,29 @@
   </data>
   <data name="WrapLine" xml:space="preserve">
     <value>换行</value>
+  </data>
+  <data name="AudioCount" xml:space="preserve">
+    <value>音频数</value>
+  </data>
+  <data name="AudioHistory" xml:space="preserve">
+    <value>音频历史</value>
+  </data>
+  <data name="AudioInputPlaceholder" xml:space="preserve">
+    <value>请输入需要转换成语音的文本</value>
+  </data>
+  <data name="AudioLanguage" xml:space="preserve">
+    <value>音频语言</value>
+  </data>
+  <data name="AudioModel" xml:space="preserve">
+    <value>音频模型</value>
+  </data>
+  <data name="AudioVoice" xml:space="preserve">
+    <value>音频声音</value>
+  </data>
+  <data name="NoAudioHistory" xml:space="preserve">
+    <value>暂无音频记录</value>
+  </data>
+  <data name="OpenAudio" xml:space="preserve">
+    <value>打开音频</value>
   </data>
 </root>

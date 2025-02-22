@@ -26,6 +26,10 @@
     <None Remove="Assets\big-logo.png" />
     <None Remove="Assets\logo.ico" />
     <None Remove="Assets\small-logo.png" />
+    <None Remove="Controls\Audio\AudioMainFooter.xaml" />
+    <None Remove="Controls\Audio\AudioMainHeader.xaml" />
+    <None Remove="Controls\Audio\AudioSideBody.xaml" />
+    <None Remove="Controls\Audio\AudioSideHeader.xaml" />
     <None Remove="Controls\Draw\DrawImage.xaml" />
     <None Remove="Controls\Draw\DrawMainBody.xaml" />
     <None Remove="Controls\Draw\DrawMainFooter.xaml" />
@@ -48,7 +52,6 @@
     <None Remove="Pages\ChatPage.xaml" />
     <None Remove="Pages\DrawPage.xaml" />
     <None Remove="Pages\SettingsPage.xaml" />
-    <None Remove="Pages\SpeechPage.xaml" />
     <None Remove="Pages\StartupPage.xaml" />
     <None Remove="Pages\TranslatePage.xaml" />
     <None Remove="Styles\Overrides.xaml" />
@@ -118,6 +121,26 @@
     <ProjectReference Include="..\..\Core\RodelAgent.Interfaces\RodelAgent.Interfaces.csproj" />
     <ProjectReference Include="..\..\Core\RodelAgent.Statics\RodelAgent.Statics.csproj" />
     <ProjectReference Include="..\RodelAgent.UI.Models\RodelAgent.UI.Models.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Audio\AudioSideBody.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Audio\AudioSideHeader.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Audio\AudioMainFooter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Audio\AudioMainHeader.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\Draw\DrawMainBody.xaml">
@@ -195,7 +218,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Pages\SpeechPage.xaml">
+    <Page Update="Pages\AudioPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

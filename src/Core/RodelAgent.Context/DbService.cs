@@ -12,9 +12,8 @@ public sealed class DbService : IDisposable
 {
     private SecretDataService? _secretService;
     private DrawDataService? _drawService;
+    private AudioDataService? _audioService;
     private ChatDbContext? _chatDb;
-    private TranslateDbContext? _translateDb;
-    private AudioDbContext? _audioDb;
     private string _workingDirectory;
     private string _packageDirectory;
 
@@ -23,6 +22,7 @@ public sealed class DbService : IDisposable
     {
         _secretService?.Dispose();
         _drawService?.Dispose();
+        _audioService?.Dispose();
     }
 
     /// <summary>
@@ -125,57 +125,6 @@ public sealed class DbService : IDisposable
     }
 
     /// <summary>
-    /// 获取所有翻译记录.
-    /// </summary>
-    /// <returns>JSON 列表.</returns>
-    public async Task<List<string>> GetAllTranslateSessionAsync()
-    {
-        _translateDb ??= await MigrationUtils.GetTranslateDbAsync(_workingDirectory).ConfigureAwait(false);
-        return await _translateDb.Sessions.Select(p => p.Value).ToListAsync().ConfigureAwait(false);
-    }
-
-    /// <summary>
-    /// 添加或更新翻译记录.
-    /// </summary>
-    /// <param name="dataId">翻译记录标识符.</param>
-    /// <param name="value">翻译记录 JSON 数据.</param>
-    /// <returns><see cref="Task"/>.</returns>
-    public async Task AddOrUpdateTranslateDataAsync(string dataId, string value)
-    {
-        _translateDb ??= await MigrationUtils.GetTranslateDbAsync(_workingDirectory).ConfigureAwait(false);
-        var dataset = _translateDb.Sessions;
-        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId).ConfigureAwait(false);
-        if (data is null)
-        {
-            await dataset.AddAsync(new Metadata { Id = dataId, Value = value }).ConfigureAwait(false);
-        }
-        else
-        {
-            data.Value = value;
-            dataset.Update(data);
-        }
-
-        await _translateDb.SaveChangesAsync().ConfigureAwait(false);
-    }
-
-    /// <summary>
-    /// 移除翻译记录.
-    /// </summary>
-    /// <param name="dataId">数据标识符.</param>
-    /// <returns><see cref="Task"/>.</returns>
-    public async Task RemoveTranslateDataAsync(string dataId)
-    {
-        _translateDb ??= await MigrationUtils.GetTranslateDbAsync(_workingDirectory).ConfigureAwait(false);
-        var dataset = _translateDb.Sessions;
-        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId).ConfigureAwait(false);
-        if (data is not null)
-        {
-            dataset.Remove(data);
-            await _translateDb.SaveChangesAsync().ConfigureAwait(false);
-        }
-    }
-
-    /// <summary>
     /// 获取所有绘图记录.
     /// </summary>
     /// <returns>JSON 列表.</returns>
@@ -212,10 +161,10 @@ public sealed class DbService : IDisposable
     /// 获取所有音频记录.
     /// </summary>
     /// <returns>JSON 列表.</returns>
-    public async Task<List<string>> GetAllAudioSessionAsync()
+    public async Task<List<string>> GetAllAudioSessionsAsync()
     {
-        _audioDb ??= await MigrationUtils.GetAudioDbAsync(_workingDirectory).ConfigureAwait(false);
-        return await _audioDb.Sessions.Select(p => p.Value).ToListAsync().ConfigureAwait(false);
+        await InitializeAudioServiceAsync().ConfigureAwait(false);
+        return await _audioService!.GetAllSessionsAsync().ConfigureAwait(false);
     }
 
     /// <summary>
@@ -226,20 +175,8 @@ public sealed class DbService : IDisposable
     /// <returns><see cref="Task"/>.</returns>
     public async Task AddOrUpdateAudioDataAsync(string dataId, string value)
     {
-        _audioDb ??= await MigrationUtils.GetAudioDbAsync(_workingDirectory).ConfigureAwait(false);
-        var dataset = _audioDb.Sessions;
-        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId).ConfigureAwait(false);
-        if (data is null)
-        {
-            await dataset.AddAsync(new Metadata { Id = dataId, Value = value }).ConfigureAwait(false);
-        }
-        else
-        {
-            data.Value = value;
-            dataset.Update(data);
-        }
-
-        await _audioDb.SaveChangesAsync().ConfigureAwait(false);
+        await InitializeAudioServiceAsync().ConfigureAwait(false);
+        await _audioService!.AddOrUpdateMetadataAsync(new AudioMeta { Id = dataId, Value = value }).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -249,14 +186,8 @@ public sealed class DbService : IDisposable
     /// <returns><see cref="Task"/>.</returns>
     public async Task RemoveAudioDataAsync(string dataId)
     {
-        _audioDb ??= await MigrationUtils.GetAudioDbAsync(_workingDirectory).ConfigureAwait(false);
-        var dataset = _audioDb.Sessions;
-        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId).ConfigureAwait(false);
-        if (data is not null)
-        {
-            dataset.Remove(data);
-            await _audioDb.SaveChangesAsync().ConfigureAwait(false);
-        }
+        await InitializeAudioServiceAsync().ConfigureAwait(false);
+        await _audioService!.RemoveMetadataAsync(dataId).ConfigureAwait(false);
     }
 
     private async Task InitializeSecretServiceAsync()
@@ -289,5 +220,21 @@ public sealed class DbService : IDisposable
 
         _drawService = new DrawDataService(_workingDirectory, _packageDirectory);
         await _drawService.InitializeAsync().ConfigureAwait(false);
+    }
+
+    private async Task InitializeAudioServiceAsync()
+    {
+        if (_audioService is not null)
+        {
+            return;
+        }
+
+        if (string.IsNullOrEmpty(_workingDirectory) || string.IsNullOrEmpty(_packageDirectory))
+        {
+            throw new InvalidOperationException("Working directory or package directory is not set.");
+        }
+
+        _audioService = new AudioDataService(_workingDirectory, _packageDirectory);
+        await _audioService.InitializeAsync().ConfigureAwait(false);
     }
 }

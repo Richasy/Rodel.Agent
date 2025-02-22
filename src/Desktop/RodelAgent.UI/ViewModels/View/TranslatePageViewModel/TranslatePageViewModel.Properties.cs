@@ -21,10 +21,10 @@ public sealed partial class TranslatePageViewModel
     public partial TranslateServiceItemViewModel SelectedService { get; set; }
 
     [ObservableProperty]
-    public partial TranslateLanguageItemViewModel? SelectedSourceLanguage { get; set; }
+    public partial LanguageItemViewModel? SelectedSourceLanguage { get; set; }
 
     [ObservableProperty]
-    public partial TranslateLanguageItemViewModel? SelectedTargetLanguage { get; set; }
+    public partial LanguageItemViewModel? SelectedTargetLanguage { get; set; }
 
     [ObservableProperty]
     public partial string SourceText { get; set; }
@@ -47,10 +47,10 @@ public sealed partial class TranslatePageViewModel
     /// <summary>
     /// 源语言列表.
     /// </summary>
-    public ObservableCollection<TranslateLanguageItemViewModel> SourceLanguages { get; } = [];
+    public ObservableCollection<LanguageItemViewModel> SourceLanguages { get; } = [];
 
     /// <summary>
     /// 目标语言列表.
     /// </summary>
-    public ObservableCollection<TranslateLanguageItemViewModel> TargetLanguages { get; } = [];
+    public ObservableCollection<LanguageItemViewModel> TargetLanguages { get; } = [];
 }

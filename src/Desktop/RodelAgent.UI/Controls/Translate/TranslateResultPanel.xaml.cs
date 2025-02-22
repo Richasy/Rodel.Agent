@@ -14,7 +14,7 @@ public sealed partial class TranslateResultPanel : TranslatePageControlBase
 
     private void OnTargetLanguageChanged(object sender, SelectionChangedEventArgs e)
     {
-        if ((sender as ComboBox)?.SelectedItem is not ViewModels.Items.TranslateLanguageItemViewModel language
+        if ((sender as ComboBox)?.SelectedItem is not ViewModels.Items.LanguageItemViewModel language
             || ViewModel.SelectedTargetLanguage == language)
         {
             return;

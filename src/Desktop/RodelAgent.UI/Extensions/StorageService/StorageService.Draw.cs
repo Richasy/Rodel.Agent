@@ -87,12 +87,13 @@ internal sealed partial class StorageService
 
     public async Task RemoveDrawSessionAsync(string sessionId)
     {
-        await _dbService.RemoveDrawDataAsync(sessionId);
         var imagePath = AppToolkit.GetDrawPicturePath(sessionId);
         if (File.Exists(imagePath))
         {
             await Task.Run(() => File.Delete(imagePath));
         }
+
+        await _dbService.RemoveDrawDataAsync(sessionId);
     }
 
     private static string ConvertDrawSizesInJson(string json)

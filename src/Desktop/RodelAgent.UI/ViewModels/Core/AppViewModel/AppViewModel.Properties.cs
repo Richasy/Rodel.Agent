@@ -44,7 +44,7 @@ public sealed partial class AppViewModel
     /// <summary>
     /// 请求重载语音服务.
     /// </summary>
-    public event EventHandler RequestReloadSpeechServices;
+    public event EventHandler RequestReloadAudioServices;
 
     /// <summary>
     /// 请求重载翻译服务.

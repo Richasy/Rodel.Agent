@@ -43,7 +43,7 @@ public sealed partial class SettingsPage : SettingsPageBase
         {
             GenericContainer.Visibility = Visibility.Visible;
             TranslateContainer.Visibility = Visibility.Collapsed;
-            SpeechContainer.Visibility = Visibility.Collapsed;
+            AudioContainer.Visibility = Visibility.Collapsed;
             ChatContainer.Visibility = Visibility.Collapsed;
             DrawContainer.Visibility = Visibility.Collapsed;
         }
@@ -51,7 +51,7 @@ public sealed partial class SettingsPage : SettingsPageBase
         {
             GenericContainer.Visibility = Visibility.Collapsed;
             TranslateContainer.Visibility = Visibility.Collapsed;
-            SpeechContainer.Visibility = Visibility.Collapsed;
+            AudioContainer.Visibility = Visibility.Collapsed;
             DrawContainer.Visibility = Visibility.Collapsed;
             ChatContainer.Visibility = Visibility.Visible;
             await ViewModel.InitializeChatServicesAsync();
@@ -64,7 +64,7 @@ public sealed partial class SettingsPage : SettingsPageBase
         {
             GenericContainer.Visibility = Visibility.Collapsed;
             TranslateContainer.Visibility = Visibility.Collapsed;
-            SpeechContainer.Visibility = Visibility.Collapsed;
+            AudioContainer.Visibility = Visibility.Collapsed;
             ChatContainer.Visibility = Visibility.Collapsed;
             DrawContainer.Visibility = Visibility.Visible;
             await ViewModel.InitializeDrawServicesAsync();
@@ -77,11 +77,11 @@ public sealed partial class SettingsPage : SettingsPageBase
         {
             GenericContainer.Visibility = Visibility.Collapsed;
             TranslateContainer.Visibility = Visibility.Collapsed;
-            SpeechContainer.Visibility = Visibility.Visible;
+            AudioContainer.Visibility = Visibility.Visible;
             DrawContainer.Visibility = Visibility.Collapsed;
             ChatContainer.Visibility = Visibility.Collapsed;
             await ViewModel.InitializeAudioServicesAsync();
-            if (SpeechPanel.Children.Count <= 1)
+            if (AudioPanel.Children.Count <= 1)
             {
                 await LoadAudioControlsAsync();
             }
@@ -90,7 +90,7 @@ public sealed partial class SettingsPage : SettingsPageBase
         {
             GenericContainer.Visibility = Visibility.Collapsed;
             TranslateContainer.Visibility = Visibility.Visible;
-            SpeechContainer.Visibility = Visibility.Collapsed;
+            AudioContainer.Visibility = Visibility.Collapsed;
             DrawContainer.Visibility = Visibility.Collapsed;
             ChatContainer.Visibility = Visibility.Collapsed;
             await ViewModel.InitializeTranslateServicesAsync();
@@ -107,7 +107,7 @@ public sealed partial class SettingsPage : SettingsPageBase
     private async void OnDrawDetailButtonClick(object sender, RoutedEventArgs e)
         => await Launcher.LaunchUriAsync(new(AppToolkit.GetDocumentLink("image-config")));
 
-    private async void OnSpeechDetailButtonClick(object sender, RoutedEventArgs e)
+    private async void OnAudioDetailButtonClick(object sender, RoutedEventArgs e)
         => await Launcher.LaunchUriAsync(new(AppToolkit.GetDocumentLink("tts-config")));
 
     private async void OnTranslateDetailButtonClick(object sender, RoutedEventArgs e)
@@ -148,7 +148,7 @@ public sealed partial class SettingsPage : SettingsPageBase
             if (control != null)
             {
                 await vm.InitializeCommand.ExecuteAsync(default);
-                SpeechPanel.Children.Add(control);
+                AudioPanel.Children.Add(control);
             }
         }
     }

@@ -145,7 +145,7 @@ public sealed partial class NavigationViewModel : ViewModelBase, INavServiceView
         {
             GetItem<ChatPage>(StringNames.Chat, FluentIcons.Common.Symbol.Chat, accessKey: "1"),
             GetItem<DrawPage>(StringNames.Draw, FluentIcons.Common.Symbol.PenSparkle, accessKey: "2"),
-            GetItem<SpeechPage>(StringNames.Speech, FluentIcons.Common.Symbol.MicSparkle, accessKey: "3"),
+            GetItem<AudioPage>(StringNames.Audio, FluentIcons.Common.Symbol.MicSparkle, accessKey: "3"),
             GetItem<TranslatePage>(StringNames.Translate, FluentIcons.Common.Symbol.Translate, accessKey: "4"),
         };
 

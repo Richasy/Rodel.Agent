@@ -108,7 +108,7 @@ public sealed partial class DrawPageViewModel(ILogger<DrawPageViewModel> logger)
         }
 
         SelectedModel = model;
-        this.Get<ISettingsToolkit>().WriteLocalSetting($"{SelectedService.ProviderType}LastSelectedDrawModel", model.Id);
+        this.Get<ISettingsToolkit>().WriteLocalSetting($"{SelectedService!.ProviderType}LastSelectedDrawModel", model.Id);
         var sizes = model.Data.SupportSizes.ToList().ConvertAll(p => new DrawSizeItemViewModel(p));
         sizes.ForEach(Sizes.Add);
         var lastSelectedSize = this.Get<ISettingsToolkit>().ReadLocalSetting($"{SelectedService.ProviderType}_{model.Id}_DrawSize", string.Empty);
@@ -243,7 +243,7 @@ public sealed partial class DrawPageViewModel(ILogger<DrawPageViewModel> logger)
             return;
         }
 
-        this.Get<ISettingsToolkit>().WriteLocalSetting($"{SelectedService.ProviderType}_{SelectedModel.Id}_DrawSize", value.ToString());
+        this.Get<ISettingsToolkit>().WriteLocalSetting($"{SelectedService!.ProviderType}_{SelectedModel.Id}_DrawSize", value.ToString());
     }
 
     partial void OnIsEnterSendChanged(bool value)

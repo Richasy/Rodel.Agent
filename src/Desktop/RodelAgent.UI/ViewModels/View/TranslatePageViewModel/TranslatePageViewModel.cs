@@ -88,8 +88,8 @@ public sealed partial class TranslatePageViewModel(ILogger<TranslatePageViewMode
         _translateService = this.Get<ITranslateService>(service.ProviderType.ToString());
         _translateService.Initialize(config);
         var lanPack = _translateService.GetSupportedLanguages();
-        var sourceLanguages = lanPack.SourceLanguages.Select(p => new Items.TranslateLanguageItemViewModel(p.Key, p.Value)).OrderBy(p => p.Name).ToList();
-        var targetLanguages = lanPack.TargetLanguages.Select(p => new Items.TranslateLanguageItemViewModel(p.Key, p.Value)).OrderBy(p => p.Name).ToList();
+        var sourceLanguages = lanPack.SourceLanguages.Select(p => new Items.LanguageItemViewModel(p.Key, p.Value)).OrderBy(p => p.Name).ToList();
+        var targetLanguages = lanPack.TargetLanguages.Select(p => new Items.LanguageItemViewModel(p.Key, p.Value)).OrderBy(p => p.Name).ToList();
         // Move auto to first in sourceLanguages.
         var auto = sourceLanguages.Find(p => p.Code == "auto");
         if (auto != null)
@@ -135,7 +135,7 @@ public sealed partial class TranslatePageViewModel(ILogger<TranslatePageViewMode
     partial void OnSourceTextChanged(string value)
         => CheckTextLimit();
 
-    partial void OnSelectedSourceLanguageChanged(TranslateLanguageItemViewModel? value)
+    partial void OnSelectedSourceLanguageChanged(LanguageItemViewModel? value)
     {
         if (value != null && SelectedService != null)
         {
@@ -143,7 +143,7 @@ public sealed partial class TranslatePageViewModel(ILogger<TranslatePageViewMode
         }
     }
 
-    partial void OnSelectedTargetLanguageChanged(TranslateLanguageItemViewModel? value)
+    partial void OnSelectedTargetLanguageChanged(LanguageItemViewModel? value)
     {
         if (value != null && SelectedService != null)
         {

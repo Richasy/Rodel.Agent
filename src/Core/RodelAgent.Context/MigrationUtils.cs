@@ -30,28 +30,6 @@ public static class MigrationUtils
         return chatDbContext;
     }
 
-    /// <summary>
-    /// 获取翻译数据库.
-    /// </summary>
-    /// <param name="workDir">工作目录.</param>
-    /// <returns><see cref="TranslateDbContext"/>.</returns>
-    public static async Task<TranslateDbContext> GetTranslateDbAsync(string workDir)
-    {
-        await CheckDatabaseExistInternalAsync("trans.db", workDir).ConfigureAwait(false);
-        return new TranslateDbContext(Path.Combine(workDir, "trans.db"));
-    }
-
-    /// <summary>
-    /// 获取音频数据库.
-    /// </summary>
-    /// <param name="workDir">工作目录.</param>
-    /// <returns><see cref="AudioDbContext"/>.</returns>
-    public static async Task<AudioDbContext> GetAudioDbAsync(string workDir)
-    {
-        await CheckDatabaseExistInternalAsync("audio.db", workDir).ConfigureAwait(false);
-        return new AudioDbContext(Path.Combine(workDir, "audio.db"));
-    }
-
     private static async Task CheckDatabaseExistInternalAsync(string dbName, string workDir)
     {
         var targetDbPath = Path.Combine(workDir, dbName);

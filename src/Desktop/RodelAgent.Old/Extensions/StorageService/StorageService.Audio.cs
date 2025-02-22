@@ -64,7 +64,7 @@ public sealed partial class StorageService
         if (_audioSessions == null)
         {
             var audioSessions = new List<AudioSession>();
-            var allSessions = await _dbService.GetAllAudioSessionAsync();
+            var allSessions = await _dbService.GetAllAudioSessionsAsync();
             foreach (var session in allSessions)
             {
                 try

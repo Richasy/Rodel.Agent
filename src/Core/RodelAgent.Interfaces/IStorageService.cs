@@ -2,9 +2,7 @@
 
 using Richasy.AgentKernel;
 using RodelAgent.Models.Common;
-using RodelAudio.Models.Client;
 using RodelChat.Models.Client;
-using RodelTranslate.Models.Client;
 using System.Text.Json.Serialization.Metadata;
 
 namespace RodelAgent.Interfaces;
@@ -234,27 +232,6 @@ public interface IStorageService
     Task AddOrUpdateChatGroupPresetAsync(ChatGroupPreset preset);
 
     /// <summary>
-    /// 获取指定供应商的翻译会话.
-    /// </summary>
-    /// <param name="type">供应商类型.</param>
-    /// <returns>会话列表.</returns>
-    Task<List<TranslateSession>?> GetTranslateSessionsAsync(TranslateProviderType type);
-
-    /// <summary>
-    /// 添加或更新翻译会话.
-    /// </summary>
-    /// <param name="session">会话.</param>
-    /// <returns><see cref="Task"/>.</returns>
-    Task AddOrUpdateTranslateSessionAsync(TranslateSession session);
-
-    /// <summary>
-    /// 移除翻译会话.
-    /// </summary>
-    /// <param name="sessionId">会话标识符.</param>
-    /// <returns><see cref="Task"/>.</returns>
-    Task RemoveTranslateSessionAsync(string sessionId);
-
-    /// <summary>
     /// 获取所有绘图会话.
     /// </summary>
     /// <returns>会话列表.</returns>
@@ -279,7 +256,7 @@ public interface IStorageService
     /// 获取所有音频会话.
     /// </summary>
     /// <returns>会话列表.</returns>
-    Task<List<AudioSession>?> GetAudioSessionsAsync();
+    Task<List<AudioRecord>?> GetAudioSessionsAsync();
 
     /// <summary>
     /// 添加或更新音频会话.
@@ -287,7 +264,7 @@ public interface IStorageService
     /// <param name="session">会话.</param>
     /// <param name="audioData">音频数据.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task AddOrUpdateAudioSessionAsync(AudioSession session, byte[]? audioData);
+    Task AddOrUpdateAudioSessionAsync(AudioRecord session, byte[]? audioData);
 
     /// <summary>
     /// 移除音频会话.
@@ -295,17 +272,4 @@ public interface IStorageService
     /// <param name="sessionId">会话标识符.</param>
     /// <returns><see cref="Task"/>.</returns>
     Task RemoveAudioSessionAsync(string sessionId);
-
-    /// <summary>
-    /// 获取 Azure 语音服务的语音列表（JSON）.
-    /// </summary>
-    /// <returns>Azure 语音服务 JSON 数据.</returns>
-    Task<string> RetrieveAzureSpeechVoicesAsync();
-
-    /// <summary>
-    /// 保存 Azure 语音服务的语音列表（JSON）.
-    /// </summary>
-    /// <param name="json">JSON 数据.</param>
-    /// <returns><see cref="Task"/>.</returns>
-    Task SaveAzureSpeechVoicesAsync(string json);
 }

@@ -61,7 +61,7 @@ public sealed partial class TranslateSourcePanel : TranslatePageControlBase
 
     private void OnSourceLanguageChanged(object sender, SelectionChangedEventArgs e)
     {
-        var language = (sender as ComboBox)?.SelectedItem as ViewModels.Items.TranslateLanguageItemViewModel;
+        var language = (sender as ComboBox)?.SelectedItem as ViewModels.Items.LanguageItemViewModel;
         if (language == null || ViewModel.SelectedSourceLanguage == language)
         {
             return;

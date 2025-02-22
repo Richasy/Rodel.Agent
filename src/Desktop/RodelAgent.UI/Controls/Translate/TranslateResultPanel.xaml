@@ -38,7 +38,7 @@
                 SelectedItem="{x:Bind ViewModel.SelectedTargetLanguage, Mode=OneWay}"
                 SelectionChanged="OnTargetLanguageChanged">
                 <ComboBox.ItemTemplate>
-                    <DataTemplate x:DataType="items:TranslateLanguageItemViewModel">
+                    <DataTemplate x:DataType="items:LanguageItemViewModel">
                         <TextBlock Text="{x:Bind Name}" />
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
