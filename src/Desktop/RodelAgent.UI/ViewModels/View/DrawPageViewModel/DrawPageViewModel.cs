@@ -18,7 +18,7 @@ namespace RodelAgent.UI.ViewModels.View;
 /// <summary>
 /// 绘图页面视图模型.
 /// </summary>
-public sealed partial class DrawPageViewModel : LayoutPageViewModelBase
+public sealed partial class DrawPageViewModel(ILogger<DrawPageViewModel> logger) : LayoutPageViewModelBase
 {
     /// <inheritdoc/>
     protected override string GetPageKey() => nameof(DrawPage);
@@ -93,7 +93,7 @@ public sealed partial class DrawPageViewModel : LayoutPageViewModelBase
     }
 
     [RelayCommand]
-    private void SelectModel(DrawModelItemViewModel model)
+    private async Task SelectModelAsync(DrawModelItemViewModel model)
     {
         if (SelectedModel == model)
         {
@@ -115,6 +115,8 @@ public sealed partial class DrawPageViewModel : LayoutPageViewModelBase
         SelectedSize = string.IsNullOrEmpty(lastSelectedSize) || !sizes.Any(p => p.ToString() == lastSelectedSize)
             ? sizes.FirstOrDefault()
             : sizes.Find(p => p.ToString() == lastSelectedSize);
+        var config = await this.Get<IDrawConfigManager>().GetServiceConfigAsync(SelectedService.ProviderType, model.Data);
+        _drawService.Initialize(config!);
     }
 
     [RelayCommand]

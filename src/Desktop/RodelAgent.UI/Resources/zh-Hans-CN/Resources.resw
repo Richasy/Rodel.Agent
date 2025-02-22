@@ -174,11 +174,23 @@
   <data name="DrawHistory" xml:space="preserve">
     <value>绘图历史</value>
   </data>
+  <data name="DrawInputPlaceholder" xml:space="preserve">
+    <value>请输入绘图提示词</value>
+  </data>
+  <data name="DrawModel" xml:space="preserve">
+    <value>绘图模型</value>
+  </data>
   <data name="DrawService" xml:space="preserve">
     <value>绘图服务</value>
   </data>
+  <data name="DrawSize" xml:space="preserve">
+    <value>绘图尺寸</value>
+  </data>
   <data name="Exit" xml:space="preserve">
     <value>退出</value>
+  </data>
+  <data name="Generating" xml:space="preserve">
+    <value>生成中...</value>
   </data>
   <data name="Generic" xml:space="preserve">
     <value>通用</value>
@@ -245,6 +257,12 @@
   </data>
   <data name="OtherApp" xml:space="preserve">
     <value>开发者的其它应用</value>
+  </data>
+  <data name="PressCtrlEnterSend" xml:space="preserve">
+    <value>按 Ctrl + Enter 键发送</value>
+  </data>
+  <data name="PressEnterToSend" xml:space="preserve">
+    <value>按 Enter 键发送</value>
   </data>
   <data name="ProjectHomePage" xml:space="preserve">
     <value>项目主页</value>

@@ -11,8 +11,13 @@
     <PublishProfile>win-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
+	<NoWarn>$(NoWarn);NU1903;MVVMTK0045;MVVMTK0046;CS1591;IL2067;IL2059;IL3050;IL2075;IL2072;IL2055;IL2060;IL2077;IL2070;IL2058;IL2026;IL2065;IL3000;IL3002;IL2057;IL2093;IL2111;IL2080;IL2090;IL2091;IL2113</NoWarn>
+	<TrimmerSingleWarn>false</TrimmerSingleWarn>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+  	<RdXmlFile Include="rd.xml" />
+  </ItemGroup>
   <ItemGroup>
     <Content Remove="Assets\Database\*.ddb" />
 	<Content Remove="Assets\SqliteJson\**\*" />
@@ -22,6 +27,7 @@
     <None Remove="Assets\logo.ico" />
     <None Remove="Assets\small-logo.png" />
     <None Remove="Controls\Draw\DrawImage.xaml" />
+    <None Remove="Controls\Draw\DrawMainFooter.xaml" />
     <None Remove="Controls\Draw\DrawMainHeader.xaml" />
     <None Remove="Controls\Draw\DrawSideBody.xaml" />
     <None Remove="Controls\Draw\DrawSideHeader.xaml" />
@@ -112,6 +118,11 @@
     <ProjectReference Include="..\..\Core\RodelAgent.Statics\RodelAgent.Statics.csproj" />
     <ProjectReference Include="..\..\Libs\Migration.V2\Migration.V2.csproj" />
     <ProjectReference Include="..\RodelAgent.UI.Models\RodelAgent.UI.Models.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Draw\DrawMainFooter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\Draw\DrawImage.xaml">

@@ -34,7 +34,6 @@
                                         Text="{x:Bind Data.Prompt}" />
                                     <local:DrawImage
                                         Grid.Row="1"
-                                        MinHeight="140"
                                         CornerRadius="{StaticResource ControlCornerRadius}"
                                         Proportion="{x:Bind Proportion}"
                                         Source="{x:Bind Image}" />

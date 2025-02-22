@@ -62,7 +62,7 @@ public static class MigrationToolkit
     private static async Task MigrateSecretDbAsync(string dbPath)
     {
         var json = await GetJsonFromDatabaseAsync(dbPath, "Metadata");
-        var metadatas = JsonSerializer.Deserialize(json, JsonGenContext.Default.ListMetadata);
+        var metadatas = JsonSerializer.Deserialize(json, JsonGenContext.Default.ListSecretMeta);
         var libPath = SettingsToolkit.ReadLocalSetting(Models.Constants.SettingNames.WorkingDirectory, string.Empty);
         using var service = new SecretDataService(libPath, Package.Current.InstalledPath);
         await service.InitializeAsync();
@@ -72,7 +72,7 @@ public static class MigrationToolkit
     private static async Task MigrateDrawDbAsync(string dbPath)
     {
         var json = await GetJsonFromDatabaseAsync(dbPath, "Sessions");
-        var metadatas = JsonSerializer.Deserialize(json, JsonGenContext.Default.ListMetadata);
+        var metadatas = JsonSerializer.Deserialize(json, JsonGenContext.Default.ListDrawMeta);
         var libPath = SettingsToolkit.ReadLocalSetting(Models.Constants.SettingNames.WorkingDirectory, string.Empty);
         using var service = new DrawDataService(libPath, Package.Current.InstalledPath);
         await service.InitializeAsync();

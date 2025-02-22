@@ -12,6 +12,7 @@ namespace RodelAgent.UI.ViewModels.View;
 public sealed partial class DrawPageViewModel
 {
     private IDrawService _drawService;
+    private CancellationTokenSource? _drawCts;
 
     [ObservableProperty]
     public partial List<DrawServiceItemViewModel> Services { get; set; }
@@ -36,6 +37,15 @@ public sealed partial class DrawPageViewModel
 
     [ObservableProperty]
     public partial bool IsHistoryEmpty { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsDrawing { get; set; }
+
+    [ObservableProperty]
+    public partial string Prompt { get; set; }
+
+    [ObservableProperty]
+    public partial Uri? Image { get; set; }
 
     /// <summary>
     /// 尺寸列表.

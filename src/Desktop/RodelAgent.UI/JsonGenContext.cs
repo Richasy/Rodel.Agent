@@ -11,7 +11,8 @@ namespace RodelAgent.UI;
 [JsonSerializable(typeof(AudioClientConfiguration))]
 [JsonSerializable(typeof(DrawClientConfiguration))]
 [JsonSerializable(typeof(TranslateClientConfiguration))]
-[JsonSerializable(typeof(List<Metadata>))]
+[JsonSerializable(typeof(List<SecretMeta>))]
+[JsonSerializable(typeof(List<DrawMeta>))]
 [JsonSerializable(typeof(DrawRecord))]
 internal sealed partial class JsonGenContext : JsonSerializerContext
 {

@@ -1,7 +1,10 @@
 {
   "profiles": {
     "RodelAgent.UI (Package)": {
-      "commandName": "MsixPackage"
+      "commandName": "MsixPackage",
+      "remoteDebugEnabled": false,
+      "remoteDebugMachine": "RICHASY-ARM64",
+      "authenticationMode": "None"
     },
     "RodelAgent.UI (Unpackaged)": {
       "commandName": "Project"

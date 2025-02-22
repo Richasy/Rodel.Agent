@@ -8,7 +8,7 @@ namespace RodelAgent.Context;
 /// Provides methods to access secret data.
 /// </summary>
 public sealed partial class SecretDataService(string workingDir, string packageDir)
-    : MetadataServiceBase(workingDir, packageDir, "secret.ddb")
+    : MetadataServiceBase<SecretMeta>(workingDir, packageDir, "secret.ddb")
 {
     protected override async Task InitializeDbContextAsync(string path)
     {
@@ -21,7 +21,7 @@ public sealed partial class SecretDataService(string workingDir, string packageD
                 .Build();
 
             Sql.CodeFirst
-                .ConfigEntity<Metadata>(p =>
+                .ConfigEntity<SecretMeta>(p =>
                 {
                     p.Name("Secrets");
                     p.Property(x => x.Id).IsIdentity(true);

@@ -48,6 +48,7 @@ public sealed partial class DrawImage : LayoutUserControlBase
     protected override void OnControlLoaded()
     {
         ResetImage(Source);
+        ResetSize();
         SizeChanged += OnSizeChanged;
     }
 
@@ -59,18 +60,7 @@ public sealed partial class DrawImage : LayoutUserControlBase
     {
         if (e.NewSize.Width > 0 && e.NewSize.Height > 0)
         {
-            if (Source?.AbsolutePath.Contains("17712", StringComparison.OrdinalIgnoreCase) == true)
-            {
-                System.Diagnostics.Debug.WriteLine("Hey");
-            }
-
-            var width = e.NewSize.Width;
-            var height = e.NewSize.Height;
-            var perferHeight = width / Proportion;
-            if (Math.Abs(perferHeight - height) > 2)
-            {
-                LocalImage.Height = perferHeight;
-            }
+            ResetSize();
         }
     }
 
@@ -82,6 +72,17 @@ public sealed partial class DrawImage : LayoutUserControlBase
         }
 
         instance.ResetImage(e.NewValue as Uri);
+    }
+
+    private void ResetSize()
+    {
+        var width = ActualWidth;
+        var height = ActualHeight;
+        var perferHeight = width / Proportion;
+        if (Math.Abs(perferHeight - height) > 2)
+        {
+            LocalImage.Height = perferHeight;
+        }
     }
 
     private void ResetImage(Uri? uri)

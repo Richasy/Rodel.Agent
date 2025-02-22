@@ -8,11 +8,11 @@ namespace RodelAgent.Context;
 /// 绘图数据服务.
 /// </summary>
 public sealed class DrawDataService(string workingDir, string packageDir)
-    : MetadataServiceBase(workingDir, packageDir, "draw.ddb")
+    : MetadataServiceBase<DrawMeta>(workingDir, packageDir, "draw.ddb")
 {
     public async Task<List<string>> GetAllSessionsAsync()
     {
-        var list = await Sql!.Select<Metadata>().ToListAsync().ConfigureAwait(false);
+        var list = await Sql!.Select<DrawMeta>().ToListAsync().ConfigureAwait(false);
         return list.ConvertAll(p => p.Value);
     }
 
@@ -27,7 +27,7 @@ public sealed class DrawDataService(string workingDir, string packageDir)
                 .Build();
 
             Sql.CodeFirst
-                .ConfigEntity<Metadata>(p =>
+                .ConfigEntity<DrawMeta>(p =>
                 {
                     p.Name("Sessions");
                     p.Property(x => x.Id).IsIdentity(true);

@@ -58,7 +58,7 @@ public sealed class DbService : IDisposable
     public async Task SetSecretAsync(string key, string value)
     {
         await InitializeSecretServiceAsync().ConfigureAwait(false);
-        await _secretService!.AddOrUpdateMetadataAsync(new Metadata { Id = key, Value = value }).ConfigureAwait(false);
+        await _secretService!.AddOrUpdateMetadataAsync(new SecretMeta { Id = key, Value = value }).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -194,7 +194,7 @@ public sealed class DbService : IDisposable
     public async Task AddOrUpdateDrawDataAsync(string dataId, string value)
     {
         await InitializeDrawServiceAsync().ConfigureAwait(false);
-        await _drawService!.AddOrUpdateMetadataAsync(new(dataId, value)).ConfigureAwait(false);
+        await _drawService!.AddOrUpdateMetadataAsync(new DrawMeta { Id = dataId, Value = value }).ConfigureAwait(false);
     }
 
     /// <summary>

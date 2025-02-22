@@ -4,7 +4,8 @@ using RodelAgent.Models.Common;
 
 namespace RodelAgent.Context;
 
-public abstract class MetadataServiceBase(string workingDir, string packageDir, string dbName) : IDisposable
+public abstract class MetadataServiceBase<T>(string workingDir, string packageDir, string dbName) : IDisposable
+    where T : Metadata
 {
     private bool disposedValue;
 
@@ -21,25 +22,25 @@ public abstract class MetadataServiceBase(string workingDir, string packageDir, 
         await DbTool.InitializeAsync(dbName, packageDir, workingDir, InitializeDbContextAsync).ConfigureAwait(false);
     }
 
-    public async Task BatchAddMetadataAsync(List<Metadata> metadataList)
-        => await Sql!.Insert<Metadata>().AppendData(metadataList).ExecuteAffrowsAsync().ConfigureAwait(false);
+    public async Task BatchAddMetadataAsync(List<T> metadataList)
+        => await Sql!.Insert<T>().AppendData(metadataList).ExecuteAffrowsAsync().ConfigureAwait(false);
 
-    public async Task<Metadata?> GetMetadataAsync(string id)
-        => (await Sql!.Select<Metadata>().Where(p => p.Id == id).ToListAsync().ConfigureAwait(false)).FirstOrDefault();
+    public async Task<T?> GetMetadataAsync(string id)
+        => (await Sql!.Select<T>().Where(p => p.Id == id).ToListAsync().ConfigureAwait(false)).FirstOrDefault();
 
-    public async Task AddOrUpdateMetadataAsync(Metadata metadata)
+    public async Task AddOrUpdateMetadataAsync(T metadata)
     {
-        var source = (await Sql!.Select<Metadata>().Where(p => p.Id == metadata.Id).ToListAsync().ConfigureAwait(false)).FirstOrDefault();
+        var source = (await Sql!.Select<T>().Where(p => p.Id == metadata.Id).ToListAsync().ConfigureAwait(false)).FirstOrDefault();
         if (source != null)
         {
             source.Value = metadata.Value;
         }
 
-        await Sql!.InsertOrUpdate<Metadata>().SetSource(metadata).ExecuteAffrowsAsync().ConfigureAwait(false);
+        await Sql!.InsertOrUpdate<T>().SetSource(metadata).ExecuteAffrowsAsync().ConfigureAwait(false);
     }
 
     public async Task RemoveMetadataAsync(string id)
-        => await Sql!.Delete<Metadata>().Where(p => p.Id == id).ExecuteAffrowsAsync().ConfigureAwait(false);
+        => await Sql!.Delete<T>().Where(p => p.Id == id).ExecuteAffrowsAsync().ConfigureAwait(false);
 
     public void Dispose()
     {
@@ -62,22 +63,5 @@ public abstract class MetadataServiceBase(string workingDir, string packageDir, 
         }
     }
 
-    protected virtual async Task InitializeDbContextAsync(string path)
-    {
-        await Task.Run(() =>
-        {
-            Sql = new FreeSql.FreeSqlBuilder()
-                .UseConnectionString(FreeSql.DataType.DuckDB, $"DataSource={path}")
-                .UseAutoSyncStructure(true)
-                .UseLazyLoading(true)
-                .Build();
-
-            Sql.CodeFirst
-                .ConfigEntity<Metadata>(p =>
-                {
-                    p.Name("Metadata");
-                    p.Property(x => x.Id).IsIdentity(true);
-                });
-        }).ConfigureAwait(false);
-    }
+    protected abstract Task InitializeDbContextAsync(string path);
 }
