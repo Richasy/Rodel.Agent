@@ -147,6 +147,7 @@ public sealed partial class DrawPageViewModel : LayoutPageViewModelBase
         ArgumentNullException.ThrowIfNull(list);
         ArgumentNullException.ThrowIfNull(History);
 
+        list = [.. list.OrderByDescending(item => item.Time)];
         var listDict = list.ToDictionary(item => item.Id);
 
         for (var i = History.Count - 1; i >= 0; i--)

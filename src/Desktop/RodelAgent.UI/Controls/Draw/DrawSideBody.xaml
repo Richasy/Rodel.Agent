@@ -12,9 +12,9 @@
     mc:Ignorable="d">
 
     <Grid>
-        <ScrollView
+        <ScrollViewer
             Padding="16,0"
-            Style="{StaticResource PageScrollViewStyle}"
+            Style="{StaticResource PageScrollViewerStyle}"
             Visibility="{x:Bind ViewModel.IsHistoryEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
             <Grid Margin="0,12,0,20">
                 <ItemsRepeater ItemsSource="{x:Bind ViewModel.History}">
@@ -32,12 +32,11 @@
                                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                         MaxLines="3"
                                         Text="{x:Bind Data.Prompt}" />
-                                    <local:DrawHistoryImage
+                                    <local:DrawImage
                                         Grid.Row="1"
-                                        MinHeight="20"
+                                        MinHeight="140"
                                         CornerRadius="{StaticResource ControlCornerRadius}"
-                                        DecodeHeight="{x:Bind Height}"
-                                        DecodeWidth="{x:Bind Width}"
+                                        Proportion="{x:Bind Proportion}"
                                         Source="{x:Bind Image}" />
                                     <Grid Grid.Row="2" ColumnSpacing="8">
                                         <Grid.ColumnDefinitions>
@@ -68,7 +67,7 @@
                     </ItemsRepeater.Layout>
                 </ItemsRepeater>
             </Grid>
-        </ScrollView>
+        </ScrollViewer>
     </Grid>
 
 </local:DrawPageControlBase>

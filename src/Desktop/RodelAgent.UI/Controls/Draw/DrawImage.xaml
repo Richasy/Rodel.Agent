@@ -7,12 +7,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:RodelAgent.UI.Controls.Draw"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    CornerRadius="{StaticResource ControlCornerRadius}"
     mc:Ignorable="d">
 
-    <Grid
-        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-        BorderThickness="1"
-        CornerRadius="{StaticResource ControlCornerRadius}">
+    <Grid CornerRadius="{StaticResource ControlCornerRadius}">
         <Image
             x:Name="LocalImage"
             HorizontalAlignment="Stretch"
