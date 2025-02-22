@@ -27,6 +27,7 @@
     <None Remove="Assets\logo.ico" />
     <None Remove="Assets\small-logo.png" />
     <None Remove="Controls\Draw\DrawImage.xaml" />
+    <None Remove="Controls\Draw\DrawMainBody.xaml" />
     <None Remove="Controls\Draw\DrawMainFooter.xaml" />
     <None Remove="Controls\Draw\DrawMainHeader.xaml" />
     <None Remove="Controls\Draw\DrawSideBody.xaml" />
@@ -116,8 +117,12 @@
     <ProjectReference Include="..\..\Core\RodelAgent.Context\RodelAgent.Context.csproj" />
     <ProjectReference Include="..\..\Core\RodelAgent.Interfaces\RodelAgent.Interfaces.csproj" />
     <ProjectReference Include="..\..\Core\RodelAgent.Statics\RodelAgent.Statics.csproj" />
-    <ProjectReference Include="..\..\Libs\Migration.V2\Migration.V2.csproj" />
     <ProjectReference Include="..\RodelAgent.UI.Models\RodelAgent.UI.Models.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Draw\DrawMainBody.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\Draw\DrawMainFooter.xaml">

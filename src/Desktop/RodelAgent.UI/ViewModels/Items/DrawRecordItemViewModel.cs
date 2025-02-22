@@ -1,8 +1,16 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
 using Humanizer;
+using RodelAgent.Interfaces;
 using RodelAgent.Models.Common;
+using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Toolkits;
+using RodelAgent.UI.ViewModels.Core;
+using RodelAgent.UI.ViewModels.View;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.Storage;
+using Windows.Storage.Streams;
+using Windows.System;
 
 namespace RodelAgent.UI.ViewModels.Items;
 
@@ -52,4 +60,48 @@ public sealed partial class DrawRecordItemViewModel : ViewModelBase<DrawRecord>
     /// 高度.
     /// </summary>
     public int Height { get; }
+
+    [RelayCommand]
+    private void Display()
+        => this.Get<DrawPageViewModel>().ShowRecordCommand.Execute(Data);
+
+    [RelayCommand]
+    private async Task OpenAsync()
+    {
+        var filePath = AppToolkit.GetDrawPicturePath(Data.Id);
+        if (File.Exists(filePath))
+        {
+            var file = await StorageFile.GetFileFromPathAsync(filePath);
+            await Launcher.LaunchFileAsync(file);
+        }
+        else
+        {
+            this.Get<AppViewModel>().ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.FileNotFound), InfoType.Error));
+        }
+    }
+
+    [RelayCommand]
+    private async Task CopyAsync()
+    {
+        var filePath = AppToolkit.GetDrawPicturePath(Data.Id);
+        if (File.Exists(filePath))
+        {
+            var file = await StorageFile.GetFileFromPathAsync(filePath);
+            var dp = new DataPackage();
+            dp.SetBitmap(RandomAccessStreamReference.CreateFromFile(file));
+            Clipboard.SetContent(dp);
+            this.Get<AppViewModel>().ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.Copied), InfoType.Success));
+        }
+        else
+        {
+            this.Get<AppViewModel>().ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.FileNotFound), InfoType.Error));
+        }
+    }
+
+    [RelayCommand]
+    private async Task DeleteAsync()
+    {
+        await this.Get<IStorageService>().RemoveDrawSessionAsync(Data.Id);
+        this.Get<DrawPageViewModel>().ReloadHistoryCommand.Execute(default);
+    }
 }

@@ -15,6 +15,6 @@
             x:Name="LocalImage"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
-            Stretch="UniformToFill" />
+            Stretch="{x:Bind Stretch, Mode=OneWay}" />
     </Grid>
 </base:LayoutUserControlBase>

@@ -1,5 +1,6 @@
 // Copyright (c) Richasy. All rights reserved.
 
+using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace RodelAgent.UI.Controls.Draw;
@@ -22,6 +23,12 @@ public sealed partial class DrawImage : LayoutUserControlBase
         DependencyProperty.Register(nameof(Proportion), typeof(double), typeof(DrawImage), new PropertyMetadata(1d));
 
     /// <summary>
+    /// <see cref="Stretch"/> 的依赖属性.
+    /// </summary>
+    public static readonly DependencyProperty StretchProperty =
+        DependencyProperty.Register(nameof(Stretch), typeof(Stretch), typeof(DrawImage), new PropertyMetadata(Stretch.UniformToFill));
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="DrawImage"/> class.
     /// </summary>
     public DrawImage() => InitializeComponent();
@@ -42,6 +49,15 @@ public sealed partial class DrawImage : LayoutUserControlBase
     {
         get => (double)GetValue(ProportionProperty);
         set => SetValue(ProportionProperty, value);
+    }
+
+    /// <summary>
+    /// 扩展方式.
+    /// </summary>
+    public Stretch Stretch
+    {
+        get => (Stretch)GetValue(StretchProperty);
+        set => SetValue(StretchProperty, value);
     }
 
     /// <inheritdoc/>
@@ -78,10 +94,10 @@ public sealed partial class DrawImage : LayoutUserControlBase
     {
         var width = ActualWidth;
         var height = ActualHeight;
-        var perferHeight = width / Proportion;
-        if (Math.Abs(perferHeight - height) > 2)
+        var preferHeight = width / Proportion;
+        if (!double.IsInfinity(preferHeight) && Math.Abs(preferHeight - height) > 2)
         {
-            LocalImage.Height = perferHeight;
+            LocalImage.Height = preferHeight;
         }
     }
 

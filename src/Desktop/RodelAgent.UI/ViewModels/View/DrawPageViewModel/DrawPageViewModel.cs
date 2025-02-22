@@ -143,6 +143,52 @@ public sealed partial class DrawPageViewModel(ILogger<DrawPageViewModel> logger)
         SyncDrawHistory(history ?? []);
     }
 
+    [RelayCommand]
+    private async Task SaveImageAsync()
+    {
+        if (Image is null)
+        {
+            return;
+        }
+
+        var file = await this.Get<IFileToolkit>().SaveFileAsync(".png", this.Get<AppViewModel>().ActivatedWindow);
+        if (file is null)
+        {
+            return;
+        }
+
+        var currentId = GetCurrentPresentImageId();
+        var filePath = AppToolkit.GetDrawPicturePath(currentId);
+        var sourceFile = await StorageFile.GetFileFromPathAsync(filePath);
+        await sourceFile.CopyAndReplaceAsync(file);
+    }
+
+    [RelayCommand]
+    private void CopyImage()
+    {
+        if (Image is null)
+        {
+            return;
+        }
+
+        var currentId = GetCurrentPresentImageId();
+        var recordVM = History.FirstOrDefault(p => p.Data.Id == currentId);
+        recordVM?.CopyCommand.Execute(default);
+    }
+
+    [RelayCommand]
+    private void OpenImage()
+    {
+        if (Image is null)
+        {
+            return;
+        }
+
+        var currentId = GetCurrentPresentImageId();
+        var recordVM = History.FirstOrDefault(p => p.Data.Id == currentId);
+        recordVM?.OpenCommand.Execute(default);
+    }
+
     private void SyncDrawHistory(List<DrawRecord> list)
     {
         // 边界情况处理
@@ -186,6 +232,9 @@ public sealed partial class DrawPageViewModel(ILogger<DrawPageViewModel> logger)
         HistoryCount = History.Count;
         IsHistoryEmpty = History.Count == 0;
     }
+
+    private string GetCurrentPresentImageId()
+        => Image is null ? string.Empty : Path.GetFileNameWithoutExtension(Image.LocalPath);
 
     partial void OnSelectedSizeChanged(DrawSizeItemViewModel? value)
     {

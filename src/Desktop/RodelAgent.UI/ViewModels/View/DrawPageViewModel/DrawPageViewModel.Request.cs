@@ -49,7 +49,7 @@ public sealed partial class DrawPageViewModel
 
             await this.Get<IStorageService>().AddOrUpdateDrawSessionAsync(record, result.ToArray());
             ReloadHistoryCommand.Execute(default);
-            Image = new Uri($"file://{AppToolkit.GetDrawPicturePath(record.Id)}");
+            ShowRecord(record);
         }
         catch (Exception ex)
         {
@@ -68,5 +68,15 @@ public sealed partial class DrawPageViewModel
         _drawCts?.Cancel();
         _drawCts = null;
         IsDrawing = false;
+    }
+
+    [RelayCommand]
+    private void ShowRecord(DrawRecord record)
+    {
+        Prompt = record.Prompt;
+        Image = new Uri($"file://{AppToolkit.GetDrawPicturePath(record.Id)}");
+        PresenterProvider = record.Provider;
+        PresenterTime = record.Time?.ToString("yyyy-MM-dd HH:mm:ss") ?? string.Empty;
+        PresenterProportion = (double)(record.Size?.Width ?? 1) / record.Size?.Height ?? 1;
     }
 }
