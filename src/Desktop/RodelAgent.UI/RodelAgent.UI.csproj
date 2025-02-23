@@ -21,6 +21,7 @@
   <ItemGroup>
     <Content Remove="Assets\Database\*.ddb" />
 	<Content Remove="Assets\SqliteJson\**\*" />
+	<Content Remove="Web\chat-render\**\*" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Assets\big-logo.png" />
@@ -32,6 +33,14 @@
     <None Remove="Controls\Audio\AudioSideBody.xaml" />
     <None Remove="Controls\Audio\AudioSideHeader.xaml" />
     <None Remove="Controls\Audio\WavePanel.xaml" />
+    <None Remove="Controls\Chat\ChatModelItemControl.xaml" />
+    <None Remove="Controls\Chat\ChatServiceItemControl.xaml" />
+    <None Remove="Controls\Chat\ChatSessionFooter.xaml" />
+    <None Remove="Controls\Chat\ChatSessionMainBody.xaml" />
+    <None Remove="Controls\Chat\ChatSessionMainHeader.xaml" />
+    <None Remove="Controls\Chat\ChatSessionPanel.xaml" />
+    <None Remove="Controls\Chat\ChatSideBody.xaml" />
+    <None Remove="Controls\Chat\ChatSideHeader.xaml" />
     <None Remove="Controls\Draw\DrawImage.xaml" />
     <None Remove="Controls\Draw\DrawMainBody.xaml" />
     <None Remove="Controls\Draw\DrawMainFooter.xaml" />
@@ -71,6 +80,12 @@
   	</None>
   </ItemGroup>
 
+  <ItemGroup>
+  	<None Update="Web\chat-render\**\*">
+  		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  	</None>
+  </ItemGroup>
+
   <ItemGroup Condition="'$(Platform)' == 'x64'">
   	<None Update="Assets\SqliteJson\x64\SQLite.Interop.dll">
   	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -102,6 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Humanizer.Core.zh-Hans" />
+    <PackageReference Include="Microsoft.Web.WebView2" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" />
     <PackageReference Include="Microsoft.WindowsAppSDK" />
     <PackageReference Include="FluentIcons.WinUI" />
@@ -125,6 +141,41 @@
     <ProjectReference Include="..\..\Core\RodelAgent.Interfaces\RodelAgent.Interfaces.csproj" />
     <ProjectReference Include="..\..\Core\RodelAgent.Statics\RodelAgent.Statics.csproj" />
     <ProjectReference Include="..\RodelAgent.UI.Models\RodelAgent.UI.Models.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Chat\ChatModelItemControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Chat\ChatSessionFooter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Chat\ChatSessionPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Chat\ChatSessionMainHeader.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Chat\ChatServiceItemControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Chat\ChatSideBody.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Chat\ChatSideHeader.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\Audio\AudioMainBody.xaml">
@@ -283,6 +334,14 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\Draw\DrawMainHeader.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Web\chat-render\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Chat\ChatSessionMainBody.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

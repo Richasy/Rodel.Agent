@@ -396,4 +396,91 @@
   <data name="NeedGenerateAudioDescription" xml:space="preserve">
     <value>输入内容，让 AI 开口说话</value>
   </data>
+  <data name="Agents" xml:space="preserve">
+    <value>助理</value>
+  </data>
+  <data name="ChatInputPlaceholder" xml:space="preserve">
+    <value>请输入对话内容...</value>
+  </data>
+  <data name="CleanChatMessagesWarning" xml:space="preserve">
+    <value>是否要清空当前的聊天记录？</value>
+  </data>
+  <data name="CleanMessages" xml:space="preserve">
+    <value>清空消息</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="Groups" xml:space="preserve">
+    <value>群组</value>
+  </data>
+  <data name="ImportTools" xml:space="preserve">
+    <value>导入工具</value>
+  </data>
+  <data name="InsertImage" xml:space="preserve">
+    <value>插入图片</value>
+  </data>
+  <data name="JustAddMessage" xml:space="preserve">
+    <value>仅添加消息</value>
+  </data>
+  <data name="JustAddMessageDescription" xml:space="preserve">
+    <value>只将当前内容添加到消息列表，不会请求模型生成结果</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>加载中，请稍候...</value>
+  </data>
+  <data name="Model" xml:space="preserve">
+    <value>模型</value>
+  </data>
+  <data name="MoreOptions" xml:space="preserve">
+    <value>更多选项</value>
+  </data>
+  <data name="MyChat" xml:space="preserve">
+    <value>我的对话</value>
+  </data>
+  <data name="NewAgent" xml:space="preserve">
+    <value>添加助理</value>
+  </data>
+  <data name="NewGroup" xml:space="preserve">
+    <value>添加群组</value>
+  </data>
+  <data name="NewSession" xml:space="preserve">
+    <value>新的对话</value>
+  </data>
+  <data name="RandomChat" xml:space="preserve">
+    <value>随便聊聊</value>
+  </data>
+  <data name="Regenerate" xml:space="preserve">
+    <value>重新生成</value>
+  </data>
+  <data name="SaveAsPreset" xml:space="preserve">
+    <value>将当前会话保存为预设</value>
+  </data>
+  <data name="Services" xml:space="preserve">
+    <value>服务</value>
+  </data>
+  <data name="SupportTool" xml:space="preserve">
+    <value>支持工具调用</value>
+  </data>
+  <data name="SupportVision" xml:space="preserve">
+    <value>支持视觉识别</value>
+  </data>
+  <data name="Tools" xml:space="preserve">
+    <value>工具</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>复制</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="Discard" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>编辑</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>保存</value>
+  </data>
 </root>

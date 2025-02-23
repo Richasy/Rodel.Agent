@@ -17,12 +17,21 @@
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Default">
                     <BitmapImage x:Key="QQGroup" UriSource="ms-appx:///Assets/qq_group_dark.jpg" />
+                    <SolidColorBrush x:Key="SelectorCardCheckedBackgroundBrsuh" Color="{StaticResource SolidBackgroundFillColorBase}" />
+                    <SolidColorBrush x:Key="SelectorCardCheckedPointerOverBackgroundBrsuh" Color="{StaticResource SolidBackgroundFillColorBase}" />
+                    <SolidColorBrush x:Key="SelectorCardCheckedPressedBackgroundBrsuh" Color="{StaticResource SolidBackgroundFillColorQuarternary}" />
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Light">
                     <BitmapImage x:Key="QQGroup" UriSource="ms-appx:///Assets/qq_group_light.jpg" />
+                    <SolidColorBrush x:Key="SelectorCardCheckedBackgroundBrsuh" Color="{StaticResource SolidBackgroundFillColorBase}" />
+                    <SolidColorBrush x:Key="SelectorCardCheckedPointerOverBackgroundBrsuh" Color="{StaticResource SolidBackgroundFillColorBase}" />
+                    <SolidColorBrush x:Key="SelectorCardCheckedPressedBackgroundBrsuh" Color="{StaticResource SolidBackgroundFillColorQuarternary}" />
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="HighContrast">
                     <BitmapImage x:Key="QQGroup" UriSource="ms-appx:///Assets/qq_group_dark.jpg" />
+                    <StaticResource x:Key="SelectorCardCheckedBackgroundBrsuh" ResourceKey="SystemControlHighlightAccentBrush" />
+                    <StaticResource x:Key="SelectorCardCheckedPointerOverBackgroundBrsuh" ResourceKey="SystemControlForegroundAccentBrush" />
+                    <StaticResource x:Key="SelectorCardCheckedPressedBackgroundBrsuh" ResourceKey="SystemControlBackgroundBaseMediumLowBrush" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
 
@@ -37,6 +46,7 @@
             <share:ObjectToVisibilityConverter x:Key="ObjectToVisibilityReverseConverter" IsReverse="True" />
             <converters:GridLengthConverter x:Key="GridLengthConverter" />
             <converters:SecondsToTimeConverter x:Key="SecondsToTimeConverter" />
+            <converters:SessionTitleConverter x:Key="SessionTitleConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

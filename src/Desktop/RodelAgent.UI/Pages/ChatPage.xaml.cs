@@ -13,6 +13,10 @@ public sealed partial class ChatPage : ChatPageBase
     /// Initializes a new instance of the <see cref="ChatPage"/> class.
     /// </summary>
     public ChatPage() => InitializeComponent();
+
+    /// <inheritdoc/>
+    protected override void OnPageLoaded()
+        => ViewModel.InitializeCommand.Execute(default);
 }
 
 /// <summary>

@@ -1,0 +1,35 @@
+.ant-bubble-content article {
+  margin-bottom: -1em;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background-color: transparent;
+}
+
+html {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  padding: 0;
+  overflow-y: auto;
+  font-size: 14px;
+}
+
+.c-visible {
+  opacity: 1;
+}
+
+.c-hidden {
+  opacity: 0;
+}
+
+.ant-bubble-footer {
+  margin-top: 4px !important;
+  margin-bottom: -8px;
+}

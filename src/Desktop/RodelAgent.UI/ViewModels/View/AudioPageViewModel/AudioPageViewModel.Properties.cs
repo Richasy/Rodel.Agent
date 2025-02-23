@@ -50,20 +50,20 @@ public sealed partial class AudioPageViewModel
     /// <summary>
     /// 模型列表.
     /// </summary>
-    public ObservableCollection<AudioModelItemViewModel> Models { get; set; } = [];
+    public ObservableCollection<AudioModelItemViewModel> Models { get; } = [];
 
     /// <summary>
     /// 语言列表.
     /// </summary>
-    public ObservableCollection<LanguageItemViewModel> Languages { get; set; } = [];
+    public ObservableCollection<LanguageItemViewModel> Languages { get; } = [];
 
     /// <summary>
     /// 声音列表.
     /// </summary>
-    public ObservableCollection<AudioVoiceItemViewModel> Voices { get; set; } = [];
+    public ObservableCollection<AudioVoiceItemViewModel> Voices { get; } = [];
 
     /// <summary>
     /// 历史记录.
     /// </summary>
-    public ObservableCollection<AudioRecordItemViewModel> History { get; set; } = [];
+    public ObservableCollection<AudioRecordItemViewModel> History { get; } = [];
 }

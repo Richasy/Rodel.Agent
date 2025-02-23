@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:ChatSessionControlBase
+    x:Class="RodelAgent.UI.Controls.Chat.ChatSessionMainHeader"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ai="using:Richasy.WinUIKernel.AI"
+    xmlns:base="using:Richasy.WinUIKernel.Share.Base"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:local="using:RodelAgent.UI.Controls.Chat"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Padding="12,0" ColumnSpacing="12">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <ai:AILogo
+                Width="36"
+                Height="36"
+                VerticalAlignment="Center"
+                AvatarPadding="6"
+                IsAvatar="True"
+                Provider="{x:Bind ViewModel.CurrentProvider, Mode=OneWay}"
+                Visibility="{x:Bind ViewModel.IsService, Mode=OneWay}" />
+        </Grid>
+        <Grid Grid.Column="1" VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <base:TrimTextBlock
+                HorizontalAlignment="Left"
+                FontWeight="SemiBold"
+                MaxLines="1"
+                Text="{x:Bind ViewModel.Title, Mode=OneWay, Converter={StaticResource SessionTitleConverter}}" />
+            <base:TrimTextBlock
+                Grid.Row="1"
+                Margin="0,2,0,0"
+                HorizontalAlignment="Left"
+                FontSize="12"
+                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                MaxLines="1"
+                Text="{x:Bind ViewModel.Subtitle, Mode=OneWay}"
+                Visibility="{x:Bind ViewModel.Subtitle, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}" />
+        </Grid>
+        <Button
+            Grid.Column="2"
+            VerticalAlignment="Center"
+            AutomationProperties.Name="{ext:Locale Name=SaveAsPreset}"
+            Style="{StaticResource IconButtonStyle}"
+            ToolTipService.ToolTip="{ext:Locale Name=SaveAsPreset}"
+            Visibility="{x:Bind ViewModel.IsGroup, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+            <ic:SymbolIcon FontSize="14" Symbol="Save" />
+            <Button.KeyboardAccelerators>
+                <KeyboardAccelerator Key="S" Modifiers="Control" />
+            </Button.KeyboardAccelerators>
+        </Button>
+    </Grid>
+</local:ChatSessionControlBase>
