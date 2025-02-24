@@ -6,19 +6,20 @@
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
-	  <NoWarn>$(NoWarn);NU1701;CS9057;MSB3277;NETSDK1206;NU1507;NU1008;CA2007;NU1900</NoWarn>
+    <NoWarn>$(NoWarn);NU1701;CS9057;MSB3277;NETSDK1206;NU1507;NU1008;CA2007;NU1900</NoWarn>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
-	  <AnalysisLevel>latest</AnalysisLevel>
-	  <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <ImplicitUsings>enable</ImplicitUsings>
-	  <EditorConfigFilePath>$(MSBuildThisFileDirectory).editorconfig</EditorConfigFilePath>
+    <EditorConfigFilePath>$(MSBuildThisFileDirectory).editorconfig</EditorConfigFilePath>
+	<RepoRoot>$([System.IO.Path]::GetDirectoryName($([MSBuild]::GetPathOfFileAbove('.gitignore', '$(MSBuildThisFileDirectory)'))))</RepoRoot>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(MSBuildProjectExtension)' == '.csproj'">
-	  <AdditionalFiles Include="$(EditorConfigFilePath)" />
+    <AdditionalFiles Include="$(EditorConfigFilePath)" />
   </ItemGroup>
 </Project>

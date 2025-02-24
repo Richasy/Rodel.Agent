@@ -1,0 +1,73 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PublishAot>true</PublishAot>
+    <InvariantGlobalization>true</InvariantGlobalization>
+	<TrimmerSingleWarn>false</TrimmerSingleWarn>
+	<PackAsTool>true</PackAsTool>
+	<PackageVersion>0.0.1-preview1</PackageVersion>
+	<PackageId>Richasy.RodelCommit</PackageId>
+	<PackageTags>Richasy;Commit;CLI</PackageTags>
+	<Description>Generate git commit message using AI.</Description>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<Copyright>© Richasy. All rights reserved.</Copyright>
+	<PackageProjectUrl>https://github.com/Richasy/Rodel.Agent</PackageProjectUrl>
+	<RepositoryUrl>https://github.com/Richasy/Rodel.Agent</RepositoryUrl>
+	<PublishRepositoryUrl>true</PublishRepositoryUrl>
+	<PackageIconUrl>icon.png</PackageIconUrl>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<ToolCommandName>rodel-commit</ToolCommandName>
+	<PackageOutputPath>./nupkg</PackageOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+  	<!-- Include icon.png and NUGET.md in the project. -->
+  	<None Include="$(RepoRoot)/src/CLI/icon.png" Link="icon.png" Pack="true" PackagePath="." />
+  	<None Include="$(RepoRoot)/src/CLI/RodelCommit/README.md" Link="README.md" Pack="true" PackagePath="." />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" />
+    <PackageReference Include="LangChain.Splitters.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="Richasy.AgentKernel.Connectors.Ali" />
+    <PackageReference Include="Richasy.AgentKernel.Connectors.Anthropic" />
+    <PackageReference Include="Richasy.AgentKernel.Connectors.Azure" />
+    <PackageReference Include="Richasy.AgentKernel.Connectors.Baidu" />
+    <PackageReference Include="Richasy.AgentKernel.Connectors.DeepSeek" />
+    <PackageReference Include="Richasy.AgentKernel.Connectors.Google" />
+    <PackageReference Include="Richasy.AgentKernel.Connectors.Groq" />
+    <PackageReference Include="Richasy.AgentKernel.Connectors.IFlyTek" />
+    <PackageReference Include="Richasy.AgentKernel.Connectors.LingYi" />
+    <PackageReference Include="Richasy.AgentKernel.Connectors.Mistral" />
+    <PackageReference Include="Richasy.AgentKernel.Connectors.Moonshot" />
+    <PackageReference Include="Richasy.AgentKernel.Connectors.Ollama" />
+    <PackageReference Include="Richasy.AgentKernel.Connectors.OpenAI" />
+    <PackageReference Include="Richasy.AgentKernel.Connectors.OpenRouter" />
+    <PackageReference Include="Richasy.AgentKernel.Connectors.Perplexity" />
+    <PackageReference Include="Richasy.AgentKernel.Connectors.SiliconFlow" />
+    <PackageReference Include="Richasy.AgentKernel.Connectors.Tencent" />
+    <PackageReference Include="Richasy.AgentKernel.Connectors.TogetherAI" />
+    <PackageReference Include="Richasy.AgentKernel.Connectors.Volcano" />
+    <PackageReference Include="Richasy.AgentKernel.Connectors.XAI" />
+    <PackageReference Include="Richasy.AgentKernel.Connectors.Youdao" />
+    <PackageReference Include="Richasy.AgentKernel.Connectors.ZhiPu" />
+    <PackageReference Include="Richasy.AgentKernel.Definitions" />
+    <PackageReference Include="Spectre.Console" />
+    <PackageReference Include="Tiktoken" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="config.example.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

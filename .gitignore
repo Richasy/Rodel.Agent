@@ -361,12 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/src/RodelChat.Console/config.json
-/src/RodelChat.Console/Presets/*.json
 cache
-/src/RodelTranslate.Console/config.json
-/src/RodelDraw.Console/config.json
-/src/Console/RodelAudio.Console/config.json
-/src/Console/RodelChat.Console/config.json
-/src/Console/RodelDraw.Console/config.json
-/src/Console/RodelTranslate.Console/config.json
+/src/CLI/RodelCommit/config.json
