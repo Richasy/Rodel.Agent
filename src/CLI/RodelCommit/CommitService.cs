@@ -128,17 +128,36 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
             AnsiConsole.Write(panel);
 
             // Confirm to commit.
-            var shouldCommit = await AnsiConsole.ConfirmAsync("Do you want to commit the changes?", false, _stopCts.Token);
-            if (shouldCommit)
+            var commitOperation = AnsiConsole.Prompt(new SelectionPrompt<int>()
+                .Title("Please select the operation:")
+                .PageSize(10)
+                .AddChoices([1, 2, 3])
+                .UseConverter(p => p switch
+                {
+                    1 => "Commit and push",
+                    2 => "Commit only",
+                    3 => "Edit commit message",
+                    4 => "Cancel",
+                    _ => "Unknown"
+                }));
+            if (commitOperation == 4)
             {
-                await GenerateCommitAndPushAsync(commitMessage).Spinner();
-                AnsiConsole.MarkupLine("[green]Commit and push successfully.[/]");
+                AnsiConsole.MarkupLine("[yellow]Commit canceled.[/]");
                 lifetime.StopApplication();
+                return;
             }
-            else
+            else if (commitOperation == 3)
             {
-                AnsiConsole.MarkupLine("[yellow]Commit and push canceled.[/]");
-                lifetime.StopApplication();
+                await GenerateCommitAsync(commitMessage, true);
+            }
+            else if (commitOperation == 2)
+            {
+                await GenerateCommitAsync(commitMessage);
+            }
+            else if (commitOperation == 1)
+            {
+                await GenerateCommitAsync(commitMessage);
+                await PushCommitAsync(commitMessage);
             }
         }
         catch (Exception ex)
@@ -389,16 +408,17 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
         return output;
     }
 
-    private static async Task GenerateCommitAndPushAsync(string commitMessage)
+    private static async Task GenerateCommitAsync(string commitMessage, bool needEdit = false)
     {
         // 运行 `git commit -m "{commitMessage}"` 命令，提交变更。
         AnsiConsole.MarkupLine("Start to commit and push...");
+        var command = needEdit ? "commit -e -m" : "commit -m";
         var commitProcess = new Process
         {
             StartInfo = new ProcessStartInfo
             {
                 FileName = "git",
-                Arguments = $"commit -m \"{commitMessage}\"",
+                Arguments = $"{command} \"{commitMessage}\"",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 WorkingDirectory = Environment.CurrentDirectory,
@@ -411,11 +431,10 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
         var commitError = await commitProcess.StandardError.ReadToEndAsync().ConfigureAwait(false);
         await commitProcess.WaitForExitAsync();
         AnsiConsole.MarkupLine("[green]Commit successfully.[/]");
-        if (!string.IsNullOrEmpty(commitError))
-        {
-            throw new InvalidOperationException(commitError);
-        }
+    }
 
+    private static async Task PushCommitAsync(string commitMessage)
+    {
         // 运行 `git push` 命令，推送变更。
         AnsiConsole.MarkupLine("Start to push...");
         var pushProcess = new Process
@@ -439,7 +458,7 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
         AnsiConsole.MarkupLine("[green]Push successfully.[/]");
         if (!string.IsNullOrEmpty(pushError))
         {
-            throw new InvalidOperationException(pushError);
+            AnsiConsole.MarkupLine($"[yellow]{pushError}[/]");
         }
     }
 
