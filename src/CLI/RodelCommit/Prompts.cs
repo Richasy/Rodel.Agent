@@ -25,20 +25,27 @@ internal static class Prompts
             : $"The specified commit type is:\n{typeList}";
 
         return $"""
-            You are to act as the author of a commit message in git. Your mission is to create clean and comprehensive commit messages in the conventional commit convention and explain WHAT were the changes and WHY the changes were done.
-            I'll enter a git diff summary, and your job is to convert it into a useful commit message.
-            Add a short description of the changes are done after the commit message. Don't start it with "This commit", just describe the changes.
-            Use the present tense. Lines must not be longer than {maxLength} characters.
+            You are a senior git engineer synthesizing git diff information into a conventional commit message. Follow these steps:
+            
+            1. Analyze all git diff below
+            {typeRule}
+            3. Create format-compliant header: "<type>: <concise subject>" (max {maxLength} chars)
+            4. Body content:
+               - Explain WHAT changed technically (key modifications)
+               - Specify WHY changes were made (without mentioning "this commit")
+               - Reference specific components/files where relevant
+            5. Format constraints:
+               - Language: {locale}
+               - Wrap body at {maxLength} characters
+               - Use imperative present tense
+               - Disable markdown code block tags
+            
+            Summarized Inputs:
             --------
             {diff}
             --------
-            Add a short description of the changes are done after the commit message. Don't start it with "This commit", just return only 1 type commit message describes the git diff summary.
-
-            ## Rules
-            {typeRule}
-            - Commit message must be a maximum of {maxLength} characters.
-            - Commit message language: {locale}.
-            - First line need add the type, like "feat: add new feature".
+            
+            Return only the formatted commit message without commentary.
             """;
     }
 

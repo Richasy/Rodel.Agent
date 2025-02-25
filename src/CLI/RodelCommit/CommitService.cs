@@ -131,7 +131,7 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
             var commitOperation = AnsiConsole.Prompt(new SelectionPrompt<int>()
                 .Title("Please select the operation:")
                 .PageSize(10)
-                .AddChoices([1, 2, 3])
+                .AddChoices([1, 2, 3, 4])
                 .UseConverter(p => p switch
                 {
                     1 => "Commit and push",
@@ -143,8 +143,6 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
             if (commitOperation == 4)
             {
                 AnsiConsole.MarkupLine("[yellow]Commit canceled.[/]");
-                lifetime.StopApplication();
-                return;
             }
             else if (commitOperation == 3)
             {
@@ -159,6 +157,8 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
                 await GenerateCommitAsync(commitMessage);
                 await PushCommitAsync(commitMessage);
             }
+
+            lifetime.StopApplication();
         }
         catch (Exception ex)
         {
@@ -410,9 +410,7 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
 
     private static async Task GenerateCommitAsync(string commitMessage, bool needEdit = false)
     {
-        // 运行 `git commit -m "{commitMessage}"` 命令，提交变更。
-        AnsiConsole.MarkupLine("Start to commit and push...");
-        var command = needEdit ? "commit -e -m" : "commit -m";
+        var command = needEdit ? "commit --edit -m" : "commit -m";
         var commitProcess = new Process
         {
             StartInfo = new ProcessStartInfo
