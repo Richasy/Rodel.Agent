@@ -58,7 +58,7 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
             var defaultService = ChatConfigManager.AppConfiguration?.App?.DefaultService;
             if (availableServices.Count == 0)
             {
-                AnsiConsole.MarkupLine("[red]No available services found.[/]\n[grey]You can run [green]rodel-commit --options[/] to config your services.[/]");
+                AnsiConsole.MarkupLine("[red]No available services found.[/]\n[grey]You can run [green]rodel-commit --config[/] to config your services.[/]");
                 lifetime.StopApplication();
                 return;
             }
@@ -66,10 +66,12 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
             if (!string.IsNullOrEmpty(defaultService)
                 && !availableServices.Any(p => JsonSerializer.Serialize(p, JsonGenContext.Default.ChatProviderType).Contains(defaultService)))
             {
-                AnsiConsole.MarkupLine("[red]The default service is not available.[/]\n[grey]You can run [green]rodel-commit --options[/] to config your services.[/]");
+                AnsiConsole.MarkupLine("[red]The default service is not available.[/]\n[grey]You can run [green]rodel-commit --config[/] to config your services.[/]");
                 lifetime.StopApplication();
                 return;
             }
+
+            var commitType = AskCommitType();
 
             // Initialize ai service.
             var provider = !string.IsNullOrEmpty(defaultService)
@@ -96,12 +98,12 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
             }
 
             // Generate summary.
-            var summaryList = await GenerateSummaryWithDocumentsAsync(aiService, model.Id, documents);
+            var summaryList = await GenerateSummaryWithDocumentsAsync(aiService, model.Id, commitType, documents);
             var summary = string.Empty;
             if (summaryList.Count > 1)
             {
                 AnsiConsole.MarkupLine($"[green]Already generated {summaryList.Count} summaries, continue to generate final summary...[/]");
-                summary = await GenerateSummaryWithSegmentsAsync(aiService, model.Id, summaryList);
+                summary = await GenerateSummaryWithSegmentsAsync(aiService, model.Id, commitType, summaryList);
             }
             else
             {
@@ -114,8 +116,9 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
                 string p1 = match.Groups[1].Value;
                 return $"({p1.ToLower()}):";
             });
-
+            summary = RemoveMarkdownCodeBlockDelimiters(summary);
             var commitMessage = AddEmojiToMessage(summary);
+
             var panel = new Panel(commitMessage)
             {
                 Header = new PanelHeader("Commit Message"),
@@ -145,7 +148,7 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
         }
     }
 
-    private async Task<List<string>> GenerateSummaryWithDocumentsAsync(IChatService chatService, string model, List<string> documents)
+    private async Task<List<string>> GenerateSummaryWithDocumentsAsync(IChatService chatService, string model, GitmojiItem commitType, List<string> documents)
     {
         var result = new List<string>();
         var index = 0;
@@ -163,9 +166,10 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
                     try
                     {
                         var summarizePrompt = useSegments
-                            ? Prompts.GetSegmentSummaryPrompt(doc, ChatConfigManager.AppConfiguration.App.Locale)
+                            ? Prompts.GetSegmentSummaryPrompt(doc, commitType, ChatConfigManager.AppConfiguration.App.Locale)
                             : Prompts.GetCommitSummaryPrompt(
                                 doc,
+                                commitType,
                                 ChatConfigManager.AppConfiguration.App.MaxCommitLength,
                                 ChatConfigManager.AppConfiguration.App.Locale);
                         var chatMsg = new ChatMessage(ChatRole.User, summarizePrompt);
@@ -192,9 +196,9 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
         return result;
     }
 
-    private async Task<string> GenerateSummaryWithSegmentsAsync(IChatService chatService, string model, List<string> segments)
+    private async Task<string> GenerateSummaryWithSegmentsAsync(IChatService chatService, string model, GitmojiItem commitType, List<string> segments)
     {
-        var summarizePrompt = Prompts.GetCommitSummaryPrompt(segments, ChatConfigManager.AppConfiguration.App.MaxCommitLength, ChatConfigManager.AppConfiguration.App.Locale);
+        var summarizePrompt = Prompts.GetCommitSummaryPrompt(segments, commitType, ChatConfigManager.AppConfiguration.App.MaxCommitLength, ChatConfigManager.AppConfiguration.App.Locale);
         var chatMsg = new ChatMessage(ChatRole.User, summarizePrompt);
         var options = new ChatOptions
         {
@@ -220,6 +224,27 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
         }
 
         return provider;
+    }
+
+    private static GitmojiItem AskCommitType()
+    {
+        var backupItmes = Gitmojis.Items.ToList();
+
+        backupItmes.Insert(0, new GitmojiItem
+        {
+            Code = "Auto",
+            Name = "Auto generate",
+            Description = "Let AI determine the commit type",
+            Emoji = "🧠",
+            Type = "auto",
+        });
+
+        return AnsiConsole.Prompt(new SelectionPrompt<GitmojiItem>()
+                .Title("Please select a change type:")
+                .PageSize(10)
+                .MoreChoicesText("More")
+                .AddChoices(backupItmes)
+                .UseConverter(item => $"{item.Emoji} {item.Type}: {item.Description}"));
     }
 
     private static void DisplayCurrentDirectory()
@@ -304,7 +329,7 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
         // 遍历 gitmojis 查找匹配的类型
         foreach (var item in Gitmojis.Items)
         {
-            if (type.Contains(item.Type))
+            if (type.Contains(item.Type, StringComparison.OrdinalIgnoreCase))
             {
                 emoji = item.Emoji;
                 break;
@@ -312,7 +337,24 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
         }
 
         // 返回格式化后的消息
-        return $"{emoji} {type}: {rest}";
+        return ChatConfigManager.AppConfiguration.App.UseGitmoji ? $"{emoji} {type}: {rest}" : $"{type}: {rest}";
+    }
+
+    public static string RemoveMarkdownCodeBlockDelimiters(string input)
+    {
+        // 移除代码块的起始和结束标记，保留代码块内的内容
+        var pattern = @"```[a-zA-Z]*\s*|```";
+        var result = Regex.Replace(input, pattern, string.Empty, RegexOptions.Multiline);
+
+        // 移除首行的 # 标记
+        var lines = result.Split(['\n'], StringSplitOptions.None);
+        if (lines.Length > 0)
+        {
+            lines[0] = lines[0].TrimStart('#').TrimStart();
+        }
+
+        // 重新组合文本
+        return string.Join(Environment.NewLine, lines).Trim();
     }
 
     private static async Task<string> GetDiffAsync()

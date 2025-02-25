@@ -148,13 +148,20 @@ internal sealed class ChatConfigManager : IChatConfigManager
             return;
         }
 
-        if (!File.Exists("config.json"))
+        var directory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        var configDirectory = Path.Combine(directory, ".rodel-commit");
+        if (!Directory.Exists(configDirectory))
         {
-            // 将 config.example.json 复制到 config.json。
-            File.Copy("config.example.json", "config.json");
+            Directory.CreateDirectory(configDirectory);
+        }
+        var configPath = Path.Combine(configDirectory, "config.json");
+        if (!File.Exists(configPath))
+        {
+            var examplePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.example.json");
+            File.Copy(examplePath, configPath);
         }
 
-        var content = await File.ReadAllTextAsync("config.json").ConfigureAwait(false);
+        var content = await File.ReadAllTextAsync(configPath).ConfigureAwait(false);
         AppConfiguration = JsonSerializer.Deserialize(content, JsonGenContext.Default.CommitConfiguration)!;
     }
 }

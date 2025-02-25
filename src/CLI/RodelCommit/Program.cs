@@ -18,11 +18,17 @@ if (args.Length > 0)
         {
             if (opt.OpenConfig)
             {
-                var directory = AppDomain.CurrentDomain.BaseDirectory;
-                var path = Path.Combine(directory, "config.json");
+                var directory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                var configDirectory = Path.Combine(directory, ".rodel-commit");
+                if (!Directory.Exists(configDirectory))
+                {
+                    Directory.CreateDirectory(configDirectory);
+                }
+
+                var path = Path.Combine(configDirectory, "config.json");
                 if (!File.Exists(path))
                 {
-                    var exampleFile = Path.Combine(directory, "config.example.json");
+                    var exampleFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.example.json");
                     File.Copy(exampleFile, path);
                 }
 

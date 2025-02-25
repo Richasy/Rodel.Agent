@@ -7,8 +7,8 @@ Rodel Commit 是一款基于 [agent-kernel](https://github.com/Richasy/agent-ker
 
 <small>🩷感谢 [Lobe Commit](https://github.com/lobehub/lobe-cli-toolbox/packages/lobe-commit) 提供的灵感🩷</small>
 
-[![][dotnet-release-shield]][dotnet-tool-link]
-[![][github-license-shield]][github-license-link]
+[![NuGet Version](https://img.shields.io/nuget/v/Richasy.RodelCommit)](https://www.nuget.org/packages/Richasy.RodelCommit)
+[![GitHub License](https://img.shields.io/github/license/Richasy/Rodel.Agent)](https://www.github.com/Richasy/Rodel.Agent)
 
 </div>
 
@@ -24,7 +24,7 @@ Rodel Commit 是一款基于 [agent-kernel](https://github.com/Richasy/agent-ker
 在安装了 .NET 的设备上，请运行下面的命令：
 
 ```powershell
-dotnet tool install richasy.rodelcommit
+dotnet tool install --global Richasy.RodelCommit
 ```
 
 ## 🤯 使用

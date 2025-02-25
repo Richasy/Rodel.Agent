@@ -134,7 +134,7 @@ internal sealed class OllamaConfig : OllamaChatConfig
     public string? Model { get; set; }
 
     public override bool IsValid()
-        => base.IsValid() && !string.IsNullOrEmpty(Model);
+        => !string.IsNullOrEmpty(Endpoint) && !string.IsNullOrEmpty(Model);
 }
 
 internal sealed class GeminiConfig : GeminiChatConfig
@@ -287,7 +287,7 @@ internal sealed class DoubaoConfig : DoubaoChatConfig
     public string? Model { get; set; }
 
     public override bool IsValid()
-        => base.IsValid() && !string.IsNullOrEmpty(Model);
+        => !string.IsNullOrEmpty(Key) && !string.IsNullOrEmpty(Model);
 }
 
 internal sealed class XAIConfig : XAIChatConfig

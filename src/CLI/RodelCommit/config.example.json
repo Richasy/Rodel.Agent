@@ -1,8 +1,8 @@
 ﻿{
   "app": {
     "default_service": "",
-    "diff_chunk_size": 5000,
-    "max_commit_length": 70,
+    "diff_chunk_size": 7000,
+    "max_commit_length": 40,
     "locale": "en-US",
     "use_gitmoji": true
   },
