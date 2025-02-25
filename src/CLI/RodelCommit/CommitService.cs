@@ -119,7 +119,7 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
             summary = RemoveMarkdownCodeBlockDelimiters(summary);
             var commitMessage = AddEmojiToMessage(summary);
 
-            var panel = new Panel(commitMessage)
+            var panel = new Panel(Markup.Escape(commitMessage))
             {
                 Header = new PanelHeader("Commit Message"),
                 Border = BoxBorder.Rounded,

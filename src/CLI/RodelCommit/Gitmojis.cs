@@ -24,6 +24,14 @@ internal static class Gitmojis
         },
         new GitmojiItem
         {
+            Code = ":bookmark:",
+            Description = "There is no clear attribute, it is a phased submission.",
+            Emoji = "🔖",
+            Name = "bookmark",
+            Type = "submission"
+        },
+        new GitmojiItem
+        {
             Code = ":memo:",
             Description = "Writing docs.",
             Emoji = "📝",
