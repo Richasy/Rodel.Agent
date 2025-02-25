@@ -131,7 +131,7 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
             var shouldCommit = await AnsiConsole.ConfirmAsync("Do you want to commit the changes?", false, _stopCts.Token);
             if (shouldCommit)
             {
-                await GenerateCommitAndPushAsync(commitMessage);
+                await GenerateCommitAndPushAsync(commitMessage).Spinner();
                 AnsiConsole.MarkupLine("[green]Commit and push successfully.[/]");
                 lifetime.StopApplication();
             }
@@ -389,6 +389,7 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
     private static async Task GenerateCommitAndPushAsync(string commitMessage)
     {
         // 运行 `git commit -m "{commitMessage}"` 命令，提交变更。
+        AnsiConsole.MarkupLine("Start to commit and push...");
         var commitProcess = new Process
         {
             StartInfo = new ProcessStartInfo
@@ -406,12 +407,14 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
         _ = await commitProcess.StandardOutput.ReadToEndAsync().ConfigureAwait(false);
         var commitError = await commitProcess.StandardError.ReadToEndAsync().ConfigureAwait(false);
         await commitProcess.WaitForExitAsync();
+        AnsiConsole.MarkupLine("[green]Commit successfully.[/]");
         if (!string.IsNullOrEmpty(commitError))
         {
             throw new InvalidOperationException(commitError);
         }
 
         // 运行 `git push` 命令，推送变更。
+        AnsiConsole.MarkupLine("Start to push...");
         var pushProcess = new Process
         {
             StartInfo = new ProcessStartInfo
@@ -430,6 +433,7 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
         _ = await pushProcess.StandardOutput.ReadToEndAsync().ConfigureAwait(false);
         var pushError = await pushProcess.StandardError.ReadToEndAsync().ConfigureAwait(false);
         await pushProcess.WaitForExitAsync();
+        AnsiConsole.MarkupLine("[green]Push successfully.[/]");
         if (!string.IsNullOrEmpty(pushError))
         {
             throw new InvalidOperationException(pushError);
