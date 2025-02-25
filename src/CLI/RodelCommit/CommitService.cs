@@ -320,11 +320,11 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
             return message; // 如果格式不符合预期，直接返回原消息
         }
 
-        string type = parts[0];
-        string rest = parts[1];
+        var type = parts[0];
+        var rest = parts[1];
 
         // 默认表情符号
-        string emoji = "🔧";
+        var emoji = "🔧";
 
         // 遍历 gitmojis 查找匹配的类型
         foreach (var item in Gitmojis.Items)
@@ -350,8 +350,11 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
         var lines = result.Split(['\n'], StringSplitOptions.None);
         if (lines.Length > 0)
         {
-            lines[0] = lines[0].TrimStart('#').TrimStart();
+            lines[0] = lines[0].TrimStart('#').Trim() + "\n";
         }
+
+        // 移除空行.
+        lines = [.. lines.Where(p => !string.IsNullOrWhiteSpace(p))];
 
         // 重新组合文本
         return string.Join(Environment.NewLine, lines).Trim();
