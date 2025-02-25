@@ -8,7 +8,7 @@
     <InvariantGlobalization>true</InvariantGlobalization>
 	<TrimmerSingleWarn>false</TrimmerSingleWarn>
 	<PackAsTool>true</PackAsTool>
-	<PackageVersion>0.0.6</PackageVersion>
+	<PackageVersion>0.0.7</PackageVersion>
 	<PackageId>Richasy.RodelCommit</PackageId>
 	<PackageTags>Richasy;Commit;CLI</PackageTags>
 	<Description>Generate git commit message using AI.</Description>

@@ -21,7 +21,7 @@ Rodel Commit 是一款基于 [agent-kernel](https://github.com/Richasy/agent-ker
 
 ## 📦 安装
 
-在安装了 .NET 的设备上，请运行下面的命令：
+在安装了 .NET 9 SDK 的设备上，请运行下面的命令：
 
 ```powershell
 dotnet tool install --global Richasy.RodelCommit
@@ -43,3 +43,17 @@ rodel-commit --config
 git add <files...>
 rodel-commit
 ```
+
+## 🛖 仓库描述
+
+你可能会在多个仓库之中使用 Rodel Commit，仅凭代码变动有时候并不能准确生成提交信息，你可以额外为仓库添加描述文件，以便 Rodel Commit 生成更准确的提交信息。
+
+运行以下命令创建仓库描述文件：
+
+```shell
+rodel-commit --repo your_repo_name
+```
+
+这会在用户目录的 `.rodel-commit` 目录下创建一个名为 `your_repo_name.txt` 的文件，你可以在其中填写仓库的描述信息。
+
+首行为仓库路径，第二行以后为仓库描述。
