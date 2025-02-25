@@ -2,11 +2,11 @@
 
 namespace RodelCommit;
 
-internal static class Gitmojis
+internal static class CommitTypes
 {
-    public static GitmojiItem[] Items { get; } =
+    public static CommitTypeItem[] Items { get; } =
     [
-        new GitmojiItem
+        new CommitTypeItem
         {
             Code = ":sparkles:",
             Description = "Introducing new features.",
@@ -14,7 +14,7 @@ internal static class Gitmojis
             Name = "sparkles",
             Type = "feat"
         },
-        new GitmojiItem
+        new CommitTypeItem
         {
             Code = ":bug:",
             Description = "Fixing a bug.",
@@ -22,7 +22,7 @@ internal static class Gitmojis
             Name = "bug",
             Type = "fix"
         },
-        new GitmojiItem
+        new CommitTypeItem
         {
             Code = ":bookmark:",
             Description = "There is no clear attribute, it is a phased submission.",
@@ -30,7 +30,7 @@ internal static class Gitmojis
             Name = "bookmark",
             Type = "submission"
         },
-        new GitmojiItem
+        new CommitTypeItem
         {
             Code = ":memo:",
             Description = "Writing docs.",
@@ -38,7 +38,7 @@ internal static class Gitmojis
             Name = "memo",
             Type = "docs"
         },
-        new GitmojiItem
+        new CommitTypeItem
         {
             Code = ":art:",
             Description = "Improving structure / format of the code.",
@@ -46,7 +46,7 @@ internal static class Gitmojis
             Name = "art",
             Type = "style"
         },
-        new GitmojiItem
+        new CommitTypeItem
         {
             Code = ":zap:",
             Description = "Improving performance.",
@@ -54,7 +54,7 @@ internal static class Gitmojis
             Name = "zap",
             Type = "perf"
         },
-        new GitmojiItem
+        new CommitTypeItem
         {
             Code = ":tada:",
             Description = "Initial commit.",
@@ -62,7 +62,7 @@ internal static class Gitmojis
             Name = "tada",
             Type = "init"
         },
-        new GitmojiItem
+        new CommitTypeItem
         {
             Code = ":rocket:",
             Description = "Deploying stuff.",
@@ -70,7 +70,7 @@ internal static class Gitmojis
             Name = "rocket",
             Type = "deploy"
         },
-        new GitmojiItem
+        new CommitTypeItem
         {
             Code = ":white_check_mark:",
             Description = "Adding tests.",
@@ -81,7 +81,7 @@ internal static class Gitmojis
     ];
 }
 
-internal sealed class GitmojiItem
+internal sealed class CommitTypeItem
 {
     public string Code { get; set; }
 

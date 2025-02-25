@@ -71,6 +71,12 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
                 return;
             }
 
+            var (repoName, repoDesc) = await GetCurrentDescriptorAsync();
+            if (!string.IsNullOrEmpty(repoName))
+            {
+                AnsiConsole.MarkupLine($"[grey]Found repository descriptor: [blue]{repoName}[/][/]");
+            }
+
             var commitType = AskCommitType();
 
             // Initialize ai service.
@@ -98,12 +104,12 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
             }
 
             // Generate summary.
-            var summaryList = await GenerateSummaryWithDocumentsAsync(aiService, model.Id, commitType, documents);
+            var summaryList = await GenerateSummaryWithDocumentsAsync(aiService, model.Id, commitType, documents, repoDesc);
             var summary = string.Empty;
             if (summaryList.Count > 1)
             {
                 AnsiConsole.MarkupLine($"[green]Already generated {summaryList.Count} summaries, continue to generate final summary...[/]");
-                summary = await GenerateSummaryWithSegmentsAsync(aiService, model.Id, commitType, summaryList);
+                summary = await GenerateSummaryWithSegmentsAsync(aiService, model.Id, commitType, summaryList, repoDesc);
             }
             else
             {
@@ -167,7 +173,7 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
         }
     }
 
-    private async Task<List<string>> GenerateSummaryWithDocumentsAsync(IChatService chatService, string model, GitmojiItem commitType, List<string> documents)
+    private async Task<List<string>> GenerateSummaryWithDocumentsAsync(IChatService chatService, string model, CommitTypeItem commitType, List<string> documents, string? repoDesc)
     {
         var result = new List<string>();
         var index = 0;
@@ -185,12 +191,13 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
                     try
                     {
                         var summarizePrompt = useSegments
-                            ? Prompts.GetSegmentSummaryPrompt(doc, commitType, ChatConfigManager.AppConfiguration.App.Locale)
+                            ? Prompts.GetSegmentSummaryPrompt(doc, commitType, ChatConfigManager.AppConfiguration.App.Locale, repoDesc)
                             : Prompts.GetCommitSummaryPrompt(
                                 doc,
                                 commitType,
                                 ChatConfigManager.AppConfiguration.App.MaxCommitLength,
-                                ChatConfigManager.AppConfiguration.App.Locale);
+                                ChatConfigManager.AppConfiguration.App.Locale,
+                                repoDesc);
                         var chatMsg = new ChatMessage(ChatRole.User, summarizePrompt);
                         var options = new ChatOptions
                         {
@@ -215,9 +222,9 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
         return result;
     }
 
-    private async Task<string> GenerateSummaryWithSegmentsAsync(IChatService chatService, string model, GitmojiItem commitType, List<string> segments)
+    private async Task<string> GenerateSummaryWithSegmentsAsync(IChatService chatService, string model, CommitTypeItem commitType, List<string> segments, string? repoDesc)
     {
-        var summarizePrompt = Prompts.GetCommitSummaryPrompt(segments, commitType, ChatConfigManager.AppConfiguration.App.MaxCommitLength, ChatConfigManager.AppConfiguration.App.Locale);
+        var summarizePrompt = Prompts.GetCommitSummaryPrompt(segments, commitType, ChatConfigManager.AppConfiguration.App.MaxCommitLength, ChatConfigManager.AppConfiguration.App.Locale, repoDesc);
         var chatMsg = new ChatMessage(ChatRole.User, summarizePrompt);
         var options = new ChatOptions
         {
@@ -245,11 +252,11 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
         return provider;
     }
 
-    private static GitmojiItem AskCommitType()
+    private static CommitTypeItem AskCommitType()
     {
-        var backupItmes = Gitmojis.Items.ToList();
+        var backupItmes = CommitTypes.Items.ToList();
 
-        backupItmes.Insert(0, new GitmojiItem
+        backupItmes.Insert(0, new CommitTypeItem
         {
             Code = "Auto",
             Name = "Auto generate",
@@ -258,7 +265,7 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
             Type = "auto",
         });
 
-        return AnsiConsole.Prompt(new SelectionPrompt<GitmojiItem>()
+        return AnsiConsole.Prompt(new SelectionPrompt<CommitTypeItem>()
                 .Title("Please select a change type:")
                 .PageSize(10)
                 .MoreChoicesText("More")
@@ -346,7 +353,7 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
         var emoji = "🔧";
 
         // 遍历 gitmojis 查找匹配的类型
-        foreach (var item in Gitmojis.Items)
+        foreach (var item in CommitTypes.Items)
         {
             if (type.Contains(item.Type, StringComparison.OrdinalIgnoreCase))
             {
@@ -356,7 +363,7 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
         }
 
         // 返回格式化后的消息
-        return ChatConfigManager.AppConfiguration.App.UseGitmoji ? $"{emoji} {type}: {rest}" : $"{type}: {rest}";
+        return ChatConfigManager.AppConfiguration.App.UseCommitType ? $"{emoji} {type}: {rest}" : $"{type}: {rest}";
     }
 
     public static string RemoveMarkdownCodeBlockDelimiters(string input)
@@ -377,6 +384,36 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
 
         // 重新组合文本
         return string.Join(Environment.NewLine, lines).Trim();
+    }
+
+    private static async Task<(string? name, string? desc)> GetCurrentDescriptorAsync()
+    {
+        var baseDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".rodel-commit");
+        // 查找所有后缀为 .descriptor 的文件.
+        var files = Directory.GetFiles(baseDirectory, "*.txt", SearchOption.TopDirectoryOnly);
+        if (files.Length == 0)
+        {
+            return default;
+        }
+
+        var currentDirectory = Environment.CurrentDirectory;
+        foreach (var file in files)
+        {
+            var lines = await File.ReadAllLinesAsync(file);
+            var firstLine = lines.FirstOrDefault();
+            if (string.IsNullOrEmpty(firstLine) || !Path.Exists(firstLine))
+            {
+                continue;
+            }
+
+            if (currentDirectory.Contains(firstLine!) || firstLine!.Contains(currentDirectory))
+            {
+                var otherContent = string.Join('\n', lines.Skip(1).Where(p => !string.IsNullOrWhiteSpace(p)).ToList());
+                return (Path.GetFileNameWithoutExtension(file), otherContent.Trim());
+            }
+        }
+
+        return default;
     }
 
     private static async Task<string> GetDiffAsync()

@@ -6,7 +6,7 @@ namespace RodelCommit;
 
 internal static class Prompts
 {
-    public static string GetCommitSummaryPrompt(string diff, GitmojiItem commitType, int maxLength = 20, string? locale = "")
+    public static string GetCommitSummaryPrompt(string diff, CommitTypeItem commitType, int maxLength = 20, string? locale = "", string? repoDesc = "")
     {
         if (string.IsNullOrEmpty(locale))
         {
@@ -14,7 +14,7 @@ internal static class Prompts
         }
 
         var typeList = commitType.Type == "auto"
-            ? string.Join('\n', Gitmojis.Items.Select(p=>$"    - {p.Type}: {p.Description}"))
+            ? string.Join('\n', CommitTypes.Items.Select(p => $"    - {p.Type}: {p.Description}"))
             : $"    - {commitType.Type}: {commitType.Description}";
 
         var typeRule = commitType.Type == "auto"
@@ -23,6 +23,10 @@ internal static class Prompts
                 {typeList}
             """
             : $"The specified commit type is:\n{typeList}";
+
+        var repo = !string.IsNullOrEmpty(repoDesc)
+            ? $"\nRepository Information:\n--------\n{repoDesc}\n--------"
+            : "";
 
         return $"""
             You are a senior git engineer synthesizing git diff information into a conventional commit message. Follow these steps:
@@ -39,8 +43,9 @@ internal static class Prompts
                - Wrap body at {maxLength} characters
                - Use imperative present tense
                - Disable markdown code block tags
-            
-            Summarized Inputs:
+            {repo}
+
+            Diff information:
             --------
             {diff}
             --------
@@ -49,7 +54,7 @@ internal static class Prompts
             """;
     }
 
-    public static string GetSegmentSummaryPrompt(string diffPart, GitmojiItem commitType, string? locale="")
+    public static string GetSegmentSummaryPrompt(string diffPart, CommitTypeItem commitType, string? locale = "", string? repoDesc = "")
     {
         if (string.IsNullOrEmpty(locale))
         {
@@ -60,6 +65,10 @@ internal static class Prompts
             ? ""
             : $"The specified commit type is:\n- {commitType.Type}: {commitType.Description}";
 
+        var repo = !string.IsNullOrEmpty(repoDesc)
+            ? $"\nRepository Information:\n--------\n{repoDesc}\n--------"
+            : "";
+
         return $"""
             You are a git commit assistant analyzing segmented code changes. For each git diff segment:
             1. Provide a brief technical summary of modified files and key changes
@@ -68,6 +77,7 @@ internal static class Prompts
             4. Use present tense and bullet points
             5. Avoid conventional commit formatting or type selection
             6. Maintain original file/line references where relevant
+            {repo}
 
             Segment Input:
             --------
@@ -79,7 +89,7 @@ internal static class Prompts
             """;
     }
 
-    public static string GetCommitSummaryPrompt(List<string> summarizes, GitmojiItem commitType, int maxLength = 20, string? locale = "")
+    public static string GetCommitSummaryPrompt(List<string> summarizes, CommitTypeItem commitType, int maxLength = 20, string? locale = "", string? repoDesc = "")
     {
         if (string.IsNullOrEmpty(locale))
         {
@@ -88,7 +98,7 @@ internal static class Prompts
 
         var allSummaries = string.Join('\n', summarizes.Select((p, i) => $"    {i + 1}. {p}"));
         var typeList = commitType.Type == "auto"
-            ? string.Join('\n', Gitmojis.Items.Select(p => $"    - {p.Type}: {p.Description}"))
+            ? string.Join('\n', CommitTypes.Items.Select(p => $"    - {p.Type}: {p.Description}"))
             : $"    - {commitType.Type}: {commitType.Description}";
 
         var typeRule = commitType.Type == "auto"
@@ -97,6 +107,10 @@ internal static class Prompts
                 {typeList}
             """
             : $"2. The specified commit type is:\n{typeList}";
+
+        var repo = !string.IsNullOrEmpty(repoDesc)
+            ? $"\nRepository Information:\n--------\n{repoDesc}\n--------"
+            : "";
 
         return $"""
             You are a senior git engineer synthesizing segmented summaries into a conventional commit message. Follow these steps:
@@ -113,6 +127,7 @@ internal static class Prompts
                - Wrap body at {maxLength} characters
                - Use imperative present tense
                - Disable markdown code block tags
+            {repo}
 
             Summarized Inputs:
             --------

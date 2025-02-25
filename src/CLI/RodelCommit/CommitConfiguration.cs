@@ -29,7 +29,7 @@ internal sealed class BasicConfiguration
     public string? Locale { get; set; }
 
     [JsonPropertyName("use_gitmoji")]
-    public bool UseGitmoji { get; set; }
+    public bool UseCommitType { get; set; }
 }
 
 internal sealed class ServiceConfiguration
