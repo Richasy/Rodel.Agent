@@ -129,6 +129,11 @@ function Render() {
       window.resources = resources;
     };
 
+    // 清空历史消息
+    window.clearMessages = () => {
+      setHistory([]);
+    }
+
     sendMessage("loaded", true);
   }, []);
 
