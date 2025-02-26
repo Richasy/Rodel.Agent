@@ -103,6 +103,19 @@ public sealed partial class ChatSessionViewModel
         await _webView!.ExecuteScriptAsync("window.setCancel()");
     }
 
+    [RelayCommand]
+    private async Task ClearMessageAsync()
+    {
+        if (!IsWebInitialized)
+        {
+            return;
+        }
+
+        await _webView!.ExecuteScriptAsync("window.clearMessages()");
+        _currentHistory.Clear();
+        // TODO: 更新数据库.
+    }
+
     private void OnWebMessageReceived(CoreWebView2 sender, CoreWebView2WebMessageReceivedEventArgs args)
     {
         var msg = args.TryGetWebMessageAsString();

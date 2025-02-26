@@ -93,7 +93,7 @@ public sealed partial class ChatSessionMainFooter : ChatSessionControlBase
 
     private void OnClearMessageActionButtonClick(TeachingTip sender, object args)
     {
-        // ViewModel.ClearMessageCommand.Execute(default);
+        ViewModel.ClearMessageCommand.Execute(default);
         _ = this;
         sender.IsOpen = false;
     }
