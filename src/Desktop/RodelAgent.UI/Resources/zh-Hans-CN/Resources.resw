@@ -489,4 +489,10 @@
   <data name="NoMessageDescription" xml:space="preserve">
     <value>在下方的文本框中输入内容发送消息吧！</value>
   </data>
+  <data name="History" xml:space="preserve">
+    <value>历史记录</value>
+  </data>
+  <data name="NoChatHistory" xml:space="preserve">
+    <value>暂无历史记录</value>
+  </data>
 </root>

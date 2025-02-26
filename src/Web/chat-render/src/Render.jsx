@@ -98,16 +98,7 @@ function Render() {
 
   // 在组件挂载时，将 setHistory 方法挂载到 window 对象上
   useEffect(() => {
-    window.changeTheme = (themeId) => {
-      setCurrentTheme(themeId);
-      loadThemeCSS(themeId); // 加载对应的 CSS 文件
-    };
-    window.setHistory = (newHistory) => {
-      setHistory(newHistory);
-    };
-    window.addMessage = (message) => {
-      setHistory((prevHistory) => [...prevHistory, message]);
-      setTemporaryOutput(null); // 清除临时输出
+    window.delayToBottom = () => {
       // 延迟 500ms 滚动到底部
       setTimeout(() => {
         window.scrollTo({
@@ -115,6 +106,20 @@ function Render() {
           behavior: 'smooth'
         });
       }, 500);
+    }
+
+    window.changeTheme = (themeId) => {
+      setCurrentTheme(themeId);
+      loadThemeCSS(themeId); // 加载对应的 CSS 文件
+    };
+    window.setHistory = (newHistory) => {
+      setHistory(newHistory);
+      window.delayToBottom();
+    };
+    window.addMessage = (message) => {
+      setHistory((prevHistory) => [...prevHistory, message]);
+      setTemporaryOutput(null); // 清除临时输出
+      window.delayToBottom();
     };
     // 设置临时输出（用于 SSE 流式返回）
     window.setOutput = (output) => {

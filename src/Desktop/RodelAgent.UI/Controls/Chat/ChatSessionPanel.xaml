@@ -34,6 +34,19 @@
 
         <local:ChatSessionMainFooter Grid.Row="3" Margin="0,0,-6,0" />
 
+        <Grid
+            Grid.RowSpan="4"
+            Grid.Column="2"
+            Margin="-6,0,0,0"
+            Background="{ThemeResource LayerFillColorDefaultBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <local:ChatHistoryPanel Grid.Row="2" />
+        </Grid>
+
         <!--  右侧分栏大小控制器  -->
         <base:ColumnSplitter
             Grid.RowSpan="4"

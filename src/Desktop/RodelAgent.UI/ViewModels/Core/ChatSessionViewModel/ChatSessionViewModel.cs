@@ -8,6 +8,7 @@ using RodelAgent.Interfaces;
 using RodelAgent.Models.Constants;
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Toolkits;
+using RodelAgent.UI.ViewModels.Items;
 using Windows.ApplicationModel;
 
 namespace RodelAgent.UI.ViewModels.Core;
@@ -93,9 +94,23 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         SectionType = AgentSectionType.Service;
         CurrentProvider = service.ProviderType;
         Title = string.Empty;
+        SetCurrentConversation(null);
         _chatService = this.Get<IChatService>(service.ProviderType.ToString());
         ReloadAvailableModelsCommand.Execute(default);
+        ClearMessageCommand.Execute(default);
         await LoadConversationsWithProviderAsync(service.ProviderType);
+    }
+
+    [RelayCommand]
+    private void LoadHistoryItem(ChatHistoryItemViewModel history)
+    {
+        if (history is null || history.Id == _currentConversation?.Id)
+        {
+            return;
+        }
+
+        SetCurrentConversation(history.Conversation);
+        SetInitialInteropHistoryCommand.Execute(_currentConversation?.History ?? []);
     }
 
     [RelayCommand]
@@ -158,4 +173,7 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
 
     partial void OnIsGeneratingChanged(bool value)
         => CheckChatEmpty();
+
+    partial void OnIsHistoryInitializingChanged(bool value)
+        => CheckHistoryEmpty();
 }

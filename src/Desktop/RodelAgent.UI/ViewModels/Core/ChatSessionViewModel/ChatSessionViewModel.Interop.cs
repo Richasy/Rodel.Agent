@@ -29,15 +29,14 @@ public sealed partial class ChatSessionViewModel
     }
 
     [RelayCommand]
-    private async Task SetInitialInteropHistoryAsync(List<ChatMessage> history)
+    private async Task SetInitialInteropHistoryAsync(List<ChatInteropMessage> history)
     {
         if (!IsWebInitialized)
         {
             return;
         }
 
-        var messages = history.ConvertAll(p => p.ToInteropMessage());
-        var messageJson = JsonSerializer.Serialize(messages, JsonGenContext.Default.ListChatInteropMessage);
+        var messageJson = JsonSerializer.Serialize(history, JsonGenContext.Default.ListChatInteropMessage);
         await _webView!.ExecuteScriptAsync($"window.setHistory({messageJson})");
     }
 
