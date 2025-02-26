@@ -3,6 +3,7 @@
 using Microsoft.Extensions.AI;
 using Microsoft.Web.WebView2.Core;
 using Richasy.WinUIKernel.Share.Toolkits;
+using RodelAgent.Models;
 using RodelAgent.Models.Common;
 using RodelAgent.UI.Toolkits;
 using System.Text.Json;
@@ -22,7 +23,7 @@ public sealed partial class ChatSessionViewModel
             return;
         }
 
-        var interopMessage = ConvertToInteropMessage(message);
+        var interopMessage = message.ToInteropMessage();
         var messageJson = JsonSerializer.Serialize(interopMessage, JsonGenContext.Default.ChatInteropMessage);
         await _webView!.ExecuteScriptAsync($"window.addMessage({messageJson})");
     }
@@ -35,7 +36,7 @@ public sealed partial class ChatSessionViewModel
             return;
         }
 
-        var messages = history.ConvertAll(ConvertToInteropMessage);
+        var messages = history.ConvertAll(p => p.ToInteropMessage());
         var messageJson = JsonSerializer.Serialize(messages, JsonGenContext.Default.ListChatInteropMessage);
         await _webView!.ExecuteScriptAsync($"window.setHistory({messageJson})");
     }
@@ -150,22 +151,5 @@ public sealed partial class ChatSessionViewModel
                 }
             }
         }
-    }
-
-    private ChatInteropMessage ConvertToInteropMessage(ChatMessage message)
-    {
-        var role = message.Role.ToString().ToLowerInvariant();
-        var text = message.Text ?? string.Empty;
-        var author = message.AuthorName ?? string.Empty;
-        var time = Convert.ToInt64(message.AdditionalProperties!.GetValueOrDefault("time", DateTimeOffset.Now.ToUnixTimeSeconds()));
-        var id = message.AdditionalProperties!.GetValueOrDefault("id", Guid.NewGuid().ToString("N"))!.ToString();
-        return new ChatInteropMessage
-        {
-            Author = author,
-            Message = text,
-            Role = role,
-            Time = time,
-            Id = id!,
-        };
     }
 }
