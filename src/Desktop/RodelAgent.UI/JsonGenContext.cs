@@ -2,6 +2,7 @@
 
 using Richasy.AgentKernel;
 using RodelAgent.Models.Common;
+using RodelAgent.Models.Feature;
 using System.Text.Json.Serialization;
 
 namespace RodelAgent.UI;
@@ -20,6 +21,7 @@ namespace RodelAgent.UI;
 [JsonSerializable(typeof(ChatInteropResources))]
 [JsonSerializable(typeof(WebDataObject))]
 [JsonSerializable(typeof(EditedInteropMessage))]
+[JsonSerializable(typeof(List<ChatConversation>))]
 internal sealed partial class JsonGenContext : JsonSerializerContext
 {
 }

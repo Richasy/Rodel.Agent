@@ -3,8 +3,10 @@
 using Richasy.AgentKernel;
 using Richasy.AgentKernel.Chat;
 using Richasy.WinUIKernel.AI.ViewModels;
-using RodelAgent.Models.Common;
+using RodelAgent.Interfaces;
 using RodelAgent.Models.Constants;
+using RodelAgent.Models.Feature;
+using RodelAgent.UI.ViewModels.Items;
 
 namespace RodelAgent.UI.ViewModels.Core;
 
@@ -14,9 +16,11 @@ namespace RodelAgent.UI.ViewModels.Core;
 public sealed partial class ChatSessionViewModel
 {
     private readonly ILogger<ChatSessionViewModel> _logger;
+    private readonly IStorageService _storageService;
     private IChatService? _chatService;
     private CancellationTokenSource? _cancellationTokenSource;
     private WebView2? _webView;
+    private ChatConversation? _currentConversation;
 
     public event EventHandler RequestFocusInput;
 
@@ -70,7 +74,15 @@ public sealed partial class ChatSessionViewModel
     [ObservableProperty]
     public partial bool IsWebInitialized { get; set; }
 
+    [ObservableProperty]
+    public partial bool IsHistoryInitializing { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsHistoryEmpty { get; set; }
+
     public ObservableCollection<ChatModelItemViewModel> Models { get; } = [];
 
     public ObservableCollection<ChatInteropMessage> Messages { get; } = [];
+
+    public ObservableCollection<ChatHistoryItemViewModel> History { get; } = [];
 }

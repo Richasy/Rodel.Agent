@@ -36,6 +36,7 @@ public sealed partial class ChatSessionViewModel
             AttachChatMessageProperties(chatMessage);
             Messages.Add(chatMessage.ToInteropMessage());
             AddInteropMessageCommand.Execute(chatMessage);
+            await SaveCurrentMessagesAsync();
             UserInput = string.Empty;
             var responseMessage = string.Empty;
             await foreach (var msg in _chatService!.Client!.CompleteStreamingAsync(Messages.ToList().ConvertAll(p => p.ToChatMessage()), options, _cancellationTokenSource.Token))
@@ -53,6 +54,7 @@ public sealed partial class ChatSessionViewModel
             var responseMsg = new ChatMessage(ChatRole.Assistant, responseMessage?.Trim());
             AttachChatMessageProperties(responseMsg);
             Messages.Add(responseMsg.ToInteropMessage());
+            await SaveCurrentMessagesAsync();
             AddInteropMessageCommand.Execute(responseMsg);
         }
         catch (Exception ex)

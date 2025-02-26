@@ -4,6 +4,7 @@ using Richasy.AgentKernel;
 using Richasy.AgentKernel.Chat;
 using Richasy.WinUIKernel.AI.ViewModels;
 using Richasy.WinUIKernel.Share.Toolkits;
+using RodelAgent.Interfaces;
 using RodelAgent.Models.Constants;
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Toolkits;
@@ -19,12 +20,16 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
     /// <summary>
     /// Initializes a new instance of the <see cref="ChatSessionViewModel"/> class.
     /// </summary>
-    public ChatSessionViewModel(ILogger<ChatSessionViewModel> logger)
+    public ChatSessionViewModel(
+        IStorageService storageService,
+        ILogger<ChatSessionViewModel> logger)
     {
+        _storageService = storageService;
         _logger = logger;
         IsEnterSend = SettingsToolkit.ReadLocalSetting(SettingNames.ChatServicePageIsEnterSend, true);
         CheckSectionType();
         Messages.CollectionChanged += (_, _) => CheckChatEmpty();
+        History.CollectionChanged += (_, _) => CheckHistoryEmpty();
     }
 
     protected override string GetPageKey()
@@ -77,7 +82,7 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
     }
 
     [RelayCommand]
-    private void InitializeWithService(ChatServiceItemViewModel service)
+    private async Task InitializeWithServiceAsync(ChatServiceItemViewModel service)
     {
         if (SectionType == AgentSectionType.Service && service.ProviderType == CurrentProvider)
         {
@@ -90,6 +95,7 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         Title = string.Empty;
         _chatService = this.Get<IChatService>(service.ProviderType.ToString());
         ReloadAvailableModelsCommand.Execute(default);
+        await LoadConversationsWithProviderAsync(service.ProviderType);
     }
 
     [RelayCommand]
@@ -143,6 +149,9 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
 
     private void CheckChatEmpty()
         => IsChatEmpty = Messages.Count == 0 && !IsGenerating;
+
+    private void CheckHistoryEmpty()
+        => IsHistoryEmpty = History.Count == 0 && !IsHistoryInitializing;
 
     partial void OnSectionTypeChanged(AgentSectionType value)
         => CheckSectionType();

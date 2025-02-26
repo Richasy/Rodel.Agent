@@ -109,7 +109,12 @@ public sealed partial class ChatSessionViewModel
         if (await ClearMessageInternalAsync())
         {
             Messages.Clear();
-            // TODO: 更新数据库.
+            if (_currentConversation != null)
+            {
+                _currentConversation.History?.Clear();
+                await _storageService.AddOrUpdateChatConversationAsync(_currentConversation);
+            }
+
             RequestFocusInput?.Invoke(this, EventArgs.Empty);
         }
     }
@@ -117,16 +122,26 @@ public sealed partial class ChatSessionViewModel
     [RelayCommand]
     private async Task AddNewSessionAsync()
     {
+        if (IsGroup)
+        {
+            // TODO: Add group session.
+            return;
+        }
+
+        if (_currentConversation != null)
+        {
+            await _storageService.AddOrUpdateChatConversationAsync(_currentConversation);
+        }
+
         if (Messages.Count > 0)
         {
-            // TODO: 将旧的会话记录保存到数据库.
             if (await ClearMessageInternalAsync())
             {
                 Messages.Clear();
             }
         }
 
-        // TODO: 添加新的会话记录.
+        _currentConversation = default;
         RequestFocusInput?.Invoke(this, EventArgs.Empty);
     }
 
