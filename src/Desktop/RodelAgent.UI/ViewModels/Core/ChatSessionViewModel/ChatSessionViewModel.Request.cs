@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
 using Microsoft.Extensions.AI;
+using RodelAgent.Models;
 
 namespace RodelAgent.UI.ViewModels.Core;
 
@@ -33,11 +34,11 @@ public sealed partial class ChatSessionViewModel
 
             var chatMessage = new ChatMessage(ChatRole.User, UserInput);
             AttachChatMessageProperties(chatMessage);
-            _currentHistory.Add(chatMessage);
+            Messages.Add(chatMessage.ToInteropMessage());
             AddInteropMessageCommand.Execute(chatMessage);
             UserInput = string.Empty;
             var responseMessage = string.Empty;
-            await foreach (var msg in _chatService!.Client!.CompleteStreamingAsync(_currentHistory, options, _cancellationTokenSource.Token))
+            await foreach (var msg in _chatService!.Client!.CompleteStreamingAsync(Messages.ToList().ConvertAll(p => p.ToChatMessage()), options, _cancellationTokenSource.Token))
             {
                 responseMessage += msg.Text;
 #pragma warning disable CA1508 // 避免死条件代码
@@ -51,7 +52,7 @@ public sealed partial class ChatSessionViewModel
 
             var responseMsg = new ChatMessage(ChatRole.Assistant, responseMessage?.Trim());
             AttachChatMessageProperties(responseMsg);
-            _currentHistory.Add(responseMsg);
+            Messages.Add(responseMsg.ToInteropMessage());
             AddInteropMessageCommand.Execute(responseMsg);
         }
         catch (Exception ex)

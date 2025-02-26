@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
-using Microsoft.Extensions.AI;
 using Richasy.AgentKernel;
 using Richasy.AgentKernel.Chat;
 using Richasy.WinUIKernel.AI.ViewModels;
+using RodelAgent.Models.Common;
 using RodelAgent.Models.Constants;
 
 namespace RodelAgent.UI.ViewModels.Core;
@@ -14,7 +14,6 @@ namespace RodelAgent.UI.ViewModels.Core;
 public sealed partial class ChatSessionViewModel
 {
     private readonly ILogger<ChatSessionViewModel> _logger;
-    private readonly List<ChatMessage> _currentHistory = [];
     private IChatService? _chatService;
     private CancellationTokenSource? _cancellationTokenSource;
     private WebView2? _webView;
@@ -72,4 +71,6 @@ public sealed partial class ChatSessionViewModel
     public partial bool IsWebInitialized { get; set; }
 
     public ObservableCollection<ChatModelItemViewModel> Models { get; } = [];
+
+    public ObservableCollection<ChatInteropMessage> Messages { get; } = [];
 }

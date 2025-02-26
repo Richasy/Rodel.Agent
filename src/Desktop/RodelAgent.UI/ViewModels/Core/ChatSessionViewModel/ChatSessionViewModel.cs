@@ -24,6 +24,7 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         _logger = logger;
         IsEnterSend = SettingsToolkit.ReadLocalSetting(SettingNames.ChatServicePageIsEnterSend, true);
         CheckSectionType();
+        Messages.CollectionChanged += (_, _) => CheckChatEmpty();
     }
 
     protected override string GetPageKey()
@@ -41,6 +42,7 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         _webView = view;
         IsWebInitializing = true;
         IsWebInitialized = false;
+        CheckChatEmpty();
         try
         {
             await _webView.EnsureCoreWebView2Async();
@@ -139,6 +141,12 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         IsGroup = SectionType == AgentSectionType.Group;
     }
 
+    private void CheckChatEmpty()
+        => IsChatEmpty = Messages.Count == 0 && !IsGenerating;
+
     partial void OnSectionTypeChanged(AgentSectionType value)
         => CheckSectionType();
+
+    partial void OnIsGeneratingChanged(bool value)
+        => CheckChatEmpty();
 }

@@ -17,6 +17,11 @@
             VerticalAlignment="Stretch"
             DefaultBackgroundColor="Transparent"
             Loaded="OnLoaded" />
+        <base:EmptyHolder
+            Title="{ext:Locale Name=NoMessage}"
+            Description="{ext:Locale Name=NoMessageDescription}"
+            Emoji="&#x1F37B;"
+            Visibility="{x:Bind ViewModel.IsChatEmpty, Mode=OneWay}" />
         <base:LoadingWidget
             HorizontalAlignment="Center"
             VerticalAlignment="Center"

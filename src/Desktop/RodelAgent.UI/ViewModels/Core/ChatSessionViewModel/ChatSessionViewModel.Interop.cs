@@ -108,7 +108,7 @@ public sealed partial class ChatSessionViewModel
     {
         if (await ClearMessageInternalAsync())
         {
-            _currentHistory.Clear();
+            Messages.Clear();
             // TODO: 更新数据库.
             RequestFocusInput?.Invoke(this, EventArgs.Empty);
         }
@@ -117,12 +117,12 @@ public sealed partial class ChatSessionViewModel
     [RelayCommand]
     private async Task AddNewSessionAsync()
     {
-        if (_currentHistory.Count > 0)
+        if (Messages.Count > 0)
         {
             // TODO: 将旧的会话记录保存到数据库.
             if (await ClearMessageInternalAsync())
             {
-                _currentHistory.Clear();
+                Messages.Clear();
             }
         }
 
@@ -172,20 +172,20 @@ public sealed partial class ChatSessionViewModel
                 var editedData = JsonSerializer.Deserialize(data.Content, JsonGenContext.Default.EditedInteropMessage);
                 if (editedData != null)
                 {
-                    var targetMsg = _currentHistory.FirstOrDefault(p => p.AdditionalProperties!.GetValueOrDefault("id", string.Empty)!.ToString() == editedData.Id);
+                    var targetMsg = Messages.FirstOrDefault(p => p.Id == editedData.Id);
                     if (targetMsg != null)
                     {
-                        targetMsg.Text = editedData.Message;
+                        targetMsg.Message = editedData.Message;
                     }
                 }
             }
             else if (data.Type == "delete")
             {
                 var id = data.Content;
-                var source = _currentHistory.FirstOrDefault(p => p.AdditionalProperties!.GetValueOrDefault("id", string.Empty)!.ToString() == id);
+                var source = Messages.FirstOrDefault(p => p.Id == id);
                 if (source != null)
                 {
-                    _currentHistory.Remove(source);
+                    Messages.Remove(source);
                 }
             }
         }

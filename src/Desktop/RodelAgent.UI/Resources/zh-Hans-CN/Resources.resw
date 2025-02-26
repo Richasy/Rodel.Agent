@@ -483,4 +483,10 @@
   <data name="Save" xml:space="preserve">
     <value>保存</value>
   </data>
+  <data name="NoMessage" xml:space="preserve">
+    <value>开始对话吧！</value>
+  </data>
+  <data name="NoMessageDescription" xml:space="preserve">
+    <value>在下方的文本框中输入内容发送消息吧！</value>
+  </data>
 </root>
