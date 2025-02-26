@@ -100,7 +100,7 @@ public sealed partial class ChatSessionViewModel
             return;
         }
 
-        await _webView!.ExecuteScriptAsync($"window.setCancel()");
+        await _webView!.ExecuteScriptAsync("window.setCancel()");
     }
 
     private void OnWebMessageReceived(CoreWebView2 sender, CoreWebView2WebMessageReceivedEventArgs args)
