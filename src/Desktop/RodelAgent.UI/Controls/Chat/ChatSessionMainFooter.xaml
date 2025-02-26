@@ -167,6 +167,7 @@
                 <controls:EnterWrapTip IsEnterSend="{x:Bind ViewModel.IsEnterSend, Mode=OneWay}" />
                 <Button
                     AutomationProperties.Name="{ext:Locale Name=NewSession}"
+                    Command="{x:Bind ViewModel.AddNewSessionCommand}"
                     IsEnabled="{x:Bind ViewModel.IsGenerating, Mode=OneWay, Converter={StaticResource ObjectToBoolReverseConverter}}"
                     Style="{StaticResource IconButtonStyle}"
                     ToolTipService.ToolTip="{ext:Locale Name=NewSession}">

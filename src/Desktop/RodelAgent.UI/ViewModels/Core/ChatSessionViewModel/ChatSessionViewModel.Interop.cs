@@ -106,14 +106,39 @@ public sealed partial class ChatSessionViewModel
     [RelayCommand]
     private async Task ClearMessageAsync()
     {
+        if (await ClearMessageInternalAsync())
+        {
+            _currentHistory.Clear();
+            // TODO: 更新数据库.
+            RequestFocusInput?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    [RelayCommand]
+    private async Task AddNewSessionAsync()
+    {
+        if (_currentHistory.Count > 0)
+        {
+            // TODO: 将旧的会话记录保存到数据库.
+            if (await ClearMessageInternalAsync())
+            {
+                _currentHistory.Clear();
+            }
+        }
+
+        // TODO: 添加新的会话记录.
+        RequestFocusInput?.Invoke(this, EventArgs.Empty);
+    }
+
+    private async Task<bool> ClearMessageInternalAsync()
+    {
         if (!IsWebInitialized)
         {
-            return;
+            return false;
         }
 
         await _webView!.ExecuteScriptAsync("window.clearMessages()");
-        _currentHistory.Clear();
-        // TODO: 更新数据库.
+        return true;
     }
 
     private void OnWebMessageReceived(CoreWebView2 sender, CoreWebView2WebMessageReceivedEventArgs args)
