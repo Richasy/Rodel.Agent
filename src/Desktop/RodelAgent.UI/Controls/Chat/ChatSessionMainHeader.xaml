@@ -37,7 +37,7 @@
                 HorizontalAlignment="Left"
                 FontWeight="SemiBold"
                 MaxLines="1"
-                Text="{x:Bind ViewModel.Title, Mode=OneWay, Converter={StaticResource SessionTitleConverter}}" />
+                Text="{x:Bind ViewModel.Title, Mode=OneWay, Converter={StaticResource ChatTitleConverter}}" />
             <base:TrimTextBlock
                 Grid.Row="1"
                 Margin="0,2,0,0"

@@ -4,7 +4,7 @@ using RodelAgent.UI.Toolkits;
 
 namespace RodelAgent.UI.Converters;
 
-internal sealed partial class SessionTitleConverter : IValueConverter
+internal sealed partial class ChatTitleConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {

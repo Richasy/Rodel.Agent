@@ -46,7 +46,7 @@
             <share:ObjectToVisibilityConverter x:Key="ObjectToVisibilityReverseConverter" IsReverse="True" />
             <converters:GridLengthConverter x:Key="GridLengthConverter" />
             <converters:SecondsToTimeConverter x:Key="SecondsToTimeConverter" />
-            <converters:SessionTitleConverter x:Key="SessionTitleConverter" />
+            <converters:ChatTitleConverter x:Key="ChatTitleConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
