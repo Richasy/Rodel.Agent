@@ -2,7 +2,7 @@
 
 using System.Text.Json.Serialization;
 
-namespace RodelAgent.Models.Common;
+namespace RodelAgent.Models.Feature;
 
 /// <summary>
 /// Chat interop message.

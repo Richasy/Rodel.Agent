@@ -4,7 +4,7 @@ using Microsoft.Extensions.AI;
 using Microsoft.Web.WebView2.Core;
 using Richasy.WinUIKernel.Share.Toolkits;
 using RodelAgent.Models;
-using RodelAgent.Models.Common;
+using RodelAgent.Models.Feature;
 using RodelAgent.UI.Toolkits;
 using System.Text.Json;
 using Windows.ApplicationModel.DataTransfer;
