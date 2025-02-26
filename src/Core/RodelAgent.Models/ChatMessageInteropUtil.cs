@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
 using Microsoft.Extensions.AI;
-using RodelAgent.Models.Common;
+using RodelAgent.Models.Feature;
 
 namespace RodelAgent.Models;
 
@@ -35,7 +35,7 @@ public static class ChatMessageInteropUtil
     /// </summary>
     public static ChatMessage ToChatMessage(this ChatInteropMessage message)
     {
-        var role = Enum.Parse<ChatRole>(message.Role, true);
+        var role = new ChatRole(message.Role);
         var text = message.Message;
         var author = message.Author;
         var time = DateTimeOffset.FromUnixTimeSeconds(message.Time);

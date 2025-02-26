@@ -169,7 +169,7 @@ public sealed partial class StorageService
         }
 
         var chatSessions = new List<ChatSession>();
-        var allSessions = await _dbService.GetAllChatSessionAsync();
+        var allSessions = await _dbService.GetAllChatConversationsAsync();
         foreach (var session in allSessions)
         {
             try
@@ -205,7 +205,7 @@ public sealed partial class StorageService
         }
 
         var chatGroups = new List<ChatGroup>();
-        var allGroups = await _dbService.GetAllChatGroupAsync();
+        var allGroups = await _dbService.GetAllChatGroupsAsync();
         foreach (var group in allGroups)
         {
             try

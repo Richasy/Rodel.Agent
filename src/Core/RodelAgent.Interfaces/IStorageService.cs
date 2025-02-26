@@ -2,6 +2,7 @@
 
 using Richasy.AgentKernel;
 using RodelAgent.Models.Common;
+using RodelAgent.Models.Feature;
 using RodelChat.Models.Client;
 using System.Text.Json.Serialization.Metadata;
 
@@ -113,28 +114,28 @@ public interface IStorageService
     /// </summary>
     /// <param name="type">供应商类型.</param>
     /// <returns>会话列表.</returns>
-    Task<List<ChatSession>?> GetChatSessionsAsync(ChatProviderType type);
+    Task<List<ChatConversation>?> GetChatConversationsAsync(ChatProviderType type);
 
     /// <summary>
     /// 获取指定预设的聊天会话.
     /// </summary>
     /// <param name="presetId">预设标识符.</param>
     /// <returns>会话列表.</returns>
-    Task<List<ChatSession>?> GetChatSessionsAsync(string presetId);
+    Task<List<ChatConversation>?> GetChatConversationsAsync(string presetId);
 
     /// <summary>
     /// 添加或更新聊天会话.
     /// </summary>
-    /// <param name="session">会话.</param>
+    /// <param name="conversation">会话.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task AddOrUpdateChatSessionAsync(ChatSession session);
+    Task AddOrUpdateChatConversationAsync(ChatConversation conversation);
 
     /// <summary>
     /// 移除聊天会话.
     /// </summary>
-    /// <param name="sessionId">会话标识符.</param>
+    /// <param name="conversationId">会话标识符.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task RemoveChatSessionAsync(string sessionId);
+    Task RemoveChatConversationAsync(string conversationId);
 
     /// <summary>
     /// 获取指定预设的群组会话.
