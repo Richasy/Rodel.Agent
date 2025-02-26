@@ -49,7 +49,7 @@
     <PackageVersion Include="Richasy.AgentKernel.Connectors.ZhiPu" Version="0.0.3-preview7" />
     <PackageVersion Include="Richasy.AgentKernel.Core" Version="0.0.3-preview3" />
     <PackageVersion Include="Richasy.AgentKernel.Definitions" Version="0.0.3-preview7" />
-    <PackageVersion Include="Richasy.WinUIKernel.AI" Version="0.0.3-preview5" />
+    <PackageVersion Include="Richasy.WinUIKernel.AI" Version="0.0.3-preview6" />
     <PackageVersion Include="RichasyKernel.Abstractions" Version="0.0.1" />
     <PackageVersion Include="Serilog" Version="4.2.0" />
     <PackageVersion Include="Serilog.Extensions.Logging" Version="9.0.0" />

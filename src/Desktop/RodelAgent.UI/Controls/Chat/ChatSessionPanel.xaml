@@ -38,7 +38,8 @@
             Grid.RowSpan="4"
             Grid.Column="2"
             Margin="-6,0,0,0"
-            Background="{ThemeResource LayerFillColorDefaultBrush}">
+            Background="{ThemeResource LayerFillColorDefaultBrush}"
+            Visibility="{x:Bind ViewModel.IsNavColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition Height="Auto" />

@@ -163,7 +163,7 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
     }
 
     private void CheckChatEmpty()
-        => IsChatEmpty = Messages.Count == 0 && !IsGenerating;
+        => IsChatEmpty = Messages.Count == 0 && !IsGenerating && !IsWebInitializing;
 
     private void CheckHistoryEmpty()
         => IsHistoryEmpty = History.Count == 0 && !IsHistoryInitializing;
@@ -172,6 +172,9 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         => CheckSectionType();
 
     partial void OnIsGeneratingChanged(bool value)
+        => CheckChatEmpty();
+
+    partial void OnIsWebInitializingChanged(bool value)
         => CheckChatEmpty();
 
     partial void OnIsHistoryInitializingChanged(bool value)
