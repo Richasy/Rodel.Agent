@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
-using Microsoft.EntityFrameworkCore;
 using RodelAgent.Models.Common;
 
 namespace RodelAgent.Context;
@@ -13,7 +12,7 @@ public sealed class DbService : IDisposable
     private SecretDataService? _secretService;
     private DrawDataService? _drawService;
     private AudioDataService? _audioService;
-    private ChatDbContext? _chatDb;
+    private ChatDataService? _chatService;
     private string _workingDirectory;
     private string _packageDirectory;
 
@@ -23,6 +22,7 @@ public sealed class DbService : IDisposable
         _secretService?.Dispose();
         _drawService?.Dispose();
         _audioService?.Dispose();
+        _chatService?.Dispose();
     }
 
     /// <summary>
@@ -65,20 +65,20 @@ public sealed class DbService : IDisposable
     /// 获取所有聊天数据.
     /// </summary>
     /// <returns>JSON 列表.</returns>
-    public async Task<List<string>> GetAllChatSessionAsync()
+    public async Task<List<string>> GetAllChatConversationsAsync()
     {
-        _chatDb ??= await MigrationUtils.GetChatDbAsync(_workingDirectory).ConfigureAwait(false);
-        return await _chatDb.Sessions.Select(p => p.Value).ToListAsync().ConfigureAwait(false);
+        await InitializeChatServiceAsync().ConfigureAwait(false);
+        return await _chatService!.GetAllConversationsAsync().ConfigureAwait(false);
     }
 
     /// <summary>
     /// 获取所有群组会话数据.
     /// </summary>
     /// <returns>JSON 列表.</returns>
-    public async Task<List<string>> GetAllChatGroupAsync()
+    public async Task<List<string>> GetAllChatGroupsAsync()
     {
-        _chatDb ??= await MigrationUtils.GetChatDbAsync(_workingDirectory).ConfigureAwait(false);
-        return await _chatDb.Groups.Select(p => p.Value).ToListAsync().ConfigureAwait(false);
+        await InitializeChatServiceAsync().ConfigureAwait(false);
+        return await _chatService!.GetAllGroupsAsync().ConfigureAwait(false);
     }
 
     /// <summary>
@@ -90,20 +90,15 @@ public sealed class DbService : IDisposable
     /// <returns><see cref="Task"/>.</returns>
     public async Task AddOrUpdateChatDataAsync(string dataId, string value, bool isGroup = false)
     {
-        _chatDb ??= await MigrationUtils.GetChatDbAsync(_workingDirectory).ConfigureAwait(false);
-        var dataset = isGroup ? _chatDb.Groups : _chatDb.Sessions;
-        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId).ConfigureAwait(false);
-        if (data is null)
+        await InitializeChatServiceAsync().ConfigureAwait(false);
+        if (isGroup)
         {
-            await dataset.AddAsync(new Metadata { Id = dataId, Value = value }).ConfigureAwait(false);
+            await _chatService!.AddOrUpdateGroupAsync(new ChatGroupMeta { Id = dataId, Value = value }).ConfigureAwait(false);
         }
         else
         {
-            data.Value = value;
-            dataset.Update(data);
+            await _chatService!.AddOrUpdateConversationAsync(new ChatConversationMeta { Id = dataId, Value = value }).ConfigureAwait(false);
         }
-
-        await _chatDb.SaveChangesAsync().ConfigureAwait(false);
     }
 
     /// <summary>
@@ -114,13 +109,14 @@ public sealed class DbService : IDisposable
     /// <returns><see cref="Task"/>.</returns>
     public async Task RemoveChatDataAsync(string dataId, bool isGroup = false)
     {
-        _chatDb ??= await MigrationUtils.GetChatDbAsync(_workingDirectory).ConfigureAwait(false);
-        var dataset = isGroup ? _chatDb.Groups : _chatDb.Sessions;
-        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId).ConfigureAwait(false);
-        if (data is not null)
+        await InitializeChatServiceAsync().ConfigureAwait(false);
+        if (isGroup)
         {
-            dataset.Remove(data);
-            await _chatDb.SaveChangesAsync().ConfigureAwait(false);
+            await _chatService!.RemoveGroupAsync(dataId).ConfigureAwait(false);
+        }
+        else
+        {
+            await _chatService!.RemoveConversationAsync(dataId).ConfigureAwait(false);
         }
     }
 
@@ -236,5 +232,21 @@ public sealed class DbService : IDisposable
 
         _audioService = new AudioDataService(_workingDirectory, _packageDirectory);
         await _audioService.InitializeAsync().ConfigureAwait(false);
+    }
+
+    private async Task InitializeChatServiceAsync()
+    {
+        if (_chatService is not null)
+        {
+            return;
+        }
+
+        if (string.IsNullOrEmpty(_workingDirectory) || string.IsNullOrEmpty(_packageDirectory))
+        {
+            throw new InvalidOperationException("Working directory or package directory is not set.");
+        }
+
+        _chatService = new ChatDataService(_workingDirectory, _packageDirectory);
+        await _chatService.InitializeAsync().ConfigureAwait(false);
     }
 }
