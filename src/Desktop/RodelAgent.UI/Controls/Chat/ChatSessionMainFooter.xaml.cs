@@ -9,12 +9,12 @@ namespace RodelAgent.UI.Controls.Chat;
 /// <summary>
 /// Chat session footer.
 /// </summary>
-public sealed partial class ChatSessionFooter : ChatSessionControlBase
+public sealed partial class ChatSessionMainFooter : ChatSessionControlBase
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="ChatSessionFooter"/> class.
+    /// Initializes a new instance of the <see cref="ChatSessionMainFooter"/> class.
     /// </summary>
-    public ChatSessionFooter() => InitializeComponent();
+    public ChatSessionMainFooter() => InitializeComponent();
 
     /// <inheritdoc/>
     protected override void OnControlLoaded()

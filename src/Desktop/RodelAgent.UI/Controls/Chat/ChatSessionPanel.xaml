@@ -32,7 +32,7 @@
             Grid.ColumnSpan="3"
             Style="{StaticResource SplitLineStyle}" />
 
-        <local:ChatSessionFooter Grid.Row="3" Margin="0,0,-6,0" />
+        <local:ChatSessionMainFooter Grid.Row="3" Margin="0,0,-6,0" />
 
         <!--  右侧分栏大小控制器  -->
         <base:ColumnSplitter
