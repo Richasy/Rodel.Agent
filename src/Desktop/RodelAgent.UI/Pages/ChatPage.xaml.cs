@@ -12,7 +12,11 @@ public sealed partial class ChatPage : ChatPageBase
     /// <summary>
     /// Initializes a new instance of the <see cref="ChatPage"/> class.
     /// </summary>
-    public ChatPage() => InitializeComponent();
+    public ChatPage()
+    {
+        InitializeComponent();
+        NavigationCacheMode = NavigationCacheMode.Required;
+    }
 
     /// <inheritdoc/>
     protected override void OnPageLoaded()

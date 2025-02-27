@@ -43,18 +43,27 @@
             Visibility="{x:Bind ViewModel.IsNavColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="56" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="{x:Bind ViewModel.HistoryHeight, Mode=OneWay, Converter={StaticResource GridLengthConverter}}" />
             </Grid.RowDefinitions>
             <local:ChatSessionSideHeader />
-            <local:ChatInstructionPanel Grid.Row="1" Visibility="{x:Bind ViewModel.IsInstructionVisible, Mode=OneWay}" />
-            <local:ChatHistoryPanel Grid.Row="3" Margin="0,-6,0,0" />
+            <local:ChatInstructionPanel
+                Grid.Row="2"
+                Margin="0,0,0,-6"
+                Visibility="{x:Bind ViewModel.IsInstructionVisible, Mode=OneWay}" />
+            <local:ChatOptionsPanel
+                Grid.Row="2"
+                Margin="0,0,0,-6"
+                Visibility="{x:Bind ViewModel.IsOptionsVisible, Mode=OneWay}" />
+            <local:ChatHistoryPanel Grid.Row="4" Margin="0,-6,0,0" />
+            <Border Grid.Row="1" Style="{StaticResource SplitLineStyle}" />
             <!--  分栏大小控制器  -->
-            <Border Grid.Row="2" Style="{StaticResource SplitLineStyle}" />
+            <Border Grid.Row="3" Style="{StaticResource SplitLineStyle}" />
             <community:PropertySizer
                 x:Name="ExtraSizer"
-                Grid.Row="2"
+                Grid.Row="3"
                 HorizontalAlignment="Stretch"
                 Binding="{x:Bind ViewModel.HistoryHeight, Mode=TwoWay}"
                 IsDragInverted="True"

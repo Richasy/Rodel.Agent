@@ -12,7 +12,7 @@
     xmlns:winui="using:CommunityToolkit.WinUI"
     mc:Ignorable="d">
 
-    <Grid x:Name="RootContainer" Background="{ThemeResource LayerFillColorDefaultBrush}">
+    <Grid x:Name="RootContainer">
         <Grid
             Height="46"
             Padding="10,4"

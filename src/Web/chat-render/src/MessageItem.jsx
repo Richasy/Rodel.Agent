@@ -95,7 +95,7 @@ const MessageItem = ({ item, sendMessage, renderMarkdown, removeMessage }) => {
           onMouseLeave={() => setIsHovered(false)}
           content={item.message}
           header={
-            <div className={isHovered ? "c-visible" : "c-hidden"}>
+            <div className={(isHovered ? "c-visible" : "c-hidden") + " message-time"}>
               {timestampToDate(item.time)}
             </div>
           }

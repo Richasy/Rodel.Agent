@@ -37,6 +37,7 @@
     <None Remove="Controls\Chat\ChatHistoryPanel.xaml" />
     <None Remove="Controls\Chat\ChatInstructionPanel.xaml" />
     <None Remove="Controls\Chat\ChatModelItemControl.xaml" />
+    <None Remove="Controls\Chat\ChatOptionsPanel.xaml" />
     <None Remove="Controls\Chat\ChatServiceItemControl.xaml" />
     <None Remove="Controls\Chat\ChatSessionMainBody.xaml" />
     <None Remove="Controls\Chat\ChatSessionMainHeader.xaml" />
@@ -44,6 +45,7 @@
     <None Remove="Controls\Chat\ChatSessionSideHeader.xaml" />
     <None Remove="Controls\Chat\ChatSideBody.xaml" />
     <None Remove="Controls\Chat\ChatSideHeader.xaml" />
+    <None Remove="Controls\CombineRow.xaml" />
     <None Remove="Controls\Draw\DrawImage.xaml" />
     <None Remove="Controls\Draw\DrawMainBody.xaml" />
     <None Remove="Controls\Draw\DrawMainFooter.xaml" />
@@ -342,6 +344,16 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Web\chat-render\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\CombineRow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Chat\ChatOptionsPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\Chat\ChatInstructionPanel.xaml">

@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
+using Microsoft.Extensions.AI;
 using Richasy.AgentKernel;
 using Richasy.AgentKernel.Chat;
 using Richasy.WinUIKernel.AI.ViewModels;
 using Richasy.WinUIKernel.Share.Toolkits;
 using RodelAgent.Interfaces;
 using RodelAgent.Models.Constants;
+using RodelAgent.Models.Feature;
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels.Items;
@@ -38,13 +40,14 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
     protected override string GetPageKey()
         => "ChatSession";
 
+    public void InjectGetOptionsFunc(Func<ChatOptions> func)
+        => _getCurrentOptions = func;
+
     public async Task InitializeAsync(WebView2 view)
     {
         if (_webView is not null)
         {
-            _webView.CoreWebView2.Stop();
-            _webView.Close();
-            _webView = default;
+            return;
         }
 
         _webView = view;
@@ -85,6 +88,9 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         }
     }
 
+    public ChatConversation? GetCurrentConversation()
+        => _currentConversation;
+
     [RelayCommand]
     private async Task InitializeWithServiceAsync(ChatServiceItemViewModel service)
     {
@@ -92,6 +98,12 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         {
             ReloadAvailableModelsCommand.Execute(default);
             return;
+        }
+
+        // 不支持生成内容时切换服务.
+        if (IsGenerating)
+        {
+            CancelGenerateCommand.Execute(default);
         }
 
         SectionType = AgentSectionType.Service;
@@ -107,7 +119,7 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
     [RelayCommand]
     private void LoadHistoryItem(ChatHistoryItemViewModel history)
     {
-        if (history is null || history.Id == _currentConversation?.Id)
+        if (history is null || history.Id == _currentConversation?.Id || IsGenerating)
         {
             return;
         }

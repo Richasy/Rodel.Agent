@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
+using Microsoft.Extensions.AI;
 using Richasy.AgentKernel;
 using Richasy.AgentKernel.Chat;
 using Richasy.WinUIKernel.AI.ViewModels;
@@ -21,13 +22,19 @@ public sealed partial class ChatSessionViewModel
     private CancellationTokenSource? _cancellationTokenSource;
     private WebView2? _webView;
     private ChatConversation? _currentConversation;
+    private Func<ChatOptions?>? _getCurrentOptions;
 
     public event EventHandler RequestFocusInput;
 
     public event EventHandler RequestCloseFlyout;
 
+    public event EventHandler RequestReloadOptionsUI;
+
     [ObservableProperty]
     public partial ChatProviderType? CurrentProvider { get; set; }
+
+    [ObservableProperty]
+    public partial ChatOptions? CurrentOptions { get; set; }
 
     [ObservableProperty]
     public partial string? Title { get; set; }

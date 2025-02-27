@@ -10,6 +10,10 @@ html {
   background-color: #eff6ff;
 }
 
+.message-time {
+  color: #777;
+}
+
 /* light */
 .markdown-body {
   color-scheme: light;

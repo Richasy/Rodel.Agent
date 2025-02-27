@@ -56,7 +56,7 @@ public sealed class ChatConversation
     /// <para>理论上响应速度更快，反应在 UI 上就会有打字机的效果.</para>
     /// </remarks>
     [JsonPropertyName("stream")]
-    public bool UseStreamOutput { get; set; } = true;
+    public bool UseStreamOutput { get; set; }
 
     /// <summary>
     /// 服务商.
