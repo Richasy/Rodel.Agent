@@ -48,6 +48,7 @@
                 <RowDefinition Height="{x:Bind ViewModel.HistoryHeight, Mode=OneWay, Converter={StaticResource GridLengthConverter}}" />
             </Grid.RowDefinitions>
             <local:ChatSessionSideHeader />
+            <local:ChatInstructionPanel Grid.Row="1" Visibility="{x:Bind ViewModel.IsInstructionVisible, Mode=OneWay}" />
             <local:ChatHistoryPanel Grid.Row="3" Margin="0,-6,0,0" />
             <!--  分栏大小控制器  -->
             <Border Grid.Row="2" Style="{StaticResource SplitLineStyle}" />

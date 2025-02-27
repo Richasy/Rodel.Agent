@@ -498,6 +498,9 @@
   <data name="Instruction" xml:space="preserve">
     <value>指令</value>
   </data>
+  <data name="InstructionPlaceholder" xml:space="preserve">
+    <value>请写入对话背景/角色描述/心理预期等引导模型回答的内容</value>
+  </data>
   <data name="Options" xml:space="preserve">
     <value>选项</value>
   </data>

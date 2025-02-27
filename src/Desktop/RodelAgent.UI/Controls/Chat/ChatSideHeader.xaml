@@ -144,8 +144,8 @@
                         <Setter Target="AgentBlock.Visibility" Value="Collapsed" />
                         <Setter Target="ToolContainer.Spacing" Value="0" />
                         <Setter Target="ToolBlock.Visibility" Value="Collapsed" />
-                        <Setter Target="AgentButton.(ToolTipAgent.ToolTip)" Value="{ext:Locale Name=Agents}" />
-                        <Setter Target="ToolButton.(ToolTipAgent.ToolTip)" Value="{ext:Locale Name=Tools}" />
+                        <Setter Target="AgentButton.(ToolTipService.ToolTip)" Value="{ext:Locale Name=Agents}" />
+                        <Setter Target="ToolButton.(ToolTipService.ToolTip)" Value="{ext:Locale Name=Tools}" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

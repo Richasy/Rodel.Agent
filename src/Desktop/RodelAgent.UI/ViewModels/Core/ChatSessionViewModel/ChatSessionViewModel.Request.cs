@@ -39,7 +39,12 @@ public sealed partial class ChatSessionViewModel
             await SaveCurrentMessagesAsync();
             UserInput = string.Empty;
             var responseMessage = string.Empty;
-            await foreach (var msg in _chatService!.Client!.CompleteStreamingAsync(Messages.ToList().ConvertAll(p => p.ToChatMessage()), options, _cancellationTokenSource.Token))
+            var messages = Messages.ToList();
+            if (!string.IsNullOrEmpty(SystemInstruction))
+            {
+                messages.Insert(0, new RodelAgent.Models.Feature.ChatInteropMessage { Role = "system", Message = SystemInstruction, Id = "system" });
+            }
+            await foreach (var msg in _chatService!.Client!.CompleteStreamingAsync(messages.ConvertAll(p => p.ToChatMessage()), options, _cancellationTokenSource.Token))
             {
                 responseMessage += msg.Text;
 #pragma warning disable CA1508 // 避免死条件代码

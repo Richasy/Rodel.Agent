@@ -9,12 +9,13 @@
     xmlns:ic="using:FluentIcons.WinUI"
     xmlns:local="using:RodelAgent.UI.Controls.Chat"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:winui="using:CommunityToolkit.WinUI"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource LayerFillColorDefaultBrush}">
+    <Grid x:Name="RootContainer" Background="{ThemeResource LayerFillColorDefaultBrush}">
         <Grid
             Height="46"
-            Padding="12,4"
+            Padding="10,4"
             ColumnSpacing="4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
@@ -74,5 +75,28 @@
                 </Grid>
             </base:AppToggleCard>
         </Grid>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="DefaultState">
+                    <VisualState.StateTriggers>
+                        <winui:ControlSizeTrigger MinWidth="240" TargetElement="{x:Bind RootContainer}" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="CompactState">
+                    <VisualState.StateTriggers>
+                        <winui:ControlSizeTrigger MinWidth="0" TargetElement="{x:Bind RootContainer}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="InstructionContainer.Spacing" Value="0" />
+                        <Setter Target="InstructionBlock.Visibility" Value="Collapsed" />
+                        <Setter Target="OptionsContainer.Spacing" Value="0" />
+                        <Setter Target="OptionsBlock.Visibility" Value="Collapsed" />
+                        <Setter Target="InstructionButton.(ToolTipService.ToolTip)" Value="{ext:Locale Name=Instruction}" />
+                        <Setter Target="OptionsButton.(ToolTipService.ToolTip)" Value="{ext:Locale Name=Options}" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </local:ChatSessionControlBase>

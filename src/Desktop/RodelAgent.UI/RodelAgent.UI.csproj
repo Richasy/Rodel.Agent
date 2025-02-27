@@ -35,6 +35,7 @@
     <None Remove="Controls\Audio\WavePanel.xaml" />
     <None Remove="Controls\Chat\ChatHistoryItem.xaml" />
     <None Remove="Controls\Chat\ChatHistoryPanel.xaml" />
+    <None Remove="Controls\Chat\ChatInstructionPanel.xaml" />
     <None Remove="Controls\Chat\ChatModelItemControl.xaml" />
     <None Remove="Controls\Chat\ChatServiceItemControl.xaml" />
     <None Remove="Controls\Chat\ChatSessionMainBody.xaml" />
@@ -341,6 +342,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Web\chat-render\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Chat\ChatInstructionPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\Chat\ChatSessionSideHeader.xaml">

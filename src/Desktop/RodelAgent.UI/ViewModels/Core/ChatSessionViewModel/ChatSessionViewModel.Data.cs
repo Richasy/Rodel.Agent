@@ -42,6 +42,7 @@ public sealed partial class ChatSessionViewModel
             Id = Guid.NewGuid().ToString("N"),
             Provider = CurrentProvider!.Value,
             Model = SelectedModel?.Id,
+            SystemInstruction = SystemInstruction,
         };
 
         History.Insert(0, new ChatHistoryItemViewModel(conversation));
@@ -60,12 +61,26 @@ public sealed partial class ChatSessionViewModel
         }
     }
 
+    [RelayCommand]
+    private async Task SaveSystemInstructionAsync()
+    {
+        if (_currentConversation == null)
+        {
+            // 在没有消息记录的情况下，修改系统提示词没有意义，不做处理.
+            return;
+        }
+
+        _currentConversation.SystemInstruction = SystemInstruction;
+        await _storageService.AddOrUpdateChatConversationAsync(_currentConversation);
+    }
+
     private void SetCurrentConversation(ChatConversation? data)
     {
         _currentConversation = data;
         if (_currentConversation != null)
         {
             Messages.Clear();
+            SystemInstruction = _currentConversation.SystemInstruction;
             foreach (var message in _currentConversation!.History ?? [])
             {
                 Messages.Add(message);
@@ -78,6 +93,7 @@ public sealed partial class ChatSessionViewModel
         }
         else
         {
+            SystemInstruction = string.Empty;
             foreach (var item in History)
             {
                 item.IsSelected = false;

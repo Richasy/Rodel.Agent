@@ -89,6 +89,9 @@ public sealed partial class ChatSessionViewModel
     [ObservableProperty]
     public partial bool IsOptionsVisible { get; set; }
 
+    [ObservableProperty]
+    public partial string? SystemInstruction { get; set; }
+
     public ObservableCollection<ChatModelItemViewModel> Models { get; } = [];
 
     public ObservableCollection<ChatInteropMessage> Messages { get; } = [];
