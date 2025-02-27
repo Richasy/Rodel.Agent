@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:ChatSessionControlBase
+    x:Class="RodelAgent.UI.Controls.Chat.ChatSessionSideHeader"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:base="using:Richasy.WinUIKernel.Share.Base"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:local="using:RodelAgent.UI.Controls.Chat"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource LayerFillColorDefaultBrush}">
+        <Grid
+            Height="46"
+            Padding="12,4"
+            ColumnSpacing="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <base:AppToggleCard
+                x:Name="InstructionButton"
+                HorizontalAlignment="Stretch"
+                AutomationProperties.Name="{ext:Locale Name=Instruction}"
+                Click="OnInstructionButtonClick"
+                IsChecked="{x:Bind ViewModel.IsInstructionVisible, Mode=OneWay}"
+                Style="{StaticResource SelectorCardStyle}">
+                <Grid Margin="12,8">
+                    <StackPanel
+                        x:Name="InstructionContainer"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="8">
+                        <ic:SymbolIcon
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            IconVariant="{x:Bind ViewModel.IsInstructionVisible, Mode=OneWay, Converter={StaticResource IconVariantConverter}}"
+                            Symbol="ColorLine" />
+                        <TextBlock
+                            x:Name="InstructionBlock"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource CaptionTextBlockStyle}"
+                            Text="{ext:Locale Name=Instruction}" />
+                    </StackPanel>
+                </Grid>
+            </base:AppToggleCard>
+            <base:AppToggleCard
+                x:Name="OptionsButton"
+                Grid.Column="1"
+                HorizontalAlignment="Stretch"
+                AutomationProperties.Name="{ext:Locale Name=Options}"
+                Click="OnOptionsButtonClick"
+                IsChecked="{x:Bind ViewModel.IsOptionsVisible, Mode=OneWay}"
+                Style="{StaticResource SelectorCardStyle}">
+                <Grid Margin="12,8">
+                    <StackPanel
+                        x:Name="OptionsContainer"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="8">
+                        <ic:SymbolIcon
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            IconVariant="{x:Bind ViewModel.IsOptionsVisible, Mode=OneWay, Converter={StaticResource IconVariantConverter}}"
+                            Symbol="Options" />
+                        <TextBlock
+                            x:Name="OptionsBlock"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource CaptionTextBlockStyle}"
+                            Text="{ext:Locale Name=Options}" />
+                    </StackPanel>
+                </Grid>
+            </base:AppToggleCard>
+        </Grid>
+    </Grid>
+</local:ChatSessionControlBase>

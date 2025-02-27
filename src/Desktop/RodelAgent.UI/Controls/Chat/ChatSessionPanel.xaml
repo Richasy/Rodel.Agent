@@ -30,7 +30,7 @@
         <local:ChatSessionMainBody Grid.Row="2" Margin="0,0,-6,0" />
         <Border
             Grid.Row="1"
-            Grid.ColumnSpan="2"
+            Margin="0,0,-6,0"
             Style="{StaticResource SplitLineStyle}" />
 
         <local:ChatSessionMainFooter Grid.Row="3" Margin="0,0,-6,0" />
@@ -39,26 +39,21 @@
             Grid.RowSpan="4"
             Grid.Column="2"
             Margin="-6,0,0,0"
-            Background="{ThemeResource LayerFillColorDefaultBrush}"
             SizeChanged="OnSideGridSizeChanged"
             Visibility="{x:Bind ViewModel.IsNavColumnManualHide, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
             <Grid.RowDefinitions>
+                <RowDefinition Height="56" />
                 <RowDefinition />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="{x:Bind ViewModel.HistoryHeight, Mode=OneWay, Converter={StaticResource GridLengthConverter}}" />
             </Grid.RowDefinitions>
-
-            <local:ChatHistoryPanel Grid.Row="2" Margin="0,-6,0,0" />
+            <local:ChatSessionSideHeader />
+            <local:ChatHistoryPanel Grid.Row="3" Margin="0,-6,0,0" />
             <!--  分栏大小控制器  -->
-            <Border
-                Grid.Row="1"
-                Height="1"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Center"
-                Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
+            <Border Grid.Row="2" Style="{StaticResource SplitLineStyle}" />
             <community:PropertySizer
                 x:Name="ExtraSizer"
-                Grid.Row="1"
+                Grid.Row="2"
                 HorizontalAlignment="Stretch"
                 Binding="{x:Bind ViewModel.HistoryHeight, Mode=TwoWay}"
                 IsDragInverted="True"

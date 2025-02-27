@@ -83,6 +83,12 @@ public sealed partial class ChatSessionViewModel
     [ObservableProperty]
     public partial double HistoryHeight { get; set; }
 
+    [ObservableProperty]
+    public partial bool IsInstructionVisible { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsOptionsVisible { get; set; }
+
     public ObservableCollection<ChatModelItemViewModel> Models { get; } = [];
 
     public ObservableCollection<ChatInteropMessage> Messages { get; } = [];

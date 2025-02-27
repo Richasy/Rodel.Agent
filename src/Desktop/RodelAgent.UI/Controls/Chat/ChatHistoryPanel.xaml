@@ -28,6 +28,7 @@
             <TextBlock
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
+                FontSize="12"
                 Text="{ext:Locale Name=History}" />
             <Button
                 Grid.Column="1"

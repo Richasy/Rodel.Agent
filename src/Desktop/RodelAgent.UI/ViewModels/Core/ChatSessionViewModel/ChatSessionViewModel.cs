@@ -31,6 +31,8 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         CheckSectionType();
         Messages.CollectionChanged += (_, _) => CheckChatEmpty();
         History.CollectionChanged += (_, _) => CheckHistoryEmpty();
+        IsInstructionVisible = SettingsToolkit.ReadLocalSetting(SettingNames.ChatSessionIsInstructionVisible, true);
+        IsOptionsVisible = SettingsToolkit.ReadLocalSetting(SettingNames.ChatSessionIsOptionsVisible, false);
     }
 
     protected override string GetPageKey()
@@ -183,4 +185,24 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
 
     partial void OnHistoryHeightChanged(double value)
         => SettingsToolkit.WriteLocalSetting(SettingNames.ChatServicePageHistoryHeight, value);
+
+    partial void OnIsInstructionVisibleChanged(bool value)
+    {
+        if (value)
+        {
+            IsOptionsVisible = false;
+        }
+
+        SettingsToolkit.WriteLocalSetting(SettingNames.ChatSessionIsInstructionVisible, value);
+    }
+
+    partial void OnIsOptionsVisibleChanged(bool value)
+    {
+        if (value)
+        {
+            IsInstructionVisible = false;
+        }
+
+        SettingsToolkit.WriteLocalSetting(SettingNames.ChatSessionIsOptionsVisible, value);
+    }
 }
