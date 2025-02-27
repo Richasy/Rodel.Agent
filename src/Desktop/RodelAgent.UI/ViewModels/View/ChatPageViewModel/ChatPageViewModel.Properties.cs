@@ -23,4 +23,7 @@ public sealed partial class ChatPageViewModel
 
     [ObservableProperty]
     public partial bool IsNoService { get; private set; }
+
+    [ObservableProperty]
+    public partial bool IsInitializing { get; set; }
 }

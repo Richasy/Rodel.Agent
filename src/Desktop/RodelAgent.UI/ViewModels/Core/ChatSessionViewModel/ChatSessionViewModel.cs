@@ -49,6 +49,7 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         IsWebInitializing = true;
         IsWebInitialized = false;
         CheckChatEmpty();
+        HistoryHeight = SettingsToolkit.ReadLocalSetting(SettingNames.ChatServicePageHistoryHeight, 300d);
         try
         {
             await _webView.EnsureCoreWebView2Async();
@@ -179,4 +180,7 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
 
     partial void OnIsHistoryInitializingChanged(bool value)
         => CheckHistoryEmpty();
+
+    partial void OnHistoryHeightChanged(double value)
+        => SettingsToolkit.WriteLocalSetting(SettingNames.ChatServicePageHistoryHeight, value);
 }

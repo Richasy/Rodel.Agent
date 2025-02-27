@@ -33,8 +33,10 @@ public sealed partial class ChatPageViewModel : LayoutPageViewModelBase
     {
         if (Services == null)
         {
+            IsInitializing = true;
             this.Get<AppViewModel>().RequestReloadChatServices += (_, _) => ReloadAvailableServicesCommand.Execute(default);
             await ReloadAvailableServicesAsync();
+            IsInitializing = false;
         }
     }
 

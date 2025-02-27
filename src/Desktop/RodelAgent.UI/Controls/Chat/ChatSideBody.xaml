@@ -35,6 +35,7 @@
                 </ItemsRepeater>
             </StackPanel>
         </ScrollViewer>
+        <ProgressRing IsActive="{x:Bind ViewModel.IsInitializing, Mode=OneWay}" Style="{StaticResource PageProgressRingStyle}" />
     </Grid>
 
 </local:ChatPageControlBase>

@@ -11,4 +11,7 @@ public sealed partial class ChatSessionPanel : ChatSessionControlBase
     /// Initializes a new instance of the <see cref="ChatSessionPanel"/> class.
     /// </summary>
     public ChatSessionPanel() => InitializeComponent();
+
+    private void OnSideGridSizeChanged(object sender, SizeChangedEventArgs e)
+        => ExtraSizer.Maximum = e.NewSize.Height - 100;
 }

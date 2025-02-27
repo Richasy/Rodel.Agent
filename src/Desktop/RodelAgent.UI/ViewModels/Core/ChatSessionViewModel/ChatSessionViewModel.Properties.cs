@@ -80,6 +80,9 @@ public sealed partial class ChatSessionViewModel
     [ObservableProperty]
     public partial bool IsHistoryEmpty { get; set; }
 
+    [ObservableProperty]
+    public partial double HistoryHeight { get; set; }
+
     public ObservableCollection<ChatModelItemViewModel> Models { get; } = [];
 
     public ObservableCollection<ChatInteropMessage> Messages { get; } = [];
