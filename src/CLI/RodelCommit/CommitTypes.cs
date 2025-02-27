@@ -84,7 +84,7 @@ internal static class CommitTypes
             Description = "Modifications have been made to CI configuration files or scripts",
             Emoji = "👷",
             Name = "construction-worker",
-            Type = "deploy"
+            Type = "ci"
         },
         new CommitTypeItem
         {
