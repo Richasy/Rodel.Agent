@@ -315,7 +315,7 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
 
         return AnsiConsole.Prompt(new SelectionPrompt<CommitTypeItem>()
                 .Title("Please select a change type:")
-                .PageSize(10)
+                .PageSize(20)
                 .MoreChoicesText("More")
                 .AddChoices(backupItmes)
                 .UseConverter(item => $"{item.Emoji} {item.Type}: {item.Description}"));

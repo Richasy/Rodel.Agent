@@ -24,14 +24,6 @@ internal static class CommitTypes
         },
         new CommitTypeItem
         {
-            Code = ":bookmark:",
-            Description = "There is no clear attribute, it is a phased submission.",
-            Emoji = "🔖",
-            Name = "bookmark",
-            Type = "submission"
-        },
-        new CommitTypeItem
-        {
             Code = ":memo:",
             Description = "Writing docs.",
             Emoji = "📝",
@@ -48,11 +40,27 @@ internal static class CommitTypes
         },
         new CommitTypeItem
         {
+            Code = ":wrench:",
+            Description = "Other changes that dont modify src or test file",
+            Emoji = "🔧",
+            Name = "wrench",
+            Type = "chore"
+        },
+        new CommitTypeItem
+        {
             Code = ":zap:",
             Description = "Improving performance.",
             Emoji = "⚡",
             Name = "zap",
             Type = "perf"
+        },
+        new CommitTypeItem
+        {
+            Code = ":recycle:",
+            Description = "Refactoring code.",
+            Emoji = "♻️",
+            Name = "recycle",
+            Type = "refactor"
         },
         new CommitTypeItem
         {
@@ -72,12 +80,36 @@ internal static class CommitTypes
         },
         new CommitTypeItem
         {
+            Code = ":construction_worker:",
+            Description = "Modifications have been made to CI configuration files or scripts",
+            Emoji = "👷",
+            Name = "construction-worker",
+            Type = "deploy"
+        },
+        new CommitTypeItem
+        {
             Code = ":white_check_mark:",
             Description = "Adding tests.",
             Emoji = "✅",
             Name = "white_check_mark",
             Type = "test"
-        }
+        },
+        new CommitTypeItem
+        {
+            Code = ":lock:",
+            Description = "Fixing security issues.",
+            Emoji = "🔒",
+            Name = "lock",
+            Type = "security"
+        },
+        new CommitTypeItem
+        {
+            Code = ":arrow_up:",
+            Description = "Upgrading dependencies.",
+            Emoji = "⬆️",
+            Name = "arrow_up",
+            Type = "deps"
+        },
     ];
 }
 

@@ -44,6 +44,8 @@ git add <files...>
 rodel-commit
 ```
 
+如果你希望手动编写提交信息，可以使用 `rodel-commit --manual` 命令。
+
 ## 🛖 仓库描述
 
 你可能会在多个仓库之中使用 Rodel Commit，仅凭代码变动有时候并不能准确生成提交信息，你可以额外为仓库添加描述文件，以便 Rodel Commit 生成更准确的提交信息。
