@@ -11,4 +11,7 @@ internal sealed class Options
 
     [Option('r', "repo", Required = false, HelpText = "Specify the repository description.")]
     public string RepoConfigName { get; set; }
+
+    [Option('m', "manual", Required = false, HelpText = "Manually input commit message.")]
+    public bool Manual { get; set; }
 }

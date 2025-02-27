@@ -53,115 +53,13 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
                 return;
             }
 
-            // Handle edge cases.
-            var availableServices = await GetAvailableServicesAsync().ConfigureAwait(false);
-            var defaultService = ChatConfigManager.AppConfiguration?.App?.DefaultService;
-            if (availableServices.Count == 0)
+            if (ChatConfigManager.ShouldManual)
             {
-                AnsiConsole.MarkupLine("[red]No available services found.[/]\n[grey]You can run [green]rodel-commit --config[/] to config your services.[/]");
-                lifetime.StopApplication();
-                return;
-            }
-
-            if (!string.IsNullOrEmpty(defaultService)
-                && !availableServices.Any(p => JsonSerializer.Serialize(p, JsonGenContext.Default.ChatProviderType).Contains(defaultService)))
-            {
-                AnsiConsole.MarkupLine("[red]The default service is not available.[/]\n[grey]You can run [green]rodel-commit --config[/] to config your services.[/]");
-                lifetime.StopApplication();
-                return;
-            }
-
-            var (repoName, repoDesc) = await GetCurrentDescriptorAsync();
-            if (!string.IsNullOrEmpty(repoName))
-            {
-                AnsiConsole.MarkupLine($"[grey]Found repository descriptor: [blue]{repoName}[/][/]");
-            }
-
-            var commitType = AskCommitType();
-
-            // Initialize ai service.
-            var provider = !string.IsNullOrEmpty(defaultService)
-                ? JsonSerializer.Deserialize($"\"{defaultService}\"", JsonGenContext.Default.ChatProviderType)
-                : AskProvider(availableServices);
-            var aiService = kernel.GetRequiredService<IChatService>(provider.ToString());
-            var model = ChatConfigManager.GetModel(provider);
-            var serviceConfig = await configManager.GetServiceConfigAsync(provider, model);
-            aiService.Initialize(serviceConfig!);
-
-            // Split diff if needed.
-            List<string> documents = [];
-            if (NeedSplit(diff))
-            {
-                var splitter = new RecursiveCharacterTextSplitter(
-                    chunkSize: ChatConfigManager.AppConfiguration?.App?.DiffChunkSize ?? 4000,
-                    chunkOverlap: 0);
-                documents = splitter.SplitText(diff).ToList();
-                AnsiConsole.MarkupLine($"Split diff info to [yellow]({documents.Count})[/] by {ChatConfigManager.AppConfiguration?.App.DiffChunkSize ?? 4000} chunk size");
+                await GenerateWithManualAsync();
             }
             else
             {
-                documents.Add(diff);
-            }
-
-            // Generate summary.
-            var summaryList = await GenerateSummaryWithDocumentsAsync(aiService, model.Id, commitType, documents, repoDesc);
-            var summary = string.Empty;
-            if (summaryList.Count > 1)
-            {
-                AnsiConsole.MarkupLine($"[green]Already generated {summaryList.Count} summaries, continue to generate final summary...[/]");
-                summary = await GenerateSummaryWithSegmentsAsync(aiService, model.Id, commitType, summaryList, repoDesc);
-            }
-            else
-            {
-                summary = summaryList[0];
-            }
-
-            // Add emoji to message.
-            summary = Regex.Replace(summary, @"\((.*?)\):", match =>
-            {
-                string p1 = match.Groups[1].Value;
-                return $"({p1.ToLower()}):";
-            });
-            summary = RemoveMarkdownCodeBlockDelimiters(summary);
-            var commitMessage = AddEmojiToMessage(summary);
-
-            var panel = new Panel(Markup.Escape(commitMessage))
-            {
-                Header = new PanelHeader("Commit Message"),
-                Border = BoxBorder.Rounded,
-                Padding = new Padding(2, 1, 2, 1),
-            };
-            AnsiConsole.Write(panel);
-
-            // Confirm to commit.
-            var commitOperation = AnsiConsole.Prompt(new SelectionPrompt<int>()
-                .Title("Please select the operation:")
-                .PageSize(10)
-                .AddChoices([1, 2, 3, 4])
-                .UseConverter(p => p switch
-                {
-                    1 => "Commit and push",
-                    2 => "Commit only",
-                    3 => "Edit commit message",
-                    4 => "Cancel",
-                    _ => "Unknown"
-                }));
-            if (commitOperation == 4)
-            {
-                AnsiConsole.MarkupLine("[yellow]Commit canceled.[/]");
-            }
-            else if (commitOperation == 3)
-            {
-                await GenerateCommitAsync(commitMessage, true);
-            }
-            else if (commitOperation == 2)
-            {
-                await GenerateCommitAsync(commitMessage);
-            }
-            else if (commitOperation == 1)
-            {
-                await GenerateCommitAsync(commitMessage);
-                await PushCommitAsync(commitMessage);
+                await GenerateWithAIAsync(diff);
             }
 
             lifetime.StopApplication();
@@ -170,6 +68,153 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
         {
             AnsiConsole.WriteException(ex);
             lifetime.StopApplication();
+        }
+    }
+
+    private static async Task GenerateWithManualAsync()
+    {
+        await ChatConfigManager.InitializeAsync();
+        var commitType = AskCommitType();
+        AnsiConsole.MarkupLine($"Selected commit type: [green]{commitType.Type}[/]");
+        var commitHeader = AnsiConsole.Prompt(new TextPrompt<string>("Please enter the commit header:"));
+        commitHeader = $"{commitType.Type}: {commitHeader}";
+        commitHeader = AddEmojiToMessage(commitHeader);
+        var nextAction = AnsiConsole.Prompt(new SelectionPrompt<int>()
+            .Title("Please select the operation:")
+            .PageSize(10)
+            .AddChoices([1, 2, 3])
+            .UseConverter(p => p switch
+            {
+                1 => "Commit",
+                2 => "Edit commit message",
+                3 => "Cancel",
+                _ => throw new NotSupportedException()
+            }));
+        if (nextAction == 1)
+        {
+            await GenerateCommitAsync(commitHeader);
+        }
+        else if (nextAction == 2)
+        {
+            await GenerateCommitAsync(commitHeader, true);
+        }
+        else
+        {
+            AnsiConsole.MarkupLine("[yellow]Commit canceled.[/]");
+        }
+    }
+
+    private async Task GenerateWithAIAsync(string diff)
+    {
+        // Handle edge cases.
+        var availableServices = await GetAvailableServicesAsync().ConfigureAwait(false);
+        var defaultService = ChatConfigManager.AppConfiguration?.App?.DefaultService;
+        if (availableServices.Count == 0)
+        {
+            AnsiConsole.MarkupLine("[red]No available services found.[/]\n[grey]You can run [green]rodel-commit --config[/] to config your services.[/]");
+            lifetime.StopApplication();
+            return;
+        }
+
+        if (!string.IsNullOrEmpty(defaultService)
+            && !availableServices.Any(p => JsonSerializer.Serialize(p, JsonGenContext.Default.ChatProviderType).Contains(defaultService)))
+        {
+            AnsiConsole.MarkupLine("[red]The default service is not available.[/]\n[grey]You can run [green]rodel-commit --config[/] to config your services.[/]");
+            lifetime.StopApplication();
+            return;
+        }
+
+        var (repoName, repoDesc) = await GetCurrentDescriptorAsync();
+        if (!string.IsNullOrEmpty(repoName))
+        {
+            AnsiConsole.MarkupLine($"[grey]Found repository descriptor: [blue]{repoName}[/][/]");
+        }
+
+        var commitType = AskCommitType();
+
+        // Initialize ai service.
+        var provider = !string.IsNullOrEmpty(defaultService)
+            ? JsonSerializer.Deserialize($"\"{defaultService}\"", JsonGenContext.Default.ChatProviderType)
+            : AskProvider(availableServices);
+        var aiService = kernel.GetRequiredService<IChatService>(provider.ToString());
+        var model = ChatConfigManager.GetModel(provider);
+        var serviceConfig = await configManager.GetServiceConfigAsync(provider, model);
+        aiService.Initialize(serviceConfig!);
+
+        // Split diff if needed.
+        List<string> documents = [];
+        if (NeedSplit(diff))
+        {
+            var splitter = new RecursiveCharacterTextSplitter(
+                chunkSize: ChatConfigManager.AppConfiguration?.App?.DiffChunkSize ?? 4000,
+                chunkOverlap: 0);
+            documents = splitter.SplitText(diff).ToList();
+            AnsiConsole.MarkupLine($"Split diff info to [yellow]({documents.Count})[/] by {ChatConfigManager.AppConfiguration?.App.DiffChunkSize ?? 4000} chunk size");
+        }
+        else
+        {
+            documents.Add(diff);
+        }
+
+        // Generate summary.
+        var summaryList = await GenerateSummaryWithDocumentsAsync(aiService, model.Id, commitType, documents, repoDesc);
+        var summary = string.Empty;
+        if (summaryList.Count > 1)
+        {
+            AnsiConsole.MarkupLine($"[green]Already generated {summaryList.Count} summaries, continue to generate final summary...[/]");
+            summary = await GenerateSummaryWithSegmentsAsync(aiService, model.Id, commitType, summaryList, repoDesc);
+        }
+        else
+        {
+            summary = summaryList[0];
+        }
+
+        // Add emoji to message.
+        summary = Regex.Replace(summary, @"\((.*?)\):", match =>
+        {
+            string p1 = match.Groups[1].Value;
+            return $"({p1.ToLower()}):";
+        });
+        summary = RemoveMarkdownCodeBlockDelimiters(summary);
+        var commitMessage = AddEmojiToMessage(summary);
+
+        var panel = new Panel(Markup.Escape(commitMessage))
+        {
+            Header = new PanelHeader("Commit Message"),
+            Border = BoxBorder.Rounded,
+            Padding = new Padding(2, 1, 2, 1),
+        };
+        AnsiConsole.Write(panel);
+
+        // Confirm to commit.
+        var commitOperation = AnsiConsole.Prompt(new SelectionPrompt<int>()
+            .Title("Please select the operation:")
+            .PageSize(10)
+            .AddChoices([1, 2, 3, 4])
+            .UseConverter(p => p switch
+            {
+                1 => "Commit and push",
+                2 => "Commit only",
+                3 => "Edit commit message",
+                4 => "Cancel",
+                _ => "Unknown"
+            }));
+        if (commitOperation == 4)
+        {
+            AnsiConsole.MarkupLine("[yellow]Commit canceled.[/]");
+        }
+        else if (commitOperation == 3)
+        {
+            await GenerateCommitAsync(commitMessage, true);
+        }
+        else if (commitOperation == 2)
+        {
+            await GenerateCommitAsync(commitMessage);
+        }
+        else if (commitOperation == 1)
+        {
+            await GenerateCommitAsync(commitMessage);
+            await PushCommitAsync(commitMessage);
         }
     }
 
@@ -256,14 +301,17 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
     {
         var backupItmes = CommitTypes.Items.ToList();
 
-        backupItmes.Insert(0, new CommitTypeItem
+        if (!ChatConfigManager.ShouldManual)
         {
-            Code = "Auto",
-            Name = "Auto generate",
-            Description = "Let AI determine the commit type",
-            Emoji = "🧠",
-            Type = "auto",
-        });
+            backupItmes.Insert(0, new CommitTypeItem
+            {
+                Code = "Auto",
+                Name = "Auto generate",
+                Description = "Let AI determine the commit type",
+                Emoji = "🧠",
+                Type = "auto",
+            });
+        }
 
         return AnsiConsole.Prompt(new SelectionPrompt<CommitTypeItem>()
                 .Title("Please select a change type:")
@@ -466,6 +514,10 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
         var commitError = await commitProcess.StandardError.ReadToEndAsync().ConfigureAwait(false);
         await commitProcess.WaitForExitAsync();
         AnsiConsole.MarkupLine("[green]Commit successfully.[/]");
+        if (!string.IsNullOrEmpty(commitError))
+        {
+            AnsiConsole.MarkupLine($"[yellow]{commitError}[/]");
+        }
     }
 
     private static async Task PushCommitAsync(string commitMessage)

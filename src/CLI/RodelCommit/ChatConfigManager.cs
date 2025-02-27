@@ -34,6 +34,8 @@ internal sealed class ChatConfigManager : IChatConfigManager
 {
     public static CommitConfiguration AppConfiguration { get; private set; }
 
+    public static bool ShouldManual { get; set; }
+
     /// <inheritdoc/>
     public ChatClientConfiguration? Configuration { get; private set; }
 

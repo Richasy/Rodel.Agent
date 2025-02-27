@@ -14,6 +14,7 @@ Console.OutputEncoding = Encoding.UTF8;
 
 if (args.Length > 0)
 {
+    var shouldExit = true;
     Parser.Default.ParseArguments<Options>(args)
         .WithParsed<Options>(opt =>
         {
@@ -55,10 +56,19 @@ if (args.Length > 0)
                 File.WriteAllText(filePath, $"{currentDirectory}\n\n// Repository Description");
                 AnsiConsole.MarkupLine($"[green]The repository descriptor has been created successfully. Path: {filePath}[/]");
                 Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
+                return;
+            }
+            else if (opt.Manual)
+            {
+                ChatConfigManager.ShouldManual = true;
+                shouldExit = false;
             }
         });
 
-    return;
+    if (shouldExit)
+    {
+        return;
+    }
 }
 
 var builder = Host.CreateApplicationBuilder(args);
