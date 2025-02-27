@@ -305,10 +305,10 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
         {
             backupItmes.Insert(0, new CommitTypeItem
             {
-                Code = "Auto",
+                Code = ":bulb:",
                 Name = "Auto generate",
                 Description = "Let AI determine the commit type",
-                Emoji = "🧠",
+                Emoji = "💡",
                 Type = "auto",
             });
         }
