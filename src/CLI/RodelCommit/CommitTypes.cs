@@ -102,14 +102,6 @@ internal static class CommitTypes
             Name = "lock",
             Type = "security"
         },
-        new CommitTypeItem
-        {
-            Code = ":arrow_up:",
-            Description = "Upgrading dependencies.",
-            Emoji = "⬆️",
-            Name = "arrow_up",
-            Type = "deps"
-        },
     ];
 }
 

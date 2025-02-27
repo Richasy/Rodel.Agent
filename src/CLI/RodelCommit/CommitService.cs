@@ -516,7 +516,7 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
         AnsiConsole.MarkupLine("[green]Commit successfully.[/]");
         if (!string.IsNullOrEmpty(commitError))
         {
-            AnsiConsole.MarkupLine($"[yellow]{commitError}[/]");
+            AnsiConsole.MarkupLine($"[yellow]{Markup.Escape(commitError)}[/]");
         }
     }
 
@@ -545,7 +545,7 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
         AnsiConsole.MarkupLine("[green]Push successfully.[/]");
         if (!string.IsNullOrEmpty(pushError))
         {
-            AnsiConsole.MarkupLine($"[yellow]{pushError}[/]");
+            AnsiConsole.MarkupLine($"[yellow]{Markup.Escape(pushError)}[/]");
         }
     }
 
