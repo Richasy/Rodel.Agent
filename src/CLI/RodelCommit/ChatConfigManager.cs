@@ -13,7 +13,6 @@ using Richasy.AgentKernel.Connectors.LingYi.Models;
 using Richasy.AgentKernel.Connectors.Mistral.Models;
 using Richasy.AgentKernel.Connectors.Moonshot.Models;
 using Richasy.AgentKernel.Connectors.Ollama.Models;
-using Richasy.AgentKernel.Connectors.Onnx.Models;
 using Richasy.AgentKernel.Connectors.OpenAI.Models;
 using Richasy.AgentKernel.Connectors.OpenRouter.Models;
 using Richasy.AgentKernel.Connectors.SiliconFlow.Models;
@@ -67,7 +66,6 @@ internal sealed class ChatConfigManager : IChatConfigManager
             ChatProviderType.SiliconFlow => AppConfiguration?.Services.SiliconFlow,
             ChatProviderType.Doubao => AppConfiguration?.Services.Doubao,
             ChatProviderType.XAI => AppConfiguration?.Services.XAI,
-            ChatProviderType.Onnx => AppConfiguration?.Services.Onnx,
             _ => null,
         };
     }
@@ -99,7 +97,6 @@ internal sealed class ChatConfigManager : IChatConfigManager
             GroqChatConfig groqConfig => groqConfig.ToAIServiceConfig<GroqServiceConfig>(),
             MistralChatConfig mistralConfig => mistralConfig.ToAIServiceConfig(),
             OllamaChatConfig ollamaConfig => ollamaConfig.ToAIServiceConfig(),
-            OnnxChatConfig onnxConfig => onnxConfig.ToAIServiceConfig(),
             _ => default,
         };
         if (aiConfig is not null)
@@ -140,7 +137,6 @@ internal sealed class ChatConfigManager : IChatConfigManager
             ChatProviderType.SiliconFlow => AppConfiguration?.Services.SiliconFlow!.Model,
             ChatProviderType.Doubao => AppConfiguration?.Services.Doubao!.Model,
             ChatProviderType.XAI => AppConfiguration?.Services.XAI!.Model,
-            ChatProviderType.Onnx => AppConfiguration?.Services.Onnx!.Model,
             _ => null,
         };
 
@@ -217,12 +213,5 @@ internal static class ConfigExtensions
         return config is null || string.IsNullOrWhiteSpace(config.Key)
             ? throw new ArgumentException("The configuration is not valid.", nameof(config))
             : new MistralServiceConfig(config.UseCodestral ? config.CodestralKey! : config.Key!, string.Empty, config.UseCodestral);
-    }
-
-    public static AIServiceConfig? ToAIServiceConfig(this OnnxChatConfig? config)
-    {
-        return config is null
-            ? throw new ArgumentException("The configuration is not valid.", nameof(config))
-            : new OnnxServiceConfig(string.Empty, config.UseCuda);
     }
 }

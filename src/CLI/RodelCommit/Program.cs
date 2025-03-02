@@ -97,7 +97,6 @@ var kernel = Kernel.CreateBuilder()
     .AddOllamaChatService()
     .AddPerplexityChatService()
     .AddMistralChatService()
-    .AddOnnxChatService()
     .Build();
 
 builder.Services.AddSingleton(kernel);
