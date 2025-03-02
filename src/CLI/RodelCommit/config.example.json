@@ -3,6 +3,7 @@
     "default_service": "",
     "diff_chunk_size": 7000,
     "max_commit_length": 40,
+    "concurrent_limit": 5,
     "locale": "en-US",
     "use_gitmoji": true
   },
@@ -103,6 +104,10 @@
     },
     "xai": {
       "key": "",
+      "model": ""
+    },
+    "onnx": {
+      "use_cuda": false,
       "model": ""
     }
   }

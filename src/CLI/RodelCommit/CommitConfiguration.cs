@@ -30,6 +30,9 @@ internal sealed class BasicConfiguration
 
     [JsonPropertyName("use_gitmoji")]
     public bool UseCommitType { get; set; }
+
+    [JsonPropertyName("concurrent_limit")]
+    public int ConcurrentLimit { get; set; }
 }
 
 internal sealed class ServiceConfiguration
@@ -99,6 +102,9 @@ internal sealed class ServiceConfiguration
 
     [JsonPropertyName("xai")]
     public XAIConfig? XAI { get; set; }
+
+    [JsonPropertyName("onnx")]
+    public OnnxConfig? Onnx { get; set; }
 }
 
 internal sealed class OpenAIConfig : OpenAIChatConfig
@@ -297,4 +303,13 @@ internal sealed class XAIConfig : XAIChatConfig
 
     public override bool IsValid()
         => base.IsValid() && !string.IsNullOrEmpty(Model);
+}
+
+internal sealed class OnnxConfig : OnnxChatConfig
+{
+    [JsonPropertyName("model")]
+    public string? Model { get; set; }
+
+    public override bool IsValid()
+        => !string.IsNullOrEmpty(Model);
 }

@@ -21,6 +21,7 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
 {
     private readonly CancellationTokenSource _stopCts = new();
     private Task? _commitTask;
+    private IChatService? _chatService;
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
@@ -30,6 +31,8 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
 
     public async Task StopAsync(CancellationToken cancellationToken)
     {
+        _chatService?.Client?.Dispose();
+
         if (_commitTask != null)
         {
             await _stopCts.CancelAsync();
@@ -62,11 +65,13 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
                 await GenerateWithAIAsync(diff);
             }
 
+            _chatService?.Client?.Dispose();
             lifetime.StopApplication();
         }
         catch (Exception ex)
         {
             AnsiConsole.WriteException(ex);
+            _chatService?.Client?.Dispose();
             lifetime.StopApplication();
         }
     }
@@ -140,6 +145,7 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
         var model = ChatConfigManager.GetModel(provider);
         var serviceConfig = await configManager.GetServiceConfigAsync(provider, model);
         aiService.Initialize(serviceConfig!);
+        _chatService = aiService;
 
         // Split diff if needed.
         List<string> documents = [];
@@ -222,8 +228,9 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
     {
         var result = new List<string>();
         var index = 0;
-        // 使用并发限制器生成多个文档的摘要，最多一次运行 5 个任务.
-        var semaphore = new SemaphoreSlim(5);
+        var limit = ChatConfigManager.AppConfiguration.App.ConcurrentLimit;
+        var concurrentLimit = limit > 0 ? limit : 5;
+        var semaphore = new SemaphoreSlim(limit);
         var useSegments = documents.Count > 1;
         await AnsiConsole.Status()
             .StartAsync("Generating summaries...", ctx =>
@@ -249,7 +256,7 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
                             ModelId = model,
                             Temperature = 0.5f,
                         };
-                        var summary = await chatService.Client!.CompleteAsync([chatMsg], options, cancellationToken: _stopCts.Token);
+                        var summary = await chatService.Client!.GetResponseAsync([chatMsg], options, cancellationToken: _stopCts.Token);
                         var text = summary.Message.Text!;
                         result.Add(text);
                         index++;
@@ -277,7 +284,7 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
             Temperature = 0.5f,
         };
 
-        var summary = await chatService.Client!.CompleteAsync([chatMsg], options, cancellationToken: _stopCts.Token);
+        var summary = await chatService.Client!.GetResponseAsync([chatMsg], options, cancellationToken: _stopCts.Token);
         return summary.Message.Text!;
     }
 
@@ -381,6 +388,7 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
             ChatProviderType.Mistral => "Mistral",
             ChatProviderType.Ollama => "Ollama",
             ChatProviderType.Perplexity => "Perplexity",
+            ChatProviderType.Onnx => "ONNX",
             _ => throw new NotSupportedException(),
         };
     }

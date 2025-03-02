@@ -45,6 +45,7 @@
     <PackageReference Include="Richasy.AgentKernel.Connectors.Mistral" />
     <PackageReference Include="Richasy.AgentKernel.Connectors.Moonshot" />
     <PackageReference Include="Richasy.AgentKernel.Connectors.Ollama" />
+    <PackageReference Include="Richasy.AgentKernel.Connectors.Onnx" />
     <PackageReference Include="Richasy.AgentKernel.Connectors.OpenAI" />
     <PackageReference Include="Richasy.AgentKernel.Connectors.OpenRouter" />
     <PackageReference Include="Richasy.AgentKernel.Connectors.Perplexity" />
