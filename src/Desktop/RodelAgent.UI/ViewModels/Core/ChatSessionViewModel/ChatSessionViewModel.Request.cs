@@ -79,7 +79,7 @@ public sealed partial class ChatSessionViewModel
 
             if (useStream)
             {
-                await foreach (var msg in _chatService!.Client!.CompleteStreamingAsync(messages.ConvertAll(p => p.ToChatMessage()), options, _cancellationTokenSource.Token))
+                await foreach (var msg in _chatService!.Client!.GetStreamingResponseAsync(messages.ConvertAll(p => p.ToChatMessage()), options, _cancellationTokenSource.Token))
                 {
                     responseMessage += msg.Text;
 #pragma warning disable CA1508 // 避免死条件代码
@@ -93,7 +93,7 @@ public sealed partial class ChatSessionViewModel
             }
             else
             {
-                var response = await _chatService!.Client!.CompleteAsync(messages.ConvertAll(p => p.ToChatMessage()), options, _cancellationTokenSource.Token);
+                var response = await _chatService!.Client!.GetResponseAsync(messages.ConvertAll(p => p.ToChatMessage()), options, _cancellationTokenSource.Token);
                 responseMessage = response.Message.Text;
             }
 

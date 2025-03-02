@@ -36,6 +36,7 @@ internal static class GlobalDependencies
             .AddShareToolkits()
             .AddConfigManager()
             .AddXamlRootProvider()
+            .AddCurrentWindowProvider()
 
             .AddAliTranslationService()
             .AddAzureTranslationService()
@@ -152,6 +153,12 @@ internal static class GlobalDependencies
     public static IKernelBuilder AddXamlRootProvider(this IKernelBuilder builder)
     {
         builder.Services.AddSingleton<IXamlRootProvider, XamlRootProvider>();
+        return builder;
+    }
+
+    public static IKernelBuilder AddCurrentWindowProvider(this IKernelBuilder builder)
+    {
+        builder.Services.AddSingleton<ICurrentWindowProvider, CurrentWindowProvider>();
         return builder;
     }
 

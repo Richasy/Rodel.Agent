@@ -140,6 +140,29 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+	<PackageReference Include="Richasy.AgentKernel.Connectors.Ali" />
+	<PackageReference Include="Richasy.AgentKernel.Connectors.Anthropic" />
+	<PackageReference Include="Richasy.AgentKernel.Connectors.Azure" />
+	<PackageReference Include="Richasy.AgentKernel.Connectors.Baidu" />
+	<PackageReference Include="Richasy.AgentKernel.Connectors.DeepSeek" />
+	<PackageReference Include="Richasy.AgentKernel.Connectors.Google" />
+	<PackageReference Include="Richasy.AgentKernel.Connectors.Groq" />
+	<PackageReference Include="Richasy.AgentKernel.Connectors.IFlyTek" />
+	<PackageReference Include="Richasy.AgentKernel.Connectors.LingYi" />
+	<PackageReference Include="Richasy.AgentKernel.Connectors.Mistral" />
+	<PackageReference Include="Richasy.AgentKernel.Connectors.Moonshot" />
+	<PackageReference Include="Richasy.AgentKernel.Connectors.Ollama" />
+	<PackageReference Include="Richasy.AgentKernel.Connectors.OpenAI" />
+	<PackageReference Include="Richasy.AgentKernel.Connectors.OpenRouter" />
+	<PackageReference Include="Richasy.AgentKernel.Connectors.Perplexity" />
+	<PackageReference Include="Richasy.AgentKernel.Connectors.SiliconFlow" />
+	<PackageReference Include="Richasy.AgentKernel.Connectors.Tencent" />
+	<PackageReference Include="Richasy.AgentKernel.Connectors.TogetherAI" />
+	<PackageReference Include="Richasy.AgentKernel.Connectors.Volcano" />
+	<PackageReference Include="Richasy.AgentKernel.Connectors.XAI" />
+	<PackageReference Include="Richasy.AgentKernel.Connectors.Youdao" />
+	<PackageReference Include="Richasy.AgentKernel.Connectors.ZhiPu" />
+	<PackageReference Include="Richasy.AgentKernel.Connectors.Windows" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\RodelAgent.Context\RodelAgent.Context.csproj" />
