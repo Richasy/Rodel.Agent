@@ -16,10 +16,10 @@ public sealed partial class StartupPageViewModel(ILogger<StartupPageViewModel> l
     [RelayCommand]
     private void Initialize()
     {
+        Version = this.Get<IAppToolkit>().GetPackageVersion();
         if (SettingsToolkit.ReadLocalSetting(SettingNames.MigrationFailed, false))
         {
             ErrorMessage = ResourceToolkit.GetLocalizedString(StringNames.MigrationFailed);
-            return;
         }
         else
         {
@@ -30,8 +30,6 @@ public sealed partial class StartupPageViewModel(ILogger<StartupPageViewModel> l
                 SettingsToolkit.DeleteLocalSetting(SettingNames.WorkingDirectory);
             }
         }
-
-        Version = this.Get<IAppToolkit>().GetPackageVersion();
     }
 
     [RelayCommand]
