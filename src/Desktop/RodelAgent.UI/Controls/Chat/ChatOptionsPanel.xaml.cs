@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
-
 using Microsoft.Extensions.AI;
 using Richasy.AgentKernel;
 
@@ -36,9 +35,34 @@ public sealed partial class ChatOptionsPanel : ChatSessionControlBase
         {
             case ChatProviderType.OpenAI:
             case ChatProviderType.AzureOpenAI:
+            case ChatProviderType.ZhiPu:
                 ReloadOpenAIOptionsUI();
                 break;
+            case ChatProviderType.Gemini:
+            case ChatProviderType.LingYi:
+            case ChatProviderType.DeepSeek:
+            case ChatProviderType.Qwen:
+            case ChatProviderType.Ernie:
+            case ChatProviderType.Moonshot:
+            case ChatProviderType.AzureAI:
+            case ChatProviderType.Hunyuan:
+            case ChatProviderType.Doubao:
+            case ChatProviderType.Spark:
+            case ChatProviderType.OpenRouter:
+            case ChatProviderType.TogetherAI:
+            case ChatProviderType.Groq:
+            case ChatProviderType.Perplexity:
+            case ChatProviderType.Mistral:
+            case ChatProviderType.SiliconFlow:
+            case ChatProviderType.Ollama:
+            case ChatProviderType.XAI:
+                ReloadCommonOptionsUI();
+                break;
+            case ChatProviderType.Anthropic:
+                ReloadAnthropicOptionsUI();
+                break;
             default:
+                ReloadUnspecifiedOptionsUI();
                 break;
         }
     }
@@ -81,6 +105,12 @@ public sealed partial class ChatOptionsPanel : ChatSessionControlBase
             options.TopP = Math.Abs(v - 1) < 0.1 ? null : (float)v;
         }
 
+        if (TopKContainer.Visibility == Visibility.Visible)
+        {
+            var v = TopKSlider.Value;
+            options.TopK = Convert.ToInt32(v) == 0 ? null : Convert.ToInt32(v);
+        }
+
         if (ResponseFormatContainer.Visibility == Visibility.Visible)
         {
             var item = (ResponseFormatComboBox.SelectedItem as ComboBoxItem)?.Tag as string;
@@ -97,6 +127,7 @@ public sealed partial class ChatOptionsPanel : ChatSessionControlBase
         MaxOutputTokenContainer.Visibility = Visibility.Visible;
         TemperatureContainer.Visibility = Visibility.Visible;
         TopPContainer.Visibility = Visibility.Visible;
+        TopKContainer.Visibility = Visibility.Collapsed;
         ResponseFormatContainer.Visibility = Visibility.Visible;
 
         FrequencyPenaltySlider.Maximum = 2d;
@@ -112,6 +143,67 @@ public sealed partial class ChatOptionsPanel : ChatSessionControlBase
         TemperatureSlider.Value = ViewModel.CurrentOptions?.Temperature ?? 1d;
         TopPSlider.Value = ViewModel.CurrentOptions?.TopP ?? 1d;
         ResponseFormatComboBox.SelectedIndex = ViewModel.CurrentOptions?.ResponseFormat == ChatResponseFormat.Json ? 1 : 0;
+    }
+
+    private void ReloadCommonOptionsUI()
+    {
+        FrequencyPenaltyContainer.Visibility = Visibility.Visible;
+        PresencePenaltyContainer.Visibility = Visibility.Visible;
+        MaxOutputTokenContainer.Visibility = Visibility.Visible;
+        TemperatureContainer.Visibility = Visibility.Visible;
+        TopPContainer.Visibility = Visibility.Visible;
+        TopKContainer.Visibility = Visibility.Collapsed;
+        ResponseFormatContainer.Visibility = Visibility.Collapsed;
+
+        FrequencyPenaltySlider.Maximum = 2d;
+        PresencePenaltySlider.Maximum = 2d;
+        FrequencyPenaltySlider.Minimum = -2d;
+        PresencePenaltySlider.Minimum = -2d;
+        TemperatureSlider.Minimum = 0;
+        TemperatureSlider.Maximum = 2;
+
+        FrequencyPenaltySlider.Value = ViewModel.CurrentOptions?.FrequencyPenalty ?? 0d;
+        PresencePenaltySlider.Value = ViewModel.CurrentOptions?.PresencePenalty ?? 0d;
+        MaxOutputTokenBox.Value = ViewModel.CurrentOptions?.MaxOutputTokens ?? 0;
+        TemperatureSlider.Value = ViewModel.CurrentOptions?.Temperature ?? 1d;
+        TopPSlider.Value = ViewModel.CurrentOptions?.TopP ?? 1d;
+    }
+
+    private void ReloadAnthropicOptionsUI()
+    {
+        FrequencyPenaltyContainer.Visibility = Visibility.Visible;
+        PresencePenaltyContainer.Visibility = Visibility.Visible;
+        MaxOutputTokenContainer.Visibility = Visibility.Visible;
+        TemperatureContainer.Visibility = Visibility.Visible;
+        TopPContainer.Visibility = Visibility.Visible;
+        TopKContainer.Visibility = Visibility.Visible;
+        ResponseFormatContainer.Visibility = Visibility.Visible;
+
+        FrequencyPenaltySlider.Maximum = 2d;
+        PresencePenaltySlider.Maximum = 2d;
+        FrequencyPenaltySlider.Minimum = -2d;
+        PresencePenaltySlider.Minimum = -2d;
+        TemperatureSlider.Minimum = 0;
+        TemperatureSlider.Maximum = 2;
+
+        FrequencyPenaltySlider.Value = ViewModel.CurrentOptions?.FrequencyPenalty ?? 0d;
+        PresencePenaltySlider.Value = ViewModel.CurrentOptions?.PresencePenalty ?? 0d;
+        MaxOutputTokenBox.Value = ViewModel.CurrentOptions?.MaxOutputTokens ?? 0;
+        TemperatureSlider.Value = ViewModel.CurrentOptions?.Temperature ?? 1d;
+        TopPSlider.Value = ViewModel.CurrentOptions?.TopP ?? 1d;
+        TopKSlider.Value = ViewModel.CurrentOptions?.TopK ?? 0;
+        ResponseFormatComboBox.SelectedIndex = ViewModel.CurrentOptions?.ResponseFormat == ChatResponseFormat.Json ? 1 : 0;
+    }
+
+    private void ReloadUnspecifiedOptionsUI()
+    {
+        FrequencyPenaltyContainer.Visibility = Visibility.Collapsed;
+        PresencePenaltyContainer.Visibility = Visibility.Collapsed;
+        MaxOutputTokenContainer.Visibility = Visibility.Collapsed;
+        TemperatureContainer.Visibility = Visibility.Collapsed;
+        TopPContainer.Visibility = Visibility.Collapsed;
+        TopKContainer.Visibility = Visibility.Collapsed;
+        ResponseFormatContainer.Visibility = Visibility.Collapsed;
     }
 
     private void OnMaxOutputTokenBoxLostFocus(object sender, RoutedEventArgs e)

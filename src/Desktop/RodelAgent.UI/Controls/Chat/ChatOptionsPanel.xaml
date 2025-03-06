@@ -17,7 +17,8 @@
                     <ToggleSwitch
                         x:Name="StreamOutputSwitch"
                         MinWidth="0"
-                        MinHeight="0" />
+                        MinHeight="0"
+                        Margin="0,-4" />
                 </controls:CombineRow.Element>
             </controls:CombineRow>
             <controls:CombineRow Title="{ext:Locale Name=MaxRounds}" ToolTipService.ToolTip="{ext:Locale Name=MaxRoundsDescription}">
@@ -83,6 +84,20 @@
                         Minimum="0"
                         StepFrequency="0.1"
                         Value="1" />
+                </controls:CombineRow.Element>
+            </controls:CombineRow>
+            <controls:CombineRow
+                x:Name="TopKContainer"
+                Title="{ext:Locale Name=TopK}"
+                ToolTipService.ToolTip="{ext:Locale Name=TopKDescription}">
+                <controls:CombineRow.Element>
+                    <Slider
+                        x:Name="TopKSlider"
+                        Width="160"
+                        Maximum="50"
+                        Minimum="0"
+                        StepFrequency="1"
+                        Value="0" />
                 </controls:CombineRow.Element>
             </controls:CombineRow>
             <controls:CombineRow

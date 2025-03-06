@@ -559,4 +559,16 @@
   <data name="TopPDescription" xml:space="preserve">
     <value>模型会考虑前 top p 概率的 token 的结果。如 0.1 就意味着只有包括在最高 10% 概率中的 token 会被考虑，不建议和采样温度同时调整</value>
   </data>
+  <data name="DoSample" xml:space="preserve">
+    <value>采样策略</value>
+  </data>
+  <data name="DoSampleDescription" xml:space="preserve">
+    <value>关闭采样后，温度和 top p 等参数将不生效，模型输出的随机性会大幅降低</value>
+  </data>
+  <data name="TopK" xml:space="preserve">
+    <value>Top K</value>
+  </data>
+  <data name="TopKDescription" xml:space="preserve">
+    <value>模型会从一组数据中选出最靠前的 k 个元素</value>
+  </data>
 </root>
