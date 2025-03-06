@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Bubble } from "@ant-design/x";
-import { Space, Spin, Flex, theme, Typography } from "antd";
+import { Space, Spin, Flex, theme, Typography, Collapse } from "antd";
 import { ThemeProvider } from "antd-style";
 import markdownit from "markdown-it";
 import highlight from "highlight.js";
+import katex from "markdown-it-katex";
+import "katex/dist/katex.min.css";
 import EditableBubble from "./MessageItem";
 
 function Render() {
   const { token } = theme.useToken();
   const [currentTheme, setCurrentTheme] = useState("light"); // 默认主题为 auto
   const [history, setHistory] = useState([]);
+  const [temporaryLoading, setTemporaryLoading] = useState(false); // 临时加载状态
   const [temporaryOutput, setTemporaryOutput] = useState(null); // 存储临时输出
   const md = markdownit({
     html: true,
@@ -22,17 +25,78 @@ function Render() {
       }
       return ""; // use external default escaping
     },
-  });
-  const renderMarkdown = (content) => (
-    <Typography>
-      {/* biome-ignore lint/security/noDangerouslySetInnerHtml: used in demo */}
-      <div
-        dangerouslySetInnerHTML={{
-          __html: md.render(content),
-        }}
-      />
-    </Typography>
-  );
+  }).use(katex);
+  const renderMarkdown = (content) => {
+    // 使用 markdown-it 渲染 Markdown 内容
+    const htmlContent = md.render(content);
+    // 创建一个 DOMParser 实例
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlContent, "text/html");
+
+    // 查找所有的 <think> 标签
+    const thinkElements = doc.querySelectorAll("think");
+    
+    // 如果没有 <think> 标签，直接返回原始 HTML
+    if (thinkElements.length === 0) {
+      return (
+        <Typography>
+          {/* biome-ignore lint/security/noDangerouslySetInnerHtml: used in demo */}
+          <div
+            dangerouslySetInnerHTML={{
+              __html: htmlContent,
+            }}
+          />
+        </Typography>
+      );
+    }
+
+    const thinkHtmlList = Array.from(thinkElements).map((thinkElement) => {
+      return thinkElement.innerHTML;
+    });
+
+    while (thinkElements.length > 0) {
+        const thinkTag = thinkElements[0];
+        doc.body.removeChild(thinkTag);
+    }
+
+    // 如果 doc 内没有内容，插入一个p标签.
+    if (doc.body.childNodes.length === 0) {
+      doc.body.innerHTML = "<p></p>";
+    }
+
+    const thinkingHeader = window.resources?.thoughtProcess
+      ? window.resources.thoughtProcess
+      : "Thought process";
+    return (
+      <Typography>
+        {/* biome-ignore lint/security/noDangerouslySetInnerHtml: used in demo */}
+        {Array.from(thinkHtmlList).map((thinkHtml, index) => {
+          const inner = (
+            <div
+              dangerouslySetInnerHTML={{
+                __html: thinkHtml,
+              }}
+            />
+          );
+
+          const items = [
+            {
+              key: index,
+              label: thinkingHeader,
+              children: inner,
+            },
+          ];
+          return <Collapse key={index} size="small" items={items} />;
+        })}
+        {/* biome-ignore lint/security/noDangerouslySetInnerHtml: used in demo */}
+        <div
+          dangerouslySetInnerHTML={{
+            __html: remainingContent,
+          }}
+        />
+      </Typography>
+    );
+  };
 
   const originalConsoleError = console.error;
   console.error = function (msg, ...optionalArguments) {
@@ -103,10 +167,10 @@ function Render() {
       setTimeout(() => {
         window.scrollTo({
           top: document.body.scrollHeight,
-          behavior: 'smooth'
+          behavior: "smooth",
         });
       }, 500);
-    }
+    };
 
     window.changeTheme = (themeId) => {
       setCurrentTheme(themeId);
@@ -119,14 +183,21 @@ function Render() {
     window.addMessage = (message) => {
       setHistory((prevHistory) => [...prevHistory, message]);
       setTemporaryOutput(null); // 清除临时输出
+      setTemporaryLoading(false); // 清除临时加载状态
       window.delayToBottom();
     };
     // 设置临时输出（用于 SSE 流式返回）
     window.setOutput = (output) => {
+      setTemporaryLoading(false);
       setTemporaryOutput(output);
+    };
+    // 设置临时加载状态
+    window.setLoading = (loading) => {
+      setTemporaryLoading(loading);
     };
     // 取消临时输出
     window.setCancel = () => {
+      setTemporaryLoading(false);
       setTemporaryOutput(null);
     };
 
@@ -137,7 +208,7 @@ function Render() {
     // 清空历史消息
     window.clearMessages = () => {
       setHistory([]);
-    }
+    };
 
     sendMessage("loaded", true);
   }, []);
@@ -178,6 +249,17 @@ function Render() {
                 <Spin size="small" />
               </Space>
             }
+          />
+        )}
+
+        {/* 渲染临时加载状态 */}
+        {temporaryLoading && (
+          <Bubble
+            key="temporaryLoading"
+            shape="corner"
+            loading={true}
+            className="markdown-body"
+            placement="start"
           />
         )}
       </Flex>

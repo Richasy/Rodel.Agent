@@ -48,6 +48,7 @@ public sealed partial class ChatSessionViewModel
         }
 
         IsGenerating = true;
+        SetTempLoadingCommand.Execute(true);
         try
         {
             // 检查流式输出.
@@ -152,6 +153,7 @@ public sealed partial class ChatSessionViewModel
         _cancellationTokenSource = default;
         IsGenerating = false;
         CancelTempResultCommand.Execute(default);
+        SetTempLoadingCommand.Execute(false);
     }
 
     private static void AttachChatMessageProperties(ChatMessage msg)

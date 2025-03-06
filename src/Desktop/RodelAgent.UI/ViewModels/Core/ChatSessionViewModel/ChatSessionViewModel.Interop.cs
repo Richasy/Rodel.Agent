@@ -71,6 +71,17 @@ public sealed partial class ChatSessionViewModel
     }
 
     [RelayCommand]
+    private async Task SetTempLoadingAsync(bool isLoading)
+    {
+        if (!IsWebInitialized)
+        {
+            return;
+        }
+
+        await _webView!.ExecuteScriptAsync($"window.setLoading({isLoading.ToString().ToLowerInvariant()})");
+    }
+
+    [RelayCommand]
     private async Task SetInteropResourcesAsync()
     {
         if (!IsWebInitialized)

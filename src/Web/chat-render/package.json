@@ -17,6 +17,7 @@
     "antd-style": "^3.7.1",
     "highlight.js": "^11.11.1",
     "markdown-it": "^14.1.0",
+    "markdown-it-katex": "^2.0.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

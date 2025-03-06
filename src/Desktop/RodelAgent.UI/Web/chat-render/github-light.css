@@ -138,11 +138,11 @@ html {
   box-sizing: content-box;
   overflow: hidden;
   background: transparent;
-  border-bottom: 1px solid #d1d9e0b3;
-  height: 0.25em;
+  border-bottom: 1px solid #b1b5b9b3;
+  height: 0.15em;
   padding: 0;
-  margin: 1.5rem 0;
-  background-color: #d1d9e0;
+  margin: 1rem 0;
+  background-color: #9f9fa0;
   border: 0;
 }
 

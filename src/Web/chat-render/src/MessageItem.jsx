@@ -80,10 +80,10 @@ const MessageItem = ({ item, sendMessage, renderMarkdown, removeMessage }) => {
               onClick={handleSave}
               icon={<CheckOutlined />}
             >
-              {window.resources.save}
+              {window.resources?.save ? window.resources.save : "Save"}
             </Button>
             <Button onClick={handleCancel} icon={<CloseOutlined />}>
-              {window.resources.discard}
+              {window.resources?.discard ? window.resources.discard : "Discard"}
             </Button>
           </Flex>
         </div>
@@ -95,7 +95,11 @@ const MessageItem = ({ item, sendMessage, renderMarkdown, removeMessage }) => {
           onMouseLeave={() => setIsHovered(false)}
           content={item.message}
           header={
-            <div className={(isHovered ? "c-visible" : "c-hidden") + " message-time"}>
+            <div
+              className={
+                (isHovered ? "c-visible" : "c-hidden") + " message-time"
+              }
+            >
               {timestampToDate(item.time)}
             </div>
           }
@@ -106,7 +110,7 @@ const MessageItem = ({ item, sendMessage, renderMarkdown, removeMessage }) => {
           messageRender={renderMarkdown}
           footer={
             <Space size={8} className={isHovered ? "c-visible" : "c-hidden"}>
-              <Tooltip title={window.resources.copy}>
+              <Tooltip title={window.resources?.copy ? window.resources.copy : "Copy"}>
                 <Button
                   color="default"
                   variant="text"
@@ -121,7 +125,7 @@ const MessageItem = ({ item, sendMessage, renderMarkdown, removeMessage }) => {
                   icon={<CopyOutlined />}
                 />
               </Tooltip>
-              <Tooltip title={window.resources.edit}>
+              <Tooltip title={window.resources?.edit ? window.resources.edit : "Edit"}>
                 <Button
                   color="default"
                   variant="text"
@@ -130,7 +134,7 @@ const MessageItem = ({ item, sendMessage, renderMarkdown, removeMessage }) => {
                   icon={<EditOutlined />}
                 />
               </Tooltip>
-              <Tooltip title={window.resources.delete}>
+              <Tooltip title={window.resources?.delete ? window.resources.delete : "Delete"}>
                 <Button
                   color="danger"
                   variant="text"
