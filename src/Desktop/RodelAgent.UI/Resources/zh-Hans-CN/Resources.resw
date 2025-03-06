@@ -571,4 +571,22 @@
   <data name="TopKDescription" xml:space="preserve">
     <value>模型会从一组数据中选出最靠前的 k 个元素</value>
   </data>
+  <data name="Rename" xml:space="preserve">
+    <value>重命名</value>
+  </data>
+  <data name="SmartRename" xml:space="preserve">
+    <value>智能重命名</value>
+  </data>
+  <data name="NeedSelectServiceAndModel" xml:space="preserve">
+    <value>需要先选择服务和模型才能进行文本生成</value>
+  </data>
+  <data name="NoValidMessage" xml:space="preserve">
+    <value>没有可用的消息</value>
+  </data>
+  <data name="RemoveAllSessions" xml:space="preserve">
+    <value>移除所有会话</value>
+  </data>
+  <data name="RenameHistoryPlaceholder" xml:space="preserve">
+    <value>为这场伟大的对话命名吧！</value>
+  </data>
 </root>

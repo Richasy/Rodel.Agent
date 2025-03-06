@@ -5,6 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:base="using:Richasy.WinUIKernel.Share.Base"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
     xmlns:local="using:RodelAgent.UI.Controls.Chat"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -20,6 +22,40 @@
         Click="OnHistoryItemClick"
         IsChecked="{x:Bind ViewModel.IsSelected, Mode=OneWay}"
         IsEnableCheck="False">
+        <base:AppToggleCard.ContextFlyout>
+            <MenuFlyout>
+                <MenuFlyoutItem
+                    x:Name="RenameItem"
+                    MinWidth="140"
+                    Command="{x:Bind ViewModel.RenameCommand, Mode=OneWay}"
+                    IsEnabled="{x:Bind ViewModel.IsRenaming, Mode=OneWay, Converter={StaticResource ObjectToBoolReverseConverter}}"
+                    Text="{ext:Locale Name=Rename}">
+                    <MenuFlyoutItem.Icon>
+                        <ic:SymbolIcon Symbol="Rename" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem
+                    x:Name="SmartRenameItem"
+                    MinWidth="140"
+                    Command="{x:Bind ViewModel.SmartRenameCommand, Mode=OneWay}"
+                    IsEnabled="{x:Bind ViewModel.IsRenaming, Mode=OneWay, Converter={StaticResource ObjectToBoolReverseConverter}}"
+                    Text="{ext:Locale Name=SmartRename}">
+                    <MenuFlyoutItem.Icon>
+                        <ic:SymbolIcon Symbol="PenSparkle" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem
+                    x:Name="DeleteItem"
+                    MinWidth="140"
+                    Command="{x:Bind ViewModel.RemoveCommand, Mode=OneWay}"
+                    IsEnabled="{x:Bind ViewModel.IsRenaming, Mode=OneWay, Converter={StaticResource ObjectToBoolReverseConverter}}"
+                    Text="{ext:Locale Name=Delete}">
+                    <MenuFlyoutItem.Icon>
+                        <ic:SymbolIcon Foreground="{ThemeResource SystemFillColorCriticalBrush}" Symbol="Delete" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+            </MenuFlyout>
+        </base:AppToggleCard.ContextFlyout>
         <Grid
             Margin="12,8"
             HorizontalAlignment="Stretch"
@@ -33,13 +69,20 @@
                 VerticalAlignment="Center"
                 MaxLines="1"
                 Text="{x:Bind ViewModel.Name, Mode=OneWay, Converter={StaticResource ChatTitleConverter}}" />
+            <ProgressRing
+                Grid.Column="1"
+                Width="14"
+                Height="14"
+                VerticalAlignment="Center"
+                IsActive="{x:Bind ViewModel.IsRenaming, Mode=OneWay}" />
             <base:TrimTextBlock
                 Grid.Column="1"
                 VerticalAlignment="Center"
                 FontSize="12"
                 Foreground="{ThemeResource TextFillColorDisabledBrush}"
                 MaxLines="1"
-                Text="{x:Bind ViewModel.LastMessageDate, Mode=OneWay}" />
+                Text="{x:Bind ViewModel.LastMessageDate, Mode=OneWay}"
+                Visibility="{x:Bind ViewModel.IsRenaming, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
         </Grid>
     </base:AppToggleCard>
 </local:ChatHistoryItemBase>

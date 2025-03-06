@@ -2,6 +2,7 @@
 
 using Microsoft.Extensions.AI;
 using RodelAgent.Models;
+using RodelAgent.UI.Toolkits;
 
 namespace RodelAgent.UI.ViewModels.Core;
 
@@ -10,6 +11,29 @@ namespace RodelAgent.UI.ViewModels.Core;
 /// </summary>
 public sealed partial class ChatSessionViewModel
 {
+    public async Task<string> GenerateContentAsync(string prompt)
+    {
+        if (string.IsNullOrEmpty(prompt))
+        {
+            return string.Empty;
+        }
+
+        if (_chatService is null || SelectedModel is null)
+        {
+            throw new InvalidOperationException(ResourceToolkit.GetLocalizedString(UI.Models.Constants.StringNames.NeedSelectServiceAndModel));
+        }
+
+        var options = new ChatOptions();
+        options.ModelId = SelectedModel?.Id;
+        var messages = new List<ChatMessage>
+        {
+            new(ChatRole.User, prompt),
+        };
+
+        var response = await _chatService!.Client!.GetResponseAsync(messages, options);
+        return response.Message?.Text ?? string.Empty;
+    }
+
     [RelayCommand]
     private async Task StartGenerateAsync()
     {
@@ -70,7 +94,7 @@ public sealed partial class ChatSessionViewModel
             await SaveCurrentMessagesAsync();
             UserInput = string.Empty;
             var responseMessage = string.Empty;
-            
+
 
             if (!string.IsNullOrEmpty(SystemInstruction))
             {

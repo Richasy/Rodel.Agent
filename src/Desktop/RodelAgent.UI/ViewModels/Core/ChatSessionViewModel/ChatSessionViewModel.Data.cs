@@ -19,13 +19,28 @@ public sealed partial class ChatSessionViewModel
         {
             foreach (var conversation in conversations)
             {
-                var item = new ChatHistoryItemViewModel(conversation);
+                var item = new ChatHistoryItemViewModel(conversation, RemoveHistoryAsync);
                 list.Add(item);
             }
         }
 
         list.OrderByDescending(p => p.GetLastMessageTime()).ToList().ForEach(History.Add);
         IsHistoryInitializing = false;
+    }
+
+    private async Task RemoveHistoryAsync(ChatHistoryItemViewModel item)
+    {
+        if (item.IsSelected)
+        {
+            SetCurrentConversation(null);
+        }
+
+        if (item.Conversation != null)
+        {
+            await _storageService.RemoveChatConversationAsync(item.Conversation.Id);
+            History.Remove(item);
+            CheckHistoryEmpty();
+        }
     }
 
     private void TryCreateConversation()
@@ -49,7 +64,7 @@ public sealed partial class ChatSessionViewModel
             Options = options,
         };
 
-        History.Insert(0, new ChatHistoryItemViewModel(conversation));
+        History.Insert(0, new ChatHistoryItemViewModel(conversation, RemoveHistoryAsync));
         SetCurrentConversation(conversation);
     }
 
@@ -86,6 +101,18 @@ public sealed partial class ChatSessionViewModel
         await _storageService.AddOrUpdateChatConversationAsync(_currentConversation);
     }
 
+    [RelayCommand]
+    private async Task RemoveAllSessionsAsync()
+    {
+        foreach (var item in History)
+        {
+            await _storageService.RemoveChatConversationAsync(item.Conversation!.Id);
+        }
+
+        History.Clear();
+        CheckHistoryEmpty();
+    }
+
     private void SetCurrentConversation(ChatConversation? data)
     {
         _currentConversation = data;
@@ -96,6 +123,7 @@ public sealed partial class ChatSessionViewModel
                 Messages.Clear();
                 SystemInstruction = _currentConversation.SystemInstruction;
                 CurrentOptions = _currentConversation.Options;
+                Title = _currentConversation.Name;
                 foreach (var message in _currentConversation!.History ?? [])
                 {
                     Messages.Add(message);
@@ -110,11 +138,14 @@ public sealed partial class ChatSessionViewModel
         else
         {
             SystemInstruction = string.Empty;
+            Title = string.Empty;
             CurrentOptions = null;
             foreach (var item in History)
             {
                 item.IsSelected = false;
             }
+
+            ClearMessageCommand.Execute(default);
         }
 
         RequestReloadOptionsUI?.Invoke(this, EventArgs.Empty);

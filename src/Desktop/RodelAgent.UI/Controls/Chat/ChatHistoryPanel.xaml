@@ -34,6 +34,15 @@
                 Style="{StaticResource SmallIconButtonStyle}"
                 ToolTipService.ToolTip="{ext:Locale Name=MoreOptions}">
                 <ic:SymbolIcon FontSize="12" Symbol="MoreVertical" />
+                <Button.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Command="{x:Bind ViewModel.RemoveAllSessionsCommand, Mode=OneWay}" Text="{ext:Locale Name=RemoveAllSessions}">
+                            <MenuFlyoutItem.Icon>
+                                <ic:SymbolIcon Foreground="{ThemeResource SystemFillColorCriticalBrush}" Symbol="Delete" />
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                    </MenuFlyout>
+                </Button.Flyout>
             </Button>
         </Grid>
         <ScrollViewer

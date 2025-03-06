@@ -13,7 +13,7 @@ internal sealed partial class ChatTitleConverter : IValueConverter
             return string.IsNullOrEmpty(title) ? ResourceToolkit.GetLocalizedString(Models.Constants.StringNames.RandomChat) : title;
         }
 
-        return string.Empty;
+        return ResourceToolkit.GetLocalizedString(Models.Constants.StringNames.RandomChat);
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language) => throw new NotImplementedException();
