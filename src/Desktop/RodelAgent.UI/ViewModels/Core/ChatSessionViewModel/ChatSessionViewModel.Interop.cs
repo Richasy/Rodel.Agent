@@ -215,6 +215,14 @@ public sealed partial class ChatSessionViewModel
                     Messages.Remove(source);
                 }
             }
+            else if (data.Type == "copyText")
+            {
+                var text = data.Content;
+                var dp = new DataPackage();
+                dp.SetText(text);
+                Clipboard.SetContent(dp);
+                this.Get<AppViewModel>().ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(UI.Models.Constants.StringNames.Copied), InfoType.Success));
+            }
         }
     }
 }

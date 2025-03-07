@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Bubble } from "@ant-design/x";
-import { Space, Spin, Flex, theme, Typography, Collapse } from "antd";
+import { Space, Spin, Flex, theme, Typography, Collapse, Button } from "antd";
 import { ThemeProvider } from "antd-style";
 import markdownit from "markdown-it";
 import highlight from "highlight.js";
@@ -26,15 +26,78 @@ function Render() {
       return ""; // use external default escaping
     },
   }).use(katex);
+
+  const extractLang = (info) => {
+    return info
+      .trim()
+      .replace(/=(\d*)/, "")
+      .replace(/:(no-)?line-numbers({| |$|=\d*).*/, "")
+      .replace(/(-vue|{| ).*$/, "")
+      .replace(/^vue-html$/, "template")
+      .replace(/^ansi$/, "");
+  };
+
+  const handleCopyClick = (id) => {
+    const button = document.getElementById(id);
+    const codeContainer = button.closest(".code-container");
+    const codeElement = codeContainer?.querySelector("pre code");
+    if (codeElement) {
+      sendMessage(
+        {
+          type: "copyText",
+          content: codeElement.innerText,
+        },
+        false,
+        false
+      );
+    }
+  };
+
   const renderMarkdown = (content) => {
     // 如果content有<think>，但是没有</think>，则在结尾添加一个 </think>并追加一个p标签
-    if (content.includes('<think>') && !content.includes('</think>')) {
-      const thinking = window.resources?.thinking ? window.resources.thinking : "Thinking...";
+    if (content.includes("<think>") && !content.includes("</think>")) {
+      const thinking = window.resources?.thinking
+        ? window.resources.thinking
+        : "Thinking...";
       content += `</think><p>${thinking}</p>`;
     }
 
-    content = content.replace('<think>', '<div class="think">');
-    content = content.replace('</think>', '</div>');
+    content = content.replace("<think>", '<div class="think">');
+    content = content.replace("</think>", "</div>");
+    md.renderer.rules.fence = (...args) => {
+      const [tokens, idx] = args;
+      const token = tokens[idx];
+
+      // remove title from info
+      token.info = token.info.replace(/\[.*\]/, "");
+      const lang = extractLang(token.info);
+
+      // Generate a unique ID for the code block
+      const codeId = `code-block-${idx}`;
+      const highlightedCode = md.options.highlight(token.content, lang || "plaintext", "");
+      // Create the header with language and copy button
+      const header = `
+        <div class="code-header">
+          <span class="code-lang">${lang || "plaintext"}</span>
+          <button onclick="window.handleCopyClick('copy${idx}')" class="copy-button" id="copy${idx}">
+            <svg class="svgIcon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+              <path fill-rule="evenodd" d="M18 3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1V9a4 4 0 0 0-4-4h-3a1.99 1.99 0 0 0-1 .267V5a2 2 0 0 1 2-2h7Z" clip-rule="evenodd"/>
+              <path fill-rule="evenodd" d="M8 7.054V11H4.2a2 2 0 0 1 .281-.432l2.46-2.87A2 2 0 0 1 8 7.054ZM10 7v4a2 2 0 0 1-2 2H4v6a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3Z" clip-rule="evenodd"/>
+            </svg>
+          </button>
+        </div>
+      `;
+
+      // Wrap the code block in a container with the header
+      const codeBlock = `
+        <div class="code-container">
+          ${header}
+          <pre><code id="${codeId}" class="hljs ${lang}">${highlightedCode}</code></pre>
+        </div>
+      `;
+
+      return codeBlock;
+    };
 
     // 使用 markdown-it 渲染 Markdown 内容
     const htmlContent = md.render(content);
@@ -44,7 +107,7 @@ function Render() {
 
     // 查找所有的 <think> 标签
     const thinkElements = doc.querySelectorAll(".think");
-    
+
     // 如果没有 <think> 标签，直接返回原始 HTML
     if (thinkElements.length === 0) {
       return (
@@ -171,7 +234,7 @@ function Render() {
         });
       }, 500);
     };
-
+    window.handleCopyClick = handleCopyClick;
     window.changeTheme = (themeId) => {
       setCurrentTheme(themeId);
       loadThemeCSS(themeId); // 加载对应的 CSS 文件
@@ -237,10 +300,10 @@ function Render() {
             shape="corner"
             content={temporaryOutput.message}
             header={temporaryOutput.author}
-            // typing={{
-            //   step: 2,
-            //   interval: 10,
-            // }}
+            typing={{
+              step: 2,
+              interval: 10,
+            }}
             className="markdown-body"
             placement="start"
             messageRender={renderMarkdown}

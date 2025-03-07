@@ -595,4 +595,7 @@
   <data name="ThoughtProcess" xml:space="preserve">
     <value>思考过程</value>
   </data>
+  <data name="CopyFailed" xml:space="preserve">
+    <value>复制失败，请尝试手动复制</value>
+  </data>
 </root>
