@@ -7,7 +7,7 @@ namespace RodelAgent.Context;
 /// <summary>
 /// 数据库服务.
 /// </summary>
-public sealed class DbService : IDisposable
+public sealed class DbService
 {
     private SecretDataService? _secretService;
     private DrawDataService? _drawService;
@@ -15,15 +15,6 @@ public sealed class DbService : IDisposable
     private ChatDataService? _chatService;
     private string _workingDirectory;
     private string _packageDirectory;
-
-    /// <inheritdoc/>
-    public void Dispose()
-    {
-        _secretService?.Dispose();
-        _drawService?.Dispose();
-        _audioService?.Dispose();
-        _chatService?.Dispose();
-    }
 
     /// <summary>
     /// 设置工作目录.
@@ -47,7 +38,7 @@ public sealed class DbService : IDisposable
     public async Task<string?> GetSecretAsync(string key)
     {
         await InitializeSecretServiceAsync().ConfigureAwait(false);
-        var data = await _secretService!.GetMetadataAsync(key).ConfigureAwait(false);
+        var data = await _secretService!.GetSecretAsync(key).ConfigureAwait(false);
         return data?.Value;
     }
 
@@ -58,7 +49,7 @@ public sealed class DbService : IDisposable
     public async Task SetSecretAsync(string key, string value)
     {
         await InitializeSecretServiceAsync().ConfigureAwait(false);
-        await _secretService!.AddOrUpdateMetadataAsync(new SecretMeta { Id = key, Value = value }).ConfigureAwait(false);
+        await _secretService!.AddOrUpdateSecretAsync(new SecretMeta { Id = key, Value = value }).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -139,7 +130,7 @@ public sealed class DbService : IDisposable
     public async Task AddOrUpdateDrawDataAsync(string dataId, string value)
     {
         await InitializeDrawServiceAsync().ConfigureAwait(false);
-        await _drawService!.AddOrUpdateMetadataAsync(new DrawMeta { Id = dataId, Value = value }).ConfigureAwait(false);
+        await _drawService!.AddOrUpdateSessionAsync(new DrawMeta { Id = dataId, Value = value }).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -150,7 +141,7 @@ public sealed class DbService : IDisposable
     public async Task RemoveDrawDataAsync(string dataId)
     {
         await InitializeDrawServiceAsync().ConfigureAwait(false);
-        await _drawService!.RemoveMetadataAsync(dataId).ConfigureAwait(false);
+        await _drawService!.RemoveSessionAsync(dataId).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -172,7 +163,7 @@ public sealed class DbService : IDisposable
     public async Task AddOrUpdateAudioDataAsync(string dataId, string value)
     {
         await InitializeAudioServiceAsync().ConfigureAwait(false);
-        await _audioService!.AddOrUpdateMetadataAsync(new AudioMeta { Id = dataId, Value = value }).ConfigureAwait(false);
+        await _audioService!.AddOrUpdateSessionAsync(new AudioMeta { Id = dataId, Value = value }).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -183,7 +174,7 @@ public sealed class DbService : IDisposable
     public async Task RemoveAudioDataAsync(string dataId)
     {
         await InitializeAudioServiceAsync().ConfigureAwait(false);
-        await _audioService!.RemoveMetadataAsync(dataId).ConfigureAwait(false);
+        await _audioService!.RemoveSessionAsync(dataId).ConfigureAwait(false);
     }
 
     private async Task InitializeSecretServiceAsync()

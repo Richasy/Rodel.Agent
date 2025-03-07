@@ -19,8 +19,7 @@
   	<RdXmlFile Include="rd.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Remove="Assets\Database\*.ddb" />
-	<Content Remove="Assets\SqliteJson\**\*" />
+    <Content Remove="Assets\Database\*.sqlite" />
 	<Content Remove="Web\chat-render\**\*" />
   </ItemGroup>
   <ItemGroup>
@@ -81,7 +80,7 @@
   </ItemGroup>
 
   <ItemGroup>
-  	<None Update="Assets\Database\*.ddb">
+  	<None Update="Assets\Database\*.sqlite">
   	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   	</None>
   </ItemGroup>
@@ -90,23 +89,6 @@
   	<None Update="Web\chat-render\**\*">
   		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   	</None>
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(Platform)' == 'x64'">
-  	<None Update="Assets\SqliteJson\x64\SQLite.Interop.dll">
-  	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  	</None>
-	<None Update="Assets\SqliteJson\x64\SqliteJson.exe">
-	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	</None>
-  </ItemGroup>
-  <ItemGroup Condition="'$(Platform)' == 'ARM64'">
-	<None Update="Assets\SqliteJson\arm64\SQLite.Interop.dll">
-	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	</None>
-	<None Update="Assets\SqliteJson\arm64\SqliteJson.exe">
-	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	</None>
   </ItemGroup>
 
   <ItemGroup>

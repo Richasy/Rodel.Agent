@@ -14,6 +14,7 @@ using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels.Core;
 using RodelAgent.UI.ViewModels.View;
 using Serilog;
+using SqlSugar;
 using System.Diagnostics.CodeAnalysis;
 using Windows.Storage;
 
@@ -30,6 +31,7 @@ internal static class GlobalDependencies
             return;
         }
 
+        StaticConfig.EnableAot = true;
         Kernel = Kernel.CreateBuilder()
             .AddSerilog()
             .AddDispatcherQueue()

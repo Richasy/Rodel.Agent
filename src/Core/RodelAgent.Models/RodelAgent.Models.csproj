@@ -9,5 +9,6 @@
 
   <ItemGroup>
     <PackageReference Include="Richasy.AgentKernel.Definitions" />
+	<PackageReference Include="SqlSugarCore" />
   </ItemGroup>
 </Project>

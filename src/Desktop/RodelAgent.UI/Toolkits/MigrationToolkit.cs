@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
-using RichasyKernel;
 using RodelAgent.Context;
+using RodelAgent.Models.Common;
 using RodelAgent.UI.Models.Constants;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Text.Json;
+using SqlSugar;
+using System.Reflection;
 using Windows.ApplicationModel;
 
 namespace RodelAgent.UI.Toolkits;
@@ -16,153 +14,139 @@ namespace RodelAgent.UI.Toolkits;
 /// </summary>
 public static class MigrationToolkit
 {
+    internal static bool ShouldMigrate()
+    {
+        var libPath = SettingsToolkit.ReadLocalSetting(SettingNames.WorkingDirectory, string.Empty);
+        var dbFiles = Directory.EnumerateFiles(libPath, "*.db", SearchOption.TopDirectoryOnly).Where(p => !p.Contains(".old", StringComparison.Ordinal));
+        return dbFiles.Any();
+    }
+
     internal static async Task TryMigrateAsync()
     {
-        var libPath = SettingsToolkit.ReadLocalSetting(Models.Constants.SettingNames.WorkingDirectory, string.Empty);
-        var dbFiles = Directory.EnumerateFiles(libPath, "*.db", SearchOption.TopDirectoryOnly);
-        if (!dbFiles.Any())
-        {
-            return;
-        }
+        var libPath = SettingsToolkit.ReadLocalSetting(SettingNames.WorkingDirectory, string.Empty);
+        var dbFiles = Directory.EnumerateFiles(libPath, "*.db", SearchOption.TopDirectoryOnly).Where(p => !p.Contains(".old", StringComparison.Ordinal));
 
         SettingsToolkit.WriteLocalSetting(SettingNames.MigrationFailed, false);
 
-        foreach (var dbFile in dbFiles)
+        try
         {
-            try
+            var shouldMove = File.Exists(Path.Combine(libPath, "move"));
+            foreach (var dbFile in dbFiles)
             {
-                var dbFileName = Path.GetFileName(dbFile);
-                var delFile = Path.Combine(libPath, $"{dbFileName}.del");
-                if (File.Exists(delFile))
+                if(!shouldMove)
                 {
-                    MoveOldDbFile(dbFile);
-                    continue;
+                    var dbFileName = Path.GetFileName(dbFile);
+                    if (dbFileName == "secret.db")
+                    {
+                        await MigrateSecretDbAsync(dbFile);
+                    }
+                    else if (dbFileName == "draw.db")
+                    {
+                        await MigrateDrawDbAsync(dbFile);
+                    }
+                    else if (dbFileName == "audio.db")
+                    {
+                        await MigrateAudioDbAsync(dbFile);
+                    }
                 }
-
-                if (dbFileName == "secret.db")
+                else
                 {
-                    await MigrateSecretDbAsync(dbFile);
+                    await MoveOldDbFileAsync(dbFile);
                 }
-                else if (dbFileName == "draw.db")
-                {
-                    await MigrateDrawDbAsync(dbFile);
-                }
-                else if (dbFileName == "audio.db")
-                {
-                    await MigrateAudioDbAsync(dbFile);
-                }
-
-                await File.Create(delFile).DisposeAsync();
             }
-            catch (Exception ex)
+
+            if (!shouldMove)
             {
-                GlobalDependencies.Kernel.Get<ILogger<App>>().LogError(ex, $"Failed to migrate database. {Path.GetFileName(dbFile)}");
-                SettingsToolkit.WriteLocalSetting(SettingNames.MigrationFailed, true);
-                throw;
+                await File.Create(Path.Combine(libPath, "move")).DisposeAsync();
             }
+            else
+            {
+                File.Delete(Path.Combine(libPath, "move"));
+            }
+        }
+        catch (Exception ex)
+        {
+            GlobalDependencies.Kernel.Get<ILogger<App>>().LogError(ex, $"Failed to migrate database.");
+            SettingsToolkit.WriteLocalSetting(SettingNames.MigrationFailed, true);
+            throw;
         }
     }
 
     private static async Task MigrateSecretDbAsync(string dbPath)
     {
-        var json = await GetJsonFromDatabaseAsync(dbPath, "Metadata");
-        var metadatas = JsonSerializer.Deserialize(json, JsonGenContext.Default.ListSecretMeta);
+        var secrets = await GetOldDataFromDatabaseAsync<SecretMeta>(dbPath, "Metadata");
         var libPath = SettingsToolkit.ReadLocalSetting(Models.Constants.SettingNames.WorkingDirectory, string.Empty);
-        using var service = new SecretDataService(libPath, Package.Current.InstalledPath);
+        var service = new SecretDataService(libPath, Package.Current.InstalledPath);
         await service.InitializeAsync();
-        await service.BatchAddMetadataAsync(metadatas ?? []);
+        await service.BatchAddSecretsAsync(secrets);
     }
 
     private static async Task MigrateDrawDbAsync(string dbPath)
     {
-        var json = await GetJsonFromDatabaseAsync(dbPath, "Sessions");
-        var metadatas = JsonSerializer.Deserialize(json, JsonGenContext.Default.ListDrawMeta);
+        var secrets = await GetOldDataFromDatabaseAsync<DrawMeta>(dbPath, "Sessions");
         var libPath = SettingsToolkit.ReadLocalSetting(Models.Constants.SettingNames.WorkingDirectory, string.Empty);
-        using var service = new DrawDataService(libPath, Package.Current.InstalledPath);
+        var service = new DrawDataService(libPath, Package.Current.InstalledPath);
         await service.InitializeAsync();
-        await service.BatchAddMetadataAsync(metadatas ?? []);
+        await service.BatchAddSessionsAsync(secrets);
     }
 
     private static async Task MigrateAudioDbAsync(string dbPath)
     {
-        var json = await GetJsonFromDatabaseAsync(dbPath, "Sessions");
-        var metadatas = JsonSerializer.Deserialize(json, JsonGenContext.Default.ListAudioMeta);
+        var secrets = await GetOldDataFromDatabaseAsync<AudioMeta>(dbPath, "Sessions");
         var libPath = SettingsToolkit.ReadLocalSetting(Models.Constants.SettingNames.WorkingDirectory, string.Empty);
-        using var service = new AudioDataService(libPath, Package.Current.InstalledPath);
+        var service = new AudioDataService(libPath, Package.Current.InstalledPath);
         await service.InitializeAsync();
-        await service.BatchAddMetadataAsync(metadatas ?? []);
+        await service.BatchAddSessionsAsync(secrets);
     }
 
-    private static async Task<string> GetJsonFromDatabaseAsync(string dbPath, string tableName)
+    private static async Task<List<T>> GetOldDataFromDatabaseAsync<T>(string dbPath, string tableName)
     {
-        var architecture = RuntimeInformation.ProcessArchitecture;
-        var identifier = architecture == Architecture.Arm64 ? "arm64" : "x64";
-        var exeFile = Path.Combine(Package.Current.InstalledPath, "Assets", "SqliteJson", identifier, "SqliteJson.exe");
-        var taskCompletion = new TaskCompletionSource<string>();
-        var sb = new StringBuilder();
-        using var process = new Process
+        return await Task.Run(async () =>
         {
-            StartInfo = new ProcessStartInfo
+            using var sql = new SqlSugarClient(new ConnectionConfig
             {
-                FileName = exeFile,
-                Arguments = $"\"{dbPath}\" \"{tableName}\"",
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-            },
-            EnableRaisingEvents = true,
-        };
-        process.OutputDataReceived += (sender, e) =>
-        {
-            if (e.Data is not null)
-            {
-                if (e.Data == "__DONE__")
+                ConnectionString = $"Data Source={dbPath}",
+                DbType = DbType.Sqlite,
+                IsAutoCloseConnection = true,
+                ConfigureExternalServices = new ConfigureExternalServices
                 {
-                    taskCompletion.TrySetResult(sb.ToString());
-                    return;
+                    EntityService = (c, p) =>
+                    {
+                        if (!p.IsPrimarykey && new NullabilityInfoContext().Create(c).WriteState is NullabilityState.Nullable)
+                        {
+                            p.IsNullable = true;
+                        }
+                    }
                 }
+            });
 
-                sb.AppendLine(e.Data);
-            }
-        };
-        process.ErrorDataReceived += (sender, e) =>
-        {
-            if (e.Data is not null)
-            {
-                taskCompletion.TrySetException(new KernelException(e.Data));
-            }
-        };
-        process.Start();
-        process.BeginOutputReadLine();
-        process.BeginErrorReadLine();
-        var json = await taskCompletion.Task;
-        await process.WaitForExitAsync();
-        return json;
+            sql.CodeFirst.InitTables<T>();
+            return await sql.Queryable<T>().AS(tableName).ToListAsync();
+        });
     }
 
-    private static void MoveOldDbFile(string dbPath)
+    private static async Task MoveOldDbFileAsync(string dbPath)
     {
         try
         {
-            var folder = Path.GetDirectoryName(dbPath);
-            var oldFolder = Path.Combine(folder!, ".sqlite");
+            await Task.Delay(1000);
+            var libFolder = SettingsToolkit.ReadLocalSetting(SettingNames.WorkingDirectory, string.Empty);
+            var relativePath = Path.GetRelativePath(libFolder, Path.GetDirectoryName(dbPath)!);
+            relativePath = relativePath.Trim('\\');
+            var sqliteFolder = Path.Combine(libFolder, ".old");
+            var oldFolder = Path.Combine(sqliteFolder, relativePath);
             if (!Directory.Exists(oldFolder))
             {
                 Directory.CreateDirectory(oldFolder);
             }
 
             var oldFileName = Path.Combine(oldFolder!, Path.GetFileName(dbPath));
-            File.Move(dbPath, oldFileName);
-            var delFile = Path.Combine(folder!, $"{Path.GetFileName(dbPath)}.del");
-            if (File.Exists(delFile))
-            {
-                File.Delete(delFile);
-            }
+            File.Move(dbPath, oldFileName, true);
         }
         catch (Exception ex)
         {
             GlobalDependencies.Kernel.Get<ILogger<App>>().LogError(ex, $"Failed to move old database file. {Path.GetFileName(dbPath)}");
+            throw;
         }
     }
 }

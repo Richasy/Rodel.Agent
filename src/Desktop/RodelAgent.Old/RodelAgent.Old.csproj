@@ -261,8 +261,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\RodelAgent.Context\RodelAgent.Context.csproj" />
     <ProjectReference Include="..\..\Core\RodelAgent.Statics\RodelAgent.Statics.csproj" />
-    <ProjectReference Include="..\..\Core\RodelAudio.Core\RodelAudio.Core.csproj" />
-    <ProjectReference Include="..\..\Core\RodelAudio.Interfaces\RodelAudio.Interfaces.csproj" />
     <ProjectReference Include="..\..\Core\RodelChat.Models\RodelChat.Models.csproj" />
     <ProjectReference Include="..\..\Libs\Migration.V1\Migration.V1.csproj" />
     <ProjectReference Include="..\RodelAgent.UI.Models\RodelAgent.UI.Models.csproj" />

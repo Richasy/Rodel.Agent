@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
+using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels.Core;
 using Windows.System;
 
@@ -22,8 +23,30 @@ public sealed partial class RootLayout : RootLayoutBase
     public AppTitleBar GetMainTitleBar() => MainTitleBar;
 
     /// <inheritdoc/>
-    protected override void OnControlLoaded()
+    protected override async void OnControlLoaded()
     {
+        if (MigrationToolkit.ShouldMigrate())
+        {
+            try
+            {
+                MigrateWidget.Visibility = Visibility.Visible;
+                await MigrationToolkit.TryMigrateAsync();
+                SettingsToolkit.DeleteLocalSetting(Models.Constants.SettingNames.MigrationFailed);
+            }
+            catch (Exception ex)
+            {
+                SettingsToolkit.WriteLocalSetting(Models.Constants.SettingNames.MigrationFailed, true);
+                this.Get<ILogger<RootLayout>>().LogError(ex, "Failed to migrate database.");
+            }
+            finally
+            {
+                MigrateWidget.Visibility = Visibility.Collapsed;
+                AppViewModel.RestartCommand.Execute(default);
+            }
+
+            return;
+        }
+
         ViewModel.Initialize(MainFrame, OverlayFrame);
         var selectedItem = ViewModel.MenuItems.FirstOrDefault(p => p.IsSelected);
         if (selectedItem is not null)

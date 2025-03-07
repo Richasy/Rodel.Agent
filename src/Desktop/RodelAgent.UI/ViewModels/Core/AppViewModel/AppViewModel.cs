@@ -14,26 +14,17 @@ namespace RodelAgent.UI.ViewModels.Core;
 public sealed partial class AppViewModel : ViewModelBase
 {
     [RelayCommand]
-    private static async Task LaunchAsync()
+    private static void Launch()
     {
-        var libPath = SettingsToolkit.ReadLocalSetting(Models.Constants.SettingNames.WorkingDirectory, string.Empty);
+        var libPath = SettingsToolkit.ReadLocalSetting(SettingNames.WorkingDirectory, string.Empty);
         var isLibPathValid = !string.IsNullOrEmpty(libPath) && Directory.Exists(libPath);
-        if (!isLibPathValid)
+        var isMigrationFailed = SettingsToolkit.ReadLocalSetting(SettingNames.MigrationFailed, false);
+        if (!isLibPathValid || isMigrationFailed)
         {
             new StartupWindow().Activate();
         }
         else
         {
-            try
-            {
-                await MigrationToolkit.TryMigrateAsync();
-            }
-            catch (Exception)
-            {
-                new StartupWindow().Activate();
-                return;
-            }
-
             new MainWindow().Activate();
         }
     }
