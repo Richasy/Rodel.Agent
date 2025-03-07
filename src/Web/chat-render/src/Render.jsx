@@ -27,6 +27,15 @@ function Render() {
     },
   }).use(katex);
   const renderMarkdown = (content) => {
+    // 如果content有<think>，但是没有</think>，则在结尾添加一个 </think>并追加一个p标签
+    if (content.includes('<think>') && !content.includes('</think>')) {
+      const thinking = window.resources?.thinking ? window.resources.thinking : "Thinking...";
+      content += `</think><p>${thinking}</p>`;
+    }
+
+    content = content.replace('<think>', '<div class="think">');
+    content = content.replace('</think>', '</div>');
+
     // 使用 markdown-it 渲染 Markdown 内容
     const htmlContent = md.render(content);
     // 创建一个 DOMParser 实例
@@ -34,7 +43,7 @@ function Render() {
     const doc = parser.parseFromString(htmlContent, "text/html");
 
     // 查找所有的 <think> 标签
-    const thinkElements = doc.querySelectorAll("think");
+    const thinkElements = doc.querySelectorAll(".think");
     
     // 如果没有 <think> 标签，直接返回原始 HTML
     if (thinkElements.length === 0) {
@@ -51,18 +60,9 @@ function Render() {
     }
 
     const thinkHtmlList = Array.from(thinkElements).map((thinkElement) => {
+      thinkElement.style = "display:none";
       return thinkElement.innerHTML;
     });
-
-    while (thinkElements.length > 0) {
-        const thinkTag = thinkElements[0];
-        doc.body.removeChild(thinkTag);
-    }
-
-    // 如果 doc 内没有内容，插入一个p标签.
-    if (doc.body.childNodes.length === 0) {
-      doc.body.innerHTML = "<p></p>";
-    }
 
     const thinkingHeader = window.resources?.thoughtProcess
       ? window.resources.thoughtProcess
@@ -91,7 +91,7 @@ function Render() {
         {/* biome-ignore lint/security/noDangerouslySetInnerHtml: used in demo */}
         <div
           dangerouslySetInnerHTML={{
-            __html: remainingContent,
+            __html: doc.body.innerHTML,
           }}
         />
       </Typography>
@@ -237,10 +237,10 @@ function Render() {
             shape="corner"
             content={temporaryOutput.message}
             header={temporaryOutput.author}
-            typing={{
-              step: 2,
-              interval: 10,
-            }}
+            // typing={{
+            //   step: 2,
+            //   interval: 10,
+            // }}
             className="markdown-body"
             placement="start"
             messageRender={renderMarkdown}

@@ -38,4 +38,16 @@ public sealed class ChatInteropResources
     /// </summary>
     [JsonPropertyName("delete")]
     public string Delete { get; set; }
+
+    /// <summary>
+    /// 思考过程.
+    /// </summary>
+    [JsonPropertyName("thoughtProcess")]
+    public string ThoughtProcess { get; set; }
+
+    /// <summary>
+    /// 思考中.
+    /// </summary>
+    [JsonPropertyName("thinking")]
+    public string Thinking { get; set; }
 }

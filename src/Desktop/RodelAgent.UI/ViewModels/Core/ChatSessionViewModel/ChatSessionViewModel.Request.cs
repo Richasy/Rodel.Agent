@@ -48,7 +48,6 @@ public sealed partial class ChatSessionViewModel
         }
 
         IsGenerating = true;
-        SetTempLoadingCommand.Execute(true);
         try
         {
             // 检查流式输出.
@@ -93,6 +92,7 @@ public sealed partial class ChatSessionViewModel
             messages.Add(chatMessage.ToInteropMessage());
             AddInteropMessageCommand.Execute(chatMessage);
             await SaveCurrentMessagesAsync();
+            SetTempLoadingCommand.Execute(true);
             UserInput = string.Empty;
             var responseMessage = string.Empty;
 

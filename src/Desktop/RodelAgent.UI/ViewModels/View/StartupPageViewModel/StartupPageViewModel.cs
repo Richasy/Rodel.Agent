@@ -55,7 +55,6 @@ public sealed partial class StartupPageViewModel(ILogger<StartupPageViewModel> l
 
             IsMigrating = true;
             await MigrationToolkit.TryMigrateAsync();
-            IsMigrating = false;
 
             this.Get<AppViewModel>().RestartCommand.Execute(default);
         }
@@ -67,6 +66,7 @@ public sealed partial class StartupPageViewModel(ILogger<StartupPageViewModel> l
         finally
         {
             IsLoading = false;
+            IsMigrating = false;
         }
     }
 

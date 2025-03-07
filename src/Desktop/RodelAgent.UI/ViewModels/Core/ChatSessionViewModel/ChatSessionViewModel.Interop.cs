@@ -96,6 +96,8 @@ public sealed partial class ChatSessionViewModel
             Delete = ResourceToolkit.GetLocalizedString(UI.Models.Constants.StringNames.Delete),
             Discard = ResourceToolkit.GetLocalizedString(UI.Models.Constants.StringNames.Discard),
             Edit = ResourceToolkit.GetLocalizedString(UI.Models.Constants.StringNames.Edit),
+            ThoughtProcess = ResourceToolkit.GetLocalizedString(UI.Models.Constants.StringNames.ThoughtProcess),
+            Thinking = ResourceToolkit.GetLocalizedString(UI.Models.Constants.StringNames.Thinking),
         };
 
         var resourcesJson = JsonSerializer.Serialize(resources, JsonGenContext.Default.ChatInteropResources);

@@ -589,4 +589,10 @@
   <data name="RenameHistoryPlaceholder" xml:space="preserve">
     <value>为这场伟大的对话命名吧！</value>
   </data>
+  <data name="Thinking" xml:space="preserve">
+    <value>思考中...</value>
+  </data>
+  <data name="ThoughtProcess" xml:space="preserve">
+    <value>思考过程</value>
+  </data>
 </root>
