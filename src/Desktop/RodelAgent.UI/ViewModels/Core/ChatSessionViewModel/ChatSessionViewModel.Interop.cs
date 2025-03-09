@@ -23,8 +23,9 @@ public sealed partial class ChatSessionViewModel
             return;
         }
 
-        var interopMessage = message.ToInteropMessage();
-        var messageJson = JsonSerializer.Serialize(interopMessage, JsonGenContext.Default.ChatInteropMessage);
+        // TODO: 添加助理名称（如果存在）.
+        var interopMessage = new ChatWebInteropMessage(message.ToInteropMessage());
+        var messageJson = JsonSerializer.Serialize(interopMessage, JsonGenContext.Default.ChatWebInteropMessage);
         await _webView!.ExecuteScriptAsync($"window.addMessage({messageJson})");
     }
 
@@ -36,7 +37,14 @@ public sealed partial class ChatSessionViewModel
             return;
         }
 
-        var messageJson = JsonSerializer.Serialize(history, JsonGenContext.Default.ListChatInteropMessage);
+        var interopHistory = new List<ChatWebInteropMessage>();
+        foreach (var item in history)
+        {
+            // TODO: 添加助理名称（如果存在）.
+            interopHistory.Add(new ChatWebInteropMessage(item));
+        }
+
+        var messageJson = JsonSerializer.Serialize(interopHistory, JsonGenContext.Default.ListChatWebInteropMessage);
         await _webView!.ExecuteScriptAsync($"window.setHistory({messageJson})");
     }
 

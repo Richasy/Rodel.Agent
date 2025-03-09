@@ -23,6 +23,8 @@ public sealed partial class ChatSessionViewModel
     private WebView2? _webView;
     private ChatConversation? _currentConversation;
     private Func<ChatOptions?>? _getCurrentOptions;
+    private Func<bool>? _getIsStreamOutput;
+    private Func<int>? _getMaxRounds;
 
     public event EventHandler RequestFocusInput;
 

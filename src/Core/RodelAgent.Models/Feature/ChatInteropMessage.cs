@@ -7,7 +7,7 @@ namespace RodelAgent.Models.Feature;
 /// <summary>
 /// Chat interop message.
 /// </summary>
-public sealed class ChatInteropMessage
+public class ChatInteropMessage
 {
     /// <summary>
     /// 消息.
@@ -16,10 +16,10 @@ public sealed class ChatInteropMessage
     public string Message { get; set; }
 
     /// <summary>
-    /// 名称.
+    /// 助理ID.
     /// </summary>
-    [JsonPropertyName("author")]
-    public string? Author { get; set; }
+    [JsonPropertyName("agent_id")]
+    public string? AgentId { get; set; }
 
     /// <summary>
     /// 角色.
@@ -38,4 +38,36 @@ public sealed class ChatInteropMessage
     /// </summary>
     [JsonPropertyName("time")]
     public long Time { get; set; }
+}
+
+/// <summary>
+/// 用于 Web 交互的聊天消息.
+/// </summary>
+public sealed class ChatWebInteropMessage : ChatInteropMessage
+{
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ChatWebInteropMessage"/> class.
+    /// </summary>
+    public ChatWebInteropMessage()
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ChatWebInteropMessage"/> class.
+    /// </summary>
+    public ChatWebInteropMessage(ChatInteropMessage source, string? author = null)
+    {
+        Id = source.Id;
+        Message = source.Message;
+        AgentId = source.AgentId;
+        Role = source.Role;
+        Time = source.Time;
+        Author = author;
+    }
+
+    /// <summary>
+    /// 作者.
+    /// </summary>
+    [JsonPropertyName("author")]
+    public string? Author { get; set; }
 }

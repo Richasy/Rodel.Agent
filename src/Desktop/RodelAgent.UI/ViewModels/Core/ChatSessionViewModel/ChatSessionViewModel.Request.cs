@@ -50,40 +50,32 @@ public sealed partial class ChatSessionViewModel
         IsGenerating = true;
         try
         {
-            // 检查流式输出.
-            var useStream = true;
             _cancellationTokenSource = new CancellationTokenSource();
             var options = _getCurrentOptions?.Invoke() ?? new ChatOptions();
             options.ModelId = SelectedModel?.Id;
-            if (options.AdditionalProperties?.ContainsKey("stream") == true)
-            {
-                useStream = Convert.ToBoolean(options.AdditionalProperties["stream"]);
-            }
+            var useStream = _getIsStreamOutput?.Invoke() ?? true;
+            var maxRounds = _getMaxRounds?.Invoke() ?? 0;
 
             // 检查对话轮次.
             var messages = Messages.ToList();
-            if (options.AdditionalProperties?.ContainsKey("max_rounds") == true)
+            if (maxRounds > 0)
             {
-                var maxRounds = Convert.ToInt32(options.AdditionalProperties["max_rounds"]);
-                if (maxRounds > 0)
+                // 取 user 和 assistant 的消息列表.
+                var userMessages = Messages.Where(p => p.Role == "user").ToList();
+                var assistantMessages = Messages.Where(p => p.Role == "assistant").ToList();
+                // 各保留最后 maxRounds - 1 个消息.
+                if (userMessages.Count > maxRounds - 1)
                 {
-                    // 取 user 和 assistant 的消息列表.
-                    var userMessages = Messages.Where(p => p.Role == "user").ToList();
-                    var assistantMessages = Messages.Where(p => p.Role == "assistant").ToList();
-                    // 各保留最后 maxRounds - 1 个消息.
-                    if (userMessages.Count > maxRounds - 1)
-                    {
-                        userMessages.RemoveRange(0, userMessages.Count - maxRounds + 1);
-                    }
-
-                    if (assistantMessages.Count > maxRounds - 1)
-                    {
-                        assistantMessages.RemoveRange(0, assistantMessages.Count - maxRounds + 1);
-                    }
-
-                    // 重新按照时间顺序合并成一个消息列表.
-                    messages = userMessages.Concat(assistantMessages).OrderBy(p => p.Time).ToList();
+                    userMessages.RemoveRange(0, userMessages.Count - maxRounds + 1);
                 }
+
+                if (assistantMessages.Count > maxRounds - 1)
+                {
+                    assistantMessages.RemoveRange(0, assistantMessages.Count - maxRounds + 1);
+                }
+
+                // 重新按照时间顺序合并成一个消息列表.
+                messages = userMessages.Concat(assistantMessages).OrderBy(p => p.Time).ToList();
             }
 
             var chatMessage = new ChatMessage(ChatRole.User, UserInput);

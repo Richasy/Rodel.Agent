@@ -51,11 +51,13 @@ public sealed partial class ChatSessionViewModel
         }
 
         var options = _getCurrentOptions?.Invoke();
+        var isStreamOutput = _getIsStreamOutput?.Invoke() ?? true;
+        var maxRounds = _getMaxRounds?.Invoke() ?? 0;
 
         var conversation = new ChatConversation
         {
-            UseStreamOutput = options?.AdditionalProperties?.GetValueOrDefault("stream") as bool? ?? true,
-            MaxRounds = options?.AdditionalProperties?.GetValueOrDefault("max_rounds") as int? ?? 0,
+            UseStreamOutput = isStreamOutput,
+            MaxRounds = maxRounds,
             History = [],
             Id = Guid.NewGuid().ToString("N"),
             Provider = CurrentProvider!.Value,
@@ -74,12 +76,12 @@ public sealed partial class ChatSessionViewModel
         if (_currentConversation != null)
         {
             _currentConversation.History = [.. Messages];
+            _currentConversation.UseStreamOutput = _getIsStreamOutput?.Invoke() ?? true;
+            _currentConversation.MaxRounds = _getMaxRounds?.Invoke() ?? 0;
             var uiOptions = _getCurrentOptions?.Invoke();
             if (uiOptions != null)
             {
                 _currentConversation.Options = uiOptions;
-                _currentConversation.UseStreamOutput = CurrentOptions?.AdditionalProperties?.GetValueOrDefault("stream") as bool? ?? true;
-                _currentConversation.MaxRounds = CurrentOptions?.AdditionalProperties?.GetValueOrDefault("max_rounds") as int? ?? 0;
             }
 
             await _storageService.AddOrUpdateChatConversationAsync(_currentConversation);
@@ -123,7 +125,7 @@ public sealed partial class ChatSessionViewModel
                 Messages.Clear();
                 SystemInstruction = _currentConversation.SystemInstruction;
                 CurrentOptions = _currentConversation.Options;
-                Title = _currentConversation.Name;
+                Title = _currentConversation.Title;
                 foreach (var message in _currentConversation!.History ?? [])
                 {
                     Messages.Add(message);

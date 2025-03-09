@@ -19,17 +19,7 @@ public sealed class ChatDataService(string workingDir, string packageDir)
         return await Task.Run(async () =>
         {
             using var sql = GetSql();
-            var list = await sql.Queryable<ChatConversationMeta>().ToListAsync().ConfigureAwait(false);
-            return list.ConvertAll(p => p.Value);
-        }).ConfigureAwait(false);
-    }
-
-    public async Task<List<string>> GetAllGroupsAsync()
-    {
-        return await Task.Run(async () =>
-        {
-            using var sql = GetSql();
-            var list = await sql.Queryable<ChatGroupMeta>().ToListAsync().ConfigureAwait(false);
+            var list = await sql.Queryable<ChatMeta>().ToListAsync().ConfigureAwait(false);
             return list.ConvertAll(p => p.Value);
         }).ConfigureAwait(false);
     }
@@ -46,7 +36,7 @@ public sealed class ChatDataService(string workingDir, string packageDir)
         _isInitialized = true;
     }
 
-    public async Task BatchAddConversationsAsync(List<ChatConversationMeta> metadataList)
+    public async Task BatchAddConversationsAsync(List<ChatMeta> metadataList)
     {
         await Task.Run(async () =>
         {
@@ -55,43 +45,16 @@ public sealed class ChatDataService(string workingDir, string packageDir)
         }).ConfigureAwait(false);
     }
 
-    public async Task BatchAddGroupsAsync(List<ChatGroupMeta> metadataList)
-    {
-        await Task.Run(async () =>
-        {
-            using var sql = GetSql();
-            await sql.Insertable(metadataList).ExecuteCommandAsync().ConfigureAwait(false);
-        }).ConfigureAwait(false);
-    }
-
-    public async Task<ChatConversationMeta?> GetConversationAsync(string id)
+    public async Task<ChatMeta?> GetConversationAsync(string id)
     {
         return await Task.Run(async () =>
         {
             using var sql = GetSql();
-            return await sql.Queryable<ChatConversationMeta>().Where(p => p.Id == id).FirstAsync().ConfigureAwait(false);
+            return await sql.Queryable<ChatMeta>().Where(p => p.Id == id).FirstAsync().ConfigureAwait(false);
         }).ConfigureAwait(false);
     }
 
-    public async Task<ChatGroupMeta?> GetGroupAsync(string id)
-    {
-        return await Task.Run(async () =>
-        {
-            using var sql = GetSql();
-            return await sql.Queryable<ChatGroupMeta>().Where(p => p.Id == id).FirstAsync().ConfigureAwait(false);
-        }).ConfigureAwait(false);
-    }
-
-    public async Task AddOrUpdateConversationAsync(ChatConversationMeta metadata)
-    {
-        await Task.Run(async () =>
-        {
-            using var sql = GetSql();
-            await sql.Storageable(metadata).ExecuteCommandAsync().ConfigureAwait(false);
-        }).ConfigureAwait(false);
-    }
-
-    public async Task AddOrUpdateGroupAsync(ChatGroupMeta metadata)
+    public async Task AddOrUpdateConversationAsync(ChatMeta metadata)
     {
         await Task.Run(async () =>
         {
@@ -105,16 +68,7 @@ public sealed class ChatDataService(string workingDir, string packageDir)
         await Task.Run(async () =>
         {
             using var sql = GetSql();
-            await sql.Deleteable<ChatConversationMeta>().Where(p => p.Id == id).ExecuteCommandAsync().ConfigureAwait(false);
-        }).ConfigureAwait(false);
-    }
-
-    public async Task RemoveGroupAsync(string id)
-    {
-        await Task.Run(async () =>
-        {
-            using var sql = GetSql();
-            await sql.Deleteable<ChatGroupMeta>().Where(p => p.Id == id).ExecuteCommandAsync().ConfigureAwait(false);
+            await sql.Deleteable<ChatMeta>().Where(p => p.Id == id).ExecuteCommandAsync().ConfigureAwait(false);
         }).ConfigureAwait(false);
     }
 
@@ -123,8 +77,7 @@ public sealed class ChatDataService(string workingDir, string packageDir)
         await Task.Run(() =>
         {
             using var sql = GetSql();
-            sql.CodeFirst.InitTables<ChatConversationMeta>();
-            sql.CodeFirst.InitTables<ChatGroupMeta>();
+            sql.CodeFirst.InitTables<ChatMeta>();
         }).ConfigureAwait(false);
     }
 

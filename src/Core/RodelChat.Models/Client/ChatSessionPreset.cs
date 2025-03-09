@@ -116,6 +116,25 @@ internal sealed class ChatSessionPresetConverter : JsonConverter<ChatSessionPres
 
         var preset = new ChatSessionPreset();
 
+        // 先解析 provider
+        while (reader.Read())
+        {
+            if (reader.TokenType == JsonTokenType.PropertyName)
+            {
+                var propertyName = reader.GetString();
+                if (propertyName == "provider")
+                {
+                    reader.Read();
+                    preset.Provider = JsonSerializer.Deserialize(ref reader, JsonGenContext.Default.ChatProviderType);
+                    break; // 找到 provider 后跳出循环
+                }
+                else
+                {
+                    reader.Skip(); // 跳过其他属性
+                }
+            }
+        }
+
         while (reader.Read())
         {
             if (reader.TokenType == JsonTokenType.EndObject)

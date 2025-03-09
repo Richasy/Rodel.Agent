@@ -16,7 +16,7 @@ public sealed partial class ChatOptionsPanel : ChatSessionControlBase
     protected override void OnControlLoaded()
     {
         ViewModel.RequestReloadOptionsUI += OnRequestReloadOptionsUI;
-        ViewModel.InjectGetOptionsFunc(GetOptions);
+        ViewModel.InjectFunc(GetOptions, GetStreamOutput, GetMaxRounds);
     }
 
     protected override void OnControlUnloaded()
@@ -67,12 +67,16 @@ public sealed partial class ChatOptionsPanel : ChatSessionControlBase
         }
     }
 
+    private bool GetStreamOutput()
+        => StreamOutputSwitch.IsOn;
+
+    private int GetMaxRounds()
+        => Convert.ToInt32(MaxRoundsSlider.Value);
+
     private ChatOptions GetOptions()
     {
         var options = new ChatOptions();
         options.AdditionalProperties ??= [];
-        options.AdditionalProperties["stream"] = StreamOutputSwitch.IsOn;
-        options.AdditionalProperties["max_rounds"] = Convert.ToInt32(MaxRoundsSlider.Value);
         if (FrequencyPenaltyContainer.Visibility == Visibility.Visible)
         {
             options.FrequencyPenalty = (float)FrequencyPenaltySlider.Value;

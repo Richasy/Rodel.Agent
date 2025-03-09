@@ -7,36 +7,24 @@ using System.Text.Json.Serialization;
 namespace RodelAgent.Models.Feature;
 
 /// <summary>
-/// 聊天会话.
+/// 对话助理.
 /// </summary>
-public sealed class ChatConversation
+public sealed class ChatAgent
 {
     /// <summary>
-    /// 会话标识符.
+    /// 标识符.
     /// </summary>
     [JsonPropertyName("id")]
     public string Id { get; set; }
 
     /// <summary>
-    /// 助理标识符.
+    /// 名称.
     /// </summary>
-    [JsonPropertyName("agent_id")]
-    public string? AgentId { get; set; }
+    [JsonPropertyName("name")]
+    public string Name { get; set; }
 
     /// <summary>
-    /// 组标识符.
-    /// </summary>
-    [JsonPropertyName("group_id")]
-    public string? GroupId { get; set; }
-
-    /// <summary>
-    /// 预设名称.
-    /// </summary>
-    [JsonPropertyName("title")]
-    public string? Title { get; set; }
-
-    /// <summary>
-    /// 获取或设置会话选项.
+    /// 获取或设置选项.
     /// </summary>
     [JsonPropertyName("options")]
     [JsonConverter(typeof(ChatOptionsJsonConverter))]
@@ -61,13 +49,13 @@ public sealed class ChatConversation
     /// <para>理论上响应速度更快，反应在 UI 上就会有打字机的效果.</para>
     /// </remarks>
     [JsonPropertyName("stream")]
-    public bool? UseStreamOutput { get; set; }
+    public bool UseStreamOutput { get; set; }
 
     /// <summary>
     /// 服务商.
     /// </summary>
     [JsonPropertyName("provider")]
-    public ChatProviderType? Provider { get; set; }
+    public ChatProviderType Provider { get; set; }
 
     /// <summary>
     /// 指定的模型.
@@ -91,26 +79,14 @@ public sealed class ChatConversation
     public List<ChatInteropMessage>? History { get; set; }
 
     /// <summary>
-    /// 支持的插件.
+    /// 需要过滤掉的字符.
     /// </summary>
-    [JsonPropertyName("tools")]
-    public List<string>? Tools { get; set; }
+    [JsonPropertyName("filter_chars")]
+    public List<string>? FilterCharacters { get; set; }
 
     /// <summary>
-    /// 助理列表.
+    /// 表情头像.
     /// </summary>
-    [JsonPropertyName("agents")]
-    public List<string>? Agents { get; set; }
-
-    /// <summary>
-    /// 终止序列.
-    /// </summary>
-    [JsonPropertyName("terminate_sequence")]
-    public List<string>? TerminateSequence { get; set; }
-
-    /// <inheritdoc/>
-    public override bool Equals(object? obj) => obj is ChatConversation session && Id == session.Id;
-
-    /// <inheritdoc/>
-    public override int GetHashCode() => HashCode.Combine(Id);
+    [JsonPropertyName("emoji")]
+    public string? Emoji { get; set; }
 }

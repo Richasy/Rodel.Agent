@@ -12,7 +12,7 @@ public sealed partial class ChatHistoryRenameDialog : AppDialog
     {
         InitializeComponent();
         _historyVM = vm;
-        RenameBox.Text = _historyVM.Conversation!.Name ?? string.Empty;
+        RenameBox.Text = _historyVM.Conversation!.Title ?? string.Empty;
     }
 
     public string NewTitle => RenameBox?.Text ?? string.Empty;

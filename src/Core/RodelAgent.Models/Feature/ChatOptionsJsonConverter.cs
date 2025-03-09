@@ -20,13 +20,11 @@ public sealed class ChatOptionsJsonConverter : JsonConverter<ChatOptions>
         }
 
         var chatOptions = new ChatOptions();
-        var additionalProperties = new Dictionary<string, object?>();
 
         while (reader.Read())
         {
             if (reader.TokenType == JsonTokenType.EndObject)
             {
-                chatOptions.AdditionalProperties = new AdditionalPropertiesDictionary(additionalProperties);
                 return chatOptions;
             }
 
@@ -71,47 +69,10 @@ public sealed class ChatOptionsJsonConverter : JsonConverter<ChatOptions>
                 case nameof(ChatOptions.StopSequences):
                     chatOptions.StopSequences = JsonSerializer.Deserialize(ref reader, JsonGenContext.Default.ListString);
                     break;
+                case nameof(ChatOptions.AdditionalProperties):
+                    chatOptions.AdditionalProperties = ReadAdditionalProperties(ref reader);
+                    break;
                 default:
-                    // Handle additional properties
-                    if (reader.TokenType == JsonTokenType.Null)
-                    {
-                        additionalProperties[propertyName] = null;
-                    }
-                    else
-                    {
-                        switch (reader.TokenType)
-                        {
-                            case JsonTokenType.Number:
-                                if (reader.TryGetInt32(out var intValue))
-                                {
-                                    additionalProperties[propertyName] = intValue;
-                                }
-                                else if (reader.TryGetInt64(out var longValue))
-                                {
-                                    additionalProperties[propertyName] = longValue;
-                                }
-                                else if (reader.TryGetDouble(out var doubleValue))
-                                {
-                                    additionalProperties[propertyName] = doubleValue;
-                                }
-                                else
-                                {
-                                    throw new JsonException($"Unsupported number type for property {propertyName}");
-                                }
-
-                                break;
-                            case JsonTokenType.String:
-                                additionalProperties[propertyName] = reader.GetString();
-                                break;
-                            case JsonTokenType.True:
-                            case JsonTokenType.False:
-                                additionalProperties[propertyName] = reader.GetBoolean();
-                                break;
-                            default:
-                                throw new JsonException($"Unsupported token type {reader.TokenType} for property {propertyName}");
-                        }
-                    }
-
                     break;
             }
         }
@@ -218,36 +179,100 @@ public sealed class ChatOptionsJsonConverter : JsonConverter<ChatOptions>
 
         if (value.AdditionalProperties != null)
         {
-            foreach (var kvp in value.AdditionalProperties)
+            writer.WritePropertyName(nameof(ChatOptions.AdditionalProperties));
+            WriteAdditionalProperties(writer, value.AdditionalProperties);
+        }
+
+        writer.WriteEndObject();
+    }
+
+    private static AdditionalPropertiesDictionary ReadAdditionalProperties(ref Utf8JsonReader reader)
+    {
+        var additionalProperties = new AdditionalPropertiesDictionary();
+        while (reader.Read())
+        {
+            if (reader.TokenType == JsonTokenType.EndObject)
             {
-                writer.WritePropertyName(kvp.Key);
-                if (kvp.Value == null)
-                {
-                    writer.WriteNullValue();
-                }
-                else
-                {
-                    switch (kvp.Value)
+                return additionalProperties;
+            }
+            if (reader.TokenType != JsonTokenType.PropertyName)
+            {
+                throw new JsonException();
+            }
+            var propertyName = reader.GetString() ?? throw new JsonException();
+            reader.Read();
+            switch (reader.TokenType)
+            {
+                case JsonTokenType.Number:
+                    if (reader.TryGetInt32(out var intValue))
                     {
-                        case int intValue:
-                            writer.WriteNumberValue(intValue);
-                            break;
-                        case long longValue:
-                            writer.WriteNumberValue(longValue);
-                            break;
-                        case double doubleValue:
-                            writer.WriteNumberValue(doubleValue);
-                            break;
-                        case string stringValue:
-                            writer.WriteStringValue(stringValue);
-                            break;
-                        case bool boolValue:
-                            writer.WriteBooleanValue(boolValue);
-                            break;
-                        default:
-                            throw new JsonException($"Unsupported type {kvp.Value.GetType()} for additional property {kvp.Key}");
+                        additionalProperties[propertyName] = intValue;
                     }
-                }
+                    else if (reader.TryGetInt64(out var longValue))
+                    {
+                        additionalProperties[propertyName] = longValue;
+                    }
+                    else if (reader.TryGetDouble(out var doubleValue))
+                    {
+                        additionalProperties[propertyName] = doubleValue;
+                    }
+                    else
+                    {
+                        throw new JsonException($"Unsupported number type for property {propertyName}");
+                    }
+                    break;
+                case JsonTokenType.String:
+                    additionalProperties[propertyName] = reader.GetString() ?? string.Empty;
+                    break;
+                case JsonTokenType.True:
+                case JsonTokenType.False:
+                    additionalProperties[propertyName] = reader.GetBoolean();
+                    break;
+                case JsonTokenType.Null:
+                    additionalProperties[propertyName] = null;
+                    break;
+                default:
+                    throw new JsonException($"Unsupported token type {reader.TokenType} for property {propertyName}");
+            }
+        }
+
+        throw new JsonException();
+    }
+
+    private static void WriteAdditionalProperties(Utf8JsonWriter writer, IDictionary<string, object?> additionalProperties)
+    {
+        writer.WriteStartObject();
+        foreach (var kvp in additionalProperties)
+        {
+            writer.WritePropertyName(kvp.Key);
+            switch (kvp.Value)
+            {
+                case int intValue:
+                    writer.WriteNumberValue(intValue);
+                    break;
+                case long longValue:
+                    writer.WriteNumberValue(longValue);
+                    break;
+                case double doubleValue:
+                    writer.WriteNumberValue(doubleValue);
+                    break;
+                case string stringValue:
+                    writer.WriteStringValue(stringValue);
+                    break;
+                case bool boolValue:
+                    writer.WriteBooleanValue(boolValue);
+                    break;
+                case DateTimeOffset dateTimeOffsetValue:
+                    writer.WriteStringValue(dateTimeOffsetValue);
+                    break;
+                case DateTime dateTimeValue:
+                    writer.WriteStringValue(dateTimeValue);
+                    break;
+                case null:
+                    writer.WriteNullValue();
+                    break;
+                default:
+                    throw new JsonException($"Unsupported type {kvp.Value.GetType()} for additional property {kvp.Key}");
             }
         }
 

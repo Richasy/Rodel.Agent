@@ -41,7 +41,7 @@ public sealed partial class ChatHistoryItemViewModel : ViewModelBase
     /// 显示名称.
     /// </summary>
     [ObservableProperty]
-    public partial string? Name { get; set; }
+    public partial string? Title { get; set; }
 
     [ObservableProperty]
     public partial bool IsSelected { get; set; }
@@ -69,7 +69,7 @@ public sealed partial class ChatHistoryItemViewModel : ViewModelBase
 
     public void Update()
     {
-        Name = Conversation?.Name ?? string.Empty;
+        Title = Conversation?.Title ?? string.Empty;
         LastMessageDate = Conversation?.History?.Count > 0
                 ? DateTimeOffset.FromUnixTimeSeconds(Conversation.History.Last().Time).ToString("MM/dd")
                 : string.Empty;
@@ -82,7 +82,7 @@ public sealed partial class ChatHistoryItemViewModel : ViewModelBase
         var result = await dialog.ShowAsync();
         if (result == ContentDialogResult.Primary)
         {
-            Conversation!.Name = dialog.NewTitle;
+            Conversation!.Title = dialog.NewTitle;
             Update();
             await this.Get<IStorageService>().AddOrUpdateChatConversationAsync(Conversation);
         }
@@ -109,7 +109,7 @@ public sealed partial class ChatHistoryItemViewModel : ViewModelBase
             var newTitle = await sessionVM.GenerateContentAsync(prompt);
             if (!string.IsNullOrEmpty(newTitle))
             {
-                Conversation!.Name = newTitle;
+                Conversation!.Title = newTitle;
                 Update();
                 if (IsSelected)
                 {

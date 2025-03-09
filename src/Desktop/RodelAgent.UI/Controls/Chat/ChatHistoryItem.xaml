@@ -15,7 +15,7 @@
         Padding="0"
         HorizontalAlignment="Stretch"
         HorizontalContentAlignment="Stretch"
-        AutomationProperties.Name="{x:Bind ViewModel.Name, Mode=OneWay, Converter={StaticResource ChatTitleConverter}}"
+        AutomationProperties.Name="{x:Bind ViewModel.Title, Mode=OneWay, Converter={StaticResource ChatTitleConverter}}"
         Background="Transparent"
         BorderBrush="Transparent"
         BorderThickness="2"
@@ -68,7 +68,7 @@
             <base:TrimTextBlock
                 VerticalAlignment="Center"
                 MaxLines="1"
-                Text="{x:Bind ViewModel.Name, Mode=OneWay, Converter={StaticResource ChatTitleConverter}}" />
+                Text="{x:Bind ViewModel.Title, Mode=OneWay, Converter={StaticResource ChatTitleConverter}}" />
             <ProgressRing
                 Grid.Column="1"
                 Width="14"

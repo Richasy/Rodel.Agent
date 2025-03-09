@@ -4,7 +4,6 @@ using Richasy.AgentKernel;
 using RodelAgent.Models.Common;
 using RodelAgent.UI.Toolkits;
 using System.Text.Json;
-using System.Text.Json.Nodes;
 using System.Text.Json.Serialization.Metadata;
 
 namespace RodelAgent.UI.Extensions;
@@ -38,18 +37,12 @@ internal sealed partial class StorageService
         var sessionList = new List<AudioRecord>();
         foreach (var sessionJson in sessionJsonList)
         {
-            var sjson = sessionJson;
-            if (string.IsNullOrEmpty(sjson))
+            if (string.IsNullOrEmpty(sessionJson))
             {
                 continue;
             }
 
-            if (sjson.Contains("\"parameters\":", StringComparison.OrdinalIgnoreCase))
-            {
-                sjson = ConvertAudioRecordInJson(sjson);
-            }
-
-            var session = JsonSerializer.Deserialize(sjson, JsonGenContext.Default.AudioRecord);
+            var session = JsonSerializer.Deserialize(sessionJson, JsonGenContext.Default.AudioRecord);
             if (session != null)
             {
                 sessionList.Add(session);
@@ -92,19 +85,5 @@ internal sealed partial class StorageService
         }
 
         await _dbService.RemoveAudioDataAsync(sessionId);
-    }
-
-    private static string ConvertAudioRecordInJson(string json)
-    {
-        // 解析 JSON 字符串为 JsonNode
-        var jsonNode = JsonNode.Parse(json);
-        var providerValue = jsonNode!["provider"]?.GetValue<int>();
-        if (providerValue.HasValue)
-        {
-            var providerStr = JsonSerializer.Serialize((AudioProviderType)providerValue.Value, JsonGenContext.Default.AudioProviderType);
-            jsonNode["provider"] = providerStr.Replace("\"", string.Empty, StringComparison.Ordinal);
-        }
-
-        return jsonNode.ToJsonString();
     }
 }

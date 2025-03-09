@@ -63,33 +63,15 @@ public sealed class DbService
     }
 
     /// <summary>
-    /// 获取所有群组会话数据.
-    /// </summary>
-    /// <returns>JSON 列表.</returns>
-    public async Task<List<string>> GetAllChatGroupsAsync()
-    {
-        await InitializeChatServiceAsync().ConfigureAwait(false);
-        return await _chatService!.GetAllGroupsAsync().ConfigureAwait(false);
-    }
-
-    /// <summary>
     /// 添加或更新聊天数据.
     /// </summary>
     /// <param name="dataId">会话标识符.</param>
     /// <param name="value">会话 JSON 数据.</param>
-    /// <param name="isGroup">是否为群组数据.</param>
     /// <returns><see cref="Task"/>.</returns>
-    public async Task AddOrUpdateChatDataAsync(string dataId, string value, bool isGroup = false)
+    public async Task AddOrUpdateChatDataAsync(string dataId, string value)
     {
         await InitializeChatServiceAsync().ConfigureAwait(false);
-        if (isGroup)
-        {
-            await _chatService!.AddOrUpdateGroupAsync(new ChatGroupMeta { Id = dataId, Value = value }).ConfigureAwait(false);
-        }
-        else
-        {
-            await _chatService!.AddOrUpdateConversationAsync(new ChatConversationMeta { Id = dataId, Value = value }).ConfigureAwait(false);
-        }
+        await _chatService!.AddOrUpdateConversationAsync(new ChatMeta { Id = dataId, Value = value }).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -101,14 +83,7 @@ public sealed class DbService
     public async Task RemoveChatDataAsync(string dataId, bool isGroup = false)
     {
         await InitializeChatServiceAsync().ConfigureAwait(false);
-        if (isGroup)
-        {
-            await _chatService!.RemoveGroupAsync(dataId).ConfigureAwait(false);
-        }
-        else
-        {
-            await _chatService!.RemoveConversationAsync(dataId).ConfigureAwait(false);
-        }
+        await _chatService!.RemoveConversationAsync(dataId).ConfigureAwait(false);
     }
 
     /// <summary>

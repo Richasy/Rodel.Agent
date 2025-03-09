@@ -33,10 +33,10 @@ internal sealed partial class StorageService
         return [.. sessions.Where(p => p.Provider == type)];
     }
 
-    public async Task<List<ChatConversation>?> GetChatConversationsAsync(string presetId)
+    public async Task<List<ChatConversation>?> GetChatConversationsByAgentAsync(string agentId)
     {
         var sessions = await GetAllChatConversationsAsync();
-        return [.. sessions.Where(p => p.PresetId == presetId)];
+        return [.. sessions.Where(p => p.AgentId == agentId)];
     }
 
     public async Task AddOrUpdateChatConversationAsync(ChatConversation session)
@@ -54,14 +54,12 @@ internal sealed partial class StorageService
         var sessionList = new List<ChatConversation>();
         foreach (var sessionJson in sessionJsonList)
         {
-            var sjson = sessionJson;
-            // TODO: 处理旧数据.
-            if (string.IsNullOrEmpty(sjson))
+            if (string.IsNullOrEmpty(sessionJson))
             {
                 continue;
             }
 
-            var session = JsonSerializer.Deserialize(sjson, JsonGenContext.Default.ChatConversation);
+            var session = JsonSerializer.Deserialize(sessionJson, JsonGenContext.Default.ChatConversation);
             if (session != null)
             {
                 sessionList.Add(session);

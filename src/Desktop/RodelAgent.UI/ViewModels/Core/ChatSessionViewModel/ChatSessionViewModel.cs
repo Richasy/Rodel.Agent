@@ -40,8 +40,12 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
     protected override string GetPageKey()
         => "ChatSession";
 
-    public void InjectGetOptionsFunc(Func<ChatOptions> func)
-        => _getCurrentOptions = func;
+    public void InjectFunc(Func<ChatOptions> func, Func<bool>? stream, Func<int>? maxRounds)
+    {
+        _getCurrentOptions = func;
+        _getIsStreamOutput = stream;
+        _getMaxRounds = maxRounds;
+    }
 
     public async Task InitializeAsync(WebView2 view)
     {
@@ -79,7 +83,6 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
             var renderPath = Path.Combine(Package.Current.InstalledPath, "Web", "chat-render");
             _webView.CoreWebView2.SetVirtualHostNameToFolderMapping("chat.example", renderPath, Microsoft.Web.WebView2.Core.CoreWebView2HostResourceAccessKind.Allow);
             _webView.CoreWebView2.Navigate("http://chat.example/index.html");
-            _webView.CoreWebView2.OpenDevToolsWindow();
         }
         catch (Exception ex)
         {

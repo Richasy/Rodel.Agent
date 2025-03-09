@@ -22,7 +22,7 @@ public static class ChatMessageInteropUtil
         var id = message.AdditionalProperties!.GetValueOrDefault("id", Guid.NewGuid().ToString("N"))!.ToString();
         return new ChatInteropMessage
         {
-            Author = author,
+            AgentId = author,
             Message = text,
             Role = role,
             Time = time,
@@ -37,7 +37,7 @@ public static class ChatMessageInteropUtil
     {
         var role = new ChatRole(message.Role);
         var text = message.Message;
-        var author = message.Author;
+        var author = message.AgentId;
         var time = DateTimeOffset.FromUnixTimeSeconds(message.Time);
         var id = message.Id;
         return new ChatMessage
