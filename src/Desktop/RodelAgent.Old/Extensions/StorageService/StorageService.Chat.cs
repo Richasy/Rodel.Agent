@@ -149,7 +149,7 @@ public sealed partial class StorageService
     }
 
     /// <inheritdoc/>
-    public async Task RemoveChatGroupPresetAsync(string presetId)
+    public async Task RemoveChatGroupAsync(string presetId)
     {
         await InitializeChatGroupPresetsAsync();
         _chatGroupPresets.RemoveAll(p => p.Id == presetId);

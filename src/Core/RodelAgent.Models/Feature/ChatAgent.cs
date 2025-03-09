@@ -49,13 +49,13 @@ public sealed class ChatAgent
     /// <para>理论上响应速度更快，反应在 UI 上就会有打字机的效果.</para>
     /// </remarks>
     [JsonPropertyName("stream")]
-    public bool UseStreamOutput { get; set; }
+    public bool? UseStreamOutput { get; set; }
 
     /// <summary>
     /// 服务商.
     /// </summary>
     [JsonPropertyName("provider")]
-    public ChatProviderType Provider { get; set; }
+    public ChatProviderType? Provider { get; set; }
 
     /// <summary>
     /// 指定的模型.

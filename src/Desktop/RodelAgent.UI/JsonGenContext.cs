@@ -17,6 +17,8 @@ namespace RodelAgent.UI;
 [JsonSerializable(typeof(List<AudioMeta>))]
 [JsonSerializable(typeof(DrawRecord))]
 [JsonSerializable(typeof(AudioRecord))]
+[JsonSerializable(typeof(ChatAgent))]
+[JsonSerializable(typeof(ChatGroup))]
 [JsonSerializable(typeof(List<ChatInteropMessage>))]
 [JsonSerializable(typeof(List<ChatWebInteropMessage>))]
 [JsonSerializable(typeof(ChatInteropResources))]

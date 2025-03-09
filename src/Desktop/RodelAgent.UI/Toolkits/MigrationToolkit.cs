@@ -81,6 +81,152 @@ public static class MigrationToolkit
         }
     }
 
+    internal static object ToChatObject(string json, bool isAgent)
+    {
+        var jsonNode = JsonNode.Parse(json)!;
+
+        var id = jsonNode["id"]?.ToString();
+        var maxRounds = jsonNode["max_rounds"]?.GetValue<int>() ?? 0;
+        var model = jsonNode["model"]?.ToString();
+        var presetId = jsonNode["preset_id"]?.ToString();
+        var provider = jsonNode["provider"]?.ToString();
+        var stream = jsonNode["stream"]?.GetValue<bool>();
+        var system = jsonNode["system"]?.ToString();
+
+        if (provider == "qianfan")
+        {
+            provider = "ernie";
+        }
+        else if (provider == "spark_desk")
+        {
+            provider = "spark";
+        }
+        else if (provider == "dash_scope")
+        {
+            provider = "qwen";
+        }
+
+        if (isAgent)
+        {
+            var name = jsonNode["name"]?.ToString();
+            var agent = new ChatAgent
+            {
+                Id = id!,
+                Name = name!,
+                MaxRounds = maxRounds,
+                UseStreamOutput = stream,
+                Model = model,
+                SystemInstruction = system,
+            };
+
+            if (provider is not null)
+            {
+                agent.Provider = ToChatProviderType(provider);
+            }
+
+            agent.History = ExtractHistoryFromJsonNode(jsonNode);
+            agent.Options = ExtractChatOptionsFromJsonNode(jsonNode);
+
+            var filterChars = jsonNode["filter_chars"]?.AsArray();
+            if (filterChars is not null)
+            {
+                var filters = new List<string>();
+                foreach (var filter in filterChars)
+                {
+                    var filterStr = filter!.ToString();
+                    filters.Add(filterStr);
+                }
+
+                agent.FilterCharacters = filters;
+            }
+
+            var emoji = jsonNode["emoji"]?.ToString();
+            if (emoji is not null)
+            {
+                agent.Emoji = emoji;
+            }
+            else
+            {
+                agent.Emoji = "1f916";
+            }
+
+            return agent;
+        }
+        else
+        {
+            var title = jsonNode["title"]?.ToString();
+            var isGroup = jsonNode["agents"] is not null;
+            var conversation = new ChatConversation
+            {
+                Id = id!,
+                Title = title,
+                MaxRounds = maxRounds,
+                UseStreamOutput = stream,
+                Model = model,
+                SystemInstruction = system,
+            };
+
+            if (isGroup)
+            {
+                conversation.GroupId = presetId;
+            }
+            else
+            {
+                conversation.AgentId = presetId;
+            }
+
+            if (provider is not null)
+            {
+                conversation.Provider = ToChatProviderType(provider);
+            }
+
+            conversation.History = ExtractHistoryFromJsonNode(jsonNode);
+            conversation.Options = ExtractChatOptionsFromJsonNode(jsonNode);
+            var tools = new List<string>();
+            var toolsArray = jsonNode["tools"]?.AsArray();
+            if (toolsArray is not null)
+            {
+                foreach (var toolNode in toolsArray)
+                {
+                    var tool = toolNode!.ToString();
+                    tools.Add(tool);
+                }
+
+                conversation.Tools = tools;
+            }
+
+            if (isGroup)
+            {
+                var agents = new List<string>();
+                var agentsArray = jsonNode["agents"]?.AsArray();
+                if (agentsArray is not null)
+                {
+                    foreach (var agentNode in agentsArray)
+                    {
+                        var agent = agentNode!.ToString();
+                        agents.Add(agent);
+                    }
+                    conversation.Agents = agents;
+                }
+
+                var terminateSequence = new List<string>();
+                var terminateSequenceArray = jsonNode["terminate_text"]?.AsArray();
+                if (terminateSequenceArray is not null)
+                {
+                    foreach (var sequenceNode in terminateSequenceArray)
+                    {
+                        var sequence = sequenceNode!.ToString();
+                        terminateSequence.Add(sequence);
+                    }
+
+                    conversation.TerminateSequence = terminateSequence;
+                }
+            }
+
+            return conversation;
+        }
+    }
+
     private static async Task MigrateSecretDbAsync(string dbPath)
     {
         var data = await GetOldDataFromDatabaseAsync<SecretMeta>(dbPath, "Metadata");
@@ -177,160 +323,7 @@ public static class MigrationToolkit
         var newList = new List<ChatMeta>();
         foreach (var meta in data)
         {
-            var jsonNode = JsonNode.Parse(meta.Value)!;
-
-            var id = jsonNode["id"]?.ToString();
-            var maxRounds = jsonNode["max_rounds"]?.GetValue<int>() ?? 0;
-            var model = jsonNode["model"]?.ToString();
-            var presetId = jsonNode["preset_id"]?.ToString();
-            var provider = jsonNode["provider"]?.ToString();
-            var stream = jsonNode["stream"]?.GetValue<bool>();
-            var system = jsonNode["system"]?.ToString();
-            var title = jsonNode["title"]?.ToString();
-
-            if (provider == "qianfan")
-            {
-                provider = "ernie";
-            }
-            else if (provider == "spark_desk")
-            {
-                provider = "spark";
-            }
-            else if (provider == "dash_scope")
-            {
-                provider = "qwen";
-            }
-
-            var isGroup = jsonNode["agents"] is not null;
-
-            var conversation = new ChatConversation
-            {
-                Id = id!,
-                Title = title,
-                MaxRounds = maxRounds,
-                UseStreamOutput = stream,
-                Model = model,
-                SystemInstruction = system,
-            };
-
-            if (isGroup)
-            {
-                conversation.GroupId = presetId;
-            }
-            else
-            {
-                conversation.AgentId = presetId;
-            }
-
-            if (provider is not null)
-            {
-                conversation.Provider = ToChatProviderType(provider);
-            }
-
-            var messages = new List<ChatInteropMessage>();
-            var messageArray = jsonNode["messages"]?.AsArray();
-            if (messageArray is not null)
-            {
-                foreach (var messageNode in messageArray)
-                {
-                    var author = messageNode!["author"]?.ToString();
-                    var authorId = messageNode["author_id"]?.ToString();
-                    var content = messageNode["content"]?.ToString();
-                    var role = messageNode["role"]?.ToString();
-                    var time = messageNode["time"]?.GetValue<long>() ?? 0L;
-
-                    var msg = new ChatInteropMessage
-                    {
-                        AgentId = authorId,
-                        Message = content ?? string.Empty,
-                        Role = role ?? "user",
-                        Time = time,
-                    };
-
-                    messages.Add(msg);
-                }
-
-                conversation.History = messages;
-            }
-
-            var parameterNode = jsonNode["parameters"];
-            if (parameterNode is not null)
-            {
-                var options = new ChatOptions();
-                var parameters = parameterNode.AsObject();
-                foreach (var parameter in parameters)
-                {
-                    var key = parameter.Key;
-                    if (key == "frequency_penalty")
-                    {
-                        options.FrequencyPenalty = parameter.Value!.GetValue<float>();
-                    }
-                    else if (key == "max_tokens")
-                    {
-                        options.MaxOutputTokens = parameter.Value!.GetValue<int>();
-                    }
-                    else if (key == "temperature")
-                    {
-                        options.Temperature = parameter.Value!.GetValue<float>();
-                    }
-                    else if (key == "top_p")
-                    {
-                        options.TopP = parameter.Value!.GetValue<float>();
-                    }
-                    else if (key == "top_k")
-                    {
-                        options.TopK = parameter.Value!.GetValue<int>();
-                    }
-                    else if (key == "presence_penalty")
-                    {
-                        options.PresencePenalty = parameter.Value!.GetValue<float>();
-                    }
-                }
-
-                conversation.Options = options;
-            }
-
-            var tools = new List<string>();
-            var toolsArray = jsonNode["tools"]?.AsArray();
-            if (toolsArray is not null)
-            {
-                foreach (var toolNode in toolsArray)
-                {
-                    var tool = toolNode!.ToString();
-                    tools.Add(tool);
-                }
-
-                conversation.Tools = tools;
-            }
-
-            if (isGroup)
-            {
-                var agents = new List<string>();
-                var agentsArray = jsonNode["agents"]?.AsArray();
-                if (agentsArray is not null)
-                {
-                    foreach (var agentNode in agentsArray)
-                    {
-                        var agent = agentNode!.ToString();
-                        agents.Add(agent);
-                    }
-                    conversation.Agents = agents;
-                }
-
-                var terminateSequence = new List<string>();
-                var terminateSequenceArray = jsonNode["terminate_text"]?.AsArray();
-                if (terminateSequenceArray is not null)
-                {
-                    foreach (var sequenceNode in terminateSequenceArray)
-                    {
-                        var sequence = sequenceNode!.ToString();
-                        terminateSequence.Add(sequence);
-                    }
-
-                    conversation.TerminateSequence = terminateSequence;
-                }
-            }
-
+            var conversation = ToChatObject(meta.Value, isAgent: false);
             var newMeta = new ChatMeta { Id = meta.Id, Value = JsonSerializer.Serialize(conversation, JsonGenContext.Default.ChatConversation) };
             newList.Add(newMeta);
         }
@@ -487,5 +480,81 @@ public static class MigrationToolkit
             "windows" => ChatProviderType.Windows,
             _ => throw new JsonException(),
         };
+    }
+
+    private static List<ChatInteropMessage> ExtractHistoryFromJsonNode(JsonNode jsonNode)
+    {
+        var messages = new List<ChatInteropMessage>();
+        var messageArray = jsonNode["messages"]?.AsArray();
+        if (messageArray is not null)
+        {
+            foreach (var messageNode in messageArray)
+            {
+                var author = messageNode!["author"]?.ToString();
+                var authorId = messageNode["author_id"]?.ToString();
+                var content = messageNode["content"]?.ToString();
+                var role = messageNode["role"]?.ToString();
+                var time = messageNode["time"]?.GetValue<long>() ?? 0L;
+
+                var msg = new ChatInteropMessage
+                {
+                    AgentId = authorId,
+                    Message = content ?? string.Empty,
+                    Role = role ?? "user",
+                    Time = time,
+                };
+
+                messages.Add(msg);
+            }
+        }
+
+        return messages;
+    }
+
+    private static ChatOptions? ExtractChatOptionsFromJsonNode(JsonNode jsonNode)
+    {
+        var parameterNode = jsonNode["parameters"];
+        if (parameterNode is not null)
+        {
+            var options = new ChatOptions();
+            foreach (var parameter in parameterNode.AsObject())
+            {
+                var key = parameter.Key;
+                if (key == "frequency_penalty")
+                {
+                    options.FrequencyPenalty = parameter.Value!.GetValue<float>();
+                }
+                else if (key == "max_tokens")
+                {
+                    options.MaxOutputTokens = parameter.Value!.GetValue<int>();
+                }
+                else if (key == "temperature")
+                {
+                    options.Temperature = parameter.Value!.GetValue<float>();
+                }
+                else if (key == "top_p")
+                {
+                    options.TopP = parameter.Value!.GetValue<float>();
+                }
+                else if (key == "top_k")
+                {
+                    options.TopK = parameter.Value!.GetValue<int>();
+                }
+                else if (key == "presence_penalty")
+                {
+                    options.PresencePenalty = parameter.Value!.GetValue<float>();
+                }
+            }
+
+            var stopSequences = jsonNode["stop_sequences"]?.AsArray();
+            if (stopSequences is not null)
+            {
+                options.StopSequences = stopSequences.Select(p => p!.ToString()).ToList();
+            }
+
+            return options;
+        }
+
+        return default;
     }
 }

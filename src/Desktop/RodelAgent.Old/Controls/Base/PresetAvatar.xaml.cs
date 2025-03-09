@@ -98,7 +98,7 @@ public sealed partial class PresetAvatar : LayoutUserControlBase
         }
         else
         {
-            var preset = await storageService.GetChatGroupPresetByIdAsync(PresetId);
+            var preset = await storageService.GetChatGroupByIdAsync(PresetId);
             emojiText = preset?.Emoji;
         }
 

@@ -136,7 +136,7 @@ public sealed partial class ChatServicePageViewModel
 
         GroupPresets.Remove(presetVM);
         IsGroupsEmpty = GroupPresets.Count == 0;
-        await _storageService.RemoveChatGroupPresetAsync(presetVM.Data.Id);
+        await _storageService.RemoveChatGroupAsync(presetVM.Data.Id);
     }
 
     [RelayCommand]

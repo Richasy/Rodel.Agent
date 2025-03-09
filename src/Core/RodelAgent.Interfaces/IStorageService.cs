@@ -3,7 +3,6 @@
 using Richasy.AgentKernel;
 using RodelAgent.Models.Common;
 using RodelAgent.Models.Feature;
-using RodelChat.Models.Client;
 using System.Text.Json.Serialization.Metadata;
 
 namespace RodelAgent.Interfaces;
@@ -138,44 +137,17 @@ public interface IStorageService
     Task RemoveChatConversationAsync(string conversationId);
 
     /// <summary>
-    /// 获取聊天会话预设.
-    /// </summary>
-    /// <returns>预设列表.</returns>
-    Task<List<ChatSessionPreset>> GetChatSessionPresetsAsync();
-
-    /// <summary>
-    /// 获取指定 ID 的聊天会话预设.
-    /// </summary>
-    /// <param name="presetId">预设 ID.</param>
-    /// <returns><see cref="ChatSessionPreset"/>.</returns>
-    Task<ChatSessionPreset> GetChatSessionPresetByIdAsync(string presetId);
-
-    /// <summary>
-    /// 添加或更新聊天会话预设.
-    /// </summary>
-    /// <param name="preset">预设.</param>
-    /// <returns><see cref="Task"/>.</returns>
-    Task AddOrUpdateChatSessionPresetAsync(ChatSessionPreset preset);
-
-    /// <summary>
-    /// 移除聊天会话预设.
-    /// </summary>
-    /// <param name="presetId">预设标识符.</param>
-    /// <returns><see cref="Task"/>.</returns>
-    Task RemoveChatSessionPresetAsync(string presetId);
-
-    /// <summary>
     /// 获取本地助理列表.
     /// </summary>
     /// <returns>助理列表.</returns>
-    Task<List<ChatSessionPreset>> GetChatAgentsAsync();
+    Task<List<ChatAgent>> GetChatAgentsAsync();
 
     /// <summary>
     /// 添加或更新助理.
     /// </summary>
     /// <param name="agent">助理信息.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task AddOrUpdateChatAgentAsync(ChatSessionPreset agent);
+    Task AddOrUpdateChatAgentAsync(ChatAgent agent);
 
     /// <summary>
     /// 移除助理.
@@ -187,29 +159,29 @@ public interface IStorageService
     /// <summary>
     /// 移除群组.
     /// </summary>
-    /// <param name="presetId">群组标识符.</param>
+    /// <param name="groupId">群组标识符.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task RemoveChatGroupPresetAsync(string presetId);
+    Task RemoveChatGroupAsync(string groupId);
 
     /// <summary>
     /// 获取会话群组预设列表.
     /// </summary>
     /// <returns>助理列表.</returns>
-    Task<List<ChatGroupPreset>> GetChatGroupPresetsAsync();
+    Task<List<ChatGroup>> GetChatGroupsAsync();
 
     /// <summary>
     /// 获取指定 ID 的群组会话预设.
     /// </summary>
-    /// <param name="presetId">预设 ID.</param>
-    /// <returns><see cref="ChatGroupPreset"/>.</returns>
-    Task<ChatGroupPreset> GetChatGroupPresetByIdAsync(string presetId);
+    /// <param name="groupId">预设 ID.</param>
+    /// <returns><see cref="ChatGroup"/>.</returns>
+    Task<ChatGroup?> GetChatGroupByIdAsync(string groupId);
 
     /// <summary>
     /// 添加或更新群组预设.
     /// </summary>
-    /// <param name="preset">群组信息.</param>
+    /// <param name="group">群组信息.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task AddOrUpdateChatGroupPresetAsync(ChatGroupPreset preset);
+    Task AddOrUpdateChatGroupAsync(ChatGroup group);
 
     /// <summary>
     /// 获取所有绘图会话.
