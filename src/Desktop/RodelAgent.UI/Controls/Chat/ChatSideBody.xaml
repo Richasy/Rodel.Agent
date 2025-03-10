@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:items="using:RodelAgent.UI.ViewModels.Items"
     xmlns:local="using:RodelAgent.UI.Controls.Chat"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewmodels="using:Richasy.WinUIKernel.AI.ViewModels"
@@ -33,6 +34,36 @@
                         </DataTemplate>
                     </ItemsRepeater.ItemTemplate>
                 </ItemsRepeater>
+                <StackPanel Margin="0,12,0,0" Visibility="{x:Bind ViewModel.IsAgentListVisible, Mode=OneWay}">
+                    <TextBlock
+                        Margin="4,0,0,8"
+                        HorizontalAlignment="Left"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Style="{StaticResource CaptionTextBlockStyle}"
+                        Text="{ext:Locale Name=Agents}" />
+                    <ItemsRepeater ItemsSource="{x:Bind ViewModel.Agents}" Layout="{StaticResource BasicLayout}">
+                        <ItemsRepeater.ItemTemplate>
+                            <DataTemplate x:DataType="items:ChatAgentItemViewModel">
+                                <local:ChatAgentItemControl ViewModel="{x:Bind}" />
+                            </DataTemplate>
+                        </ItemsRepeater.ItemTemplate>
+                    </ItemsRepeater>
+                </StackPanel>
+                <StackPanel Margin="0,12,0,0" Visibility="{x:Bind ViewModel.IsGroupListVisible, Mode=OneWay}">
+                    <TextBlock
+                        Margin="4,0,0,8"
+                        HorizontalAlignment="Left"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Style="{StaticResource CaptionTextBlockStyle}"
+                        Text="{ext:Locale Name=Groups}" />
+                    <ItemsRepeater ItemsSource="{x:Bind ViewModel.Groups}" Layout="{StaticResource BasicLayout}">
+                        <ItemsRepeater.ItemTemplate>
+                            <DataTemplate x:DataType="items:ChatGroupItemViewModel">
+                                <local:ChatGroupItemControl ViewModel="{x:Bind}" />
+                            </DataTemplate>
+                        </ItemsRepeater.ItemTemplate>
+                    </ItemsRepeater>
+                </StackPanel>
             </StackPanel>
         </ScrollViewer>
         <ProgressRing IsActive="{x:Bind ViewModel.IsInitializing, Mode=OneWay}" Style="{StaticResource PageProgressRingStyle}" />

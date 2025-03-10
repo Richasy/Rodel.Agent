@@ -36,6 +36,12 @@ public sealed partial class ChatSessionViewModel
     public partial ChatProviderType? CurrentProvider { get; set; }
 
     [ObservableProperty]
+    public partial ChatServiceItemViewModel? SelectedService { get; set; }
+
+    [ObservableProperty]
+    public partial ChatAgent? CurrentAgent { get; set; }
+
+    [ObservableProperty]
     public partial ChatOptions? CurrentOptions { get; set; }
 
     [ObservableProperty]
@@ -100,6 +106,8 @@ public sealed partial class ChatSessionViewModel
 
     [ObservableProperty]
     public partial string? SystemInstruction { get; set; }
+
+    public ObservableCollection<ChatServiceItemViewModel> Services { get; } = [];
 
     public ObservableCollection<ChatModelItemViewModel> Models { get; } = [];
 

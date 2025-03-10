@@ -140,6 +140,9 @@ public sealed partial class ChatPageViewModel : LayoutPageViewModelBase
             item.IsSelected = service != null && item.ProviderType == service.ProviderType;
         }
 
+        DeselectAllAgents();
+        DeselectAllGroups();
+
         SelectedService = service;
         if (service != null)
         {
@@ -157,13 +160,16 @@ public sealed partial class ChatPageViewModel : LayoutPageViewModelBase
             item.IsSelected = item.Data.Id == agent?.Data.Id;
         }
 
+        DeselectAllServices();
+        DeselectAllGroups();
+
         SelectedAgent = agent;
 
         if (agent != null)
         {
             SettingsToolkit.WriteLocalSetting(SettingNames.LastSelectedAgentSection, AgentSectionType.Agent);
             SettingsToolkit.WriteLocalSetting(SettingNames.LastSelectedAgent, agent.Data.Id);
-            // TODO: Initialize session with agent.
+            _sessionViewModel.InitializeWithAgentCommand.Execute(agent);
         }
     }
 
@@ -177,6 +183,9 @@ public sealed partial class ChatPageViewModel : LayoutPageViewModelBase
 
         SelectedGroup = group;
 
+        DeselectAllServices();
+        DeselectAllAgents();
+
         if (group != null)
         {
             SettingsToolkit.WriteLocalSetting(SettingNames.LastSelectedAgentSection, AgentSectionType.Group);
@@ -187,10 +196,34 @@ public sealed partial class ChatPageViewModel : LayoutPageViewModelBase
     }
 
     private void CheckAgentsVisible()
-        => IsAgentSectionVisible = Agents.Count > 0;
+        => IsAgentListVisible = Agents.Count > 0;
 
     private void CheckGroupsVisible()
         => IsGroupListVisible = Groups.Count > 0;
+
+    private void DeselectAllServices()
+    {
+        foreach (var item in Services!)
+        {
+            item.IsSelected = false;
+        }
+    }
+
+    private void DeselectAllAgents()
+    {
+        foreach (var item in Agents)
+        {
+            item.IsSelected = false;
+        }
+    }
+
+    private void DeselectAllGroups()
+    {
+        foreach (var item in Groups)
+        {
+            item.IsSelected = false;
+        }
+    }
 
     partial void OnIsAgentSectionVisibleChanged(bool value)
     {

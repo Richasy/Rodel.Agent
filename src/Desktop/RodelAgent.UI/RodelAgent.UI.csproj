@@ -32,6 +32,8 @@
     <None Remove="Controls\Audio\AudioSideBody.xaml" />
     <None Remove="Controls\Audio\AudioSideHeader.xaml" />
     <None Remove="Controls\Audio\WavePanel.xaml" />
+    <None Remove="Controls\Chat\ChatAgentItemControl.xaml" />
+    <None Remove="Controls\Chat\ChatGroupItemControl.xaml" />
     <None Remove="Controls\Chat\ChatHistoryItem.xaml" />
     <None Remove="Controls\Chat\ChatHistoryPanel.xaml" />
     <None Remove="Controls\Chat\ChatHistoryRenameDialog.xaml" />
@@ -105,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Humanizer.Core.zh-Hans" />
+    <PackageReference Include="ImageEx.WinUI" />
     <PackageReference Include="Microsoft.Web.WebView2" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" />
     <PackageReference Include="Microsoft.WindowsAppSDK" />
@@ -351,6 +354,21 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Web\chat-render\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Chat\ChatGroupItemControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Chat\ChatLogo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Chat\ChatAgentItemControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\Chat\ChatHistoryRenameDialog.xaml">

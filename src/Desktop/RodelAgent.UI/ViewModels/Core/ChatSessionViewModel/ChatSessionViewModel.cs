@@ -35,6 +35,7 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         History.CollectionChanged += (_, _) => CheckHistoryEmpty();
         IsInstructionVisible = SettingsToolkit.ReadLocalSetting(SettingNames.ChatSessionIsInstructionVisible, true);
         IsOptionsVisible = SettingsToolkit.ReadLocalSetting(SettingNames.ChatSessionIsOptionsVisible, false);
+        this.Get<AppViewModel>().RequestReloadChatServices += OnRequestReloadChatServices;
     }
 
     protected override string GetPageKey()
@@ -121,6 +122,50 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
     }
 
     [RelayCommand]
+    private async Task InitializeWithAgentAsync(ChatAgentItemViewModel agent)
+    {
+        if (SectionType == AgentSectionType.Agent && agent.Data.Id == CurrentAgent?.Id)
+        {
+            return;
+        }
+
+        // 不支持生成内容时切换服务.
+        if (IsGenerating)
+        {
+            CancelGenerateCommand.Execute(default);
+        }
+
+        SectionType = AgentSectionType.Agent;
+        CurrentAgent = agent.Data;
+        Title = agent.Name;
+        SetCurrentConversation(null);
+        if (Services.Count == 0)
+        {
+            await ReloadAvailableServicesAsync();
+        }
+
+        var service = Services.FirstOrDefault(p => p.ProviderType == CurrentAgent.Provider);
+        service ??= Services[0];
+        ChangeService(service);
+        ClearMessageCommand.Execute(default);
+        await LoadConversationsWithAgentIdAsync(agent.Data.Id);
+    }
+
+    [RelayCommand]
+    private void ChangeService(ChatServiceItemViewModel service)
+    {
+        if (SelectedService == service)
+        {
+            return;
+        }
+
+        SelectedService = service;
+        CurrentProvider = service.ProviderType;
+        _chatService = this.Get<IChatService>(CurrentProvider!.Value.ToString());
+        ReloadAvailableModelsCommand.Execute(default);
+    }
+
+    [RelayCommand]
     private void LoadHistoryItem(ChatHistoryItemViewModel history)
     {
         if (history is null || history.Id == _currentConversation?.Id || IsGenerating)
@@ -142,6 +187,12 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         var customModels = config?.CustomModels?.ToList() ?? [];
         var models = serverModels.Concat(customModels).ToList().ConvertAll(p => new ChatModelItemViewModel(p));
         models.ForEach(Models.Add);
+        if (IsAgent && models.Any(p => p.Id == CurrentAgent?.Model))
+        {
+            SelectModelCommand.Execute(models.Find(p => p.Id == CurrentAgent?.Model));
+            return;
+        }
+
         var lastSelectedModel = this.Get<ISettingsToolkit>().ReadLocalSetting($"{CurrentProvider}LastSelectedChatModel", string.Empty);
         var model = Models.FirstOrDefault(p => p.Id == lastSelectedModel) ?? Models.FirstOrDefault();
         SelectModelCommand.Execute(model);
@@ -163,15 +214,40 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         }
 
         SelectedModel = model;
-        this.Get<ISettingsToolkit>().WriteLocalSetting($"{CurrentProvider}LastSelectedChatModel", model.Id);
         if (IsService)
+        {
+            this.Get<ISettingsToolkit>().WriteLocalSetting($"{CurrentProvider}LastSelectedChatModel", model.Id);
+        }
+
+        if (!IsGroup)
         {
             Subtitle = model.Name;
         }
 
         var config = await this.Get<IChatConfigManager>().GetServiceConfigAsync(CurrentProvider!.Value, model.Data);
-        _chatService!.Initialize(config!);
+        _chatService!.Initialize(config);
         RequestFocusInput?.Invoke(this, EventArgs.Empty);
+    }
+
+    private async void OnRequestReloadChatServices(object? sender, EventArgs e)
+        => await ReloadAvailableServicesAsync();
+
+    private async Task ReloadAvailableServicesAsync()
+    {
+        var providers = Enum.GetValues<ChatProviderType>();
+        var services = new List<ChatServiceItemViewModel>();
+        var chatConfigManager = this.Get<IChatConfigManager>();
+        foreach (var p in providers)
+        {
+            var config = await chatConfigManager.GetChatConfigAsync(p);
+            if (config?.IsValid() == true)
+            {
+                services.Add(new ChatServiceItemViewModel(p));
+            }
+        }
+
+        Services.Clear();
+        services.ForEach(Services.Add);
     }
 
     private void CheckSectionType()

@@ -43,8 +43,7 @@ internal sealed class AppToolkit : SharedAppToolkit
     public static string GetPresetAvatarPath(string id)
     {
         var workDir = SettingsToolkit.ReadLocalSetting(SettingNames.WorkingDirectory, string.Empty);
-        var avatarPath = Path.Combine(workDir, "Avatars", $"{id}.png");
-        return avatarPath;
+        return Path.Combine(workDir, "Avatars", $"{id}.png");
     }
 
     /// <summary>

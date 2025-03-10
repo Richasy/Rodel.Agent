@@ -3,6 +3,7 @@
 using Richasy.AgentKernel;
 using RodelAgent.Models.Feature;
 using RodelAgent.UI.ViewModels.Items;
+using SqlSugar;
 
 namespace RodelAgent.UI.ViewModels.Core;
 
@@ -14,6 +15,26 @@ public sealed partial class ChatSessionViewModel
         History.Clear();
         CheckHistoryEmpty();
         var conversations = await _storageService.GetChatConversationsAsync(provider);
+        var list = new List<ChatHistoryItemViewModel>();
+        if (conversations is not null)
+        {
+            foreach (var conversation in conversations)
+            {
+                var item = new ChatHistoryItemViewModel(conversation, RemoveHistoryAsync);
+                list.Add(item);
+            }
+        }
+
+        list.OrderByDescending(p => p.GetLastMessageTime()).ToList().ForEach(History.Add);
+        IsHistoryInitializing = false;
+    }
+
+    private async Task LoadConversationsWithAgentIdAsync(string agentId)
+    {
+        IsHistoryInitializing = true;
+        History.Clear();
+        CheckHistoryEmpty();
+        var conversations = await _storageService.GetChatConversationsByAgentAsync(agentId);
         var list = new List<ChatHistoryItemViewModel>();
         if (conversations is not null)
         {
@@ -64,6 +85,7 @@ public sealed partial class ChatSessionViewModel
             Model = SelectedModel?.Id,
             SystemInstruction = SystemInstruction,
             Options = options,
+            AgentId = IsAgent ? CurrentAgent?.Id : null,
         };
 
         History.Insert(0, new ChatHistoryItemViewModel(conversation, RemoveHistoryAsync));
@@ -75,6 +97,8 @@ public sealed partial class ChatSessionViewModel
         TryCreateConversation();
         if (_currentConversation != null)
         {
+            _currentConversation.Provider = CurrentProvider!;
+            _currentConversation.Model = SelectedModel?.Id;
             _currentConversation.History = [.. Messages];
             _currentConversation.UseStreamOutput = _getIsStreamOutput?.Invoke() ?? true;
             _currentConversation.MaxRounds = _getMaxRounds?.Invoke() ?? 0;
@@ -122,6 +146,23 @@ public sealed partial class ChatSessionViewModel
         {
             if (!IsGenerating)
             {
+                if (IsAgent)
+                {
+                    if (_currentConversation.Provider != CurrentProvider)
+                    {
+                        var service = Services.FirstOrDefault(p => p.ProviderType == _currentConversation.Provider);
+                        service ??= Services.FirstOrDefault(p => p.ProviderType == CurrentAgent?.Provider);
+                        service ??= Services.FirstOrDefault();
+                        ChangeServiceCommand.Execute(service);
+                    }
+                    else if (_currentConversation.Model != SelectedModel?.Id)
+                    {
+                        var model = Models.FirstOrDefault(p => p.Id == _currentConversation.Model);
+                        model ??= Models.FirstOrDefault();
+                        SelectModelCommand.Execute(model);
+                    }
+                }
+
                 Messages.Clear();
                 SystemInstruction = _currentConversation.SystemInstruction;
                 CurrentOptions = _currentConversation.Options;
@@ -139,9 +180,29 @@ public sealed partial class ChatSessionViewModel
         }
         else
         {
-            SystemInstruction = string.Empty;
-            Title = string.Empty;
-            CurrentOptions = null;
+            SystemInstruction = IsAgent && CurrentAgent != null
+                ? CurrentAgent.SystemInstruction
+                : string.Empty;
+            Title = IsAgent && CurrentAgent != null
+                ? CurrentAgent.Name
+                : string.Empty;
+            CurrentOptions = IsAgent && CurrentAgent != null
+                ? CurrentAgent.Options
+                : null;
+            if (IsAgent && CurrentAgent != null)
+            {
+                SystemInstruction = CurrentAgent.SystemInstruction;
+                Title = CurrentAgent.Name;
+                CurrentOptions = CurrentAgent.Options;
+                SelectedService = Services.FirstOrDefault(p => p.ProviderType == CurrentAgent.Provider);
+            }
+            else
+            {
+                SystemInstruction = string.Empty;
+                Title = string.Empty;
+                CurrentOptions = null;
+            }
+
             foreach (var item in History)
             {
                 item.IsSelected = false;

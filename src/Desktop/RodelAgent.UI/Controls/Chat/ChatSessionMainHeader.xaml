@@ -10,6 +10,7 @@
     xmlns:ic="using:FluentIcons.WinUI"
     xmlns:local="using:RodelAgent.UI.Controls.Chat"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="using:Richasy.WinUIKernel.AI.ViewModels"
     mc:Ignorable="d">
 
     <Grid Padding="12,0" ColumnSpacing="12">
@@ -27,6 +28,13 @@
                 IsAvatar="True"
                 Provider="{x:Bind ViewModel.CurrentProvider, Mode=OneWay}"
                 Visibility="{x:Bind ViewModel.IsService, Mode=OneWay}" />
+            <local:ChatLogo
+                Width="36"
+                Height="36"
+                VerticalAlignment="Center"
+                CornerRadius="18"
+                Id="{x:Bind ViewModel.CurrentAgent.Id, Mode=OneWay}"
+                Visibility="{x:Bind ViewModel.IsAgent, Mode=OneWay}" />
         </Grid>
         <Grid Grid.Column="1" VerticalAlignment="Center">
             <Grid.RowDefinitions>
@@ -48,17 +56,53 @@
                 Text="{x:Bind ViewModel.Subtitle, Mode=OneWay}"
                 Visibility="{x:Bind ViewModel.Subtitle, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}" />
         </Grid>
-        <Button
-            Grid.Column="2"
-            VerticalAlignment="Center"
-            AutomationProperties.Name="{ext:Locale Name=SaveAsPreset}"
-            Style="{StaticResource IconButtonStyle}"
-            ToolTipService.ToolTip="{ext:Locale Name=SaveAsPreset}"
-            Visibility="{x:Bind ViewModel.IsGroup, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
-            <ic:SymbolIcon FontSize="14" Symbol="Save" />
-            <Button.KeyboardAccelerators>
-                <KeyboardAccelerator Key="S" Modifiers="Control" />
-            </Button.KeyboardAccelerators>
-        </Button>
+        <StackPanel Grid.Column="2" Orientation="Horizontal">
+            <ComboBox
+                x:Name="ServiceComboBox"
+                MinWidth="160"
+                Margin="0,0,8,0"
+                VerticalAlignment="Center"
+                ItemsSource="{x:Bind ViewModel.Services, Mode=OneWay}"
+                SelectionChanged="OnServiceSelectionChanged"
+                Visibility="{x:Bind ViewModel.IsAgent, Mode=OneWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="viewmodels:ChatServiceItemViewModel">
+                        <Grid Padding="4,2" ColumnSpacing="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <ai:AILogo
+                                Width="24"
+                                Height="24"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                AvatarPadding="4"
+                                IsAvatar="True"
+                                Provider="{x:Bind ProviderType}" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="0,-2,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                MaxLines="1"
+                                Text="{x:Bind Name}"
+                                TextTrimming="CharacterEllipsis" />
+                        </Grid>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <Button
+                VerticalAlignment="Center"
+                AutomationProperties.Name="{ext:Locale Name=SaveAsPreset}"
+                Style="{StaticResource IconButtonStyle}"
+                ToolTipService.ToolTip="{ext:Locale Name=SaveAsPreset}"
+                Visibility="{x:Bind ViewModel.IsGroup, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+                <ic:SymbolIcon FontSize="14" Symbol="Save" />
+                <Button.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="S" Modifiers="Control" />
+                </Button.KeyboardAccelerators>
+            </Button>
+        </StackPanel>
     </Grid>
 </local:ChatSessionControlBase>

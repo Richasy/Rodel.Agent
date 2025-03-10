@@ -18,6 +18,7 @@
     <PackageVersion Include="H.NotifyIcon.WinUI" Version="2.3.0" />
     <PackageVersion Include="HtmlAgilityPack" Version="1.11.72" />
     <PackageVersion Include="Humanizer.Core.zh-Hans" Version="3.0.0-beta.54" />
+    <PackageVersion Include="ImageEx.WinUI" Version="4.0.0" />
     <PackageVersion Include="LangChain.Splitters.Abstractions" Version="0.17.1-dev.12" />
     <PackageVersion Include="Markdig" Version="0.40.0" />
     <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.2" />
