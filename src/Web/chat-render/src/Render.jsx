@@ -14,6 +14,7 @@ function Render() {
   const [history, setHistory] = useState([]);
   const [temporaryLoading, setTemporaryLoading] = useState(false); // 临时加载状态
   const [temporaryOutput, setTemporaryOutput] = useState(null); // 存储临时输出
+  let codeIdx = 0;
   const md = markdownit({
     html: true,
     breaks: true,
@@ -73,13 +74,13 @@ function Render() {
       const lang = extractLang(token.info);
 
       // Generate a unique ID for the code block
-      const codeId = `code-block-${idx}`;
+      const codeId = `code-block-${codeIdx++}`;
       const highlightedCode = md.options.highlight(token.content, lang || "plaintext", "");
       // Create the header with language and copy button
       const header = `
         <div class="code-header">
           <span class="code-lang">${lang || "plaintext"}</span>
-          <button onclick="window.handleCopyClick('copy${idx}')" class="copy-button" id="copy${idx}">
+          <button onclick="window.handleCopyClick('copy${codeIdx}')" class="copy-button" id="copy${codeIdx}">
             <svg class="svgIcon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
               <path fill-rule="evenodd" d="M18 3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1V9a4 4 0 0 0-4-4h-3a1.99 1.99 0 0 0-1 .267V5a2 2 0 0 1 2-2h7Z" clip-rule="evenodd"/>
               <path fill-rule="evenodd" d="M8 7.054V11H4.2a2 2 0 0 1 .281-.432l2.46-2.87A2 2 0 0 1 8 7.054ZM10 7v4a2 2 0 0 1-2 2H4v6a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3Z" clip-rule="evenodd"/>
