@@ -598,4 +598,19 @@
   <data name="CopyFailed" xml:space="preserve">
     <value>复制失败，请尝试手动复制</value>
   </data>
+  <data name="CreateCopy" xml:space="preserve">
+    <value>创建副本</value>
+  </data>
+  <data name="DeleteAgent" xml:space="preserve">
+    <value>删除助理</value>
+  </data>
+  <data name="DeleteGroup" xml:space="preserve">
+    <value>删除群组</value>
+  </data>
+  <data name="ModifyAgent" xml:space="preserve">
+    <value>修改助理定义</value>
+  </data>
+  <data name="ModifyGroup" xml:space="preserve">
+    <value>修改群组定义</value>
+  </data>
 </root>

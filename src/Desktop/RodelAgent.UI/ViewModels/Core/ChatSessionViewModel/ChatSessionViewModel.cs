@@ -163,6 +163,7 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         CurrentProvider = service.ProviderType;
         _chatService = this.Get<IChatService>(CurrentProvider!.Value.ToString());
         ReloadAvailableModelsCommand.Execute(default);
+        RequestReloadOptionsUI?.Invoke(this, EventArgs.Empty);
     }
 
     [RelayCommand]

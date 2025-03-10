@@ -6,6 +6,7 @@
     xmlns:base="using:Richasy.WinUIKernel.Share.Base"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
     xmlns:local="using:RodelAgent.UI.Controls.Chat"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -21,6 +22,26 @@
         Click="OnAgentClick"
         IsChecked="{x:Bind ViewModel.IsSelected, Mode=OneWay}"
         IsEnableCheck="False">
+        <base:AppToggleCard.ContextFlyout>
+            <MenuFlyout>
+                <MenuFlyoutItem Text="{ext:Locale Name=ModifyAgent}">
+                    <MenuFlyoutItem.Icon>
+                        <ic:SymbolIcon Symbol="Edit" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem Text="{ext:Locale Name=CreateCopy}">
+                    <MenuFlyoutItem.Icon>
+                        <ic:SymbolIcon Symbol="SaveCopy" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem Text="{ext:Locale Name=DeleteAgent}">
+                    <MenuFlyoutItem.Icon>
+                        <ic:SymbolIcon Foreground="{ThemeResource SystemFillColorCriticalBrush}" Symbol="Delete" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+            </MenuFlyout>
+        </base:AppToggleCard.ContextFlyout>
         <Grid
             Margin="12,8"
             HorizontalAlignment="Stretch"
