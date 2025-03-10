@@ -230,6 +230,22 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         RequestFocusInput?.Invoke(this, EventArgs.Empty);
     }
 
+    [RelayCommand]
+    private async Task ForceReloadLogoAsync()
+    {
+        if (IsAgent)
+        {
+            var agent = CurrentAgent;
+            CurrentAgent = null;
+            await Task.Delay(200);
+            CurrentAgent = agent;
+        }
+        else if (IsGroup)
+        {
+            // TODO: Reload group logo.
+        }
+    }
+
     private async void OnRequestReloadChatServices(object? sender, EventArgs e)
         => await ReloadAvailableServicesAsync();
 

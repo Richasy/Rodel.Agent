@@ -33,6 +33,14 @@
         <Setter Property="Background" Value="{ThemeResource DividerStrokeColorDefaultBrush}" />
     </Style>
 
+    <DataTemplate x:Key="InputHeaderTemplate">
+        <TextBlock
+            HorizontalAlignment="Left"
+            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+            Style="{StaticResource CaptionTextBlockStyle}"
+            Text="{Binding}" />
+    </DataTemplate>
+
     <Style x:Key="AppContentControlStyle" TargetType="ContentControl">
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />

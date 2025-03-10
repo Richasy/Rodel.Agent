@@ -32,7 +32,10 @@
     <None Remove="Controls\Audio\AudioSideBody.xaml" />
     <None Remove="Controls\Audio\AudioSideHeader.xaml" />
     <None Remove="Controls\Audio\WavePanel.xaml" />
+    <None Remove="Controls\Chat\ChatAgentConfigDialog.xaml" />
     <None Remove="Controls\Chat\ChatAgentItemControl.xaml" />
+    <None Remove="Controls\Chat\ChatAgentModelPanel.xaml" />
+    <None Remove="Controls\Chat\ChatAgentOptionPanel.xaml" />
     <None Remove="Controls\Chat\ChatGroupItemControl.xaml" />
     <None Remove="Controls\Chat\ChatHistoryItem.xaml" />
     <None Remove="Controls\Chat\ChatHistoryPanel.xaml" />
@@ -47,6 +50,7 @@
     <None Remove="Controls\Chat\ChatSessionSideHeader.xaml" />
     <None Remove="Controls\Chat\ChatSideBody.xaml" />
     <None Remove="Controls\Chat\ChatSideHeader.xaml" />
+    <None Remove="Controls\Chat\ChatSlimMessageItemControl.xaml" />
     <None Remove="Controls\CombineRow.xaml" />
     <None Remove="Controls\Draw\DrawImage.xaml" />
     <None Remove="Controls\Draw\DrawMainBody.xaml" />
@@ -54,6 +58,7 @@
     <None Remove="Controls\Draw\DrawMainHeader.xaml" />
     <None Remove="Controls\Draw\DrawSideBody.xaml" />
     <None Remove="Controls\Draw\DrawSideHeader.xaml" />
+    <None Remove="Controls\EmojiPanel.xaml" />
     <None Remove="Controls\EnterWrapTip.xaml" />
     <None Remove="Controls\RootLayout.xaml" />
     <None Remove="Controls\Settings\AboutSettingControl.xaml" />
@@ -106,6 +111,8 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.ImageCropper" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.TokenizingTextBox" />
     <PackageReference Include="Humanizer.Core.zh-Hans" />
     <PackageReference Include="ImageEx.WinUI" />
     <PackageReference Include="Microsoft.Web.WebView2" />
@@ -354,6 +361,31 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Web\chat-render\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Chat\ChatSlimMessageItemControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Chat\ChatAgentOptionPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\EmojiPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Chat\ChatAgentModelPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Chat\ChatAgentConfigDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\Chat\ChatGroupItemControl.xaml">

@@ -8,35 +8,44 @@ namespace RodelAgent.UI.Controls.Chat;
 /// <summary>
 /// Chat options panel.
 /// </summary>
-public sealed partial class ChatOptionsPanel : ChatSessionControlBase
+public sealed partial class ChatOptionsPanel : LayoutUserControlBase
 {
+    /// <summary>
+    /// <see cref="Provider"/> 的依赖属性.
+    /// </summary>
+    public static readonly DependencyProperty ProviderProperty =
+        DependencyProperty.Register(nameof(Provider), typeof(ChatProviderType?), typeof(ChatOptionsPanel), new PropertyMetadata(default));
+
+    public static readonly DependencyProperty IsMaxRoundsEnabledProperty =
+        DependencyProperty.Register(nameof(IsMaxRoundsEnabled), typeof(bool), typeof(ChatOptionsPanel), new PropertyMetadata(true));
+
     public ChatOptionsPanel() => InitializeComponent();
 
-    /// <inheritdoc/>
-    protected override void OnControlLoaded()
+    /// <summary>
+    /// Chat provider type.
+    /// </summary>
+    public ChatProviderType? Provider
     {
-        ViewModel.RequestReloadOptionsUI += OnRequestReloadOptionsUI;
-        ViewModel.InjectFunc(GetOptions, GetStreamOutput, GetMaxRounds);
+        get => (ChatProviderType?)GetValue(ProviderProperty);
+        set => SetValue(ProviderProperty, value);
     }
 
-    protected override void OnControlUnloaded()
+    public bool IsMaxRoundsEnabled
     {
-        ViewModel.RequestReloadOptionsUI -= OnRequestReloadOptionsUI;
+        get => (bool)GetValue(IsMaxRoundsEnabledProperty);
+        set => SetValue(IsMaxRoundsEnabledProperty, value);
     }
 
-    private void OnRequestReloadOptionsUI(object? sender, EventArgs e)
-        => ReloadOptionsUI();
-
-    private void ReloadOptionsUI()
+    public void ReloadOptionsUI(bool isStream, int maxRounds, ChatOptions? options)
     {
-        StreamOutputSwitch.IsOn = ViewModel.GetCurrentConversation()?.UseStreamOutput ?? true;
-        MaxRoundsSlider.Value = ViewModel.GetCurrentConversation()?.MaxRounds ?? 0;
-        switch (ViewModel.CurrentProvider)
+        StreamOutputSwitch.IsOn = isStream;
+        MaxRoundsSlider.Value = maxRounds;
+        switch (Provider)
         {
             case ChatProviderType.OpenAI:
             case ChatProviderType.AzureOpenAI:
             case ChatProviderType.ZhiPu:
-                ReloadOpenAIOptionsUI();
+                ReloadOpenAIOptionsUI(options);
                 break;
             case ChatProviderType.Gemini:
             case ChatProviderType.LingYi:
@@ -56,10 +65,10 @@ public sealed partial class ChatOptionsPanel : ChatSessionControlBase
             case ChatProviderType.SiliconFlow:
             case ChatProviderType.Ollama:
             case ChatProviderType.XAI:
-                ReloadCommonOptionsUI();
+                ReloadCommonOptionsUI(options);
                 break;
             case ChatProviderType.Anthropic:
-                ReloadAnthropicOptionsUI();
+                ReloadAnthropicOptionsUI(options);
                 break;
             default:
                 ReloadUnspecifiedOptionsUI();
@@ -67,13 +76,13 @@ public sealed partial class ChatOptionsPanel : ChatSessionControlBase
         }
     }
 
-    private bool GetStreamOutput()
+    public bool GetStreamOutput()
         => StreamOutputSwitch.IsOn;
 
-    private int GetMaxRounds()
+    public int GetMaxRounds()
         => Convert.ToInt32(MaxRoundsSlider.Value);
 
-    private ChatOptions GetOptions()
+    public ChatOptions GetOptions()
     {
         var options = new ChatOptions();
         options.AdditionalProperties ??= [];
@@ -124,7 +133,7 @@ public sealed partial class ChatOptionsPanel : ChatSessionControlBase
         return options;
     }
 
-    private void ReloadOpenAIOptionsUI()
+    private void ReloadOpenAIOptionsUI(ChatOptions? options)
     {
         FrequencyPenaltyContainer.Visibility = Visibility.Visible;
         PresencePenaltyContainer.Visibility = Visibility.Visible;
@@ -141,15 +150,15 @@ public sealed partial class ChatOptionsPanel : ChatSessionControlBase
         TemperatureSlider.Minimum = 0;
         TemperatureSlider.Maximum = 2;
 
-        FrequencyPenaltySlider.Value = ViewModel.CurrentOptions?.FrequencyPenalty ?? 0d;
-        PresencePenaltySlider.Value = ViewModel.CurrentOptions?.PresencePenalty ?? 0d;
-        MaxOutputTokenBox.Value = ViewModel.CurrentOptions?.MaxOutputTokens ?? 0;
-        TemperatureSlider.Value = ViewModel.CurrentOptions?.Temperature ?? 1d;
-        TopPSlider.Value = ViewModel.CurrentOptions?.TopP ?? 1d;
-        ResponseFormatComboBox.SelectedIndex = ViewModel.CurrentOptions?.ResponseFormat == ChatResponseFormat.Json ? 1 : 0;
+        FrequencyPenaltySlider.Value = options?.FrequencyPenalty ?? 0d;
+        PresencePenaltySlider.Value = options?.PresencePenalty ?? 0d;
+        MaxOutputTokenBox.Value = options?.MaxOutputTokens ?? 0;
+        TemperatureSlider.Value = options?.Temperature ?? 1d;
+        TopPSlider.Value = options?.TopP ?? 1d;
+        ResponseFormatComboBox.SelectedIndex = options?.ResponseFormat == ChatResponseFormat.Json ? 1 : 0;
     }
 
-    private void ReloadCommonOptionsUI()
+    private void ReloadCommonOptionsUI(ChatOptions? options)
     {
         FrequencyPenaltyContainer.Visibility = Visibility.Visible;
         PresencePenaltyContainer.Visibility = Visibility.Visible;
@@ -166,14 +175,14 @@ public sealed partial class ChatOptionsPanel : ChatSessionControlBase
         TemperatureSlider.Minimum = 0;
         TemperatureSlider.Maximum = 2;
 
-        FrequencyPenaltySlider.Value = ViewModel.CurrentOptions?.FrequencyPenalty ?? 0d;
-        PresencePenaltySlider.Value = ViewModel.CurrentOptions?.PresencePenalty ?? 0d;
-        MaxOutputTokenBox.Value = ViewModel.CurrentOptions?.MaxOutputTokens ?? 0;
-        TemperatureSlider.Value = ViewModel.CurrentOptions?.Temperature ?? 1d;
-        TopPSlider.Value = ViewModel.CurrentOptions?.TopP ?? 1d;
+        FrequencyPenaltySlider.Value = options?.FrequencyPenalty ?? 0d;
+        PresencePenaltySlider.Value = options?.PresencePenalty ?? 0d;
+        MaxOutputTokenBox.Value = options?.MaxOutputTokens ?? 0;
+        TemperatureSlider.Value = options?.Temperature ?? 1d;
+        TopPSlider.Value = options?.TopP ?? 1d;
     }
 
-    private void ReloadAnthropicOptionsUI()
+    private void ReloadAnthropicOptionsUI(ChatOptions? options)
     {
         FrequencyPenaltyContainer.Visibility = Visibility.Visible;
         PresencePenaltyContainer.Visibility = Visibility.Visible;
@@ -190,13 +199,13 @@ public sealed partial class ChatOptionsPanel : ChatSessionControlBase
         TemperatureSlider.Minimum = 0;
         TemperatureSlider.Maximum = 2;
 
-        FrequencyPenaltySlider.Value = ViewModel.CurrentOptions?.FrequencyPenalty ?? 0d;
-        PresencePenaltySlider.Value = ViewModel.CurrentOptions?.PresencePenalty ?? 0d;
-        MaxOutputTokenBox.Value = ViewModel.CurrentOptions?.MaxOutputTokens ?? 0;
-        TemperatureSlider.Value = ViewModel.CurrentOptions?.Temperature ?? 1d;
-        TopPSlider.Value = ViewModel.CurrentOptions?.TopP ?? 1d;
-        TopKSlider.Value = ViewModel.CurrentOptions?.TopK ?? 0;
-        ResponseFormatComboBox.SelectedIndex = ViewModel.CurrentOptions?.ResponseFormat == ChatResponseFormat.Json ? 1 : 0;
+        FrequencyPenaltySlider.Value = options?.FrequencyPenalty ?? 0d;
+        PresencePenaltySlider.Value = options?.PresencePenalty ?? 0d;
+        MaxOutputTokenBox.Value = options?.MaxOutputTokens ?? 0;
+        TemperatureSlider.Value = options?.Temperature ?? 1d;
+        TopPSlider.Value = options?.TopP ?? 1d;
+        TopKSlider.Value = options?.TopK ?? 0;
+        ResponseFormatComboBox.SelectedIndex = options?.ResponseFormat == ChatResponseFormat.Json ? 1 : 0;
     }
 
     private void ReloadUnspecifiedOptionsUI()

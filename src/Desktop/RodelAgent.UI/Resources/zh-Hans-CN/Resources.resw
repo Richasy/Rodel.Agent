@@ -613,4 +613,64 @@
   <data name="ModifyGroup" xml:space="preserve">
     <value>修改群组定义</value>
   </data>
+  <data name="AgentName" xml:space="preserve">
+    <value>助理名称</value>
+  </data>
+  <data name="AgentNamePlaceholder" xml:space="preserve">
+    <value>一个好记的名字</value>
+  </data>
+  <data name="Avatar" xml:space="preserve">
+    <value>头像</value>
+  </data>
+  <data name="AvatarDropTip" xml:space="preserve">
+    <value>拖放到此以设置头像</value>
+  </data>
+  <data name="DropPresetImageTip" xml:space="preserve">
+    <value>点击图片区域选择文件或者将图片拖拽到框内，以此创建预设图片</value>
+  </data>
+  <data name="EmojiAvatar" xml:space="preserve">
+    <value>Emoji 头像</value>
+  </data>
+  <data name="ImportChatHistory" xml:space="preserve">
+    <value>导入对话历史</value>
+  </data>
+  <data name="MustFillRequireFields" xml:space="preserve">
+    <value>请填写必要的配置项</value>
+  </data>
+  <data name="PresetMessages" xml:space="preserve">
+    <value>预设消息</value>
+  </data>
+  <data name="ReplaceImage" xml:space="preserve">
+    <value>替换图像</value>
+  </data>
+  <data name="AddText" xml:space="preserve">
+    <value>添加文本</value>
+  </data>
+  <data name="AddToken" xml:space="preserve">
+    <value>添加标记</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="Complete" xml:space="preserve">
+    <value>完成</value>
+  </data>
+  <data name="FilterCharactersDescription" xml:space="preserve">
+    <value>模型可能会生成非预期的字符，你可以在这里添加它们，应用会在展示内容前移除这些字符</value>
+  </data>
+  <data name="FilterCharacters_Optional" xml:space="preserve">
+    <value>过滤字符（可选）</value>
+  </data>
+  <data name="NextStep" xml:space="preserve">
+    <value>下一步</value>
+  </data>
+  <data name="PrevStep" xml:space="preserve">
+    <value>上一步</value>
+  </data>
+  <data name="StopSequencesDescription" xml:space="preserve">
+    <value>添加特定的字符以辅助模型停止生成内容</value>
+  </data>
+  <data name="StopSequences_Optional" xml:space="preserve">
+    <value>中止标记（可选）</value>
+  </data>
 </root>

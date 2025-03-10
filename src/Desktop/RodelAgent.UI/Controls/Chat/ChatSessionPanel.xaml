@@ -54,8 +54,10 @@
                 Margin="0,0,0,-6"
                 Visibility="{x:Bind ViewModel.IsInstructionVisible, Mode=OneWay}" />
             <local:ChatOptionsPanel
+                x:Name="OptionsPanel"
                 Grid.Row="2"
                 Margin="0,0,0,-6"
+                Provider="{x:Bind ViewModel.CurrentProvider, Mode=OneWay}"
                 Visibility="{x:Bind ViewModel.IsOptionsVisible, Mode=OneWay}" />
             <local:ChatHistoryPanel Grid.Row="4" Margin="0,-6,0,0" />
             <Border Grid.Row="1" Style="{StaticResource SplitLineStyle}" />

@@ -42,53 +42,8 @@ public sealed partial class ChatPageViewModel : LayoutPageViewModelBase
 
         if (!_isInitialized)
         {
-            var lastSelectedSection = SettingsToolkit.ReadLocalSetting(SettingNames.LastSelectedAgentSection, AgentSectionType.Service);
-            var agents = await this.Get<IStorageService>().GetChatAgentsAsync();
-            if (agents?.Count > 0)
-            {
-                foreach (var agent in agents)
-                {
-                    Agents.Add(new(agent));
-                }
-            }
-
-            var groups = await this.Get<IStorageService>().GetChatGroupsAsync();
-            if (groups?.Count > 0)
-            {
-                foreach (var group in groups)
-                {
-                    Groups.Add(new(group));
-                }
-            }
-
-            CheckAgentsVisible();
-            CheckGroupsVisible();
-            if (lastSelectedSection == AgentSectionType.Agent)
-            {
-                var lastSelectedAgentId = SettingsToolkit.ReadLocalSetting(SettingNames.LastSelectedAgent, string.Empty);
-                var agent = Agents.FirstOrDefault(p => p.Data.Id == lastSelectedAgentId);
-                if (agent != null)
-                {
-                    SelectAgentCommand.Execute(agent);
-                }
-                else
-                {
-                    SelectServiceCommand.Execute(Services?.FirstOrDefault());
-                }
-            }
-            else if (lastSelectedSection == AgentSectionType.Group)
-            {
-                var lastSelectedGroupId = SettingsToolkit.ReadLocalSetting(SettingNames.LastSelectedGroup, string.Empty);
-                var group = Groups.FirstOrDefault(p => p.Data.Id == lastSelectedGroupId);
-                if (group != null)
-                {
-                    SelectGroupCommand.Execute(group);
-                }
-                else
-                {
-                    SelectServiceCommand.Execute(Services?.FirstOrDefault());
-                }
-            }
+            ReloadAvailableAgentsCommand.Execute(default);
+            ReloadAvailableGroupsCommand.Execute(default);
         }
 
         IsInitializing = false;
@@ -124,6 +79,65 @@ public sealed partial class ChatPageViewModel : LayoutPageViewModelBase
             var lastSelectedService = SettingsToolkit.ReadLocalSetting(SettingNames.LastSelectedChatService, ChatProviderType.OpenAI);
             var service = Services.Find(p => p.ProviderType == lastSelectedService) ?? Services[0];
             SelectServiceCommand.Execute(service);
+        }
+    }
+
+    [RelayCommand]
+    private async Task ReloadAvailableAgentsAsync()
+    {
+        var agents = await this.Get<IStorageService>().GetChatAgentsAsync();
+        if (agents?.Count > 0)
+        {
+            foreach (var agent in agents)
+            {
+                Agents.Add(new(agent));
+            }
+        }
+
+        CheckAgentsVisible();
+
+        var lastSelectedSection = SettingsToolkit.ReadLocalSetting(SettingNames.LastSelectedAgentSection, AgentSectionType.Service);
+        if (lastSelectedSection == AgentSectionType.Agent)
+        {
+            var lastSelectedAgentId = SettingsToolkit.ReadLocalSetting(SettingNames.LastSelectedAgent, string.Empty);
+            var agent = Agents.FirstOrDefault(p => p.Data.Id == lastSelectedAgentId);
+            if (agent != null)
+            {
+                SelectAgentCommand.Execute(agent);
+            }
+            else
+            {
+                SelectServiceCommand.Execute(Services?.FirstOrDefault());
+            }
+        }
+    }
+
+    [RelayCommand]
+    private async Task ReloadAvailableGroupsAsync()
+    {
+        var groups = await this.Get<IStorageService>().GetChatGroupsAsync();
+        if (groups?.Count > 0)
+        {
+            foreach (var group in groups)
+            {
+                Groups.Add(new(group));
+            }
+        }
+
+        CheckGroupsVisible();
+        var lastSelectedSection = SettingsToolkit.ReadLocalSetting(SettingNames.LastSelectedAgentSection, AgentSectionType.Service);
+        if (lastSelectedSection == AgentSectionType.Group)
+        {
+            var lastSelectedGroupId = SettingsToolkit.ReadLocalSetting(SettingNames.LastSelectedGroup, string.Empty);
+            var group = Groups.FirstOrDefault(p => p.Data.Id == lastSelectedGroupId);
+            if (group != null)
+            {
+                SelectGroupCommand.Execute(group);
+            }
+            else
+            {
+                SelectServiceCommand.Execute(Services?.FirstOrDefault());
+            }
         }
     }
 

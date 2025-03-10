@@ -24,7 +24,7 @@
         IsEnableCheck="False">
         <base:AppToggleCard.ContextFlyout>
             <MenuFlyout>
-                <MenuFlyoutItem Text="{ext:Locale Name=ModifyAgent}">
+                <MenuFlyoutItem Command="{x:Bind ViewModel.ModifyCommand, Mode=OneWay}" Text="{ext:Locale Name=ModifyAgent}">
                     <MenuFlyoutItem.Icon>
                         <ic:SymbolIcon Symbol="Edit" />
                     </MenuFlyoutItem.Icon>
