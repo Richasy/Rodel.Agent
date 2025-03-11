@@ -14,6 +14,6 @@ public sealed partial class ChatSideBody : ChatPageControlBase
     private void OnAgentItemClick(object sender, EventArgs e)
     {
         var data = (sender as ChatAgentItemControl)?.ViewModel;
-        this.Get<ChatPageViewModel>().SelectAgentCommand.Execute(ViewModel);
+        this.Get<ChatPageViewModel>().SelectAgentCommand.Execute(data);
     }
 }

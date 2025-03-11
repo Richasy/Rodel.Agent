@@ -50,6 +50,7 @@ public sealed partial class ChatGroupConfigPanel : ChatGroupConfigPanelBase
     /// <inheritdoc/>
     protected override async void OnControlLoaded()
     {
+        ViewModel.InjectFunc(GetEmoji);
         if (!string.IsNullOrEmpty(ViewModel.Group!.Emoji))
         {
             _isEmojiAvatar = true;

@@ -27,6 +27,7 @@ const MessageItem = ({ item, sendMessage, renderMarkdown, removeMessage }) => {
 
   const handleSave = () => {
     setIsEditing(false);
+    item.message = editedContent;
     sendMessage(
       {
         type: "edit",

@@ -33,7 +33,7 @@ html {
 
 .ant-bubble-footer {
   margin-top: 4px !important;
-  margin-bottom: -8px;
+  margin-bottom: -4px;
 }
 
 .code-header {
@@ -117,4 +117,8 @@ html {
   bottom: unset;
   /* transform: translateY(-30px); */
   transition-duration: 0.3s;
+}
+
+pre, code {
+  white-space: pre-wrap;
 }
