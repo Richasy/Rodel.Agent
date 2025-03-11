@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
     xmlns:items="using:RodelAgent.UI.ViewModels.Items"
     xmlns:local="using:RodelAgent.UI.Controls.Chat"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -44,7 +45,28 @@
                     <ItemsRepeater ItemsSource="{x:Bind ViewModel.Agents}" Layout="{StaticResource BasicLayout}">
                         <ItemsRepeater.ItemTemplate>
                             <DataTemplate x:DataType="items:ChatAgentItemViewModel">
-                                <local:ChatAgentItemControl ViewModel="{x:Bind}" />
+                                <local:ChatAgentItemControl Click="OnAgentItemClick" ViewModel="{x:Bind}">
+                                    <local:ChatAgentItemControl.ContextFlyout>
+                                        <MenuFlyout>
+                                            <MenuFlyoutItem Command="{x:Bind ModifyCommand}" Text="{ext:Locale Name=ModifyAgent}">
+                                                <MenuFlyoutItem.Icon>
+                                                    <ic:SymbolIcon Symbol="Edit" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+                                            <MenuFlyoutItem Command="{x:Bind CreateDuplicateCommand}" Text="{ext:Locale Name=CreateDuplicate}">
+                                                <MenuFlyoutItem.Icon>
+                                                    <ic:SymbolIcon Symbol="SaveCopy" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+                                            <MenuFlyoutSeparator />
+                                            <MenuFlyoutItem Command="{x:Bind DeleteCommand}" Text="{ext:Locale Name=DeleteAgent}">
+                                                <MenuFlyoutItem.Icon>
+                                                    <ic:SymbolIcon Foreground="{ThemeResource SystemFillColorCriticalBrush}" Symbol="Delete" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+                                        </MenuFlyout>
+                                    </local:ChatAgentItemControl.ContextFlyout>
+                                </local:ChatAgentItemControl>
                             </DataTemplate>
                         </ItemsRepeater.ItemTemplate>
                     </ItemsRepeater>

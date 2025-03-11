@@ -20,28 +20,9 @@
         BorderBrush="Transparent"
         BorderThickness="2"
         Click="OnAgentClick"
+        ContextFlyout="{x:Bind ContextFlyout, Mode=OneWay}"
         IsChecked="{x:Bind ViewModel.IsSelected, Mode=OneWay}"
         IsEnableCheck="False">
-        <base:AppToggleCard.ContextFlyout>
-            <MenuFlyout>
-                <MenuFlyoutItem Command="{x:Bind ViewModel.ModifyCommand, Mode=OneWay}" Text="{ext:Locale Name=ModifyAgent}">
-                    <MenuFlyoutItem.Icon>
-                        <ic:SymbolIcon Symbol="Edit" />
-                    </MenuFlyoutItem.Icon>
-                </MenuFlyoutItem>
-                <MenuFlyoutItem Command="{x:Bind ViewModel.CreateDuplicateCommand, Mode=OneWay}" Text="{ext:Locale Name=CreateDuplicate}">
-                    <MenuFlyoutItem.Icon>
-                        <ic:SymbolIcon Symbol="SaveCopy" />
-                    </MenuFlyoutItem.Icon>
-                </MenuFlyoutItem>
-                <MenuFlyoutSeparator />
-                <MenuFlyoutItem Command="{x:Bind ViewModel.DeleteCommand, Mode=OneWay}" Text="{ext:Locale Name=DeleteAgent}">
-                    <MenuFlyoutItem.Icon>
-                        <ic:SymbolIcon Foreground="{ThemeResource SystemFillColorCriticalBrush}" Symbol="Delete" />
-                    </MenuFlyoutItem.Icon>
-                </MenuFlyoutItem>
-            </MenuFlyout>
-        </base:AppToggleCard.ContextFlyout>
         <Grid
             Margin="12,8"
             HorizontalAlignment="Stretch"

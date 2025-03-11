@@ -676,4 +676,19 @@
   <data name="Duplicate" xml:space="preserve">
     <value>副本</value>
   </data>
+  <data name="AddAgent" xml:space="preserve">
+    <value>添加助理</value>
+  </data>
+  <data name="GroupName" xml:space="preserve">
+    <value>群组名称</value>
+  </data>
+  <data name="GroupNamePlaceholder" xml:space="preserve">
+    <value>一个易懂的名称</value>
+  </data>
+  <data name="NoAgents" xml:space="preserve">
+    <value>没有可用的助理</value>
+  </data>
+  <data name="RemoveAgent" xml:space="preserve">
+    <value>移除助理</value>
+  </data>
 </root>

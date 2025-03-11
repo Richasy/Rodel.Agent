@@ -46,7 +46,7 @@
                     <ic:SymbolIcon FontSize="14" Symbol="MoreVertical" />
                     <Button.Flyout>
                         <MenuFlyout Placement="Bottom">
-                            <MenuFlyoutItem Text="{ext:Locale Name=NewGroup}">
+                            <MenuFlyoutItem Command="{x:Bind ViewModel.CreateGroupCommand}" Text="{ext:Locale Name=NewGroup}">
                                 <MenuFlyoutItem.Icon>
                                     <ic:SymbolIcon Symbol="ChatMultiple" />
                                 </MenuFlyoutItem.Icon>

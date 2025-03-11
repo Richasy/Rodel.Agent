@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
+using RodelAgent.Interfaces;
 using RodelAgent.Models.Feature;
+using RodelAgent.UI.Controls.Chat;
+using RodelAgent.UI.ViewModels.Core;
+using RodelAgent.UI.ViewModels.View;
 
 namespace RodelAgent.UI.ViewModels.Items;
 
@@ -23,4 +27,25 @@ public sealed partial class ChatGroupItemViewModel : ViewModelBase<ChatGroup>
 
     [ObservableProperty]
     public partial string Name { get; set; }
+
+    [RelayCommand]
+    private async Task ModifyAsync()
+    {
+        this.Get<ChatGroupConfigViewModel>().SetData(this);
+        var dialog = new ChatGroupConfigDialog();
+        await dialog.ShowAsync();
+    }
+
+    [RelayCommand]
+    private async Task DeleteAsync()
+    {
+        var pageVM = this.Get<ChatPageViewModel>();
+        if (IsSelected)
+        {
+            pageVM.SelectServiceCommand.Execute(pageVM.Services!.First());
+        }
+
+        pageVM.Groups.Remove(this);
+        await this.Get<IStorageService>().RemoveChatGroupAsync(Data.Id);
+    }
 }

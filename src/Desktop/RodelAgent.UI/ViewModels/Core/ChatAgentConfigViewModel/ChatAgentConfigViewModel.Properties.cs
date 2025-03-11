@@ -75,27 +75,27 @@ public sealed partial class ChatAgentConfigViewModel
     /// <summary>
     /// 终止标记.
     /// </summary>
-    public ObservableCollection<string> StopSequences { get; } = new();
+    public ObservableCollection<string> StopSequences { get; } = [];
 
     /// <summary>
     /// 过滤字符.
     /// </summary>
-    public ObservableCollection<string> FilterCharacters { get; } = new();
+    public ObservableCollection<string> FilterCharacters { get; } = [];
 
     /// <summary>
     /// 可用服务.
     /// </summary>
-    public ObservableCollection<ChatServiceItemViewModel> AvailableServices { get; } = new();
+    public ObservableCollection<ChatServiceItemViewModel> AvailableServices { get; } = [];
 
     /// <summary>
     /// 可用的模型.
     /// </summary>
-    public ObservableCollection<ChatModelItemViewModel> Models { get; } = new();
+    public ObservableCollection<ChatModelItemViewModel> Models { get; } = [];
 
     /// <summary>
     /// 预设消息.
     /// </summary>
-    public ObservableCollection<ChatInteropMessage> Messages { get; } = new();
+    public ObservableCollection<ChatInteropMessage> Messages { get; } = [];
 
     /// <summary>
     /// 是否为手动退出.

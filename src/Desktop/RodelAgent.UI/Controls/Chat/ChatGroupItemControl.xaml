@@ -24,13 +24,13 @@
         IsEnableCheck="False">
         <base:AppToggleCard.ContextFlyout>
             <MenuFlyout>
-                <MenuFlyoutItem Text="{ext:Locale Name=ModifyGroup}">
+                <MenuFlyoutItem Command="{x:Bind ViewModel.ModifyCommand, Mode=OneWay}" Text="{ext:Locale Name=ModifyGroup}">
                     <MenuFlyoutItem.Icon>
                         <ic:SymbolIcon Symbol="Edit" />
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
                 <MenuFlyoutSeparator />
-                <MenuFlyoutItem Text="{ext:Locale Name=DeleteGroup}">
+                <MenuFlyoutItem Command="{x:Bind ViewModel.DeleteCommand, Mode=OneWay}" Text="{ext:Locale Name=DeleteGroup}">
                     <MenuFlyoutItem.Icon>
                         <ic:SymbolIcon Foreground="{ThemeResource SystemFillColorCriticalBrush}" Symbol="Delete" />
                     </MenuFlyoutItem.Icon>

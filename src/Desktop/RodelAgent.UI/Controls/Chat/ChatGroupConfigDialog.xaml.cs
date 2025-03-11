@@ -1,4 +1,4 @@
-﻿// Copyright (c) Richasy. All rights reserved.
+// Copyright (c) Richasy. All rights reserved.
 
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Toolkits;
@@ -6,22 +6,21 @@ using RodelAgent.UI.ViewModels.Core;
 
 namespace RodelAgent.UI.Controls.Chat;
 
-public sealed partial class ChatAgentConfigDialog : AppDialog
+public sealed partial class ChatGroupConfigDialog : AppDialog
 {
     public static readonly DependencyProperty ViewModelProperty =
-        DependencyProperty.Register(nameof(ViewModel), typeof(ChatAgentConfigViewModel), typeof(ChatAgentConfigDialog), new PropertyMetadata(default));
+        DependencyProperty.Register(nameof(ViewModel), typeof(ChatGroupConfigViewModel), typeof(ChatGroupConfigDialog), new PropertyMetadata(default));
 
-    public ChatAgentConfigDialog()
+    public ChatGroupConfigDialog()
     {
-        InitializeComponent();
-        ViewModel = this.Get<ChatAgentConfigViewModel>();
+        this.InitializeComponent(); ViewModel = this.Get<ChatGroupConfigViewModel>();
         Closed += (_, _) => ViewModel.CloseRequested -= OnCloseRequested;
         ViewModel.CloseRequested += OnCloseRequested;
     }
 
-    public ChatAgentConfigViewModel ViewModel
+    public ChatGroupConfigViewModel ViewModel
     {
-        get => (ChatAgentConfigViewModel)GetValue(ViewModelProperty);
+        get => (ChatGroupConfigViewModel)GetValue(ViewModelProperty);
         set => SetValue(ViewModelProperty, value);
     }
 
@@ -38,17 +37,18 @@ public sealed partial class ChatAgentConfigDialog : AppDialog
     {
         var btn = (Button)sender;
         btn.IsEnabled = false;
-        if (!ModelPanel.IsValid())
+        if (!GroupPanel.IsValid())
         {
-            this.Get<AppViewModel>().ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.MustFillRequireFields), InfoType.Warning));
+            this.Get<AppViewModel>()
+                .ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.MustFillRequireFields), InfoType.Warning));
             btn.IsEnabled = true;
             return;
         }
 
         try
         {
-            await ModelPanel.SaveAvatarAsync();
-            await ViewModel.SaveCommand.ExecuteAsync(default);
+            await GroupPanel.SaveAvatarAsync();
+            ViewModel.SaveCommand.Execute(default);
         }
         catch (Exception ex)
         {

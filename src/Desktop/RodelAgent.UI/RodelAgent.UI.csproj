@@ -36,6 +36,8 @@
     <None Remove="Controls\Chat\ChatAgentItemControl.xaml" />
     <None Remove="Controls\Chat\ChatAgentModelPanel.xaml" />
     <None Remove="Controls\Chat\ChatAgentOptionPanel.xaml" />
+    <None Remove="Controls\Chat\ChatGroupConfigDialog.xaml" />
+    <None Remove="Controls\Chat\ChatGroupConfigPanel.xaml" />
     <None Remove="Controls\Chat\ChatGroupItemControl.xaml" />
     <None Remove="Controls\Chat\ChatHistoryItem.xaml" />
     <None Remove="Controls\Chat\ChatHistoryPanel.xaml" />
@@ -361,6 +363,16 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Web\chat-render\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Chat\ChatGroupConfigDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Chat\ChatGroupConfigPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\Chat\ChatSlimMessageItemControl.xaml">

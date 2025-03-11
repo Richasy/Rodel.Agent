@@ -92,6 +92,7 @@ internal static class GlobalDependencies
             .AddSingleton<ChatPageViewModel>()
             .AddSingleton<ChatSessionViewModel>()
             .AddSingleton<ChatAgentConfigViewModel>()
+            .AddSingleton<ChatGroupConfigViewModel>()
             .AddSingleton<DrawPageViewModel>()
             .AddSingleton<AudioPageViewModel>()
             .AddSingleton<AudioWaveViewModel>()

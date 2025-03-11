@@ -89,6 +89,7 @@ public sealed partial class ChatPageViewModel : LayoutPageViewModelBase
     [RelayCommand]
     private async Task ReloadAvailableAgentsAsync()
     {
+        Agents.Clear();
         var agents = await this.Get<IStorageService>().GetChatAgentsAsync();
         if (agents?.Count > 0)
         {
@@ -119,6 +120,7 @@ public sealed partial class ChatPageViewModel : LayoutPageViewModelBase
     [RelayCommand]
     private async Task ReloadAvailableGroupsAsync()
     {
+        Groups.Clear();
         var groups = await this.Get<IStorageService>().GetChatGroupsAsync();
         if (groups?.Count > 0)
         {
@@ -228,6 +230,21 @@ public sealed partial class ChatPageViewModel : LayoutPageViewModelBase
         var vm = new ChatAgentItemViewModel(tempAgent);
         this.Get<ChatAgentConfigViewModel>().SetData(vm);
         var dialog = new ChatAgentConfigDialog();
+        await dialog.ShowAsync();
+    }
+
+    [RelayCommand]
+    private async Task CreateGroupAsync()
+    {
+        var tempGroup = new ChatGroup
+        {
+            Id = Guid.NewGuid().ToString("N"),
+            Agents = [],
+        };
+
+        var vm = new ChatGroupItemViewModel(tempGroup);
+        this.Get<ChatGroupConfigViewModel>().SetData(vm);
+        var dialog = new ChatGroupConfigDialog();
         await dialog.ShowAsync();
     }
 
