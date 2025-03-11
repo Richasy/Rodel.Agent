@@ -14,6 +14,5 @@
   <ItemGroup>
     <ProjectReference Include="..\RodelAgent.Interfaces\RodelAgent.Interfaces.csproj" />
     <ProjectReference Include="..\RodelAgent.Models\RodelAgent.Models.csproj" />
-    <ProjectReference Include="..\RodelChat.Models\RodelChat.Models.csproj" />
   </ItemGroup>
 </Project>
