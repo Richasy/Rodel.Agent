@@ -123,6 +123,13 @@ public interface IStorageService
     Task<List<ChatConversation>?> GetChatConversationsByAgentAsync(string agentId);
 
     /// <summary>
+    /// 获取指定群组的聊天会话.
+    /// </summary>
+    /// <param name="groupId">群组标识符.</param>
+    /// <returns>会话列表.</returns>
+    Task<List<ChatConversation>?> GetChatConversationsByGroupAsync(string groupId);
+
+    /// <summary>
     /// 添加或更新聊天会话.
     /// </summary>
     /// <param name="conversation">会话.</param>

@@ -11,6 +11,7 @@ using RodelAgent.Models.Feature;
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels.Items;
+using RodelAgent.UI.ViewModels.View;
 using Windows.ApplicationModel;
 
 namespace RodelAgent.UI.ViewModels.Core;
@@ -149,6 +150,35 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         ChangeService(service);
         ClearMessageCommand.Execute(default);
         await LoadConversationsWithAgentIdAsync(agent.Data.Id);
+    }
+
+    [RelayCommand]
+    private async Task InitializeWithGroupAsync(ChatGroupItemViewModel group)
+    {
+        if (SectionType == AgentSectionType.Group && group.Data.Id == CurrentGroup?.Id)
+        {
+            return;
+        }
+
+        // 不支持生成内容时切换服务.
+        if (IsGenerating)
+        {
+            CancelGenerateCommand.Execute(default);
+        }
+
+        SectionType = AgentSectionType.Group;
+        CurrentGroup = group.Data;
+        Title = group.Name;
+        Agents.Clear();
+        var pageVM = this.Get<ChatPageViewModel>();
+        foreach (var agent in pageVM.Agents.Where(p => CurrentGroup.Agents!.Contains(p.Data.Id)).Select(p => p.Data).ToList())
+        {
+            Agents.Add(new(agent));
+        }
+
+        SetCurrentConversation(null);
+        ClearMessageCommand.Execute(default);
+        await LoadConversationsWithGroupIdAsync(group.Data.Id);
     }
 
     [RelayCommand]

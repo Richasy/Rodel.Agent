@@ -49,6 +49,26 @@ public sealed partial class ChatSessionViewModel
         IsHistoryInitializing = false;
     }
 
+    private async Task LoadConversationsWithGroupIdAsync(string groupId)
+    {
+        IsHistoryInitializing = true;
+        History.Clear();
+        CheckHistoryEmpty();
+        var conversations = await _storageService.GetChatConversationsByGroupAsync(groupId);
+        var list = new List<ChatHistoryItemViewModel>();
+        if (conversations is not null)
+        {
+            foreach (var conversation in conversations)
+            {
+                var item = new ChatHistoryItemViewModel(conversation, RemoveHistoryAsync);
+                list.Add(item);
+            }
+        }
+
+        list.OrderByDescending(p => p.GetLastMessageTime()).ToList().ForEach(History.Add);
+        IsHistoryInitializing = false;
+    }
+
     private async Task RemoveHistoryAsync(ChatHistoryItemViewModel item)
     {
         if (item.IsSelected)

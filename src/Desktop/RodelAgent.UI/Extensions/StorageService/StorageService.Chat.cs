@@ -40,6 +40,12 @@ internal sealed partial class StorageService
         return [.. sessions.Where(p => p.AgentId == agentId)];
     }
 
+    public async Task<List<ChatConversation>?> GetChatConversationsByGroupAsync(string groupId)
+    {
+        var sessions = await GetAllChatConversationsAsync();
+        return [.. sessions.Where(p => p.GroupId == groupId)];
+    }
+
     public async Task AddOrUpdateChatConversationAsync(ChatConversation session)
     {
         var json = JsonSerializer.Serialize(session, JsonGenContext.Default.ChatConversation);

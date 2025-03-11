@@ -210,8 +210,7 @@ public sealed partial class ChatPageViewModel : LayoutPageViewModelBase
         {
             SettingsToolkit.WriteLocalSetting(SettingNames.LastSelectedAgentSection, AgentSectionType.Group);
             SettingsToolkit.WriteLocalSetting(SettingNames.LastSelectedGroup, group.Data.Id);
-
-            // TODO: Initialize session with group.
+            _sessionViewModel.InitializeWithGroupCommand.Execute(group);
         }
     }
 
