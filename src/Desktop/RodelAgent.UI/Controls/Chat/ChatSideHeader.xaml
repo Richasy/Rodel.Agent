@@ -30,6 +30,7 @@
                 Spacing="2">
                 <Button
                     AutomationProperties.Name="{ext:Locale Name=NewAgent}"
+                    Command="{x:Bind ViewModel.CreateAgentCommand}"
                     Style="{StaticResource IconButtonStyle}"
                     ToolTipService.ToolTip="{ext:Locale Name=NewAgent}">
                     <ic:SymbolIcon

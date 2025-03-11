@@ -10,6 +10,11 @@ public sealed partial class ChatAgentOptionPanel : ChatAgentConfigControlBase
     {
         ViewModel.RequestReloadOptionsUI += OnRequestReloadOptionsUI;
         ViewModel.InjectFunc(OptionsPanel.GetOptions, OptionsPanel.GetStreamOutput, OptionsPanel.GetMaxRounds);
+        OptionsPanel.Provider = ViewModel.Agent!.Provider;
+        OptionsPanel.ReloadOptionsUI(
+            ViewModel.Agent?.UseStreamOutput ?? true,
+            ViewModel.Agent?.MaxRounds ?? 0,
+            ViewModel.CurrentOptions);
     }
 
     private void OnRequestReloadOptionsUI(object? sender, EventArgs e)

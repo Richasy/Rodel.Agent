@@ -89,4 +89,26 @@ public sealed class ChatAgent
     /// </summary>
     [JsonPropertyName("emoji")]
     public string? Emoji { get; set; }
+
+    /// <summary>
+    /// Clone the agent.
+    /// </summary>
+    /// <returns>Agent with new id.</returns>
+    public ChatAgent Clone()
+    {
+        return new ChatAgent
+        {
+            Id = Guid.NewGuid().ToString("N"),
+            Name = Name,
+            Options = Options?.Clone(),
+            MaxRounds = MaxRounds,
+            UseStreamOutput = UseStreamOutput,
+            Provider = Provider,
+            Model = Model,
+            SystemInstruction = SystemInstruction,
+            History = History?.Select(p => p.Clone()).ToList(),
+            FilterCharacters = FilterCharacters?.ToList(),
+            Emoji = Emoji,
+        };
+    }
 }

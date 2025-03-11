@@ -4,6 +4,8 @@ using Richasy.AgentKernel;
 using Richasy.WinUIKernel.AI.ViewModels;
 using RodelAgent.Interfaces;
 using RodelAgent.Models.Constants;
+using RodelAgent.Models.Feature;
+using RodelAgent.UI.Controls.Chat;
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Pages;
 using RodelAgent.UI.Toolkits;
@@ -25,6 +27,8 @@ public sealed partial class ChatPageViewModel : LayoutPageViewModelBase
         _sessionViewModel = sessionVM;
         IsAgentSectionVisible = true;
         IsToolSectionVisible = false;
+        Agents.CollectionChanged += (_, _) => CheckAgentsVisible();
+        Groups.CollectionChanged += (_, _) => CheckGroupsVisible();
     }
 
     /// <inheritdoc/>
@@ -207,6 +211,24 @@ public sealed partial class ChatPageViewModel : LayoutPageViewModelBase
 
             // TODO: Initialize session with group.
         }
+    }
+
+    [RelayCommand]
+    private async Task CreateAgentAsync()
+    {
+        var lastProvider = Services?.FirstOrDefault(p => p.IsSelected)?.ProviderType ?? ChatProviderType.OpenAI;
+        var tempAgent = new ChatAgent
+        {
+            Id = Guid.NewGuid().ToString("N"),
+            Provider = lastProvider,
+            UseStreamOutput = true,
+            MaxRounds = 0,
+        };
+
+        var vm = new ChatAgentItemViewModel(tempAgent);
+        this.Get<ChatAgentConfigViewModel>().SetData(vm);
+        var dialog = new ChatAgentConfigDialog();
+        await dialog.ShowAsync();
     }
 
     private void CheckAgentsVisible()

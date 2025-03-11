@@ -38,6 +38,22 @@ public class ChatInteropMessage
     /// </summary>
     [JsonPropertyName("time")]
     public long Time { get; set; }
+
+    /// <summary>
+    /// Clone the message.
+    /// </summary>
+    /// <returns>Message with new id.</returns>
+    public ChatInteropMessage Clone()
+    {
+        return new ChatInteropMessage
+        {
+            Id = Guid.NewGuid().ToString("N"),
+            Message = Message,
+            AgentId = AgentId,
+            Role = Role,
+            Time = Time,
+        };
+    }
 }
 
 /// <summary>

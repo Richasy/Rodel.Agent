@@ -23,10 +23,7 @@
                 <RowDefinition />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <local:ChatOptionsPanel
-                x:Name="OptionsPanel"
-                IsMaxRoundsEnabled="{x:Bind ViewModel.IsMaxRoundEnabled, Mode=OneWay}"
-                Provider="{x:Bind ViewModel.SelectedService.ProviderType, Mode=OneWay}" />
+            <local:ChatOptionsPanel x:Name="OptionsPanel" IsMaxRoundsEnabled="{x:Bind ViewModel.IsMaxRoundEnabled, Mode=OneWay}" />
             <StackPanel
                 Grid.Row="1"
                 Margin="0,-4,0,0"

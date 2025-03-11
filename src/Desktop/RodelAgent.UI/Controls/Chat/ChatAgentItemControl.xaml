@@ -29,13 +29,13 @@
                         <ic:SymbolIcon Symbol="Edit" />
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
-                <MenuFlyoutItem Text="{ext:Locale Name=CreateCopy}">
+                <MenuFlyoutItem Command="{x:Bind ViewModel.CreateDuplicateCommand, Mode=OneWay}" Text="{ext:Locale Name=CreateDuplicate}">
                     <MenuFlyoutItem.Icon>
                         <ic:SymbolIcon Symbol="SaveCopy" />
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
                 <MenuFlyoutSeparator />
-                <MenuFlyoutItem Text="{ext:Locale Name=DeleteAgent}">
+                <MenuFlyoutItem Command="{x:Bind ViewModel.DeleteCommand, Mode=OneWay}" Text="{ext:Locale Name=DeleteAgent}">
                     <MenuFlyoutItem.Icon>
                         <ic:SymbolIcon Foreground="{ThemeResource SystemFillColorCriticalBrush}" Symbol="Delete" />
                     </MenuFlyoutItem.Icon>

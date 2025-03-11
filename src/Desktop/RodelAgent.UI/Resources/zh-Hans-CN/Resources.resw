@@ -598,7 +598,7 @@
   <data name="CopyFailed" xml:space="preserve">
     <value>复制失败，请尝试手动复制</value>
   </data>
-  <data name="CreateCopy" xml:space="preserve">
+  <data name="CreateDuplicate" xml:space="preserve">
     <value>创建副本</value>
   </data>
   <data name="DeleteAgent" xml:space="preserve">
@@ -672,5 +672,8 @@
   </data>
   <data name="StopSequences_Optional" xml:space="preserve">
     <value>中止标记（可选）</value>
+  </data>
+  <data name="Duplicate" xml:space="preserve">
+    <value>副本</value>
   </data>
 </root>
