@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <local:ChatSessionControlBase
-    x:Class="RodelAgent.UI.Controls.Chat.ChatSessionSideHeader"
+    x:Class="RodelAgent.UI.Controls.Chat.GroupSessionSideHeader"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:base="using:Richasy.WinUIKernel.Share.Base"
@@ -22,28 +22,28 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <base:AppToggleCard
-                x:Name="InstructionButton"
+                x:Name="AgentsButton"
                 HorizontalAlignment="Stretch"
-                AutomationProperties.Name="{ext:Locale Name=Instruction}"
-                Click="OnInstructionButtonClick"
-                IsChecked="{x:Bind ViewModel.IsInstructionVisible, Mode=OneWay}"
+                AutomationProperties.Name="{ext:Locale Name=Agents}"
+                Click="OnAgentsButtonClick"
+                IsChecked="{x:Bind ViewModel.IsAgentsVisible, Mode=OneWay}"
                 Style="{StaticResource SelectorCardStyle}">
                 <Grid Margin="12,8">
                     <StackPanel
-                        x:Name="InstructionContainer"
+                        x:Name="AgentsContainer"
                         HorizontalAlignment="Center"
                         Orientation="Horizontal"
                         Spacing="8">
                         <ic:SymbolIcon
                             VerticalAlignment="Center"
                             FontSize="12"
-                            IconVariant="{x:Bind ViewModel.IsInstructionVisible, Mode=OneWay, Converter={StaticResource IconVariantConverter}}"
-                            Symbol="ColorLine" />
+                            IconVariant="{x:Bind ViewModel.IsAgentsVisible, Mode=OneWay, Converter={StaticResource IconVariantConverter}}"
+                            Symbol="BotSparkle" />
                         <TextBlock
-                            x:Name="InstructionBlock"
+                            x:Name="AgentsBlock"
                             VerticalAlignment="Center"
                             Style="{StaticResource CaptionTextBlockStyle}"
-                            Text="{ext:Locale Name=Instruction}" />
+                            Text="{ext:Locale Name=Agents}" />
                     </StackPanel>
                 </Grid>
             </base:AppToggleCard>
@@ -53,7 +53,7 @@
                 HorizontalAlignment="Stretch"
                 AutomationProperties.Name="{ext:Locale Name=Options}"
                 Click="OnOptionsButtonClick"
-                IsChecked="{x:Bind ViewModel.IsSessionOptionsVisible, Mode=OneWay}"
+                IsChecked="{x:Bind ViewModel.IsGroupOptionsVisible, Mode=OneWay}"
                 Style="{StaticResource SelectorCardStyle}">
                 <Grid Margin="12,8">
                     <StackPanel
@@ -64,7 +64,7 @@
                         <ic:SymbolIcon
                             VerticalAlignment="Center"
                             FontSize="12"
-                            IconVariant="{x:Bind ViewModel.IsSessionOptionsVisible, Mode=OneWay, Converter={StaticResource IconVariantConverter}}"
+                            IconVariant="{x:Bind ViewModel.IsGroupOptionsVisible, Mode=OneWay, Converter={StaticResource IconVariantConverter}}"
                             Symbol="Options" />
                         <TextBlock
                             x:Name="OptionsBlock"
@@ -88,11 +88,11 @@
                         <winui:ControlSizeTrigger MinWidth="0" TargetElement="{x:Bind RootContainer}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="InstructionContainer.Spacing" Value="0" />
-                        <Setter Target="InstructionBlock.Visibility" Value="Collapsed" />
+                        <Setter Target="AgentsContainer.Spacing" Value="0" />
+                        <Setter Target="AgentsBlock.Visibility" Value="Collapsed" />
                         <Setter Target="OptionsContainer.Spacing" Value="0" />
                         <Setter Target="OptionsBlock.Visibility" Value="Collapsed" />
-                        <Setter Target="InstructionButton.(ToolTipService.ToolTip)" Value="{ext:Locale Name=Instruction}" />
+                        <Setter Target="AgentsButton.(ToolTipService.ToolTip)" Value="{ext:Locale Name=Agents}" />
                         <Setter Target="OptionsButton.(ToolTipService.ToolTip)" Value="{ext:Locale Name=Options}" />
                     </VisualState.Setters>
                 </VisualState>

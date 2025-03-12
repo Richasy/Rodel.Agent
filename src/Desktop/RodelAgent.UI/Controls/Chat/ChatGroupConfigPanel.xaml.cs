@@ -4,6 +4,7 @@ using Richasy.WinUIKernel.Share.Toolkits;
 using RodelAgent.Statics;
 using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels.Core;
+using RodelAgent.UI.ViewModels.Items;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 
@@ -152,7 +153,10 @@ public sealed partial class ChatGroupConfigPanel : ChatGroupConfigPanelBase
         => FlyoutBase.ShowAttachedFlyout(sender as FrameworkElement);
 
     private void OnRemoveAgentItemClick(object sender, RoutedEventArgs e)
-        => ViewModel.RemoveAgentCommand.Execute((sender as ChatAgentItemControl)!.ViewModel);
+    {
+        var data = (sender as MenuFlyoutItem)?.Tag as ChatAgentItemViewModel;
+        ViewModel.RemoveAgentCommand.Execute(data);
+    }
 }
 
 public abstract class ChatGroupConfigPanelBase : LayoutUserControlBase<ChatGroupConfigViewModel>

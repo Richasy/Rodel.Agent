@@ -35,7 +35,9 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         Messages.CollectionChanged += (_, _) => CheckChatEmpty();
         History.CollectionChanged += (_, _) => CheckHistoryEmpty();
         IsInstructionVisible = SettingsToolkit.ReadLocalSetting(SettingNames.ChatSessionIsInstructionVisible, true);
-        IsOptionsVisible = SettingsToolkit.ReadLocalSetting(SettingNames.ChatSessionIsOptionsVisible, false);
+        IsSessionOptionsVisible = SettingsToolkit.ReadLocalSetting(SettingNames.ChatSessionIsOptionsVisible, false);
+        IsGroupOptionsVisible = SettingsToolkit.ReadLocalSetting(SettingNames.GroupSessionIsOptionsVisible, false);
+        IsAgentsVisible = SettingsToolkit.ReadLocalSetting(SettingNames.GroupSessionIsAgentsVisible, true);
         this.Get<AppViewModel>().RequestReloadChatServices += OnRequestReloadChatServices;
     }
 
@@ -44,10 +46,13 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
 
     public void InjectFunc(Func<ChatOptions> func, Func<bool>? stream, Func<int>? maxRounds)
     {
-        _getCurrentOptions = func;
-        _getIsStreamOutput = stream;
-        _getMaxRounds = maxRounds;
+        _getSessionCurrentOptions = func;
+        _getSessionIsStreamOutput = stream;
+        _getSessionMaxRounds = maxRounds;
     }
+
+    public void InjectFunc(Func<int>? maxRounds)
+        => _getGroupMaxRounds = maxRounds;
 
     public async Task InitializeAsync(WebView2 view)
     {
@@ -171,9 +176,14 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         Title = group.Name;
         Agents.Clear();
         var pageVM = this.Get<ChatPageViewModel>();
-        foreach (var agent in pageVM.Agents.Where(p => CurrentGroup.Agents!.Contains(p.Data.Id)).Select(p => p.Data).ToList())
+        var agents = pageVM.Agents.Where(p => group.Data.Agents!.Contains(p.Data.Id)).Select(p => p.Data).ToList();
+        foreach (var id in group.Data.Agents!)
         {
-            Agents.Add(new(agent));
+            var agent = agents.Find(p => p.Id == id);
+            if (agent != null)
+            {
+                Agents.Add(new(agent));
+            }
         }
 
         SetCurrentConversation(null);
@@ -276,6 +286,37 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         }
     }
 
+    [RelayCommand]
+    private void TryReloadGroup(ChatGroup group)
+    {
+        if (IsGenerating)
+        {
+            return;
+        }
+
+        if (CurrentGroup?.Id == group.Id)
+        {
+            CurrentGroup = null;
+            CurrentGroup = group;
+            Agents.Clear();
+            var pageVM = this.Get<ChatPageViewModel>();
+            var agents = pageVM.Agents.Where(p => group.Agents!.Contains(p.Data.Id)).Select(p => p.Data).ToList();
+            foreach (var id in group.Agents!)
+            {
+                var agent = agents.Find(p => p.Id == id);
+                if (agent != null)
+                {
+                    Agents.Add(new(agent));
+                }
+            }
+
+            if (IsGroup)
+            {
+                Title = group.Name;
+            }
+        }
+    }
+
     private async void OnRequestReloadChatServices(object? sender, EventArgs e)
         => await ReloadAvailableServicesAsync();
 
@@ -329,13 +370,13 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
     {
         if (value)
         {
-            IsOptionsVisible = false;
+            IsSessionOptionsVisible = false;
         }
 
         SettingsToolkit.WriteLocalSetting(SettingNames.ChatSessionIsInstructionVisible, value);
     }
 
-    partial void OnIsOptionsVisibleChanged(bool value)
+    partial void OnIsSessionOptionsVisibleChanged(bool value)
     {
         if (value)
         {
@@ -343,5 +384,25 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         }
 
         SettingsToolkit.WriteLocalSetting(SettingNames.ChatSessionIsOptionsVisible, value);
+    }
+
+    partial void OnIsAgentsVisibleChanged(bool value)
+    {
+        if (value)
+        {
+            IsGroupOptionsVisible = false;
+        }
+
+        SettingsToolkit.WriteLocalSetting(SettingNames.GroupSessionIsAgentsVisible, value);
+    }
+
+    partial void OnIsGroupOptionsVisibleChanged(bool value)
+    {
+        if (value)
+        {
+            IsAgentsVisible = false;
+        }
+
+        SettingsToolkit.WriteLocalSetting(SettingNames.GroupSessionIsOptionsVisible, value);
     }
 }

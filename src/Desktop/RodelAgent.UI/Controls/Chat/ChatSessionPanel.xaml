@@ -48,17 +48,25 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="{x:Bind ViewModel.HistoryHeight, Mode=OneWay, Converter={StaticResource GridLengthConverter}}" />
             </Grid.RowDefinitions>
-            <local:ChatSessionSideHeader />
-            <local:ChatInstructionPanel
+            <local:ChatSessionSideHeader Visibility="{x:Bind ViewModel.IsGroup, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
+            <local:GroupSessionSideHeader Visibility="{x:Bind ViewModel.IsGroup, Mode=OneWay}" />
+            <Grid
                 Grid.Row="2"
                 Margin="0,0,0,-6"
-                Visibility="{x:Bind ViewModel.IsInstructionVisible, Mode=OneWay}" />
-            <local:ChatOptionsPanel
-                x:Name="OptionsPanel"
+                Visibility="{x:Bind ViewModel.IsGroup, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+                <local:ChatInstructionPanel Visibility="{x:Bind ViewModel.IsInstructionVisible, Mode=OneWay}" />
+                <local:ChatOptionsPanel
+                    x:Name="SessionOptionsPanel"
+                    Provider="{x:Bind ViewModel.CurrentProvider, Mode=OneWay}"
+                    Visibility="{x:Bind ViewModel.IsSessionOptionsVisible, Mode=OneWay}" />
+            </Grid>
+            <Grid
                 Grid.Row="2"
                 Margin="0,0,0,-6"
-                Provider="{x:Bind ViewModel.CurrentProvider, Mode=OneWay}"
-                Visibility="{x:Bind ViewModel.IsOptionsVisible, Mode=OneWay}" />
+                Visibility="{x:Bind ViewModel.IsGroup, Mode=OneWay}">
+                <local:GroupAgentsPanel Visibility="{x:Bind ViewModel.IsAgentsVisible, Mode=OneWay}" />
+                <local:GroupOptionsPanel x:Name="GroupOptionsPanel" Visibility="{x:Bind ViewModel.IsGroupOptionsVisible, Mode=OneWay}" />
+            </Grid>
             <local:ChatHistoryPanel Grid.Row="4" Margin="0,-6,0,0" />
             <Border Grid.Row="1" Style="{StaticResource SplitLineStyle}" />
             <!--  分栏大小控制器  -->

@@ -3,6 +3,7 @@
     x:Class="RodelAgent.UI.Controls.Chat.ChatGroupConfigPanel"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:base="using:Richasy.WinUIKernel.Share.Base"
     xmlns:community="using:CommunityToolkit.WinUI.Controls"
     xmlns:controls="using:RodelAgent.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -254,20 +255,44 @@
                         Visibility="{x:Bind ViewModel.IsNoAgentSelected, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="items:ChatAgentItemViewModel">
-                                <local:ChatAgentItemControl
+                                <Grid
                                     Margin="4,2"
-                                    DataContext="{x:Bind}"
-                                    ViewModel="{x:Bind}">
-                                    <local:ChatAgentItemControl.ContextFlyout>
+                                    Padding="12,8"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
+                                    BorderThickness="1"
+                                    ColumnSpacing="12"
+                                    CornerRadius="{StaticResource ControlCornerRadius}"
+                                    DataContext="{x:Bind}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <local:ChatLogo
+                                        Width="28"
+                                        Height="28"
+                                        VerticalAlignment="Center"
+                                        CornerRadius="14"
+                                        Id="{x:Bind Data.Id, Mode=OneWay}" />
+                                    <base:TrimTextBlock
+                                        Grid.Column="1"
+                                        VerticalAlignment="Center"
+                                        MaxLines="1"
+                                        Text="{x:Bind Name, Mode=OneWay}" />
+                                    <Grid.ContextFlyout>
                                         <MenuFlyout>
-                                            <MenuFlyoutItem Click="OnRemoveAgentItemClick" Text="{ext:Locale Name=RemoveAgent}">
+                                            <MenuFlyoutItem
+                                                Click="OnRemoveAgentItemClick"
+                                                Tag="{x:Bind}"
+                                                Text="{ext:Locale Name=RemoveAgent}">
                                                 <MenuFlyoutItem.Icon>
                                                     <ic:SymbolIcon Foreground="{ThemeResource SystemFillColorCriticalBrush}" Symbol="Delete" />
                                                 </MenuFlyoutItem.Icon>
                                             </MenuFlyoutItem>
                                         </MenuFlyout>
-                                    </local:ChatAgentItemControl.ContextFlyout>
-                                </local:ChatAgentItemControl>
+                                    </Grid.ContextFlyout>
+                                </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>

@@ -22,9 +22,11 @@ public sealed partial class ChatSessionViewModel
     private CancellationTokenSource? _cancellationTokenSource;
     private WebView2? _webView;
     private ChatConversation? _currentConversation;
-    private Func<ChatOptions?>? _getCurrentOptions;
-    private Func<bool>? _getIsStreamOutput;
-    private Func<int>? _getMaxRounds;
+    private Func<ChatOptions?>? _getSessionCurrentOptions;
+    private Func<bool>? _getSessionIsStreamOutput;
+    private Func<int>? _getSessionMaxRounds;
+    private Func<int>? _getGroupMaxRounds;
+    private int _currentAgentIndex;
 
     public event EventHandler RequestFocusInput;
 
@@ -105,7 +107,13 @@ public sealed partial class ChatSessionViewModel
     public partial bool IsInstructionVisible { get; set; }
 
     [ObservableProperty]
-    public partial bool IsOptionsVisible { get; set; }
+    public partial bool IsSessionOptionsVisible { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsGroupOptionsVisible { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsAgentsVisible { get; set; }
 
     [ObservableProperty]
     public partial string? SystemInstruction { get; set; }

@@ -21,11 +21,19 @@
                 FontSize="12"
                 Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                 MaxLines="2"
-                Text="{x:Bind Title, Mode=OneWay}" />
+                Text="{x:Bind Title, Mode=OneWay}">
+                <ToolTipService.ToolTip>
+                    <ToolTip Content="{x:Bind Tip, Mode=OneWay}" IsEnabled="{x:Bind Tip, Converter={StaticResource ObjectToBoolConverter}, Mode=OneWay}" />
+                </ToolTipService.ToolTip>
+            </base:TrimTextBlock>
             <ContentPresenter
                 Grid.Column="1"
                 VerticalAlignment="Center"
-                Content="{x:Bind Element, Mode=OneWay}" />
+                Content="{x:Bind Element, Mode=OneWay}">
+                <ToolTipService.ToolTip>
+                    <ToolTip Content="{x:Bind Tip, Mode=OneWay}" IsEnabled="{x:Bind Tip, Converter={StaticResource ObjectToBoolConverter}, Mode=OneWay}" />
+                </ToolTipService.ToolTip>
+            </ContentPresenter>
         </Grid>
         <Border
             VerticalAlignment="Bottom"

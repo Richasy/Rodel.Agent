@@ -46,7 +46,7 @@ public sealed partial class ChatPageViewModel : LayoutPageViewModelBase
 
         if (!_isInitialized)
         {
-            ReloadAvailableAgentsCommand.Execute(default);
+            await ReloadAvailableAgentsCommand.ExecuteAsync(default);
             ReloadAvailableGroupsCommand.Execute(default);
         }
 

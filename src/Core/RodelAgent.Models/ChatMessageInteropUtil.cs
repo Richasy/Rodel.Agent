@@ -17,7 +17,7 @@ public static class ChatMessageInteropUtil
     {
         var role = message.Role.ToString().ToLowerInvariant();
         var text = message.Text ?? string.Empty;
-        var author = message.AuthorName ?? string.Empty;
+        var author = message.AdditionalProperties!.GetValueOrDefault("agentId", string.Empty)!.ToString() ?? string.Empty;
         var time = Convert.ToInt64(message.AdditionalProperties!.GetValueOrDefault("time", DateTimeOffset.Now.ToUnixTimeSeconds()));
         var id = message.AdditionalProperties!.GetValueOrDefault("id", Guid.NewGuid().ToString("N"))!.ToString();
         return new ChatInteropMessage
@@ -33,11 +33,11 @@ public static class ChatMessageInteropUtil
     /// <summary>
     /// 转换为对话消息对象.
     /// </summary>
-    public static ChatMessage ToChatMessage(this ChatInteropMessage message)
+    public static ChatMessage ToChatMessage(this ChatInteropMessage message, Func<string, string>? getAuthorName = null)
     {
         var role = new ChatRole(message.Role);
         var text = message.Message;
-        var author = message.AgentId;
+        var author = string.IsNullOrEmpty(message.AgentId) ? null : getAuthorName!(message.AgentId);
         var time = DateTimeOffset.FromUnixTimeSeconds(message.Time);
         var id = message.Id;
         return new ChatMessage
@@ -47,6 +47,7 @@ public static class ChatMessageInteropUtil
             Role = role,
             AdditionalProperties = new()
             {
+                ["agentId"] = message.AgentId,
                 ["time"] = time.ToUnixTimeSeconds(),
                 ["id"] = id,
             },

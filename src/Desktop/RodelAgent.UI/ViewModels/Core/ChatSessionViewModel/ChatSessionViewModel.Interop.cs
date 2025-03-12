@@ -23,8 +23,20 @@ public sealed partial class ChatSessionViewModel
             return;
         }
 
-        // TODO: 添加助理名称（如果存在）.
         var interopMessage = new ChatWebInteropMessage(message.ToInteropMessage());
+        if (IsAgent && message.Role == ChatRole.Assistant)
+        {
+            interopMessage.Author = CurrentAgent?.Name ?? string.Empty;
+        }
+        else if (IsGroup)
+        {
+            var agent = Agents.FirstOrDefault(p => p.Data.Id == message.AuthorName);
+            if (agent != null)
+            {
+                interopMessage.Author = agent.Data.Name;
+            }
+        }
+
         var messageJson = JsonSerializer.Serialize(interopMessage, JsonGenContext.Default.ChatWebInteropMessage);
         await _webView!.ExecuteScriptAsync($"window.addMessage({messageJson})");
     }
@@ -40,8 +52,21 @@ public sealed partial class ChatSessionViewModel
         var interopHistory = new List<ChatWebInteropMessage>();
         foreach (var item in history)
         {
-            // TODO: 添加助理名称（如果存在）.
-            interopHistory.Add(new ChatWebInteropMessage(item));
+            var msg = new ChatWebInteropMessage(item);
+            if (IsAgent && msg.Role == "assistant")
+            {
+                msg.Author = CurrentAgent?.Name ?? string.Empty;
+            }
+            else if (IsGroup)
+            {
+                var agent = Agents.FirstOrDefault(p => p.Data.Id == msg.AgentId);
+                if (agent != null)
+                {
+                    msg.Author = agent.Data.Name;
+                }
+            }
+
+            interopHistory.Add(msg);
         }
 
         var messageJson = JsonSerializer.Serialize(interopHistory, JsonGenContext.Default.ListChatWebInteropMessage);

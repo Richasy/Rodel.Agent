@@ -91,9 +91,9 @@ public sealed partial class ChatSessionViewModel
             return;
         }
 
-        var options = _getCurrentOptions?.Invoke();
-        var isStreamOutput = _getIsStreamOutput?.Invoke() ?? true;
-        var maxRounds = _getMaxRounds?.Invoke() ?? 0;
+        var options = _getSessionCurrentOptions?.Invoke() ?? default;
+        var isStreamOutput = _getSessionIsStreamOutput?.Invoke() ?? true;
+        var maxRounds = IsGroup ? _getGroupMaxRounds?.Invoke() ?? 1 : _getSessionMaxRounds?.Invoke() ?? 0;
 
         var conversation = new ChatConversation
         {
@@ -101,12 +101,21 @@ public sealed partial class ChatSessionViewModel
             MaxRounds = maxRounds,
             History = [],
             Id = Guid.NewGuid().ToString("N"),
-            Provider = CurrentProvider!.Value,
-            Model = SelectedModel?.Id,
-            SystemInstruction = SystemInstruction,
-            Options = options,
-            AgentId = IsAgent ? CurrentAgent?.Id : null,
         };
+
+        if (IsGroup)
+        {
+            conversation.GroupId = CurrentGroup!.Id;
+            conversation.Agents = CurrentGroup.Agents!;
+        }
+        else
+        {
+            conversation.Provider = CurrentProvider!.Value;
+            conversation.Model = SelectedModel?.Id;
+            conversation.SystemInstruction = SystemInstruction;
+            conversation.Options = options;
+            conversation.AgentId = IsAgent ? CurrentAgent?.Id : null;
+        }
 
         History.Insert(0, new ChatHistoryItemViewModel(conversation, RemoveHistoryAsync));
         SetCurrentConversation(conversation);
@@ -117,17 +126,24 @@ public sealed partial class ChatSessionViewModel
         TryCreateConversation();
         if (_currentConversation != null)
         {
-            _currentConversation.Provider = CurrentProvider!;
-            _currentConversation.Model = SelectedModel?.Id;
-            _currentConversation.History = [.. Messages];
-            _currentConversation.UseStreamOutput = _getIsStreamOutput?.Invoke() ?? true;
-            _currentConversation.MaxRounds = _getMaxRounds?.Invoke() ?? 0;
-            var uiOptions = _getCurrentOptions?.Invoke();
-            if (uiOptions != null)
+            if (IsGroup)
             {
-                _currentConversation.Options = uiOptions;
+                _currentConversation.MaxRounds = _getGroupMaxRounds?.Invoke() ?? 1;
+            }
+            else
+            {
+                _currentConversation.Provider = CurrentProvider!;
+                _currentConversation.Model = SelectedModel?.Id;
+                _currentConversation.UseStreamOutput = _getSessionIsStreamOutput?.Invoke() ?? true;
+                _currentConversation.MaxRounds = _getSessionMaxRounds?.Invoke() ?? 0;
+                var uiOptions = _getSessionCurrentOptions?.Invoke();
+                if (uiOptions != null)
+                {
+                    _currentConversation.Options = uiOptions;
+                }
             }
 
+            _currentConversation.History = [.. Messages];
             await _storageService.AddOrUpdateChatConversationAsync(_currentConversation);
             var item = History.FirstOrDefault(p => p.Id == _currentConversation.Id);
             item?.Update();
@@ -184,8 +200,13 @@ public sealed partial class ChatSessionViewModel
                 }
 
                 Messages.Clear();
-                SystemInstruction = _currentConversation.SystemInstruction;
-                CurrentOptions = _currentConversation.Options;
+
+                if (!IsGroup)
+                {
+                    SystemInstruction = _currentConversation.SystemInstruction;
+                    CurrentOptions = _currentConversation.Options;
+                }
+
                 Title = _currentConversation.Title;
                 foreach (var message in _currentConversation!.History ?? [])
                 {
@@ -205,7 +226,9 @@ public sealed partial class ChatSessionViewModel
                 : string.Empty;
             Title = IsAgent && CurrentAgent != null
                 ? CurrentAgent.Name
-                : string.Empty;
+                : IsGroup && CurrentGroup != null
+                    ? CurrentGroup.Name
+                    : string.Empty;
             CurrentOptions = IsAgent && CurrentAgent != null
                 ? CurrentAgent.Options
                 : null;

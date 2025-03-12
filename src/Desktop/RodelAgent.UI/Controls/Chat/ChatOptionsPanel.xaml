@@ -13,7 +13,7 @@
 
     <ScrollViewer Style="{StaticResource PageScrollViewerStyle}">
         <StackPanel Padding="20,0,20,8">
-            <controls:CombineRow Title="{ext:Locale Name=StreamOutput}" ToolTipService.ToolTip="{ext:Locale Name=StreamOutputDescription}">
+            <controls:CombineRow Title="{ext:Locale Name=StreamOutput}" Tip="{ext:Locale Name=StreamOutputDescription}">
                 <controls:CombineRow.Element>
                     <ToggleSwitch
                         x:Name="StreamOutputSwitch"
@@ -22,7 +22,7 @@
                         Margin="0,-4" />
                 </controls:CombineRow.Element>
             </controls:CombineRow>
-            <controls:CombineRow Title="{ext:Locale Name=MaxRounds}" ToolTipService.ToolTip="{ext:Locale Name=MaxRoundsDescription}">
+            <controls:CombineRow Title="{ext:Locale Name=MaxRounds}" Tip="{ext:Locale Name=MaxRoundsDescription}">
                 <controls:CombineRow.Element>
                     <Slider
                         x:Name="MaxRoundsSlider"
@@ -35,7 +35,7 @@
             <controls:CombineRow
                 x:Name="FrequencyPenaltyContainer"
                 Title="{ext:Locale Name=FrequencyPenalty}"
-                ToolTipService.ToolTip="{ext:Locale Name=FrequencyPenaltyDescription}">
+                Tip="{ext:Locale Name=FrequencyPenaltyDescription}">
                 <controls:CombineRow.Element>
                     <Slider
                         x:Name="FrequencyPenaltySlider"
@@ -49,7 +49,7 @@
             <controls:CombineRow
                 x:Name="PresencePenaltyContainer"
                 Title="{ext:Locale Name=PresencePenalty}"
-                ToolTipService.ToolTip="{ext:Locale Name=PresencePenaltyDescription}">
+                Tip="{ext:Locale Name=PresencePenaltyDescription}">
                 <controls:CombineRow.Element>
                     <Slider
                         x:Name="PresencePenaltySlider"
@@ -63,7 +63,7 @@
             <controls:CombineRow
                 x:Name="TemperatureContainer"
                 Title="{ext:Locale Name=Temperature}"
-                ToolTipService.ToolTip="{ext:Locale Name=TemperatureDescription}">
+                Tip="{ext:Locale Name=TemperatureDescription}">
                 <controls:CombineRow.Element>
                     <Slider
                         x:Name="TemperatureSlider"
@@ -77,7 +77,7 @@
             <controls:CombineRow
                 x:Name="TopPContainer"
                 Title="{ext:Locale Name=TopP}"
-                ToolTipService.ToolTip="{ext:Locale Name=TopPDescription}">
+                Tip="{ext:Locale Name=TopPDescription}">
                 <controls:CombineRow.Element>
                     <Slider
                         x:Name="TopPSlider"
@@ -91,7 +91,7 @@
             <controls:CombineRow
                 x:Name="TopKContainer"
                 Title="{ext:Locale Name=TopK}"
-                ToolTipService.ToolTip="{ext:Locale Name=TopKDescription}">
+                Tip="{ext:Locale Name=TopKDescription}">
                 <controls:CombineRow.Element>
                     <Slider
                         x:Name="TopKSlider"
@@ -105,7 +105,7 @@
             <controls:CombineRow
                 x:Name="MaxOutputTokenContainer"
                 Title="{ext:Locale Name=MaxOutputToken}"
-                ToolTipService.ToolTip="{ext:Locale Name=MaxOutputTokenDescription}">
+                Tip="{ext:Locale Name=MaxOutputTokenDescription}">
                 <controls:CombineRow.Element>
                     <NumberBox
                         x:Name="MaxOutputTokenBox"
@@ -118,7 +118,7 @@
             <controls:CombineRow
                 x:Name="ResponseFormatContainer"
                 Title="{ext:Locale Name=ResponseFormat}"
-                ToolTipService.ToolTip="{ext:Locale Name=ResponseFormatDescription}">
+                Tip="{ext:Locale Name=ResponseFormatDescription}">
                 <controls:CombineRow.Element>
                     <ComboBox
                         x:Name="ResponseFormatComboBox"

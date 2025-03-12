@@ -10,5 +10,5 @@ public sealed partial class ChatSessionSideHeader : ChatSessionControlBase
         => ViewModel.IsInstructionVisible = true;
 
     private void OnOptionsButtonClick(object sender, RoutedEventArgs e)
-        => ViewModel.IsOptionsVisible = true;
+        => ViewModel.IsSessionOptionsVisible = true;
 }

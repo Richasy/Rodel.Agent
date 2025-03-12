@@ -35,6 +35,14 @@
                 CornerRadius="18"
                 Id="{x:Bind ViewModel.CurrentAgent.Id, Mode=OneWay}"
                 Visibility="{x:Bind ViewModel.IsAgent, Mode=OneWay}" />
+            <local:ChatLogo
+                Width="36"
+                Height="36"
+                VerticalAlignment="Center"
+                CornerRadius="18"
+                Id="{x:Bind ViewModel.CurrentGroup.Id, Mode=OneWay}"
+                IsGroup="True"
+                Visibility="{x:Bind ViewModel.IsGroup, Mode=OneWay}" />
         </Grid>
         <Grid Grid.Column="1" VerticalAlignment="Center">
             <Grid.RowDefinitions>

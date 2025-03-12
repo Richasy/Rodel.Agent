@@ -53,6 +53,9 @@
     <None Remove="Controls\Chat\ChatSideBody.xaml" />
     <None Remove="Controls\Chat\ChatSideHeader.xaml" />
     <None Remove="Controls\Chat\ChatSlimMessageItemControl.xaml" />
+    <None Remove="Controls\Chat\GroupAgentsPanel.xaml" />
+    <None Remove="Controls\Chat\GroupOptionsPanel.xaml" />
+    <None Remove="Controls\Chat\GroupSessionSideHeader.xaml" />
     <None Remove="Controls\CombineRow.xaml" />
     <None Remove="Controls\Draw\DrawImage.xaml" />
     <None Remove="Controls\Draw\DrawMainBody.xaml" />
@@ -363,6 +366,21 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Web\chat-render\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Chat\GroupOptionsPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Chat\GroupSessionSideHeader.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Chat\GroupAgentsPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\Chat\ChatGroupConfigDialog.xaml">

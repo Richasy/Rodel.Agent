@@ -66,7 +66,9 @@ public sealed partial class ChatGroupConfigViewModel : ViewModelBase
         var pageVM = this.Get<ChatPageViewModel>();
         await _storageService.AddOrUpdateChatGroupAsync(Group!);
         pageVM.ReloadAvailableGroupsCommand.Execute(default);
-        this.Get<ChatSessionViewModel>().ForceReloadLogoCommand.Execute(default);
+        var sessionVM = this.Get<ChatSessionViewModel>();
+        sessionVM.ForceReloadLogoCommand.Execute(default);
+        sessionVM.TryReloadGroupCommand.Execute(Group!);
         CloseRequested?.Invoke(this, EventArgs.Empty);
     }
 

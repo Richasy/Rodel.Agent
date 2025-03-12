@@ -13,6 +13,9 @@ public sealed partial class CombineRow : LayoutUserControlBase
     public static readonly DependencyProperty BottomBorderVisibilityProperty =
         DependencyProperty.Register(nameof(BottomBorderVisibility), typeof(Visibility), typeof(CombineRow), new PropertyMetadata(Visibility.Visible));
 
+    public static readonly DependencyProperty TipProperty =
+        DependencyProperty.Register(nameof(Tip), typeof(string), typeof(CombineRow), new PropertyMetadata(default));
+
     /// <summary>
     /// Initializes a new instance of the <see cref="CombineRow"/> class.
     /// </summary>
@@ -34,5 +37,11 @@ public sealed partial class CombineRow : LayoutUserControlBase
     {
         get => (Visibility)GetValue(BottomBorderVisibilityProperty);
         set => SetValue(BottomBorderVisibilityProperty, value);
+    }
+
+    public string Tip
+    {
+        get => (string)GetValue(TipProperty);
+        set => SetValue(TipProperty, value);
     }
 }

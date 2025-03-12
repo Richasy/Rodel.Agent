@@ -16,14 +16,25 @@ public sealed partial class ChatSessionPanel : ChatSessionControlBase
     protected override void OnControlLoaded()
     {
         ViewModel.RequestReloadOptionsUI += OnRequestReloadOptionsUI;
-        ViewModel.InjectFunc(OptionsPanel.GetOptions, OptionsPanel.GetStreamOutput, OptionsPanel.GetMaxRounds);
+        ViewModel.InjectFunc(SessionOptionsPanel.GetOptions, SessionOptionsPanel.GetStreamOutput, SessionOptionsPanel.GetMaxRounds);
+        ViewModel.InjectFunc(GroupOptionsPanel.GetMaxRounds);
     }
 
     private void OnRequestReloadOptionsUI(object? sender, EventArgs e)
-        => OptionsPanel.ReloadOptionsUI(
-            ViewModel.GetCurrentConversation()?.UseStreamOutput ?? true,
-            ViewModel.GetCurrentConversation()?.MaxRounds ?? 0,
-            ViewModel.CurrentOptions);
+    {
+        if (ViewModel.IsGroup)
+        {
+            var maxRounds = ViewModel.GetCurrentConversation()?.MaxRounds;
+            maxRounds ??= ViewModel.CurrentGroup!.MaxRounds;
+            GroupOptionsPanel.ReloadOptionsUI(maxRounds!.Value);
+            return;
+        }
+
+        SessionOptionsPanel.ReloadOptionsUI(
+                ViewModel.GetCurrentConversation()?.UseStreamOutput ?? true,
+                ViewModel.GetCurrentConversation()?.MaxRounds ?? 0,
+                ViewModel.CurrentOptions);
+    }
 
     protected override void OnControlUnloaded()
         => ViewModel.RequestReloadOptionsUI -= OnRequestReloadOptionsUI;
