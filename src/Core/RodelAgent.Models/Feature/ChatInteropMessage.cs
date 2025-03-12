@@ -86,4 +86,16 @@ public sealed class ChatWebInteropMessage : ChatInteropMessage
     /// </summary>
     [JsonPropertyName("author")]
     public string? Author { get; set; }
+
+    /// <summary>
+    /// 表情.
+    /// </summary>
+    [JsonPropertyName("emoji")]
+    public string? Emoji { get; set; }
+
+    /// <summary>
+    /// 头像.
+    /// </summary>
+    [JsonPropertyName("avatar")]
+    public string? Avatar { get; set; }
 }

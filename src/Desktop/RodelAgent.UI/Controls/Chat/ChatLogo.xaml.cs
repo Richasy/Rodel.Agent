@@ -68,7 +68,7 @@ public sealed partial class ChatLogo : LayoutUserControlBase
 
         var emojiText = string.Empty;
         var storageService = this.Get<IStorageService>();
-        if(IsGroup)
+        if (IsGroup)
         {
             var group = await storageService.GetChatGroupByIdAsync(Id);
             emojiText = group?.Emoji;
@@ -84,7 +84,7 @@ public sealed partial class ChatLogo : LayoutUserControlBase
             AgentAvatar.Visibility = Visibility.Collapsed;
             DefaultIcon.Visibility = Visibility.Collapsed;
             EmojiAvatar.Visibility = Visibility.Visible;
-            var emoji = EmojiStatics.GetEmojis().FirstOrDefault(x => x.Unicode == emojiText);
+            var emoji = EmojiStatics.GetEmojis().Find(x => x.Unicode == emojiText);
             EmojiAvatar.Text = emoji?.ToEmoji();
         }
         else

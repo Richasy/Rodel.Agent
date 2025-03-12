@@ -5,6 +5,7 @@ using Microsoft.Web.WebView2.Core;
 using Richasy.WinUIKernel.Share.Toolkits;
 using RodelAgent.Models;
 using RodelAgent.Models.Feature;
+using RodelAgent.Statics;
 using RodelAgent.UI.Toolkits;
 using System.Text.Json;
 using Windows.ApplicationModel.DataTransfer;
@@ -26,14 +27,14 @@ public sealed partial class ChatSessionViewModel
         var interopMessage = new ChatWebInteropMessage(message.ToInteropMessage());
         if (IsAgent && message.Role == ChatRole.Assistant)
         {
-            interopMessage.Author = CurrentAgent?.Name ?? string.Empty;
+            ApplyAgentMessage(CurrentAgent!, interopMessage);
         }
         else if (IsGroup)
         {
             var agent = Agents.FirstOrDefault(p => p.Data.Id == message.AuthorName);
             if (agent != null)
             {
-                interopMessage.Author = agent.Data.Name;
+                ApplyAgentMessage(agent.Data, interopMessage);
             }
         }
 
@@ -55,14 +56,14 @@ public sealed partial class ChatSessionViewModel
             var msg = new ChatWebInteropMessage(item);
             if (IsAgent && msg.Role == "assistant")
             {
-                msg.Author = CurrentAgent?.Name ?? string.Empty;
+                ApplyAgentMessage(CurrentAgent!, msg);
             }
             else if (IsGroup)
             {
                 var agent = Agents.FirstOrDefault(p => p.Data.Id == msg.AgentId);
                 if (agent != null)
                 {
-                    msg.Author = agent.Data.Name;
+                   ApplyAgentMessage(agent.Data, msg);
                 }
             }
 
@@ -188,6 +189,24 @@ public sealed partial class ChatSessionViewModel
 
         _currentConversation = default;
         RequestFocusInput?.Invoke(this, EventArgs.Empty);
+    }
+
+    private static void ApplyAgentMessage(ChatAgent agent, ChatWebInteropMessage interopMessage)
+    {
+        interopMessage.Author = agent.Name ?? string.Empty;
+        if (string.IsNullOrEmpty(agent.Emoji))
+        {
+            var avatarPath = AppToolkit.GetPresetAvatarPath(agent.Id);
+            if (File.Exists(avatarPath))
+            {
+                interopMessage.Avatar = $"http://work.example/Avatars/{agent.Id}.png";
+            }
+        }
+        else
+        {
+            var emoji = EmojiStatics.GetEmojis().Find(x => x.Unicode == agent.Emoji);
+            interopMessage.Emoji = emoji?.ToEmoji();
+        }
     }
 
     private async Task<bool> ClearMessageInternalAsync()

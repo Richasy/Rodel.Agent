@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Bubble } from "@ant-design/x";
-import { Button, Space, Input, Flex, Tooltip } from "antd";
+import { Button, Space, Input, Flex, Tooltip, Avatar } from "antd";
 import {
   CopyOutlined,
   EditOutlined,
@@ -95,6 +95,20 @@ const MessageItem = ({ item, sendMessage, renderMarkdown, removeMessage }) => {
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
           content={item.message}
+          avatar={
+            item.emoji ? (
+              <Avatar
+                style={{
+                  backgroundColor: "transparent",
+                  fontFamily: "Segoe UI Emoji",
+                }}
+              >
+                {item.emoji}
+              </Avatar>
+            ) : item.avatar ? (
+              <Avatar src={<img src={item.avatar} alt={item.author} />} />
+            ) : null
+          }
           header={
             <div
               className={
@@ -111,7 +125,9 @@ const MessageItem = ({ item, sendMessage, renderMarkdown, removeMessage }) => {
           messageRender={renderMarkdown}
           footer={
             <Space size={8} className={isHovered ? "c-visible" : "c-hidden"}>
-              <Tooltip title={window.resources?.copy ? window.resources.copy : "Copy"}>
+              <Tooltip
+                title={window.resources?.copy ? window.resources.copy : "Copy"}
+              >
                 <Button
                   color="default"
                   variant="text"
@@ -126,7 +142,9 @@ const MessageItem = ({ item, sendMessage, renderMarkdown, removeMessage }) => {
                   icon={<CopyOutlined />}
                 />
               </Tooltip>
-              <Tooltip title={window.resources?.edit ? window.resources.edit : "Edit"}>
+              <Tooltip
+                title={window.resources?.edit ? window.resources.edit : "Edit"}
+              >
                 <Button
                   color="default"
                   variant="text"
@@ -135,7 +153,11 @@ const MessageItem = ({ item, sendMessage, renderMarkdown, removeMessage }) => {
                   icon={<EditOutlined />}
                 />
               </Tooltip>
-              <Tooltip title={window.resources?.delete ? window.resources.delete : "Delete"}>
+              <Tooltip
+                title={
+                  window.resources?.delete ? window.resources.delete : "Delete"
+                }
+              >
                 <Button
                   color="danger"
                   variant="text"

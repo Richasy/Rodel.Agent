@@ -88,7 +88,9 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
             _webView.CoreWebView2.Settings.IsPinchZoomEnabled = true;
 
             var renderPath = Path.Combine(Package.Current.InstalledPath, "Web", "chat-render");
+            var workPath = SettingsToolkit.ReadLocalSetting(SettingNames.WorkingDirectory, string.Empty);
             _webView.CoreWebView2.SetVirtualHostNameToFolderMapping("chat.example", renderPath, Microsoft.Web.WebView2.Core.CoreWebView2HostResourceAccessKind.Allow);
+            _webView.CoreWebView2.SetVirtualHostNameToFolderMapping("work.example", workPath, Microsoft.Web.WebView2.Core.CoreWebView2HostResourceAccessKind.Allow);
             _webView.CoreWebView2.Navigate("http://chat.example/index.html");
         }
         catch (Exception ex)
