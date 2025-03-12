@@ -250,6 +250,11 @@ function Render() {
       setTemporaryLoading(false); // 清除临时加载状态
       window.delayToBottom();
     };
+    window.deleteMessage = (id) => {
+      setHistory((prevHistory) =>
+        prevHistory.filter((item, idx) => item.id != id)
+      );
+    }
     // 设置临时输出（用于 SSE 流式返回）
     window.setOutput = (output) => {
       setTemporaryLoading(false);
@@ -268,10 +273,9 @@ function Render() {
     window.setResources = (resources) => {
       window.resources = resources;
     };
-
     // 清空历史消息
     window.clearMessages = () => {
-      setHistory([]);
+      window.location.reload();
     };
 
     sendMessage("loaded", true);

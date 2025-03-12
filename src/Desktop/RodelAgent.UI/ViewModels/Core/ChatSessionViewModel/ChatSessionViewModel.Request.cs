@@ -39,9 +39,9 @@ public sealed partial class ChatSessionViewModel
     }
 
     [RelayCommand]
-    private async Task StartGenerateAsync()
+    private async Task StartGenerateAsync(bool force = false)
     {
-        if (string.IsNullOrEmpty(UserInput))
+        if (string.IsNullOrEmpty(UserInput) && !force)
         {
             return;
         }
@@ -79,8 +79,19 @@ public sealed partial class ChatSessionViewModel
     [RelayCommand]
     private async Task RegenerateAsync()
     {
-        // TODO: Implement regenerate logic
-        await StartGenerateAsync();
+        var lastMessage = Messages.LastOrDefault();
+        if (lastMessage is null)
+        {
+            return;
+        }
+
+        if (lastMessage.Role == "assistant")
+        {
+            Messages.Remove(lastMessage);
+            await DeleteInteropMessageAsync(lastMessage.Id);
+            await SaveCurrentMessagesAsync();
+            await StartGenerateAsync(true);
+        }
     }
 
     [RelayCommand]
@@ -103,12 +114,29 @@ public sealed partial class ChatSessionViewModel
 
         // 检查对话轮次.
         var messages = Messages.ToList();
+        
+        if (!string.IsNullOrEmpty(UserInput))
+        {
+            var chatMessage = new ChatMessage(ChatRole.User, UserInput);
+            AttachChatMessageProperties(chatMessage);
+            Messages.Add(chatMessage.ToInteropMessage());
+            messages.Add(chatMessage.ToInteropMessage());
+            AddInteropMessageCommand.Execute(chatMessage);
+            await SaveCurrentMessagesAsync();
+        }
+
         if (maxRounds > 0)
         {
             // 取 user 和 assistant 的消息列表.
             var userMessages = Messages.Where(p => p.Role == "user").ToList();
             var assistantMessages = Messages.Where(p => p.Role == "assistant").ToList();
-            // 各保留最后 maxRounds - 1 个消息.
+            // 忽略最后一条user消息，然后取最后maxRounds-1条消息.
+            var lastUserMessage = userMessages.LastOrDefault();
+            if (userMessages.Count > 0)
+            {
+                userMessages.RemoveAt(userMessages.Count - 1);
+            }
+
             if (userMessages.Count > maxRounds - 1)
             {
                 userMessages.RemoveRange(0, userMessages.Count - maxRounds + 1);
@@ -120,15 +148,14 @@ public sealed partial class ChatSessionViewModel
             }
 
             // 重新按照时间顺序合并成一个消息列表.
+            if (lastUserMessage != null)
+            {
+                userMessages.Add(lastUserMessage);
+            }
+
             messages = userMessages.Concat(assistantMessages).OrderBy(p => p.Time).ToList();
         }
 
-        var chatMessage = new ChatMessage(ChatRole.User, UserInput);
-        AttachChatMessageProperties(chatMessage);
-        Messages.Add(chatMessage.ToInteropMessage());
-        messages.Add(chatMessage.ToInteropMessage());
-        AddInteropMessageCommand.Execute(chatMessage);
-        await SaveCurrentMessagesAsync();
         SetTempLoadingCommand.Execute(true);
         UserInput = string.Empty;
         var responseMessage = string.Empty;

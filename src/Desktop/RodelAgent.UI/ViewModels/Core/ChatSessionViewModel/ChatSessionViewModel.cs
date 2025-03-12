@@ -32,7 +32,11 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         _logger = logger;
         IsEnterSend = SettingsToolkit.ReadLocalSetting(SettingNames.ChatServicePageIsEnterSend, true);
         CheckSectionType();
-        Messages.CollectionChanged += (_, _) => CheckChatEmpty();
+        Messages.CollectionChanged += (_, _) =>
+        {
+            CheckRegenerate();
+            CheckChatEmpty();
+        };
         History.CollectionChanged += (_, _) => CheckHistoryEmpty();
         IsInstructionVisible = SettingsToolkit.ReadLocalSetting(SettingNames.ChatSessionIsInstructionVisible, true);
         IsSessionOptionsVisible = SettingsToolkit.ReadLocalSetting(SettingNames.ChatSessionIsOptionsVisible, false);
@@ -65,6 +69,7 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         IsWebInitializing = true;
         IsWebInitialized = false;
         CheckChatEmpty();
+        CheckRegenerate();
         HistoryHeight = SettingsToolkit.ReadLocalSetting(SettingNames.ChatServicePageHistoryHeight, 300d);
         try
         {
@@ -348,6 +353,12 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         IsGroup = SectionType == AgentSectionType.Group;
     }
 
+    private void CheckRegenerate()
+    {
+        var lastMessage = Messages.LastOrDefault();
+        IsRegenerateButtonShown = !IsGenerating && lastMessage?.Role == "assistant" && !IsGroup;
+    }
+
     private void CheckChatEmpty()
         => IsChatEmpty = Messages.Count == 0 && !IsGenerating && !IsWebInitializing;
 
@@ -358,10 +369,16 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         => CheckSectionType();
 
     partial void OnIsGeneratingChanged(bool value)
-        => CheckChatEmpty();
+    {
+        CheckChatEmpty();
+        CheckRegenerate();
+    }
 
     partial void OnIsWebInitializingChanged(bool value)
-        => CheckChatEmpty();
+    {
+        CheckChatEmpty();
+        CheckRegenerate();
+    }
 
     partial void OnIsHistoryInitializingChanged(bool value)
         => CheckHistoryEmpty();

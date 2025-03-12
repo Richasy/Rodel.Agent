@@ -167,6 +167,17 @@ public sealed partial class ChatSessionViewModel
     }
 
     [RelayCommand]
+    private async Task DeleteInteropMessageAsync(string id)
+    {
+        if (!IsWebInitialized)
+        {
+            return;
+        }
+
+        await _webView!.ExecuteScriptAsync($"window.deleteMessage(\'{id}\')");
+    }
+
+    [RelayCommand]
     private async Task AddNewSessionAsync()
     {
         if (IsGroup)
