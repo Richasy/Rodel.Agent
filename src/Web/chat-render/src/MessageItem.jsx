@@ -96,17 +96,22 @@ const MessageItem = ({ item, sendMessage, renderMarkdown, removeMessage }) => {
           onMouseLeave={() => setIsHovered(false)}
           content={item.message}
           avatar={
-            item.emoji ? (
+            item.emoji && item.showLogo ? (
               <Avatar
+                size="large"
+                gap={0}
                 style={{
                   backgroundColor: "transparent",
                   fontFamily: "Segoe UI Emoji",
+                  fontSize: '48px',
+                  marginTop: '0.4em',
                 }}
               >
                 {item.emoji}
               </Avatar>
-            ) : item.avatar ? (
-              <Avatar src={<img src={item.avatar} alt={item.author} />} />
+            ) : item.avatar && item.showLogo ? (
+              <Avatar size={36}
+              gap={0} src={<img src={item.avatar} alt={item.author} />} style={{marginTop: '1.2em'}} />
             ) : null
           }
           header={

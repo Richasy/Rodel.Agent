@@ -9,6 +9,7 @@ using RodelAgent.Statics;
 using RodelAgent.UI.Toolkits;
 using System.Text.Json;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.System;
 
 namespace RodelAgent.UI.ViewModels.Core;
 
@@ -63,7 +64,7 @@ public sealed partial class ChatSessionViewModel
                 var agent = Agents.FirstOrDefault(p => p.Data.Id == msg.AgentId);
                 if (agent != null)
                 {
-                   ApplyAgentMessage(agent.Data, msg);
+                    ApplyAgentMessage(agent.Data, msg);
                 }
             }
 
@@ -191,7 +192,7 @@ public sealed partial class ChatSessionViewModel
         RequestFocusInput?.Invoke(this, EventArgs.Empty);
     }
 
-    private static void ApplyAgentMessage(ChatAgent agent, ChatWebInteropMessage interopMessage)
+    private void ApplyAgentMessage(ChatAgent agent, ChatWebInteropMessage interopMessage)
     {
         interopMessage.Author = agent.Name ?? string.Empty;
         if (string.IsNullOrEmpty(agent.Emoji))
@@ -207,6 +208,8 @@ public sealed partial class ChatSessionViewModel
             var emoji = EmojiStatics.GetEmojis().Find(x => x.Unicode == agent.Emoji);
             interopMessage.Emoji = emoji?.ToEmoji();
         }
+
+        interopMessage.ShowLogo = (!string.IsNullOrEmpty(interopMessage.Avatar) || !string.IsNullOrEmpty(interopMessage.Emoji)) && IsGroup;
     }
 
     private async Task<bool> ClearMessageInternalAsync()
@@ -275,6 +278,15 @@ public sealed partial class ChatSessionViewModel
                 Clipboard.SetContent(dp);
                 this.Get<AppViewModel>().ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(UI.Models.Constants.StringNames.Copied), InfoType.Success));
             }
+        }
+    }
+
+    private async void OnNavigationStarting(CoreWebView2 sender, CoreWebView2NavigationStartingEventArgs args)
+    {
+        if (!args.Uri.Contains(".example", StringComparison.Ordinal))
+        {
+            args.Cancel = true;
+            await Launcher.LaunchUriAsync(new Uri(args.Uri));
         }
     }
 }

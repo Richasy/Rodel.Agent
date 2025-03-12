@@ -98,4 +98,10 @@ public sealed class ChatWebInteropMessage : ChatInteropMessage
     /// </summary>
     [JsonPropertyName("avatar")]
     public string? Avatar { get; set; }
+
+    /// <summary>
+    /// 显示头像.
+    /// </summary>
+    [JsonPropertyName("showLogo")]
+    public bool ShowLogo { get; set; }
 }
