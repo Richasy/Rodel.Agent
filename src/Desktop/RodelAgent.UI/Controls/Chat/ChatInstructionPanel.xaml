@@ -19,6 +19,7 @@
             PlaceholderText="{ext:Locale Name=InstructionPlaceholder}"
             Style="{StaticResource TransparentTextBoxStyle}"
             Text="{x:Bind ViewModel.SystemInstruction, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            TextChanged="OnTextChanged"
             TextWrapping="Wrap" />
     </Grid>
 </local:ChatSessionControlBase>

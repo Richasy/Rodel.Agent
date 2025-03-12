@@ -14,4 +14,14 @@ public sealed partial class ChatInstructionPanel : ChatSessionControlBase
 
     private void OnTextBoxLostFocus(object sender, RoutedEventArgs e)
         => ViewModel.SaveSystemInstructionCommand.Execute(default);
+
+    private void OnTextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (ViewModel is null)
+        {
+            return;
+        }
+
+        ViewModel.ResetLastInputTimeCommand.Execute(default);
+    }
 }

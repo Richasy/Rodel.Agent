@@ -234,7 +234,7 @@ public sealed partial class ChatSessionViewModel
         return true;
     }
 
-    private void OnWebMessageReceived(CoreWebView2 sender, CoreWebView2WebMessageReceivedEventArgs args)
+    private async void OnWebMessageReceived(CoreWebView2 sender, CoreWebView2WebMessageReceivedEventArgs args)
     {
         var msg = args.TryGetWebMessageAsString();
         if (msg.StartsWith("msg:", StringComparison.OrdinalIgnoreCase))
@@ -269,6 +269,8 @@ public sealed partial class ChatSessionViewModel
                     if (targetMsg != null)
                     {
                         targetMsg.Message = editedData.Message;
+                        await SaveCurrentMessagesAsync();
+                        CalcTotalTokenCountCommand.Execute(default);
                     }
                 }
             }

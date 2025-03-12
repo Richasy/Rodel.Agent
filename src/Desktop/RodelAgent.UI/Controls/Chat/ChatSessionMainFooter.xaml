@@ -158,7 +158,7 @@
                 </animations:Implicit.HideAnimations>
             </StackPanel>
             <Grid Visibility="{x:Bind ViewModel.IsGenerating, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
-                <!--<local:ChatSessionTokenUsageControl HorizontalAlignment="Left" ViewModel="{x:Bind ViewModel, Mode=OneWay}" />-->
+                <local:ChatTokenCountPanel HorizontalAlignment="Left" VerticalAlignment="Center" />
             </Grid>
             <StackPanel
                 Grid.Column="1"

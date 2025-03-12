@@ -691,4 +691,25 @@
   <data name="RemoveAgent" xml:space="preserve">
     <value>移除助理</value>
   </data>
+  <data name="InputToken" xml:space="preserve">
+    <value>输入标记</value>
+  </data>
+  <data name="InputWordCount" xml:space="preserve">
+    <value>输入字数</value>
+  </data>
+  <data name="InstructionToken" xml:space="preserve">
+    <value>指令标记</value>
+  </data>
+  <data name="Token" xml:space="preserve">
+    <value>标记</value>
+  </data>
+  <data name="TokenUsage" xml:space="preserve">
+    <value>标记使用统计</value>
+  </data>
+  <data name="TotalUsage" xml:space="preserve">
+    <value>总计使用</value>
+  </data>
+  <data name="HistoryToken" xml:space="preserve">
+    <value>历史标记</value>
+  </data>
 </root>

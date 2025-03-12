@@ -66,6 +66,7 @@ public sealed partial class ChatSessionViewModel
         }
         catch (Exception ex)
         {
+            _currentAgentIndex = 0;
             SetTempLoadingCommand.Execute(false);
             _logger.LogError(ex, "Failed to generate chat content");
             this.Get<AppViewModel>().ShowTipCommand.Execute((ex.Message, InfoType.Error));
@@ -73,6 +74,7 @@ public sealed partial class ChatSessionViewModel
         finally
         {
             IsGenerating = false;
+            UpdateAgentSelection();
         }
     }
 
@@ -111,10 +113,11 @@ public sealed partial class ChatSessionViewModel
         FormatChatOptions(options);
         var useStream = _getSessionIsStreamOutput?.Invoke() ?? true;
         var maxRounds = _getSessionMaxRounds?.Invoke() ?? 0;
+        UpdateGeneratingTip();
 
         // 检查对话轮次.
         var messages = Messages.ToList();
-        
+
         if (!string.IsNullOrEmpty(UserInput))
         {
             var chatMessage = new ChatMessage(ChatRole.User, UserInput);
@@ -217,6 +220,8 @@ public sealed partial class ChatSessionViewModel
 
         while (currentRound < maxRounds)
         {
+            UpdateGeneratingTip();
+            UpdateAgentSelection();
             _cancellationTokenSource?.Token.ThrowIfCancellationRequested();
             var responseMessage = string.Empty;
             var currentAgent = Agents[_currentAgentIndex];

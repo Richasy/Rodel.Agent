@@ -1,9 +1,13 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
+using Microsoft.UI.Dispatching;
 using Richasy.AgentKernel;
 using RodelAgent.Models.Feature;
+using RodelAgent.UI.Models.Constants;
+using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels.Items;
 using SqlSugar;
+using Tiktoken;
 
 namespace RodelAgent.UI.ViewModels.Core;
 
@@ -175,6 +179,41 @@ public sealed partial class ChatSessionViewModel
         CheckHistoryEmpty();
     }
 
+    [RelayCommand]
+    private async Task CalcTotalTokenCountAsync()
+    {
+        await CalcBaseTokenCountAsync();
+        await CalcUserInputTokenCountAsync();
+    }
+
+    private void UpdateGeneratingTip()
+    {
+        if (IsGroup)
+        {
+            var currentAgent = Agents.Count > _currentAgentIndex && _currentAgentIndex >= 0 ? Agents[_currentAgentIndex] : default;
+            var name = currentAgent?.Name ?? string.Empty;
+            GeneratingTipText = $"{name} {ResourceToolkit.GetLocalizedString(StringNames.Generating)}".Trim();
+        }
+        else
+        {
+            GeneratingTipText = ResourceToolkit.GetLocalizedString(StringNames.Generating);
+        }
+    }
+
+    private void UpdateAgentSelection()
+    {
+        if (!IsGroup)
+        {
+            return;
+        }
+
+        for (var i = 0; i < Agents.Count; i++)
+        {
+            var agent = Agents[i];
+            agent.IsSelected = i == _currentAgentIndex;
+        }
+    }
+
     private void SetCurrentConversation(ChatConversation? data)
     {
         _currentConversation = data;
@@ -254,6 +293,61 @@ public sealed partial class ChatSessionViewModel
             ClearMessageCommand.Execute(default);
         }
 
+        CalcTotalTokenCountCommand.Execute(default);
         RequestReloadOptionsUI?.Invoke(this, EventArgs.Empty);
     }
+
+    private async Task CalcBaseTokenCountAsync()
+    {
+        if (Messages.Count == 0 && string.IsNullOrEmpty(SystemInstruction))
+        {
+            HistoryTokenCount = 0;
+            InstructionTokenCount = 0;
+            return;
+        }
+
+        await Task.Run(() =>
+        {
+            var encoder = ModelToEncoder.For("gpt-4o");
+            var messages = string.Join("\n\n", Messages.Select(p => p.Message));
+            this.Get<DispatcherQueue>().TryEnqueue(() =>
+            {
+                InstructionTokenCount = !string.IsNullOrEmpty(SystemInstruction) ? encoder.CountTokens(SystemInstruction) : 0;
+                HistoryTokenCount = encoder.CountTokens(messages);
+            });
+        });
+    }
+
+    private async Task CalcUserInputTokenCountAsync()
+    {
+        UserInputWordCount = UserInput?.Length ?? 0;
+        await Task.Run(() =>
+        {
+            if (!string.IsNullOrEmpty(UserInput))
+            {
+                var encoder = ModelToEncoder.For("gpt-4o");
+                this.Get<DispatcherQueue>().TryEnqueue(() => UserInputTokenCount = encoder.CountTokens(UserInput));
+            }
+            else
+            {
+                this.Get<DispatcherQueue>().TryEnqueue(() => UserInputTokenCount = 0);
+            }
+
+            this.Get<DispatcherQueue>().TryEnqueue(() => TotalTokenUsage = HistoryTokenCount + InstructionTokenCount + UserInputTokenCount);
+        });
+    }
+
+    [RelayCommand]
+    private void TryAutoCalcUserInputToken()
+    {
+        if (_lastInputTime is not null && DateTimeOffset.Now - _lastInputTime >= TimeSpan.FromSeconds(1))
+        {
+            _lastInputTime = default;
+            CalcTotalTokenCountCommand.Execute(default);
+        }
+    }
+
+    [RelayCommand]
+    private void ResetLastInputTime()
+        => _lastInputTime = DateTimeOffset.Now;
 }

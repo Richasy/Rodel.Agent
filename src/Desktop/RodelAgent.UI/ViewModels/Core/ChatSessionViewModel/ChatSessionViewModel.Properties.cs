@@ -18,6 +18,7 @@ public sealed partial class ChatSessionViewModel
 {
     private readonly ILogger<ChatSessionViewModel> _logger;
     private readonly IStorageService _storageService;
+    private DispatcherTimer? _tokenTimer;
     private IChatService? _chatService;
     private CancellationTokenSource? _cancellationTokenSource;
     private WebView2? _webView;
@@ -27,6 +28,7 @@ public sealed partial class ChatSessionViewModel
     private Func<int>? _getSessionMaxRounds;
     private Func<int>? _getGroupMaxRounds;
     private int _currentAgentIndex;
+    private DateTimeOffset? _lastInputTime;
 
     public event EventHandler RequestFocusInput;
 
@@ -117,6 +119,24 @@ public sealed partial class ChatSessionViewModel
 
     [ObservableProperty]
     public partial string? SystemInstruction { get; set; }
+
+    [ObservableProperty]
+    public partial int TotalTokenUsage { get; set; }
+
+    [ObservableProperty]
+    public partial int InstructionTokenCount { get; set; }
+
+    [ObservableProperty]
+    public partial int UserInputWordCount { get; set; }
+
+    [ObservableProperty]
+    public partial int UserInputTokenCount { get; set; }
+
+    [ObservableProperty]
+    public partial int HistoryTokenCount { get; set; }
+
+    [ObservableProperty]
+    public partial int TotalTokenCount { get; set; }
 
     public ObservableCollection<ChatAgentItemViewModel> Agents { get; } = [];
 

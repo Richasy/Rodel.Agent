@@ -36,6 +36,7 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         {
             CheckRegenerate();
             CheckChatEmpty();
+            CalcTotalTokenCountCommand.Execute(default);
         };
         History.CollectionChanged += (_, _) => CheckHistoryEmpty();
         IsInstructionVisible = SettingsToolkit.ReadLocalSetting(SettingNames.ChatSessionIsInstructionVisible, true);
@@ -63,6 +64,16 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         if (_webView is not null)
         {
             return;
+        }
+
+        if (_tokenTimer is null)
+        {
+            _tokenTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(400)
+            };
+            _tokenTimer.Tick += OnTokenTimerTick;
+            _tokenTimer.Start();
         }
 
         _webView = view;
@@ -365,6 +376,9 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
     private void CheckHistoryEmpty()
         => IsHistoryEmpty = History.Count == 0 && !IsHistoryInitializing;
 
+    private void OnTokenTimerTick(object? sender, object e)
+        => TryAutoCalcUserInputTokenCommand.Execute(default);
+
     partial void OnSectionTypeChanged(AgentSectionType value)
         => CheckSectionType();
 
@@ -424,5 +438,11 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         }
 
         SettingsToolkit.WriteLocalSetting(SettingNames.GroupSessionIsOptionsVisible, value);
+    }
+
+    partial void OnUserInputChanged(string? value)
+    {
+        UserInputWordCount = value?.Length ?? 0;
+        _lastInputTime = DateTimeOffset.Now;
     }
 }

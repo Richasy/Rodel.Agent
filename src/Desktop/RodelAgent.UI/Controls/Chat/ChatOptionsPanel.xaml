@@ -12,7 +12,7 @@
     mc:Ignorable="d">
 
     <ScrollViewer Style="{StaticResource PageScrollViewerStyle}">
-        <StackPanel Padding="20,0,20,8">
+        <StackPanel x:Name="RootContainer" Padding="20,0,20,8">
             <controls:CombineRow Title="{ext:Locale Name=StreamOutput}" Tip="{ext:Locale Name=StreamOutputDescription}">
                 <controls:CombineRow.Element>
                     <ToggleSwitch

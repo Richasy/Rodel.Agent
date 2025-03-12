@@ -74,6 +74,8 @@ public sealed partial class ChatOptionsPanel : LayoutUserControlBase
                 ReloadUnspecifiedOptionsUI();
                 break;
         }
+
+        RemoveLastRowBorder();
     }
 
     public bool GetStreamOutput()
@@ -228,5 +230,19 @@ public sealed partial class ChatOptionsPanel : LayoutUserControlBase
 
         var value = Convert.ToInt32(MaxOutputTokenBox.Value);
         MaxOutputTokenBox.Value = Math.Max(0, value);
+    }
+
+    private void RemoveLastRowBorder()
+    {
+        foreach (var item in RootContainer.Children.OfType<CombineRow>())
+        {
+            item.BottomBorderVisibility = Visibility.Visible;
+        }
+
+        var last = RootContainer.Children.OfType<CombineRow>().LastOrDefault(p => p.Visibility == Visibility.Visible);
+        if (last != null)
+        {
+            last.BottomBorderVisibility = Visibility.Collapsed;
+        }
     }
 }
