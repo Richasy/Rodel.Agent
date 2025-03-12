@@ -502,6 +502,7 @@ public static class MigrationToolkit
                     Message = content ?? string.Empty,
                     Role = role ?? "user",
                     Time = time,
+                    Id = Guid.NewGuid().ToString("N"),
                 };
 
                 messages.Add(msg);

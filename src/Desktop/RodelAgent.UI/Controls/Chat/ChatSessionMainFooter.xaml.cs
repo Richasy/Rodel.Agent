@@ -14,7 +14,11 @@ public sealed partial class ChatSessionMainFooter : ChatSessionControlBase
     /// <summary>
     /// Initializes a new instance of the <see cref="ChatSessionMainFooter"/> class.
     /// </summary>
-    public ChatSessionMainFooter() => InitializeComponent();
+    public ChatSessionMainFooter()
+    {
+        InitializeComponent();
+        ImageButton.Visibility = GlobalDependencies.IsChatImageEnabled ? Visibility.Visible : Visibility.Collapsed;
+    }
 
     /// <inheritdoc/>
     protected override void OnControlLoaded()
@@ -100,4 +104,7 @@ public sealed partial class ChatSessionMainFooter : ChatSessionControlBase
 
     private void OnCleanMessageTipClosed(TeachingTip sender, TeachingTipClosedEventArgs args)
         => InputBox.Focus(FocusState.Programmatic);
+
+    private void OnSendButtonClick(SplitButton sender, SplitButtonClickEventArgs args)
+        => ViewModel.StartGenerateCommand.Execute(default);
 }

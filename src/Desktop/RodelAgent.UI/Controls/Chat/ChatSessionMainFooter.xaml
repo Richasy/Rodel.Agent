@@ -177,8 +177,9 @@
                     <SplitButton
                         MinWidth="120"
                         AutomationProperties.Name="{ext:Locale Name=Send}"
-                        Command="{x:Bind ViewModel.StartGenerateCommand}"
+                        Click="OnSendButtonClick"
                         Content="{ext:Locale Name=Send}"
+                        IsEnabled="{x:Bind ViewModel.IsGenerating, Mode=OneWay, Converter={StaticResource ObjectToBoolReverseConverter}}"
                         Style="{StaticResource AccentSplitButtonStyle}"
                         ToolTipService.ToolTip="{ext:Locale Name=Send}"
                         Visibility="{x:Bind ViewModel.IsGenerating, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">

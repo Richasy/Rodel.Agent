@@ -24,6 +24,11 @@ internal static class GlobalDependencies
 {
     public static Kernel Kernel { get; private set; }
 
+    /// <summary>
+    /// 是否启用聊天图片.
+    /// </summary>
+    public static bool IsChatImageEnabled { get; }
+
     public static void Initialize()
     {
         if (Kernel is not null)

@@ -275,7 +275,7 @@ function Render() {
     };
     // 清空历史消息
     window.clearMessages = () => {
-      window.location.reload();
+      setHistory([]);
     };
 
     sendMessage("loaded", true);
