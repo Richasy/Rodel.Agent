@@ -4,10 +4,13 @@ using Microsoft.Extensions.AI;
 using Richasy.AgentKernel;
 using Richasy.AgentKernel.Chat;
 using Richasy.WinUIKernel.AI.ViewModels;
+using Richasy.WinUIKernel.Share.Toolkits;
 using RodelAgent.Interfaces;
 using RodelAgent.Models.Feature;
 using RodelAgent.UI.ViewModels.Items;
 using RodelAgent.UI.ViewModels.View;
+using System.Text.RegularExpressions;
+using Windows.Storage;
 
 namespace RodelAgent.UI.ViewModels.Core;
 
@@ -152,6 +155,64 @@ public sealed partial class ChatAgentConfigViewModel : ViewModelBase
         this.Get<ChatPageViewModel>().ReloadAvailableAgentsCommand.Execute(default);
         this.Get<ChatSessionViewModel>().ForceReloadLogoCommand.Execute(default);
         CloseRequested?.Invoke(this, EventArgs.Empty);
+    }
+
+    [RelayCommand]
+    private async Task ImportHistoryAsync()
+    {
+        var xmlFile = await this.Get<IFileToolkit>().PickFileAsync(".xml", this.Get<AppViewModel>().ActivatedWindow);
+        if (xmlFile != null)
+        {
+            try
+            {
+                var xmlContent = await FileIO.ReadTextAsync(xmlFile);
+                var messages = new List<ChatInteropMessage>();
+                var regex = new Regex(@"<message([^>]*)>(.*?)<\/message>", RegexOptions.Singleline | RegexOptions.IgnoreCase);
+                foreach (Match match in regex.Matches(xmlContent))
+                {
+                    var element = new ChatInteropMessage
+                    {
+                        Message = match.Groups[2].Value.Trim()
+                    };
+
+                    var attributes = match.Groups[1].Value;
+                    var attrRegex = new Regex(@"(\w+)\s*=\s*""([^""]*)""", RegexOptions.IgnoreCase);
+                    foreach (Match attrMatch in attrRegex.Matches(attributes))
+                    {
+                        var key = attrMatch.Groups[1].Value;
+                        var value = attrMatch.Groups[2].Value;
+                        if (key.Equals("role", StringComparison.OrdinalIgnoreCase))
+                        {
+                            element.Role = value;
+                        }
+                        else if (key.Equals("id", StringComparison.OrdinalIgnoreCase))
+                        {
+                            element.Id = value;
+                        }
+                    }
+
+                    if (string.IsNullOrEmpty(element.Id))
+                    {
+                        element.Id = Guid.NewGuid().ToString("N");
+                    }
+
+                    messages.Add(element);
+                }
+
+                Messages.Clear();
+                foreach (var item in messages)
+                {
+                    Messages.Add(item);
+                }
+
+                CheckMessageCount();
+            }
+            catch (Exception ex)
+            {
+                this.Get<ILogger<ChatAgentConfigViewModel>>().LogError(ex, "Import history failed.");
+                this.Get<AppViewModel>().ShowTipCommand.Execute((ex.Message, InfoType.Error));
+            }
+        }
     }
 
     private void UpdatePresetData()
