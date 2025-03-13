@@ -38,6 +38,9 @@ public sealed partial class ChatPageViewModel : LayoutPageViewModelBase
     private async Task InitializeAsync()
     {
         IsInitializing = true;
+        IsServicesCollapsed = SettingsToolkit.ReadLocalSetting(SettingNames.IsChatServicesCollapsed, false);
+        IsAgentsCollapsed = SettingsToolkit.ReadLocalSetting(SettingNames.IsChatAgentsCollapsed, false);
+        IsGroupsCollapsed = SettingsToolkit.ReadLocalSetting(SettingNames.IsChatGroupsCollapsed, false);
         if (Services == null)
         {
             this.Get<AppViewModel>().RequestReloadChatServices += (_, _) => ReloadAvailableServicesCommand.Execute(default);
@@ -292,4 +295,13 @@ public sealed partial class ChatPageViewModel : LayoutPageViewModelBase
             IsAgentSectionVisible = false;
         }
     }
+
+    partial void OnIsServicesCollapsedChanged(bool value)
+        => SettingsToolkit.WriteLocalSetting(SettingNames.IsChatServicesCollapsed, value);
+
+    partial void OnIsAgentsCollapsedChanged(bool value)
+        => SettingsToolkit.WriteLocalSetting(SettingNames.IsChatAgentsCollapsed, value);
+
+    partial void OnIsGroupsCollapsedChanged(bool value)
+        => SettingsToolkit.WriteLocalSetting(SettingNames.IsChatGroupsCollapsed, value);
 }

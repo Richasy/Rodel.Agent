@@ -42,6 +42,15 @@ public sealed partial class ChatPageViewModel
     [ObservableProperty]
     public partial bool IsGroupListVisible { get; set; }
 
+    [ObservableProperty]
+    public partial bool IsServicesCollapsed { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsAgentsCollapsed { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsGroupsCollapsed { get; set; }
+
     /// <summary>
     /// 助理列表.
     /// </summary>
