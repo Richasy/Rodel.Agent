@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
 using Microsoft.UI.Input;
+using RodelAgent.UI.ViewModels.Items;
 using Windows.System;
 using Windows.UI.Core;
 
@@ -107,4 +108,10 @@ public sealed partial class ChatSessionMainFooter : ChatSessionControlBase
 
     private void OnSendButtonClick(SplitButton sender, SplitButtonClickEventArgs args)
         => ViewModel.StartGenerateCommand.Execute(default);
+
+    private void OnToolItemClick(object sender, EventArgs e)
+    {
+        var data = (sender as FrameworkElement)?.DataContext as AIToolsetItemViewModel;
+        data!.IsSelected = !data.IsSelected;
+    }
 }

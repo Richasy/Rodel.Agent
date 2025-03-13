@@ -178,9 +178,19 @@ public sealed partial class ChatSessionViewModel
             messages.Insert(0, new RodelAgent.Models.Feature.ChatInteropMessage { Role = "system", Message = SystemInstruction, Id = "system" });
         }
 
+        var client = new ChatClientBuilder(_chatService!.Client!)
+            .UseFunctionInvocation(configure: c => c.MaximumIterationsPerRequest = 2)
+            .Build();
+
+        if (SelectedModel!.IsToolSupport && Tools.Any(p => p.IsSelected))
+        {
+            var selectedTools = Tools.Where(p => p.IsSelected).SelectMany(p => p.Functions).ToList();
+            options.Tools = [.. selectedTools];
+        }
+
         if (useStream)
         {
-            await foreach (var msg in _chatService!.Client!.GetStreamingResponseAsync(messages.ConvertAll(p => p.ToChatMessage(GetAgentName)), options, _cancellationTokenSource!.Token))
+            await foreach (var msg in client.GetStreamingResponseAsync(messages.ConvertAll(p => p.ToChatMessage(GetAgentName)), options, _cancellationTokenSource!.Token))
             {
                 responseMessage += msg.Text;
 #pragma warning disable CA1508 // 避免死条件代码
@@ -194,7 +204,7 @@ public sealed partial class ChatSessionViewModel
         }
         else
         {
-            var response = await _chatService!.Client!.GetResponseAsync(messages.ConvertAll(p => p.ToChatMessage(GetAgentName)), options, _cancellationTokenSource!.Token);
+            var response = await client.GetResponseAsync(messages.ConvertAll(p => p.ToChatMessage(GetAgentName)), options, _cancellationTokenSource!.Token);
             responseMessage = response.Text;
         }
 
@@ -246,9 +256,25 @@ public sealed partial class ChatSessionViewModel
             var chatService = this.Get<IChatService>(currentAgent.Data.Provider!.Value.ToString());
             var serviceConfig = await this.Get<IChatConfigManager>().GetServiceConfigAsync(currentAgent.Data.Provider!.Value, new(options.ModelId!, string.Empty));
             chatService.Initialize(serviceConfig);
+
+            var client = new ChatClientBuilder(_chatService!.Client!)
+                .UseFunctionInvocation(configure: c => c.MaximumIterationsPerRequest = 2)
+                .Build();
+
+            if (currentAgent.Data.Tools is { Count: > 0 })
+            {
+                var basicConfig = await this.Get<IChatConfigManager>().GetChatConfigAsync(currentAgent.Data.Provider!.Value);
+                var specificModel = chatService.GetPredefinedModels().Concat(basicConfig?.CustomModels ?? []).FirstOrDefault(p => p.Id == options.ModelId);
+                if (specificModel?.ToolSupport == true)
+                {
+                    var selectedTools = Tools.Where(p => currentAgent.Data.Tools.Contains(p.ToolType.ToString())).SelectMany(p => p.Functions).ToList();
+                    options.Tools = [.. selectedTools];
+                }
+            }
+
             if (currentAgent.Data.UseStreamOutput ?? true)
             {
-                await foreach (var msg in chatService!.Client!.GetStreamingResponseAsync(history.ConvertAll(p => p.ToChatMessage(GetAgentName)), options, _cancellationTokenSource!.Token))
+                await foreach (var msg in client.GetStreamingResponseAsync(history.ConvertAll(p => p.ToChatMessage(GetAgentName)), options, _cancellationTokenSource!.Token))
                 {
                     responseMessage += msg.Text;
 #pragma warning disable CA1508 // 避免死条件代码
@@ -262,7 +288,7 @@ public sealed partial class ChatSessionViewModel
             }
             else
             {
-                var response = await chatService!.Client!.GetResponseAsync(history.ConvertAll(p => p.ToChatMessage(GetAgentName)), options, _cancellationTokenSource!.Token);
+                var response = await client.GetResponseAsync(history.ConvertAll(p => p.ToChatMessage(GetAgentName)), options, _cancellationTokenSource!.Token);
                 responseMessage = response.Text;
             }
 

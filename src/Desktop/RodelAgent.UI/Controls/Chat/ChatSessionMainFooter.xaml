@@ -8,6 +8,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:ext="using:RodelAgent.UI.Extensions"
     xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:items="using:RodelAgent.UI.ViewModels.Items"
     xmlns:local="using:RodelAgent.UI.Controls.Chat"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewmodels="using:Richasy.WinUIKernel.AI.ViewModels"
@@ -73,6 +74,34 @@
                     Style="{StaticResource SmallIconButtonStyle}"
                     ToolTipService.ToolTip="{ext:Locale Name=Tools}">
                     <ic:SymbolIcon FontSize="14" Symbol="Wrench" />
+                    <Button.Flyout>
+                        <Flyout Placement="Top">
+                            <Flyout.FlyoutPresenterStyle>
+                                <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
+                                    <Setter Property="Padding" Value="0" />
+                                </Style>
+                            </Flyout.FlyoutPresenterStyle>
+                            <ScrollViewer
+                                MinWidth="340"
+                                MaxHeight="400"
+                                Padding="12,0"
+                                Style="{StaticResource PageScrollViewerStyle}">
+                                <ItemsRepeater Margin="0,12" ItemsSource="{x:Bind ViewModel.Tools}">
+                                    <ItemsRepeater.Layout>
+                                        <StackLayout Spacing="4" />
+                                    </ItemsRepeater.Layout>
+                                    <ItemsRepeater.ItemTemplate>
+                                        <DataTemplate x:DataType="items:AIToolsetItemViewModel">
+                                            <local:AIToolItemControl
+                                                DataContext="{x:Bind}"
+                                                ItemClick="OnToolItemClick"
+                                                ViewModel="{x:Bind}" />
+                                        </DataTemplate>
+                                    </ItemsRepeater.ItemTemplate>
+                                </ItemsRepeater>
+                            </ScrollViewer>
+                        </Flyout>
+                    </Button.Flyout>
                 </Button>
                 <Button
                     AutomationProperties.Name="{ext:Locale Name=Regenerate}"

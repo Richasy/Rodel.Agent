@@ -109,6 +109,7 @@ internal static class GlobalDependencies
         Kernel.InitializeShareKernel();
         Kernel.InitializeAIKernel();
         GlobalStatics.SetKernel(Kernel);
+        WinUIKernelAIExtensions.EnableModelFeature = true;
     }
 
     public static IKernelBuilder AddSingleton<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(this IKernelBuilder builder)

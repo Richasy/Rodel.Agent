@@ -147,4 +147,6 @@ public sealed partial class ChatSessionViewModel
     public ObservableCollection<ChatInteropMessage> Messages { get; } = [];
 
     public ObservableCollection<ChatHistoryItemViewModel> History { get; } = [];
+
+    public ObservableCollection<AIToolsetItemViewModel> Tools { get; } = [];
 }

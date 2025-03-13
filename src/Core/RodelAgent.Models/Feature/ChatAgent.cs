@@ -91,6 +91,12 @@ public sealed class ChatAgent
     public string? Emoji { get; set; }
 
     /// <summary>
+    /// 工具列表.
+    /// </summary>
+    [JsonPropertyName("tools")]
+    public List<string>? Tools { get; set; }
+
+    /// <summary>
     /// Clone the agent.
     /// </summary>
     /// <returns>Agent with new id.</returns>

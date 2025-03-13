@@ -8,6 +8,7 @@ using Richasy.WinUIKernel.Share.Toolkits;
 using RodelAgent.Interfaces;
 using RodelAgent.Models.Constants;
 using RodelAgent.Models.Feature;
+using RodelAgent.Tools;
 using RodelAgent.UI.Controls.Chat;
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Toolkits;
@@ -76,6 +77,9 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
             _tokenTimer.Tick += OnTokenTimerTick;
             _tokenTimer.Start();
         }
+
+        var tools = CoreTools.Tools.Select(p => new AIToolsetItemViewModel(p.Key, p.Value));
+        tools.ToList().ForEach(Tools.Add);
 
         _webView = view;
         IsWebInitializing = true;

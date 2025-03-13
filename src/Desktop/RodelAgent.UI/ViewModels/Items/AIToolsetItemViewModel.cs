@@ -35,6 +35,9 @@ public sealed partial class AIToolsetItemViewModel : ViewModelBase
     [ObservableProperty]
     public partial string ToolEmoji { get; set; }
 
+    [ObservableProperty]
+    public partial bool IsSelected { get; set; }
+
     public List<AIFunction> Functions { get; }
 
     public CoreToolType ToolType { get; }

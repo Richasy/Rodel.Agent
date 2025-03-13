@@ -119,6 +119,10 @@ public sealed partial class ChatSessionViewModel
             conversation.SystemInstruction = SystemInstruction;
             conversation.Options = options;
             conversation.AgentId = IsAgent ? CurrentAgent?.Id : null;
+            if (Tools.Any(p => p.IsSelected))
+            {
+                conversation.Tools = [.. Tools.Where(p => p.IsSelected).Select(p => p.ToolType.ToString())];
+            }
         }
 
         History.Insert(0, new ChatHistoryItemViewModel(conversation, RemoveHistoryAsync));
@@ -144,6 +148,11 @@ public sealed partial class ChatSessionViewModel
                 if (uiOptions != null)
                 {
                     _currentConversation.Options = uiOptions;
+                }
+
+                if (Tools.Any(p => p.IsSelected))
+                {
+                    _currentConversation.Tools = [.. Tools.Where(p => p.IsSelected).Select(p => p.ToolType.ToString())];
                 }
             }
 
@@ -257,6 +266,11 @@ public sealed partial class ChatSessionViewModel
             {
                 item.IsSelected = item.Conversation == _currentConversation;
             }
+
+            foreach (var item in Tools)
+            {
+                item.IsSelected = _currentConversation.Tools?.Contains(item.ToolType.ToString()) ?? false;
+            }
         }
         else
         {
@@ -286,6 +300,11 @@ public sealed partial class ChatSessionViewModel
             }
 
             foreach (var item in History)
+            {
+                item.IsSelected = false;
+            }
+
+            foreach (var item in Tools)
             {
                 item.IsSelected = false;
             }
