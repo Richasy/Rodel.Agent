@@ -712,4 +712,7 @@
   <data name="HistoryToken" xml:space="preserve">
     <value>历史标记</value>
   </data>
+  <data name="SaveAsAgent" xml:space="preserve">
+    <value>保存为助理</value>
+  </data>
 </root>

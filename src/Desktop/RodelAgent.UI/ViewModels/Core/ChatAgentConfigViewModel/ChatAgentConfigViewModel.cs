@@ -82,6 +82,7 @@ public sealed partial class ChatAgentConfigViewModel : ViewModelBase
         }
 
         CheckMaxTurnEnabled();
+        CheckMessageCount();
         SelectService(AvailableServices.FirstOrDefault(x => x.ProviderType == data.Data.Provider) ?? AvailableServices.First());
     }
 

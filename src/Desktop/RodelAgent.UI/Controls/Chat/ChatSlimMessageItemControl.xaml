@@ -36,7 +36,8 @@
             <TextBlock
                 x:Name="MessageBlock"
                 Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                Text="{x:Bind ViewModel.Message, Mode=OneWay}" />
+                Text="{x:Bind ViewModel.Message, Mode=OneWay}"
+                TextWrapping="Wrap" />
         </Grid>
 
         <VisualStateManager.VisualStateGroups>

@@ -102,9 +102,10 @@
             </ComboBox>
             <Button
                 VerticalAlignment="Center"
-                AutomationProperties.Name="{ext:Locale Name=SaveAsPreset}"
+                AutomationProperties.Name="{ext:Locale Name=SaveAsAgent}"
+                Command="{x:Bind ViewModel.SaveAsAgentCommand}"
                 Style="{StaticResource IconButtonStyle}"
-                ToolTipService.ToolTip="{ext:Locale Name=SaveAsPreset}"
+                ToolTipService.ToolTip="{ext:Locale Name=SaveAsAgent}"
                 Visibility="{x:Bind ViewModel.IsGroup, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
                 <ic:SymbolIcon FontSize="14" Symbol="Save" />
                 <Button.KeyboardAccelerators>

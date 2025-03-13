@@ -8,6 +8,7 @@ using Richasy.WinUIKernel.Share.Toolkits;
 using RodelAgent.Interfaces;
 using RodelAgent.Models.Constants;
 using RodelAgent.Models.Feature;
+using RodelAgent.UI.Controls.Chat;
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels.Items;
@@ -301,7 +302,10 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         }
         else if (IsGroup)
         {
-            // TODO: Reload group logo.
+            var group = CurrentGroup;
+            CurrentGroup = null;
+            await Task.Delay(200);
+            CurrentGroup = group;
         }
     }
 
@@ -334,6 +338,27 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
                 Title = group.Name;
             }
         }
+    }
+
+    [RelayCommand]
+    private async Task SaveAsAgentAsync()
+    {
+        var agent = new ChatAgent
+        {
+            Id = Guid.NewGuid().ToString("N"),
+            Name = string.Empty,
+            SystemInstruction = SystemInstruction,
+            UseStreamOutput = _getSessionIsStreamOutput?.Invoke() ?? true,
+            Provider = CurrentProvider!.Value,
+            Model = SelectedModel?.Id ?? string.Empty,
+            MaxRounds = _getSessionMaxRounds?.Invoke() ?? 0,
+            Options = _getSessionCurrentOptions?.Invoke(),
+            History = [.. Messages]
+        };
+
+        this.Get<ChatAgentConfigViewModel>().SetData(new ChatAgentItemViewModel(agent));
+        var dialog = new ChatAgentConfigDialog();
+        await dialog.ShowAsync();
     }
 
     private async void OnRequestReloadChatServices(object? sender, EventArgs e)

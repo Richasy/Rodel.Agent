@@ -159,6 +159,15 @@ public sealed partial class ChatSessionViewModel
             messages = userMessages.Concat(assistantMessages).OrderBy(p => p.Time).ToList();
         }
 
+        if (IsAgent && CurrentAgent!.History is { Count: > 0 })
+        {
+            for (var i = CurrentAgent.History.Count - 1; i >= 0; i--)
+            {
+                var msg = CurrentAgent.History[i];
+                messages.Insert(0, msg);
+            }
+        }
+
         SetTempLoadingCommand.Execute(true);
         UserInput = string.Empty;
         var responseMessage = string.Empty;
