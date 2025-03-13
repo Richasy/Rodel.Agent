@@ -715,4 +715,13 @@
   <data name="SaveAsAgent" xml:space="preserve">
     <value>保存为助理</value>
   </data>
+  <data name="FunctionCount" xml:space="preserve">
+    <value>可调用方法个数</value>
+  </data>
+  <data name="Tool_Weather_Description" xml:space="preserve">
+    <value>查询指定城市的天气</value>
+  </data>
+  <data name="Tool_Weather_Name" xml:space="preserve">
+    <value>天气工具</value>
+  </data>
 </root>

@@ -11,49 +11,51 @@
     <PackageVersion Include="CommunityToolkit.WinUI.Controls.ImageCropper" Version="8.2.250129-preview2" />
     <PackageVersion Include="CommunityToolkit.WinUI.Controls.TokenizingTextBox" Version="8.2.250129-preview2" />
     <PackageVersion Include="ComputeSharp.D2D1.WinUI" Version="3.1.0" />
-    <PackageVersion Include="FluentIcons.WinUI" Version="1.1.271" />
+    <PackageVersion Include="FluentIcons.WinUI" Version="1.1.278" />
     <PackageVersion Include="FreeSql.Provider.Duckdb" Version="3.5.106" />
     <PackageVersion Include="FreeSql.Provider.Sqlite" Version="3.5.106" />
     <PackageVersion Include="FreeSql.Provider.SqliteCore" Version="3.5.106" />
     <PackageVersion Include="H.NotifyIcon.WinUI" Version="2.3.0" />
-    <PackageVersion Include="HtmlAgilityPack" Version="1.11.72" />
+    <PackageVersion Include="HtmlAgilityPack" Version="1.12.0" />
     <PackageVersion Include="Humanizer.Core.zh-Hans" Version="3.0.0-beta.54" />
     <PackageVersion Include="ImageEx.WinUI" Version="4.0.0" />
     <PackageVersion Include="LangChain.Splitters.Abstractions" Version="0.17.1-dev.12" />
     <PackageVersion Include="Markdig" Version="0.40.0" />
+    <PackageVersion Include="Microsoft.Extensions.AI" Version="9.3.0-preview.1.25161.3" />
+    <PackageVersion Include="Microsoft.Extensions.AI.Abstractions" Version="9.3.0-preview.1.25161.3" />
     <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.2" />
     <PackageVersion Include="Microsoft.ML.OnnxRuntimeGenAI.Cuda" Version="0.7.0-rc1" />
     <PackageVersion Include="NAudio" Version="2.2.1" />
     <PackageVersion Include="NAudio.Core" Version="2.2.1" />
     <PackageVersion Include="NAudio.Wasapi" Version="2.2.1" />
     <PackageVersion Include="NAudio.WinMM" Version="2.2.1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Ali" Version="0.0.5-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Anthropic" Version="0.0.5-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Azure" Version="0.0.5-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Baidu" Version="0.0.5-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.DeepSeek" Version="0.0.5-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Google" Version="0.0.5-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Groq" Version="0.0.5-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.IFlyTek" Version="0.0.5-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.LingYi" Version="0.0.5-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Mistral" Version="0.0.5-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Moonshot" Version="0.0.5-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Ollama" Version="0.0.5-preview1" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Ali" Version="0.0.5-preview2" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Anthropic" Version="0.0.5-preview2" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Azure" Version="0.0.5-preview2" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Baidu" Version="0.0.5-preview2" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.DeepSeek" Version="0.0.5-preview2" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Google" Version="0.0.5-preview2" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Groq" Version="0.0.5-preview2" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.IFlyTek" Version="0.0.5-preview2" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.LingYi" Version="0.0.5-preview2" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Mistral" Version="0.0.5-preview2" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Moonshot" Version="0.0.5-preview2" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Ollama" Version="0.0.5-preview2" />
     <PackageVersion Include="Richasy.AgentKernel.Connectors.Onnx" Version="0.0.4-preview6" />
     <PackageVersion Include="Richasy.AgentKernel.Connectors.Onnx.Cuda" Version="0.0.4-preview7" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.OpenAI" Version="0.0.5-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.OpenRouter" Version="0.0.5-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Perplexity" Version="0.0.5-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.SiliconFlow" Version="0.0.5-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Tencent" Version="0.0.5-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.TogetherAI" Version="0.0.5-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Volcano" Version="0.0.5-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Windows" Version="0.0.5-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.XAI" Version="0.0.5-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Youdao" Version="0.0.5-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.ZhiPu" Version="0.0.5-preview1" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.OpenAI" Version="0.0.5-preview2" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.OpenRouter" Version="0.0.5-preview2" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Perplexity" Version="0.0.5-preview2" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.SiliconFlow" Version="0.0.5-preview2" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Tencent" Version="0.0.5-preview2" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.TogetherAI" Version="0.0.5-preview2" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Volcano" Version="0.0.5-preview2" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Windows" Version="0.0.5-preview2" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.XAI" Version="0.0.5-preview2" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Youdao" Version="0.0.5-preview2" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.ZhiPu" Version="0.0.5-preview2" />
     <PackageVersion Include="Richasy.AgentKernel.Core" Version="0.0.3-preview3" />
-    <PackageVersion Include="Richasy.AgentKernel.Definitions" Version="0.0.4-preview9" />
+    <PackageVersion Include="Richasy.AgentKernel.Definitions" Version="0.0.5-preview2" />
     <PackageVersion Include="Richasy.WinUIKernel.AI" Version="0.0.4-preview7" />
     <PackageVersion Include="RichasyKernel.Abstractions" Version="0.0.1" />
     <PackageVersion Include="Serilog" Version="4.2.0" />
@@ -61,7 +63,7 @@
     <PackageVersion Include="Serilog.Sinks.File" Version="6.0.0" />
     <PackageVersion Include="SimpleTrayIcon" Version="3.0.2" />
     <PackageVersion Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.10" />
-    <PackageVersion Include="SqlSugarCore" Version="5.1.4.183-preview03" />
+    <PackageVersion Include="SqlSugarCore" Version="5.1.4.183-preview11" />
     <PackageVersion Include="System.Private.Uri" Version="4.3.2" />
     <PackageVersion Include="Tiktoken" Version="2.2.0" />
     <PackageVersion Include="Microsoft.Bcl.HashCode" Version="6.0.0" />

@@ -43,7 +43,7 @@ public static class ChatMessageInteropUtil
         return new ChatMessage
         {
             AuthorName = author,
-            Text = text,
+            Contents = [new TextContent(text)],
             Role = role,
             AdditionalProperties = new()
             {

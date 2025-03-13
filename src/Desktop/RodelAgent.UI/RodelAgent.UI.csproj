@@ -32,6 +32,7 @@
     <None Remove="Controls\Audio\AudioSideBody.xaml" />
     <None Remove="Controls\Audio\AudioSideHeader.xaml" />
     <None Remove="Controls\Audio\WavePanel.xaml" />
+    <None Remove="Controls\Chat\AIToolItemControl.xaml" />
     <None Remove="Controls\Chat\ChatAgentConfigDialog.xaml" />
     <None Remove="Controls\Chat\ChatAgentItemControl.xaml" />
     <None Remove="Controls\Chat\ChatAgentModelPanel.xaml" />
@@ -170,6 +171,7 @@
     <ProjectReference Include="..\..\Core\RodelAgent.Context\RodelAgent.Context.csproj" />
     <ProjectReference Include="..\..\Core\RodelAgent.Interfaces\RodelAgent.Interfaces.csproj" />
     <ProjectReference Include="..\..\Core\RodelAgent.Statics\RodelAgent.Statics.csproj" />
+    <ProjectReference Include="..\..\Core\RodelAgent.Tools\RodelAgent.Tools.csproj" />
     <ProjectReference Include="..\RodelAgent.UI.Models\RodelAgent.UI.Models.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -369,6 +371,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Web\chat-render\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Chat\AIToolItemControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\CollapseHeader.xaml">

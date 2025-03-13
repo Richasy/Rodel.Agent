@@ -5,6 +5,7 @@ using Richasy.WinUIKernel.AI.ViewModels;
 using RodelAgent.Interfaces;
 using RodelAgent.Models.Constants;
 using RodelAgent.Models.Feature;
+using RodelAgent.Tools;
 using RodelAgent.UI.Controls.Chat;
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Pages;
@@ -51,6 +52,9 @@ public sealed partial class ChatPageViewModel : LayoutPageViewModelBase
         {
             await ReloadAvailableAgentsCommand.ExecuteAsync(default);
             ReloadAvailableGroupsCommand.Execute(default);
+
+            var tools = CoreTools.Tools.Select(p => new AIToolsetItemViewModel(p.Key, p.Value));
+            tools.ToList().ForEach(Tools.Add);
         }
 
         IsInitializing = false;

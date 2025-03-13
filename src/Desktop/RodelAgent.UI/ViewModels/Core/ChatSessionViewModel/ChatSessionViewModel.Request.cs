@@ -35,7 +35,7 @@ public sealed partial class ChatSessionViewModel
         };
 
         var response = await _chatService!.Client!.GetResponseAsync(messages, options);
-        return response.Message?.Text ?? string.Empty;
+        return response?.Text ?? string.Empty;
     }
 
     [RelayCommand]
@@ -195,7 +195,7 @@ public sealed partial class ChatSessionViewModel
         else
         {
             var response = await _chatService!.Client!.GetResponseAsync(messages.ConvertAll(p => p.ToChatMessage(GetAgentName)), options, _cancellationTokenSource!.Token);
-            responseMessage = response.Message.Text;
+            responseMessage = response.Text;
         }
 
         var responseMsg = new ChatMessage(ChatRole.Assistant, responseMessage?.Trim());
@@ -263,7 +263,7 @@ public sealed partial class ChatSessionViewModel
             else
             {
                 var response = await chatService!.Client!.GetResponseAsync(history.ConvertAll(p => p.ToChatMessage(GetAgentName)), options, _cancellationTokenSource!.Token);
-                responseMessage = response.Message.Text;
+                responseMessage = response.Text;
             }
 
             // 检查是否满足终止条件.

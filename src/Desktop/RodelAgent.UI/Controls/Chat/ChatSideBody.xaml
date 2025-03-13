@@ -87,6 +87,20 @@
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>
+        <ScrollViewer
+            Padding="8,0"
+            Style="{StaticResource PageScrollViewerStyle}"
+            Visibility="{x:Bind ViewModel.IsToolSectionVisible, Mode=OneWay}">
+            <StackPanel Margin="0,0,0,20">
+                <ItemsRepeater ItemsSource="{x:Bind ViewModel.Tools}" Layout="{StaticResource BasicLayout}">
+                    <ItemsRepeater.ItemTemplate>
+                        <DataTemplate x:DataType="items:AIToolsetItemViewModel">
+                            <local:AIToolItemControl ViewModel="{x:Bind}" />
+                        </DataTemplate>
+                    </ItemsRepeater.ItemTemplate>
+                </ItemsRepeater>
+            </StackPanel>
+        </ScrollViewer>
         <ProgressRing IsActive="{x:Bind ViewModel.IsInitializing, Mode=OneWay}" Style="{StaticResource PageProgressRingStyle}" />
     </Grid>
 

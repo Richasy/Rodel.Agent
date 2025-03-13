@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:AIToolItemControlBase
+    x:Class="RodelAgent.UI.Controls.Chat.AIToolItemControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:local="using:RodelAgent.UI.Controls.Chat"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid
+        Padding="12,8"
+        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+        BorderBrush="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+        BorderThickness="1"
+        ColumnSpacing="8"
+        CornerRadius="{StaticResource ControlCornerRadius}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <TextBlock
+                Margin="0,-4,0,0"
+                VerticalAlignment="Center"
+                FontFamily="Segoe UI Emoji"
+                FontSize="32"
+                Text="{x:Bind ViewModel.ToolEmoji, Mode=OneWay}"
+                Visibility="{x:Bind ViewModel.ToolEmoji, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}" />
+            <Border
+                Width="32"
+                Height="32"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                CornerRadius="16"
+                Visibility="{x:Bind ViewModel.ToolEmoji, Mode=OneWay, Converter={StaticResource ObjectToVisibilityReverseConverter}}">
+                <ic:SymbolIcon
+                    FontSize="14"
+                    IconVariant="Filled"
+                    Symbol="Flash" />
+            </Border>
+        </Grid>
+
+        <StackPanel
+            Grid.Column="1"
+            VerticalAlignment="Center"
+            Spacing="4">
+            <TextBlock
+                HorizontalAlignment="Left"
+                FontWeight="Bold"
+                Style="{StaticResource CaptionTextBlockStyle}"
+                Text="{x:Bind ViewModel.ToolName, Mode=OneWay}"
+                TextTrimming="CharacterEllipsis" />
+            <TextBlock
+                HorizontalAlignment="Left"
+                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                MaxLines="1"
+                Style="{StaticResource CaptionTextBlockStyle}"
+                Text="{x:Bind ViewModel.ToolDescription, Mode=OneWay}"
+                TextTrimming="CharacterEllipsis" />
+        </StackPanel>
+        <Border
+            Grid.Column="2"
+            Padding="4,2"
+            VerticalAlignment="Center"
+            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+            CornerRadius="2"
+            ToolTipService.ToolTip="{ext:Locale Name=FunctionCount}">
+            <TextBlock
+                FontSize="10"
+                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                Text="{x:Bind ViewModel.ToolCount, Mode=OneWay}"
+                TextAlignment="Center" />
+        </Border>
+    </Grid>
+</local:AIToolItemControlBase>

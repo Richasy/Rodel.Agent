@@ -29,7 +29,6 @@ public partial class App : Application
     {
         InitializeComponent();
         _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-        FluentIcons.WinUI.Extensions.UseSegoeMetrics(this);
         UnhandledException += OnUnhandledException;
     }
 

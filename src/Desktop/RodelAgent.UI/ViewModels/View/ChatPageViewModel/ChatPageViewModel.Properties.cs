@@ -60,4 +60,9 @@ public sealed partial class ChatPageViewModel
     /// 群组列表.
     /// </summary>
     public ObservableCollection<ChatGroupItemViewModel> Groups { get; } = [];
+
+    /// <summary>
+    /// 工具列表.
+    /// </summary>
+    public ObservableCollection<AIToolsetItemViewModel> Tools { get; } = [];
 }
