@@ -119,9 +119,9 @@ public sealed partial class ChatSessionViewModel
             conversation.SystemInstruction = SystemInstruction;
             conversation.Options = options;
             conversation.AgentId = IsAgent ? CurrentAgent?.Id : null;
-            if (Tools.Any(p => p.IsSelected))
+            if (Servers.Any(p => p.IsSelected))
             {
-                conversation.Tools = [.. Tools.Where(p => p.IsSelected).Select(p => p.ToolType.ToString())];
+                conversation.Tools = [.. Servers.Where(p => p.IsSelected).Select(p => p.Id)];
             }
         }
 
@@ -150,9 +150,9 @@ public sealed partial class ChatSessionViewModel
                     _currentConversation.Options = uiOptions;
                 }
 
-                if (Tools.Any(p => p.IsSelected))
+                if (Servers.Any(p => p.IsSelected))
                 {
-                    _currentConversation.Tools = [.. Tools.Where(p => p.IsSelected).Select(p => p.ToolType.ToString())];
+                    _currentConversation.Tools = [.. Servers.Where(p => p.IsSelected).Select(p => p.Id)];
                 }
             }
 
@@ -267,9 +267,9 @@ public sealed partial class ChatSessionViewModel
                 item.IsSelected = item.Conversation == _currentConversation;
             }
 
-            foreach (var item in Tools)
+            foreach (var item in Servers)
             {
-                item.IsSelected = _currentConversation.Tools?.Contains(item.ToolType.ToString()) ?? false;
+                item.IsSelected = _currentConversation.Tools?.Contains(item.Id) ?? false;
             }
         }
         else
@@ -304,7 +304,7 @@ public sealed partial class ChatSessionViewModel
                 item.IsSelected = false;
             }
 
-            foreach (var item in Tools)
+            foreach (var item in Servers)
             {
                 item.IsSelected = false;
             }

@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animations="using:CommunityToolkit.WinUI.Animations"
+    xmlns:base="using:Richasy.WinUIKernel.Share.Base"
     xmlns:controls="using:RodelAgent.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:ext="using:RodelAgent.UI.Extensions"
@@ -86,16 +87,26 @@
                                 MaxHeight="400"
                                 Padding="12,0"
                                 Style="{StaticResource PageScrollViewerStyle}">
-                                <ItemsRepeater Margin="0,12" ItemsSource="{x:Bind ViewModel.Tools}">
+                                <ItemsRepeater Margin="0,12" ItemsSource="{x:Bind ViewModel.Servers}">
                                     <ItemsRepeater.Layout>
                                         <StackLayout Spacing="4" />
                                     </ItemsRepeater.Layout>
                                     <ItemsRepeater.ItemTemplate>
-                                        <DataTemplate x:DataType="items:AIToolsetItemViewModel">
-                                            <local:AIToolItemControl
+                                        <DataTemplate x:DataType="items:McpServerItemViewModel">
+                                            <base:AppToggleCard
+                                                Padding="0"
+                                                HorizontalAlignment="Stretch"
+                                                HorizontalContentAlignment="Stretch"
+                                                AutomationProperties.Name="{x:Bind Name, Mode=OneWay, Converter={StaticResource ChatTitleConverter}}"
+                                                BorderThickness="2"
+                                                Click="OnMcpServerItemClick"
                                                 DataContext="{x:Bind}"
-                                                ItemClick="OnToolItemClick"
-                                                ViewModel="{x:Bind}" />
+                                                IsChecked="{x:Bind IsSelected, Mode=OneWay}"
+                                                IsEnableCheck="False">
+                                                <Grid Padding="12,8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+                                                    <base:TrimTextBlock MaxLines="1" Text="{x:Bind Name, Mode=OneWay}" />
+                                                </Grid>
+                                            </base:AppToggleCard>
                                         </DataTemplate>
                                     </ItemsRepeater.ItemTemplate>
                                 </ItemsRepeater>

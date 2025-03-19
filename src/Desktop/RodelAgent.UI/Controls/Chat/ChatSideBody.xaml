@@ -92,10 +92,10 @@
             Style="{StaticResource PageScrollViewerStyle}"
             Visibility="{x:Bind ViewModel.IsToolSectionVisible, Mode=OneWay}">
             <StackPanel Margin="0,0,0,20">
-                <ItemsRepeater ItemsSource="{x:Bind ViewModel.Tools}" Layout="{StaticResource BasicLayout}">
+                <ItemsRepeater ItemsSource="{x:Bind ViewModel.Servers}" Layout="{StaticResource BasicLayout}">
                     <ItemsRepeater.ItemTemplate>
-                        <DataTemplate x:DataType="items:AIToolsetItemViewModel">
-                            <local:AIToolItemControl ViewModel="{x:Bind}" />
+                        <DataTemplate x:DataType="items:McpServerItemViewModel">
+                            <local:McpServerItemControl ViewModel="{x:Bind}" />
                         </DataTemplate>
                     </ItemsRepeater.ItemTemplate>
                 </ItemsRepeater>

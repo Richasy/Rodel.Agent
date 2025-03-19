@@ -109,9 +109,9 @@ public sealed partial class ChatSessionMainFooter : ChatSessionControlBase
     private void OnSendButtonClick(SplitButton sender, SplitButtonClickEventArgs args)
         => ViewModel.StartGenerateCommand.Execute(default);
 
-    private void OnToolItemClick(object sender, EventArgs e)
+    private void OnMcpServerItemClick(object sender, RoutedEventArgs e)
     {
-        var data = (sender as FrameworkElement)?.DataContext as AIToolsetItemViewModel;
+        var data = (sender as FrameworkElement)?.DataContext as McpServerItemViewModel;
         data!.IsSelected = !data.IsSelected;
     }
 }

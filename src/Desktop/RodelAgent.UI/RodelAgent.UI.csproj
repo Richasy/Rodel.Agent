@@ -32,7 +32,6 @@
     <None Remove="Controls\Audio\AudioSideBody.xaml" />
     <None Remove="Controls\Audio\AudioSideHeader.xaml" />
     <None Remove="Controls\Audio\WavePanel.xaml" />
-    <None Remove="Controls\Chat\AIToolItemControl.xaml" />
     <None Remove="Controls\Chat\ChatAgentConfigDialog.xaml" />
     <None Remove="Controls\Chat\ChatAgentItemControl.xaml" />
     <None Remove="Controls\Chat\ChatAgentModelPanel.xaml" />
@@ -58,6 +57,7 @@
     <None Remove="Controls\Chat\GroupAgentsPanel.xaml" />
     <None Remove="Controls\Chat\GroupOptionsPanel.xaml" />
     <None Remove="Controls\Chat\GroupSessionSideHeader.xaml" />
+    <None Remove="Controls\Chat\McpServerItemControl.xaml" />
     <None Remove="Controls\CollapseHeader.xaml" />
     <None Remove="Controls\CombineRow.xaml" />
     <None Remove="Controls\Draw\DrawImage.xaml" />
@@ -131,6 +131,7 @@
     <PackageReference Include="Microsoft.Graphics.Win2D" />
     <PackageReference Include="NAudio.Core" />
     <PackageReference Include="NAudio.WinMM" />
+    <PackageReference Include="Richasy.AgentKernel.Core.Mcp" />
     <PackageReference Include="Richasy.WinUIKernel.AI" />
     <PackageReference Include="Serilog" />
     <PackageReference Include="Serilog.Extensions.Logging" />
@@ -171,7 +172,6 @@
     <ProjectReference Include="..\..\Core\RodelAgent.Context\RodelAgent.Context.csproj" />
     <ProjectReference Include="..\..\Core\RodelAgent.Interfaces\RodelAgent.Interfaces.csproj" />
     <ProjectReference Include="..\..\Core\RodelAgent.Statics\RodelAgent.Statics.csproj" />
-    <ProjectReference Include="..\..\Core\RodelAgent.Tools\RodelAgent.Tools.csproj" />
     <ProjectReference Include="..\RodelAgent.UI.Models\RodelAgent.UI.Models.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -373,7 +373,7 @@
     <Folder Include="Web\chat-render\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Controls\Chat\AIToolItemControl.xaml">
+    <Page Update="Controls\Chat\McpServerItemControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

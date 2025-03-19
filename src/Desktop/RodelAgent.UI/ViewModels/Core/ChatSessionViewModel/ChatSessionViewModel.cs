@@ -8,7 +8,6 @@ using Richasy.WinUIKernel.Share.Toolkits;
 using RodelAgent.Interfaces;
 using RodelAgent.Models.Constants;
 using RodelAgent.Models.Feature;
-using RodelAgent.Tools;
 using RodelAgent.UI.Controls.Chat;
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Toolkits;
@@ -78,12 +77,10 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
             _tokenTimer.Start();
         }
 
-        var tools = CoreTools.Tools.Select(p => new AIToolsetItemViewModel(p.Key, p.Value));
-        tools.ToList().ForEach(Tools.Add);
-
         _webView = view;
         IsWebInitializing = true;
         IsWebInitialized = false;
+        await ReloadMcpServersAsync();
         CheckChatEmpty();
         CheckRegenerate();
         HistoryHeight = SettingsToolkit.ReadLocalSetting(SettingNames.ChatServicePageHistoryHeight, 300d);
@@ -363,6 +360,17 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         this.Get<ChatAgentConfigViewModel>().SetData(new ChatAgentItemViewModel(agent));
         var dialog = new ChatAgentConfigDialog();
         await dialog.ShowAsync();
+    }
+
+    [RelayCommand]
+    private async Task ReloadMcpServersAsync()
+    {
+        var servers = await CacheToolkit.GetMcpServersAsync();
+        if (servers is not null)
+        {
+            Servers.Clear();
+            servers.ToList().ForEach(item => Servers.Add(new(item.Key, item.Value)));
+        }
     }
 
     private async void OnRequestReloadChatServices(object? sender, EventArgs e)

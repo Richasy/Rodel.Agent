@@ -148,5 +148,5 @@ public sealed partial class ChatSessionViewModel
 
     public ObservableCollection<ChatHistoryItemViewModel> History { get; } = [];
 
-    public ObservableCollection<AIToolsetItemViewModel> Tools { get; } = [];
+    public ObservableCollection<McpServerItemViewModel> Servers { get; } = [];
 }

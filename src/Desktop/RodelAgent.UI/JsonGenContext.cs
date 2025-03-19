@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
 using Richasy.AgentKernel;
+using Richasy.AgentKernel.Core.Mcp.Shared;
 using RodelAgent.Models.Common;
 using RodelAgent.Models.Feature;
 using System.Text.Json.Serialization;
@@ -25,6 +26,7 @@ namespace RodelAgent.UI;
 [JsonSerializable(typeof(WebDataObject))]
 [JsonSerializable(typeof(EditedInteropMessage))]
 [JsonSerializable(typeof(List<ChatConversation>))]
+[JsonSerializable(typeof(McpServerDefinitionCollection))]
 internal sealed partial class JsonGenContext : JsonSerializerContext
 {
 }

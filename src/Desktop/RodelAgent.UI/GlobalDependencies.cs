@@ -138,8 +138,10 @@ internal static class GlobalDependencies
         // Create a logger with current date.
         Log.Logger = new LoggerConfiguration()
             .WriteTo.File(Path.Combine(loggerPath, $"log-{DateTimeOffset.Now:yyyy-MM-dd}.txt"))
-            .CreateLogger();
+            .CreateLogger(); 
 
+        var factory = LoggerFactory.Create(builder => builder.AddSerilog(dispose: true));
+        builder.Services.AddSingleton(factory);
         builder.Services.AddLogging(b => b.AddSerilog(dispose: true));
         return builder;
     }

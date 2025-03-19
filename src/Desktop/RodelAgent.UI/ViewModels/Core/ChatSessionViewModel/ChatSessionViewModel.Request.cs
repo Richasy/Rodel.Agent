@@ -182,10 +182,20 @@ public sealed partial class ChatSessionViewModel
             .UseFunctionInvocation(configure: c => c.MaximumIterationsPerRequest = 2)
             .Build();
 
-        if (SelectedModel!.IsToolSupport && Tools.Any(p => p.IsSelected))
+        if (SelectedModel!.IsToolSupport && Servers.Any(p => p.IsSelected))
         {
-            var selectedTools = Tools.Where(p => p.IsSelected).SelectMany(p => p.Functions).ToList();
-            options.Tools = [.. selectedTools];
+            var selectedServers = Servers.Where(p => p.IsSelected).ToList();
+            foreach (var server in selectedServers)
+            {
+                if (server.State != UI.Models.Constants.McpServerState.Running)
+                {
+                    this.Get<AppViewModel>().ShowTipCommand.Execute((string.Format(ResourceToolkit.GetLocalizedString(UI.Models.Constants.StringNames.TryRunMcpServer), server.Name), InfoType.Information));
+                    await server.TryConnectAsync();
+                }
+            }
+
+            var functions = selectedServers.SelectMany(p => p.Functions).Select(p => p.Data).ToList();
+            options.Tools = [.. functions];
         }
 
         if (useStream)
@@ -267,8 +277,18 @@ public sealed partial class ChatSessionViewModel
                 var specificModel = chatService.GetPredefinedModels().Concat(basicConfig?.CustomModels ?? []).FirstOrDefault(p => p.Id == options.ModelId);
                 if (specificModel?.ToolSupport == true)
                 {
-                    var selectedTools = Tools.Where(p => currentAgent.Data.Tools.Contains(p.ToolType.ToString())).SelectMany(p => p.Functions).ToList();
-                    options.Tools = [.. selectedTools];
+                    var selectedServers = Servers.Where(p => currentAgent.Data.Tools.Contains(p.Id)).ToList();
+                    foreach (var server in selectedServers)
+                    {
+                        if (server.State != UI.Models.Constants.McpServerState.Running)
+                        {
+                            this.Get<AppViewModel>().ShowTipCommand.Execute((string.Format(ResourceToolkit.GetLocalizedString(UI.Models.Constants.StringNames.TryRunMcpServer), server.Name), InfoType.Information));
+                            await server.TryConnectAsync();
+                        }
+                    }
+
+                    var functions = selectedServers.SelectMany(p => p.Functions).Select(p => p.Data).ToList();
+                    options.Tools = [.. functions];
                 }
             }
 

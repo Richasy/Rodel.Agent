@@ -715,13 +715,28 @@
   <data name="SaveAsAgent" xml:space="preserve">
     <value>保存为助理</value>
   </data>
-  <data name="FunctionCount" xml:space="preserve">
-    <value>可调用方法个数</value>
+  <data name="FunctionCountTemplate" xml:space="preserve">
+    <value>查看 {0} 个方法</value>
   </data>
   <data name="Tool_Weather_Description" xml:space="preserve">
     <value>查询指定城市的天气</value>
   </data>
   <data name="Tool_Weather_Name" xml:space="preserve">
     <value>天气工具</value>
+  </data>
+  <data name="TryRunMcpServer" xml:space="preserve">
+    <value>正在尝试运行 {0} 服务</value>
+  </data>
+  <data name="Launching" xml:space="preserve">
+    <value>启动中...</value>
+  </data>
+  <data name="NoFunction" xml:space="preserve">
+    <value>没有可用的方法</value>
+  </data>
+  <data name="NotRun" xml:space="preserve">
+    <value>未启动</value>
+  </data>
+  <data name="RunServer" xml:space="preserve">
+    <value>启动服务</value>
   </data>
 </root>

@@ -191,15 +191,7 @@ public sealed partial class ChatSessionViewModel
             await _storageService.AddOrUpdateChatConversationAsync(_currentConversation);
         }
 
-        if (Messages.Count > 0)
-        {
-            if (await ClearMessageInternalAsync())
-            {
-                Messages.Clear();
-            }
-        }
-
-        _currentConversation = default;
+        SetCurrentConversation(null);
         RequestFocusInput?.Invoke(this, EventArgs.Empty);
     }
 

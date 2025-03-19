@@ -62,7 +62,7 @@ public sealed partial class ChatPageViewModel
     public ObservableCollection<ChatGroupItemViewModel> Groups { get; } = [];
 
     /// <summary>
-    /// 工具列表.
+    /// MCP列表.
     /// </summary>
-    public ObservableCollection<AIToolsetItemViewModel> Tools { get; } = [];
+    public ObservableCollection<McpServerItemViewModel> Servers { get; } = [];
 }
