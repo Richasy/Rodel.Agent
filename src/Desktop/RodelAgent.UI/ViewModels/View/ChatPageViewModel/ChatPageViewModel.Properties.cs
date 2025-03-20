@@ -51,6 +51,9 @@ public sealed partial class ChatPageViewModel
     [ObservableProperty]
     public partial bool IsGroupsCollapsed { get; set; }
 
+    [ObservableProperty]
+    public partial bool IsServerEmpty { get; set; }
+
     /// <summary>
     /// 助理列表.
     /// </summary>

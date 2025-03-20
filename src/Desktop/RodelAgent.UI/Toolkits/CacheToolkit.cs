@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
-using Richasy.AgentKernel.Core.Mcp.Shared;
+using RodelAgent.UI.ViewModels.Items;
 using System.Text.Json;
 
 namespace RodelAgent.UI.Toolkits;
 
 public static class CacheToolkit
 {
-    public static async Task<McpServerDefinitionCollection?> GetMcpServersAsync()
+    public static async Task<McpAgentConfigCollection?> GetMcpServersAsync()
     {
         var filePath = Path.Combine(GetLibraryPath(), "McpServers.json");
         if (!File.Exists(filePath))
@@ -21,13 +21,13 @@ public static class CacheToolkit
             return default;
         }
 
-        return JsonSerializer.Deserialize(json, JsonGenContext.Default.McpServerDefinitionCollection);
+        return JsonSerializer.Deserialize(json, JsonGenContext.Default.McpAgentConfigCollection);
     }
 
-    public static async Task SaveMcpServersAsync(McpServerDefinitionCollection collection)
+    public static async Task SaveMcpServersAsync(McpAgentConfigCollection collection)
     {
         var filePath = Path.Combine(GetLibraryPath(), "McpServers.json");
-        var json = JsonSerializer.Serialize(collection, JsonGenContext.Default.McpServerDefinitionCollection);
+        var json = JsonSerializer.Serialize(collection, JsonGenContext.Default.McpAgentConfigCollection);
         await File.WriteAllTextAsync(filePath, json);
     }
 

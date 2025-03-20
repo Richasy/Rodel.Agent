@@ -184,13 +184,14 @@ public sealed partial class ChatSessionViewModel
 
         if (SelectedModel!.IsToolSupport && Servers.Any(p => p.IsSelected))
         {
-            var selectedServers = Servers.Where(p => p.IsSelected).ToList();
+            var serverIds = Servers.Where(p => p.IsSelected).Select(p => p.Id).ToList();
+            var selectedServers = this.Get<ChatPageViewModel>().Servers.Where(p => serverIds.Contains(p.Id)).ToList();
             foreach (var server in selectedServers)
             {
                 if (server.State != UI.Models.Constants.McpServerState.Running)
                 {
                     this.Get<AppViewModel>().ShowTipCommand.Execute((string.Format(ResourceToolkit.GetLocalizedString(UI.Models.Constants.StringNames.TryRunMcpServer), server.Name), InfoType.Information));
-                    await server.TryConnectAsync();
+                    await server.TryConnectCommand.ExecuteAsync(default);
                 }
             }
 
@@ -277,13 +278,13 @@ public sealed partial class ChatSessionViewModel
                 var specificModel = chatService.GetPredefinedModels().Concat(basicConfig?.CustomModels ?? []).FirstOrDefault(p => p.Id == options.ModelId);
                 if (specificModel?.ToolSupport == true)
                 {
-                    var selectedServers = Servers.Where(p => currentAgent.Data.Tools.Contains(p.Id)).ToList();
+                    var selectedServers = this.Get<ChatPageViewModel>().Servers.Where(p => currentAgent.Data.Tools.Contains(p.Id)).ToList();
                     foreach (var server in selectedServers)
                     {
                         if (server.State != UI.Models.Constants.McpServerState.Running)
                         {
                             this.Get<AppViewModel>().ShowTipCommand.Execute((string.Format(ResourceToolkit.GetLocalizedString(UI.Models.Constants.StringNames.TryRunMcpServer), server.Name), InfoType.Information));
-                            await server.TryConnectAsync();
+                            await server.TryConnectCommand.ExecuteAsync(default);
                         }
                     }
 

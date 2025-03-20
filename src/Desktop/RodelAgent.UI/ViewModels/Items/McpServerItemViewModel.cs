@@ -1,43 +1,45 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
 using Richasy.AgentKernel.Core.Mcp.Client;
-using Richasy.AgentKernel.Core.Mcp.Configuration;
 using Richasy.AgentKernel.Core.Mcp.Protocol.Transport;
 using Richasy.AgentKernel.Core.Mcp.Shared;
 using Richasy.WinUIKernel.Share.Toolkits;
 using RodelAgent.UI.Models.Constants;
+using RodelAgent.UI.ViewModels.View;
 
 namespace RodelAgent.UI.ViewModels.Items;
 
-public sealed partial class McpServerItemViewModel : ViewModelBase<McpServerDefinition>
+public sealed partial class McpServerItemViewModel(string id, McpAgentConfig data, Func<Task> saveFunc) : ViewModelBase<McpAgentConfig>(data)
 {
-    private readonly string _sourceId;
-    private IMcpClient? _client;
     private CancellationTokenSource? _runCts;
 
-    public McpServerItemViewModel(string id, McpServerDefinition data) : base(data)
-    {
-        _sourceId = id;
-        Name = id;
-        State = McpServerState.Stopped;
-    }
+    /// <summary>
+    /// MCP 服务列表.
+    /// </summary>
+    public static Dictionary<string, IMcpClient?> McpServers { get; } = [];
 
     /// <summary>
     /// 标识符.
     /// </summary>
-    public string Id => _sourceId;
+    public string Id { get; } = id;
 
     /// <summary>
     /// 服务名称.
     /// </summary>
     [ObservableProperty]
-    public partial string Name { get; set; }
+    public partial string Name { get; set; } = id;
+
+    /// <summary>
+    /// 是否启用.
+    /// </summary>
+    [ObservableProperty]
+    public partial bool IsEnabled { get; set; } = data.IsEnabled ?? true;
 
     /// <summary>
     /// 服务器状态.
     /// </summary>
     [ObservableProperty]
-    public partial McpServerState State { get; set; }
+    public partial McpServerState State { get; set; } = McpServerState.Stopped;
 
     /// <summary>
     /// 初始化时的错误信息.
@@ -69,18 +71,20 @@ public sealed partial class McpServerItemViewModel : ViewModelBase<McpServerDefi
     public ObservableCollection<AIFunctionItemViewModel> Functions { get; } = [];
 
     [RelayCommand]
-    public async Task TryConnectAsync()
+    private async Task TryConnectAsync()
     {
+        var client = GetClient();
+
         // 正在连接或者运行时，不进行操作.
-        if (_client != null && (State == McpServerState.Running || State == McpServerState.Connecting))
+        if (client != null && (State == McpServerState.Running || State == McpServerState.Connecting))
         {
             return;
         }
 
-        if (_client != null)
+        if (client != null)
         {
-            await _client.DisposeAsync();
-            _client = null;
+            await client.DisposeAsync();
+            McpServers.Remove(Id);
         }
 
         _runCts = new CancellationTokenSource();
@@ -91,44 +95,20 @@ public sealed partial class McpServerItemViewModel : ViewModelBase<McpServerDefi
             ClientInfo = new() { Name = "RodelAgent", Version = this.Get<IAppToolkit>().GetPackageVersion() },
         };
 
-        var serverConfig = new McpServerConfig
-        {
-            Id = _sourceId,
-            Name = _sourceId,
-            TransportType = TransportTypes.StdIo,
-            Location = Data.WorkingDirectory,
-            TransportOptions = new()
-            {
-                ["command"] = Data.Command!,
-            }
-        };
-
-        if (Data.Arguments?.Length > 0)
-        {
-            serverConfig.TransportOptions["arguments"] = string.Join(" ", Data.Arguments);
-        }
-
-        if (Data.Environments?.Count > 0)
-        {
-            foreach (var item in Data.Environments)
-            {
-                serverConfig.TransportOptions[$"env:{item.Key}"] = item.Value;
-            }
-        }
-
         var loggerFactory = this.Get<ILoggerFactory>();
         try
         {
-            _client = await McpClientFactory.CreateAsync(serverConfig, clientOptions, default, loggerFactory, _runCts.Token);
-            Name = _client.ServerInfo?.Name ?? _sourceId;
-            await _client.PingAsync(_runCts.Token);
-            var functions = await _client.GetAIFunctionsAsync(_runCts.Token);
+            client = await McpClientFactory.CreateAsync(Id, TransportTypes.StdIo, Data, clientOptions, default, loggerFactory, _runCts.Token);
+            Name = client.ServerInfo?.Name ?? Id;
+            await client.PingAsync(_runCts.Token);
+            var functions = await client.ListToolsAsync().ToListAsync();
             IsFunctionEmpty = functions == null || functions.Count == 0;
             FunctionCount = functions?.Count ?? 0;
             Functions.Clear();
             functions?.ToList().ForEach(item => Functions.Add(new AIFunctionItemViewModel(item)));
 
             State = McpServerState.Running;
+            McpServers[Id] = client;
         }
         catch (Exception ex)
         {
@@ -139,4 +119,36 @@ public sealed partial class McpServerItemViewModel : ViewModelBase<McpServerDefi
             InitErrorMessage = ex.Message;
         }
     }
+
+    [RelayCommand]
+    private Task SaveAsync()
+        => saveFunc();
+
+    [RelayCommand]
+    private async Task DeleteAsync()
+    {
+        var client = GetClient();
+        if (client != null)
+        {
+            await client.DisposeAsync();
+            McpServers.Remove(Id);
+        }
+
+        var pageVM = this.Get<ChatPageViewModel>();
+        pageVM.Servers.Remove(this);
+        await saveFunc();
+    }
+
+    private IMcpClient? GetClient()
+        => McpServers.ContainsKey(Id) ? McpServers.First(p => p.Key == Id).Value : default;
 }
+
+public sealed class McpAgentConfig : McpServerDefinition
+{
+    /// <summary>
+    /// 是否启用.
+    /// </summary>
+    public bool? IsEnabled { get; set; }
+}
+
+public sealed partial class McpAgentConfigCollection : Dictionary<string, McpAgentConfig>;

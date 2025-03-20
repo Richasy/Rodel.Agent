@@ -82,35 +82,49 @@
                                     <Setter Property="Padding" Value="0" />
                                 </Style>
                             </Flyout.FlyoutPresenterStyle>
-                            <ScrollViewer
-                                MinWidth="340"
-                                MaxHeight="400"
-                                Padding="12,0"
-                                Style="{StaticResource PageScrollViewerStyle}">
-                                <ItemsRepeater Margin="0,12" ItemsSource="{x:Bind ViewModel.Servers}">
-                                    <ItemsRepeater.Layout>
-                                        <StackLayout Spacing="4" />
-                                    </ItemsRepeater.Layout>
-                                    <ItemsRepeater.ItemTemplate>
-                                        <DataTemplate x:DataType="items:McpServerItemViewModel">
-                                            <base:AppToggleCard
-                                                Padding="0"
-                                                HorizontalAlignment="Stretch"
-                                                HorizontalContentAlignment="Stretch"
-                                                AutomationProperties.Name="{x:Bind Name, Mode=OneWay, Converter={StaticResource ChatTitleConverter}}"
-                                                BorderThickness="2"
-                                                Click="OnMcpServerItemClick"
-                                                DataContext="{x:Bind}"
-                                                IsChecked="{x:Bind IsSelected, Mode=OneWay}"
-                                                IsEnableCheck="False">
-                                                <Grid Padding="12,8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
-                                                    <base:TrimTextBlock MaxLines="1" Text="{x:Bind Name, Mode=OneWay}" />
-                                                </Grid>
-                                            </base:AppToggleCard>
-                                        </DataTemplate>
-                                    </ItemsRepeater.ItemTemplate>
-                                </ItemsRepeater>
-                            </ScrollViewer>
+                            <Grid>
+                                <ScrollViewer
+                                    MinWidth="340"
+                                    MaxHeight="400"
+                                    Padding="12,0"
+                                    Style="{StaticResource PageScrollViewerStyle}"
+                                    Visibility="{x:Bind ViewModel.IsServerEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+                                    <ItemsRepeater Margin="0,12" ItemsSource="{x:Bind ViewModel.Servers}">
+                                        <ItemsRepeater.Layout>
+                                            <StackLayout Spacing="4" />
+                                        </ItemsRepeater.Layout>
+                                        <ItemsRepeater.ItemTemplate>
+                                            <DataTemplate x:DataType="items:McpServerItemViewModel">
+                                                <base:AppToggleCard
+                                                    Padding="0"
+                                                    HorizontalAlignment="Stretch"
+                                                    HorizontalContentAlignment="Stretch"
+                                                    AutomationProperties.Name="{x:Bind Name, Mode=OneWay, Converter={StaticResource ChatTitleConverter}}"
+                                                    BorderThickness="2"
+                                                    Click="OnMcpServerItemClick"
+                                                    DataContext="{x:Bind}"
+                                                    IsChecked="{x:Bind IsSelected, Mode=OneWay}"
+                                                    IsEnableCheck="False">
+                                                    <Grid Padding="12,8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+                                                        <base:TrimTextBlock MaxLines="1" Text="{x:Bind Name, Mode=OneWay}" />
+                                                    </Grid>
+                                                </base:AppToggleCard>
+                                            </DataTemplate>
+                                        </ItemsRepeater.ItemTemplate>
+                                    </ItemsRepeater>
+                                </ScrollViewer>
+                                <Border
+                                    Width="340"
+                                    Padding="12,8"
+                                    CornerRadius="{StaticResource ControlCornerRadius}"
+                                    Visibility="{x:Bind ViewModel.IsServerEmpty, Mode=OneWay}">
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        Foreground="{ThemeResource TextFillColorDisabledBrush}"
+                                        Style="{StaticResource CaptionTextBlockStyle}"
+                                        Text="{ext:Locale Name=NoMcpServer}" />
+                                </Border>
+                            </Grid>
                         </Flyout>
                     </Button.Flyout>
                 </Button>

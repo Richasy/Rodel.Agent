@@ -62,6 +62,16 @@ public sealed partial class McpServerItemControl : McpServerItemControlBase
     {
         RunItem.IsEnabled = ViewModel.State == Models.Constants.McpServerState.Stopped || ViewModel.State == Models.Constants.McpServerState.Error;
     }
+
+    private void OnEnabledChanged(object sender, RoutedEventArgs e)
+    {
+        if (EnableSwitch.IsOn != ViewModel.IsEnabled)
+        {
+            ViewModel.IsEnabled = EnableSwitch.IsOn;
+            ViewModel.Data.IsEnabled = ViewModel.IsEnabled;
+            ViewModel.SaveCommand.Execute(default);
+        }
+    }
 }
 
 public abstract class McpServerItemControlBase : LayoutUserControlBase<McpServerItemViewModel>;

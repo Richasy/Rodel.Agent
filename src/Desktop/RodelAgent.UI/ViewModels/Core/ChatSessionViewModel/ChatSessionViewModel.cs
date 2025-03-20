@@ -368,9 +368,23 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         var servers = await CacheToolkit.GetMcpServersAsync();
         if (servers is not null)
         {
+            var selectedServers = Servers.Where(p => p.IsSelected).Select(p => p.Id).ToList() ?? [];
             Servers.Clear();
-            servers.ToList().ForEach(item => Servers.Add(new(item.Key, item.Value)));
+            servers.Where(p => p.Value.IsEnabled != false).ToList().ForEach(item => Servers.Add(new(item.Key, item.Value, SaveMcpServersAsync)));
+            foreach (var item in Servers)
+            {
+                item.IsSelected = selectedServers.Contains(item.Id);
+            }
         }
+
+        IsServerEmpty = Servers.Count == 0;
+    }
+
+    [RelayCommand]
+    private async Task SaveMcpServersAsync()
+    {
+        var pageVM = this.Get<ChatPageViewModel>();
+        await pageVM.SaveMcpServersCommand.ExecuteAsync(default);
     }
 
     private async void OnRequestReloadChatServices(object? sender, EventArgs e)

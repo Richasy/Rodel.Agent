@@ -35,18 +35,31 @@
                     ToolTipService.ToolTip="{ext:Locale Name=NewAgent}">
                     <ic:SymbolIcon
                         FontSize="14"
+                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                         IconVariant="Filled"
                         Symbol="BotAdd" />
                 </Button>
-                <Button
-                    AutomationProperties.Name="{ext:Locale Name=NewGroup}"
-                    Command="{x:Bind ViewModel.CreateGroupCommand}"
-                    Style="{StaticResource IconButtonStyle}"
-                    ToolTipService.ToolTip="{ext:Locale Name=NewGroup}">
-                    <ic:SymbolIcon
-                        FontSize="14"
-                        IconVariant="Filled"
-                        Symbol="ChatAdd" />
+                <Button Style="{StaticResource IconButtonStyle}" ToolTipService.ToolTip="{ext:Locale Name=MoreOptions}">
+                    <ic:SymbolIcon FontSize="14" Symbol="MoreVertical" />
+                    <Button.Flyout>
+                        <MenuFlyout Placement="Bottom">
+                            <MenuFlyoutItem Command="{x:Bind ViewModel.CreateGroupCommand}" Text="{ext:Locale Name=NewGroup}">
+                                <MenuFlyoutItem.Icon>
+                                    <ic:SymbolIcon Symbol="ChatMultiple" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem Text="{ext:Locale Name=AddMcpServer}">
+                                <MenuFlyoutItem.Icon>
+                                    <ic:SymbolIcon Symbol="FlashAdd" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem Command="{x:Bind ViewModel.ImportMcpConfigCommand}" Text="{ext:Locale Name=ImportMcpConfig}">
+                                <MenuFlyoutItem.Icon>
+                                    <ic:SymbolIcon Symbol="ClipboardCode" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyout>
+                    </Button.Flyout>
                 </Button>
             </StackPanel>
         </Grid>

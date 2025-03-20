@@ -2,6 +2,7 @@
 
 using Richasy.AgentKernel;
 using Richasy.WinUIKernel.AI.ViewModels;
+using Richasy.WinUIKernel.Share.Toolkits;
 using RodelAgent.Interfaces;
 using RodelAgent.Models.Constants;
 using RodelAgent.Models.Feature;
@@ -11,6 +12,9 @@ using RodelAgent.UI.Pages;
 using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels.Core;
 using RodelAgent.UI.ViewModels.Items;
+using System.Text.Json;
+using Windows.Storage;
+using Windows.System;
 
 namespace RodelAgent.UI.ViewModels.View;
 
@@ -29,6 +33,7 @@ public sealed partial class ChatPageViewModel : LayoutPageViewModelBase
         IsToolSectionVisible = false;
         Agents.CollectionChanged += (_, _) => CheckAgentsVisible();
         Groups.CollectionChanged += (_, _) => CheckGroupsVisible();
+        Servers.CollectionChanged += (_, _) => CheckServersEmpty();
     }
 
     /// <inheritdoc/>
@@ -41,6 +46,7 @@ public sealed partial class ChatPageViewModel : LayoutPageViewModelBase
         IsServicesCollapsed = SettingsToolkit.ReadLocalSetting(SettingNames.IsChatServicesCollapsed, false);
         IsAgentsCollapsed = SettingsToolkit.ReadLocalSetting(SettingNames.IsChatAgentsCollapsed, false);
         IsGroupsCollapsed = SettingsToolkit.ReadLocalSetting(SettingNames.IsChatGroupsCollapsed, false);
+        CheckServersEmpty();
         if (Services == null)
         {
             this.Get<AppViewModel>().RequestReloadChatServices += (_, _) => ReloadAvailableServicesCommand.Execute(default);
@@ -57,7 +63,7 @@ public sealed partial class ChatPageViewModel : LayoutPageViewModelBase
             {
                 foreach (var server in servers)
                 {
-                    Servers.Add(new(server.Key, server.Value));
+                    Servers.Add(new(server.Key, server.Value, SaveMcpServersAsync));
                 }
             }
         }
@@ -259,11 +265,85 @@ public sealed partial class ChatPageViewModel : LayoutPageViewModelBase
         await dialog.ShowAsync();
     }
 
+    [RelayCommand]
+    private async Task SaveMcpServersAsync()
+    {
+        McpAgentConfigCollection servers = [];
+        foreach (var item in Servers)
+        {
+            servers.Add(item.Id, item.Data);
+        }
+
+        await CacheToolkit.SaveMcpServersAsync(servers);
+        var sessionVM = this.Get<ChatSessionViewModel>();
+        if (sessionVM.IsWebInitialized)
+        {
+            sessionVM.ReloadMcpServersCommand.Execute(default);
+        }
+    }
+
+    [RelayCommand]
+    private async Task ImportMcpConfigAsync()
+    {
+        var fileObj = await this.Get<IFileToolkit>().PickFileAsync(".json", this.Get<AppViewModel>().ActivatedWindow);
+        if (fileObj is not { } file)
+        {
+            return;
+        }
+
+        var content = await FileIO.ReadTextAsync(file);
+        try
+        {
+            var jsonEle = JsonDocument.Parse(content).RootElement;
+            if (jsonEle.TryGetProperty("mcpServers", out var serverEle))
+            {
+                jsonEle = serverEle;
+            }
+
+            var servers = JsonSerializer.Deserialize(jsonEle.GetRawText(), JsonGenContext.Default.McpAgentConfigCollection);
+            if (servers != null)
+            {
+                foreach (var item in servers)
+                {
+                    if (!string.IsNullOrEmpty(item.Value?.Command) && !Servers.Any(p => p.Id == item.Key))
+                    {
+                        Servers.Add(new(item.Key, item.Value, SaveMcpServersAsync));
+                    }
+                }
+
+                SaveMcpServersCommand.Execute(default);
+            }
+        }
+        catch (Exception ex)
+        {
+            var dialog = new ContentDialog
+            {
+                Title = ResourceToolkit.GetLocalizedString(StringNames.Tip),
+                Content = ResourceToolkit.GetLocalizedString(StringNames.McpJsonInvalid),
+                PrimaryButtonText = ResourceToolkit.GetLocalizedString(StringNames.ReadDocument),
+                CloseButtonText = ResourceToolkit.GetLocalizedString(StringNames.Cancel),
+                DefaultButton = ContentDialogButton.Primary,
+                XamlRoot = this.Get<AppViewModel>().ActivatedWindow.Content.XamlRoot,
+            };
+
+            var result = await dialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                await Launcher.LaunchUriAsync(new Uri(AppToolkit.GetDocumentLink("/mcp")));
+            }
+
+            this.Get<ILogger<ChatPageViewModel>>().LogError(ex, "Import Mcp Config Error.");
+        }
+    }
+
     private void CheckAgentsVisible()
         => IsAgentListVisible = Agents.Count > 0;
 
     private void CheckGroupsVisible()
         => IsGroupListVisible = Groups.Count > 0;
+
+    private void CheckServersEmpty()
+        => IsServerEmpty = Servers.Count == 0;
 
     private void DeselectAllServices()
     {

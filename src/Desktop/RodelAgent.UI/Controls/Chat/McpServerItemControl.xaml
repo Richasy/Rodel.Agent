@@ -36,7 +36,7 @@
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
                 <MenuFlyoutSeparator />
-                <MenuFlyoutItem Text="{ext:Locale Name=Delete}">
+                <MenuFlyoutItem Command="{x:Bind ViewModel.DeleteCommand, Mode=OneWay}" Text="{ext:Locale Name=Delete}">
                     <MenuFlyoutItem.Icon>
                         <ic:SymbolIcon Foreground="{ThemeResource SystemFillColorCriticalBrush}" Symbol="Delete" />
                     </MenuFlyoutItem.Icon>
@@ -66,11 +66,14 @@
                     VerticalAlignment="Center"
                     Text="{x:Bind ViewModel.Name, Mode=OneWay}" />
                 <ToggleSwitch
+                    x:Name="EnableSwitch"
                     Grid.Column="2"
                     MinWidth="0"
                     MinHeight="0"
+                    IsOn="{x:Bind ViewModel.IsEnabled, Mode=OneWay}"
                     OffContent=""
-                    OnContent="" />
+                    OnContent=""
+                    Toggled="OnEnabledChanged" />
             </Grid>
             <Grid Grid.Row="1" Padding="0,0,8,0">
                 <Border

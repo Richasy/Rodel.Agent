@@ -137,6 +137,7 @@
     <PackageReference Include="Serilog.Extensions.Logging" />
     <PackageReference Include="Serilog.Sinks.File" />
     <PackageReference Include="SimpleTrayIcon" />
+    <PackageReference Include="System.Linq.AsyncEnumerable" />
     <PackageReference Include="System.Private.Uri" />
     <PackageReference Include="Tiktoken" />
     <PackageReference Include="WinUIEx" />

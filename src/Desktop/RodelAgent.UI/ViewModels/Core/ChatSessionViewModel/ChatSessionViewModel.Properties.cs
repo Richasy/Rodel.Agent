@@ -138,6 +138,9 @@ public sealed partial class ChatSessionViewModel
     [ObservableProperty]
     public partial int TotalTokenCount { get; set; }
 
+    [ObservableProperty]
+    public partial bool IsServerEmpty { get; set; }
+
     public ObservableCollection<ChatAgentItemViewModel> Agents { get; } = [];
 
     public ObservableCollection<ChatServiceItemViewModel> Services { get; } = [];
