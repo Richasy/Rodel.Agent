@@ -57,6 +57,7 @@
     <None Remove="Controls\Chat\GroupAgentsPanel.xaml" />
     <None Remove="Controls\Chat\GroupOptionsPanel.xaml" />
     <None Remove="Controls\Chat\GroupSessionSideHeader.xaml" />
+    <None Remove="Controls\Chat\McpConfigDialog.xaml" />
     <None Remove="Controls\Chat\McpServerItemControl.xaml" />
     <None Remove="Controls\CollapseHeader.xaml" />
     <None Remove="Controls\CombineRow.xaml" />
@@ -372,6 +373,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Web\chat-render\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Chat\McpConfigDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\Chat\McpServerItemControl.xaml">

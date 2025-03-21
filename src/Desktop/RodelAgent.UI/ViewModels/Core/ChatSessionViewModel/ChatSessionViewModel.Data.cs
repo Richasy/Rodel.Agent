@@ -306,7 +306,7 @@ public sealed partial class ChatSessionViewModel
 
             foreach (var item in Servers)
             {
-                item.IsSelected = false;
+                item.IsSelected = item.IsEnabled;
             }
 
             ClearMessageCommand.Execute(default);

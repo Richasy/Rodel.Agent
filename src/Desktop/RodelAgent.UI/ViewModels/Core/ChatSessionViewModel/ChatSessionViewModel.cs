@@ -370,10 +370,10 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         {
             var selectedServers = Servers.Where(p => p.IsSelected).Select(p => p.Id).ToList() ?? [];
             Servers.Clear();
-            servers.Where(p => p.Value.IsEnabled != false).ToList().ForEach(item => Servers.Add(new(item.Key, item.Value, SaveMcpServersAsync)));
+            servers.ToList().ForEach(item => Servers.Add(new(item.Key, item.Value, SaveMcpServersAsync)));
             foreach (var item in Servers)
             {
-                item.IsSelected = selectedServers.Contains(item.Id);
+                item.IsSelected = selectedServers.Contains(item.Id) || item.IsEnabled;
             }
         }
 

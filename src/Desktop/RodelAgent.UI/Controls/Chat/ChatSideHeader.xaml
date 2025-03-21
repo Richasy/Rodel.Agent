@@ -48,7 +48,7 @@
                                     <ic:SymbolIcon Symbol="ChatMultiple" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem Text="{ext:Locale Name=AddMcpServer}">
+                            <MenuFlyoutItem Command="{x:Bind ViewModel.AddMcpConfigCommand}" Text="{ext:Locale Name=AddMcpServer}">
                                 <MenuFlyoutItem.Icon>
                                     <ic:SymbolIcon Symbol="FlashAdd" />
                                 </MenuFlyoutItem.Icon>

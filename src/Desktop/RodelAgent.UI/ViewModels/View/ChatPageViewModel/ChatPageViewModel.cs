@@ -336,6 +336,13 @@ public sealed partial class ChatPageViewModel : LayoutPageViewModelBase
         }
     }
 
+    [RelayCommand]
+    private static async Task AddMcpConfigAsync()
+    {
+        var dialog = new McpConfigDialog();
+        await dialog.ShowAsync();
+    }
+
     private void CheckAgentsVisible()
         => IsAgentListVisible = Agents.Count > 0;
 

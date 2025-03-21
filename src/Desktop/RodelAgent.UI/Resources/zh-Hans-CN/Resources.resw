@@ -718,12 +718,6 @@
   <data name="FunctionCountTemplate" xml:space="preserve">
     <value>查看 {0} 个方法</value>
   </data>
-  <data name="Tool_Weather_Description" xml:space="preserve">
-    <value>查询指定城市的天气</value>
-  </data>
-  <data name="Tool_Weather_Name" xml:space="preserve">
-    <value>天气工具</value>
-  </data>
   <data name="TryRunMcpServer" xml:space="preserve">
     <value>正在尝试运行 {0} 服务</value>
   </data>
@@ -759,5 +753,38 @@
   </data>
   <data name="Tip" xml:space="preserve">
     <value>提醒</value>
+  </data>
+  <data name="AddVariable" xml:space="preserve">
+    <value>添加变量</value>
+  </data>
+  <data name="CommandAndArguments" xml:space="preserve">
+    <value>命令及参数</value>
+  </data>
+  <data name="ConfigName" xml:space="preserve">
+    <value>配置名称</value>
+  </data>
+  <data name="DefaultEnabled" xml:space="preserve">
+    <value>默认启用</value>
+  </data>
+  <data name="EnvironmentVariables" xml:space="preserve">
+    <value>环境变量</value>
+  </data>
+  <data name="McpServer" xml:space="preserve">
+    <value>MCP 服务</value>
+  </data>
+  <data name="McpServerNameExist" xml:space="preserve">
+    <value>同名的 MCP 服务已经存在</value>
+  </data>
+  <data name="VariableName" xml:space="preserve">
+    <value>变量名</value>
+  </data>
+  <data name="VariableNameExist" xml:space="preserve">
+    <value>同名变量已存在</value>
+  </data>
+  <data name="VariableValue" xml:space="preserve">
+    <value>变量值</value>
+  </data>
+  <data name="WorkingDirectory" xml:space="preserve">
+    <value>工作目录</value>
   </data>
 </root>

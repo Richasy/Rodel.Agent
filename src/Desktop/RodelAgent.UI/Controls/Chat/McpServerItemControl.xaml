@@ -30,7 +30,7 @@
                         <ic:SymbolIcon Symbol="FlashPlay" />
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
-                <MenuFlyoutItem Text="{ext:Locale Name=Edit}">
+                <MenuFlyoutItem Command="{x:Bind ViewModel.ModifyCommand, Mode=OneWay}" Text="{ext:Locale Name=Edit}">
                     <MenuFlyoutItem.Icon>
                         <ic:SymbolIcon Symbol="Pen" />
                     </MenuFlyoutItem.Icon>
@@ -73,7 +73,8 @@
                     IsOn="{x:Bind ViewModel.IsEnabled, Mode=OneWay}"
                     OffContent=""
                     OnContent=""
-                    Toggled="OnEnabledChanged" />
+                    Toggled="OnEnabledChanged"
+                    ToolTipService.ToolTip="{ext:Locale Name=DefaultEnabled}" />
             </Grid>
             <Grid Grid.Row="1" Padding="0,0,8,0">
                 <Border

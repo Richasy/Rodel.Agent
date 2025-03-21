@@ -4,6 +4,7 @@ using Richasy.AgentKernel.Core.Mcp.Client;
 using Richasy.AgentKernel.Core.Mcp.Protocol.Transport;
 using Richasy.AgentKernel.Core.Mcp.Shared;
 using Richasy.WinUIKernel.Share.Toolkits;
+using RodelAgent.UI.Controls.Chat;
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.ViewModels.View;
 
@@ -99,7 +100,6 @@ public sealed partial class McpServerItemViewModel(string id, McpAgentConfig dat
         try
         {
             client = await McpClientFactory.CreateAsync(Id, TransportTypes.StdIo, Data, clientOptions, default, loggerFactory, _runCts.Token);
-            Name = client.ServerInfo?.Name ?? Id;
             await client.PingAsync(_runCts.Token);
             var functions = await client.ListToolsAsync().ToListAsync();
             IsFunctionEmpty = functions == null || functions.Count == 0;
@@ -137,6 +137,26 @@ public sealed partial class McpServerItemViewModel(string id, McpAgentConfig dat
         var pageVM = this.Get<ChatPageViewModel>();
         pageVM.Servers.Remove(this);
         await saveFunc();
+    }
+
+    [RelayCommand]
+    private async Task ModifyAsync()
+    {
+        var dialog = new McpConfigDialog(this);
+        await dialog.ShowAsync();
+    }
+
+    [RelayCommand]
+    private async Task DisconnectAsync()
+    {
+        var client = GetClient();
+        if (client != null)
+        {
+            await client.DisposeAsync();
+            McpServers.Remove(Id);
+        }
+
+        State = McpServerState.Stopped;
     }
 
     private IMcpClient? GetClient()
