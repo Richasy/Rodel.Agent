@@ -30,6 +30,7 @@ public sealed partial class SettingsPageViewModel : AISettingsViewModelBase
         PackageVersion = this.Get<IAppToolkit>().GetPackageVersion();
 
         HideWhenWindowClosing = SettingsToolkit.ReadLocalSetting(SettingNames.HideWhenCloseWindow, false);
+        AutoRunMcp = SettingsToolkit.ReadLocalSetting(SettingNames.AutoRunMcpServer, true);
 
         InitializeLinks();
         InitializeLibraries();
@@ -75,4 +76,7 @@ public sealed partial class SettingsPageViewModel : AISettingsViewModelBase
 
     partial void OnHideWhenWindowClosingChanged(bool value)
         => SettingsToolkit.WriteLocalSetting(SettingNames.HideWhenCloseWindow, value);
+
+    partial void OnAutoRunMcpChanged(bool value)
+        => SettingsToolkit.WriteLocalSetting(SettingNames.AutoRunMcpServer, value);
 }

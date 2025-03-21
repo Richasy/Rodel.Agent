@@ -80,6 +80,7 @@
                 <settings:ThemeSettingControl />
                 <settings:HideWindowSettingControl x:Name="HideWindowSetting" />
                 <settings:LoggerSettingControl />
+                <settings:McpSettingControl />
 
                 <TextBlock
                     Margin="0,16,0,8"

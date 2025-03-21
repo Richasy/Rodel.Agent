@@ -108,14 +108,24 @@ public sealed partial class McpConfigDialog : AppDialog
         VariableNameBox.Text = string.Empty;
         VariableValueBox.Text = string.Empty;
         VariableFlyout.Hide();
+        CheckVariablesVisibility();
     }
 
     private void OnDeleteVariableButtonClick(object sender, RoutedEventArgs e)
     {
-        if ((sender as FrameworkElement)?.DataContext is VariableItemViewModel item)
+        if (sender is FrameworkElement { DataContext: VariableItemViewModel item })
         {
             Variables.Remove(item);
         }
+
+        CheckVariablesVisibility();
+    }
+
+    private void CheckVariablesVisibility()
+    {
+        var hasVariables = Variables.Any();
+        VariablesContainer.Visibility = hasVariables ? Visibility.Visible : Visibility.Collapsed;
+        NoVariablesContainer.Visibility = hasVariables ? Visibility.Collapsed : Visibility.Visible;
     }
 }
 

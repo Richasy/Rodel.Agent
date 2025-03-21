@@ -65,6 +65,18 @@ public sealed partial class ChatPageViewModel : LayoutPageViewModelBase
                 {
                     Servers.Add(new(server.Key, server.Value, SaveMcpServersAsync));
                 }
+
+                var autoRun = SettingsToolkit.ReadLocalSetting(SettingNames.AutoRunMcpServer, true);
+                if (autoRun)
+                {
+                    foreach (var item in Servers)
+                    {
+                        if (item.IsEnabled)
+                        {
+                            item.TryConnectCommand.Execute(default);
+                        }
+                    }
+                }
             }
         }
 

@@ -29,6 +29,9 @@ public sealed partial class SettingsPageViewModel
     [ObservableProperty]
     public partial bool HideWhenWindowClosing { get; set; }
 
+    [ObservableProperty]
+    public partial bool AutoRunMcp { get; set; }
+
     /// <summary>
     /// 链接项.
     /// </summary>

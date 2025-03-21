@@ -74,7 +74,7 @@
             <Button
                 Grid.Column="1"
                 VerticalAlignment="Center"
-                Style="{StaticResource IconButtonStyle}"
+                Style="{StaticResource SmallIconButtonStyle}"
                 ToolTipService.ToolTip="{ext:Locale Name=AddVariable}">
                 <ic:SymbolIcon FontSize="14" Symbol="Add" />
                 <Button.Flyout>
@@ -99,55 +99,73 @@
                 </Button.Flyout>
             </Button>
         </Grid>
-        <ScrollViewer
-            MaxHeight="160"
-            Style="{StaticResource PageScrollViewerStyle}"
-            VerticalScrollBarVisibility="Hidden">
-            <ItemsRepeater x:Name="VariablesRepeater" ItemsSource="{x:Bind Variables}">
-                <ItemsRepeater.Layout>
-                    <StackLayout Spacing="4" />
-                </ItemsRepeater.Layout>
-                <ItemsRepeater.ItemTemplate>
-                    <DataTemplate x:DataType="local:VariableItemViewModel">
-                        <Grid
-                            Padding="12,8"
-                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                            ColumnSpacing="8"
-                            CornerRadius="{StaticResource ControlCornerRadius}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Spacing="4">
-                                <Border
-                                    Padding="4,2"
-                                    HorizontalAlignment="Left"
-                                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                                    CornerRadius="{StaticResource ControlCornerRadius}">
-                                    <base:TrimTextBlock
-                                        FontSize="12"
-                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                        MaxLines="1"
-                                        Text="{x:Bind Name, Mode=OneWay}" />
-                                </Border>
-                                <base:TrimTextBlock Text="{x:Bind Value, Mode=OneWay}" />
-                            </StackPanel>
-                            <Button
-                                Grid.Column="1"
-                                VerticalAlignment="Center"
-                                Click="OnDeleteVariableButtonClick"
-                                DataContext="{x:Bind}"
-                                Style="{StaticResource IconButtonStyle}"
-                                ToolTipService.ToolTip="{ext:Locale Name=Delete}">
-                                <ic:SymbolIcon
-                                    FontSize="14"
-                                    Foreground="{ThemeResource SystemFillColorCriticalBrush}"
-                                    Symbol="Delete" />
-                            </Button>
-                        </Grid>
-                    </DataTemplate>
-                </ItemsRepeater.ItemTemplate>
-            </ItemsRepeater>
-        </ScrollViewer>
+        <Grid>
+            <Border
+                x:Name="NoVariablesContainer"
+                Padding="12,8"
+                HorizontalAlignment="Stretch"
+                BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="{StaticResource ControlCornerRadius}">
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    Foreground="{ThemeResource TextFillColorDisabledBrush}"
+                    Style="{StaticResource CaptionTextBlockStyle}"
+                    Text="{ext:Locale Name=NoVariables}"
+                    TextAlignment="Center" />
+            </Border>
+            <ScrollViewer
+                x:Name="VariablesContainer"
+                MaxHeight="160"
+                Style="{StaticResource PageScrollViewerStyle}"
+                VerticalScrollBarVisibility="Hidden"
+                Visibility="Collapsed">
+                <ItemsRepeater ItemsSource="{x:Bind Variables}">
+                    <ItemsRepeater.Layout>
+                        <StackLayout Spacing="4" />
+                    </ItemsRepeater.Layout>
+                    <ItemsRepeater.ItemTemplate>
+                        <DataTemplate x:DataType="local:VariableItemViewModel">
+                            <Grid
+                                Padding="12,8"
+                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                ColumnSpacing="8"
+                                CornerRadius="{StaticResource ControlCornerRadius}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Spacing="4">
+                                    <Border
+                                        Padding="4,2"
+                                        HorizontalAlignment="Left"
+                                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                        CornerRadius="{StaticResource ControlCornerRadius}">
+                                        <base:TrimTextBlock
+                                            FontSize="12"
+                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                            MaxLines="1"
+                                            Text="{x:Bind Name, Mode=OneWay}" />
+                                    </Border>
+                                    <base:TrimTextBlock MaxLines="1" Text="{x:Bind Value, Mode=OneWay}" />
+                                </StackPanel>
+                                <Button
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    Click="OnDeleteVariableButtonClick"
+                                    DataContext="{x:Bind}"
+                                    Style="{StaticResource IconButtonStyle}"
+                                    ToolTipService.ToolTip="{ext:Locale Name=Delete}">
+                                    <ic:SymbolIcon
+                                        FontSize="14"
+                                        Foreground="{ThemeResource SystemFillColorCriticalBrush}"
+                                        Symbol="Delete" />
+                                </Button>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsRepeater.ItemTemplate>
+                </ItemsRepeater>
+            </ScrollViewer>
+        </Grid>
     </StackPanel>
 </base:AppDialog>

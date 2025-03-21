@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:ext="using:RodelAgent.UI.Extensions"
     xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:items="using:RodelAgent.UI.ViewModels.Items"
     xmlns:local="using:RodelAgent.UI.Controls.Chat"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -94,7 +95,35 @@
                     x:Name="SeeAllButton"
                     Padding="8,4"
                     HorizontalAlignment="Stretch"
-                    Visibility="Collapsed" />
+                    Visibility="Collapsed">
+                    <Button.Flyout>
+                        <Flyout>
+                            <Flyout.FlyoutPresenterStyle>
+                                <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
+                                    <Setter Property="Padding" Value="0" />
+                                </Style>
+                            </Flyout.FlyoutPresenterStyle>
+                            <StackPanel Width="300">
+                                <TextBlock
+                                    Margin="16,12"
+                                    HorizontalAlignment="Left"
+                                    Text="{ext:Locale Name=Methods}" />
+                                <ScrollViewer Padding="16,0" Style="{StaticResource PageScrollViewerStyle}">
+                                    <ItemsRepeater Margin="0,0,0,12" ItemsSource="{x:Bind ViewModel.Functions, Mode=OneWay}">
+                                        <ItemsRepeater.ItemTemplate>
+                                            <DataTemplate x:DataType="items:AIFunctionItemViewModel">
+                                                <local:McpFunctionItemControl ViewModel="{x:Bind}" />
+                                            </DataTemplate>
+                                        </ItemsRepeater.ItemTemplate>
+                                        <ItemsRepeater.Layout>
+                                            <StackLayout Spacing="4" />
+                                        </ItemsRepeater.Layout>
+                                    </ItemsRepeater>
+                                </ScrollViewer>
+                            </StackPanel>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
                 <StackPanel
                     x:Name="LoadingContainer"
                     HorizontalAlignment="Left"

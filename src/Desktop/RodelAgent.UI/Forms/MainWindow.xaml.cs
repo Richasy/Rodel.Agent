@@ -108,6 +108,11 @@ public sealed partial class MainWindow : WindowBase, ITipWindow
             _shouldExit = true;
             this.Hide();
             App.CloseTrayMenu();
+            foreach (var mcpServer in this.Get<ChatPageViewModel>().Servers)
+            {
+                mcpServer.DisconnectCommand.Execute(default);
+            }
+
             this.Get<NavigationViewModel>().QuickUnloadIfInSettings();
             await this.Get<SettingsPageViewModel>().CheckSaveServicesAsync();
             App.Current?.Exit();

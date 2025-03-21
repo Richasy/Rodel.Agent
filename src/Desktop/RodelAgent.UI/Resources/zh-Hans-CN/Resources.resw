@@ -787,4 +787,16 @@
   <data name="WorkingDirectory" xml:space="preserve">
     <value>工作目录</value>
   </data>
+  <data name="Methods" xml:space="preserve">
+    <value>方法列表</value>
+  </data>
+  <data name="NoVariables" xml:space="preserve">
+    <value>没有环境变量</value>
+  </data>
+  <data name="RunMcpWhenStartup" xml:space="preserve">
+    <value>MCP 服务自启动</value>
+  </data>
+  <data name="RunMcpWhenStartupDescription" xml:space="preserve">
+    <value>进入聊天界面自动启动所有默认可用的 MCP 服务</value>
+  </data>
 </root>
