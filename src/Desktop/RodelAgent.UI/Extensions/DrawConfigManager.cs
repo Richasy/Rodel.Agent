@@ -6,6 +6,8 @@ using Richasy.AgentKernel.Connectors.Baidu.Models;
 using Richasy.AgentKernel.Connectors.IFlyTek.Models;
 using Richasy.AgentKernel.Connectors.OpenAI.Models;
 using Richasy.AgentKernel.Connectors.Tencent.Models;
+using Richasy.AgentKernel.Connectors.XAI.Models;
+using Richasy.AgentKernel.Connectors.ZhiPu.Models;
 using Richasy.AgentKernel.Models;
 using RodelAgent.Interfaces;
 
@@ -26,6 +28,8 @@ internal sealed class DrawConfigManager : DrawConfigManagerBase
             ErnieDrawConfig ernieConfig => ernieConfig.ToAIServiceConfig(),
             HunyuanDrawConfig hunyuanConfig => hunyuanConfig.ToAIServiceConfig(),
             SparkDrawConfig sparkConfig => sparkConfig.ToAIServiceConfig(),
+            XAIDrawConfig xaiConfig => xaiConfig.ToAIServiceConfig(),
+            ZhiPuDrawConfig zhipuConfig => zhipuConfig.ToAIServiceConfig(),
             _ => null,
         };
     }
@@ -54,6 +58,12 @@ internal sealed class DrawConfigManager : DrawConfigManagerBase
                     break;
                 case DrawProviderType.Spark:
                     config.Spark = await storageService.GetDrawConfigAsync(provider, JsonGenContext.Default.SparkDrawConfig);
+                    break;
+                case DrawProviderType.XAI:
+                    config.XAI = await storageService.GetDrawConfigAsync(provider, JsonGenContext.Default.XAIDrawConfig);
+                    break;
+                case DrawProviderType.ZhiPu:
+                    config.ZhiPu = await storageService.GetDrawConfigAsync(provider, JsonGenContext.Default.ZhiPuDrawConfig);
                     break;
                 default:
                     break;
@@ -86,6 +96,12 @@ internal sealed class DrawConfigManager : DrawConfigManagerBase
                     break;
                 case DrawProviderType.Spark:
                     await storageService.SetDrawConfigAsync(provider, configuration.Spark ?? new(), JsonGenContext.Default.SparkDrawConfig);
+                    break;
+                case DrawProviderType.XAI:
+                    await storageService.SetDrawConfigAsync(provider, configuration.XAI ?? new(), JsonGenContext.Default.XAIDrawConfig);
+                    break;
+                case DrawProviderType.ZhiPu:
+                    await storageService.SetDrawConfigAsync(provider, configuration.ZhiPu ?? new(), JsonGenContext.Default.ZhiPuDrawConfig);
                     break;
                 default:
                     break;
@@ -130,5 +146,19 @@ internal static partial class ConfigExtensions
         return config is null || string.IsNullOrWhiteSpace(config.Key) || string.IsNullOrEmpty(config.AppId)
             ? default
             : new SparkDrawServiceConfig(config.Key, config.Secret!, config.AppId, string.Empty);
+    }
+
+    public static AIServiceConfig? ToAIServiceConfig(this XAIDrawConfig? config)
+    {
+        return config is null || string.IsNullOrWhiteSpace(config.Key)
+            ? default
+            : new XAIServiceConfig(config.Key, string.Empty);
+    }
+
+    public static AIServiceConfig? ToAIServiceConfig(this ZhiPuDrawConfig? config)
+    {
+        return config is null || string.IsNullOrWhiteSpace(config.Key)
+            ? default
+            : new ZhiPuServiceConfig(config.Key, string.Empty);
     }
 }

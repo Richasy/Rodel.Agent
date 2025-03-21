@@ -7,6 +7,7 @@ using Richasy.WinUIKernel.Share.Toolkits;
 using RodelAgent.UI.Controls.Chat;
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.ViewModels.View;
+using System.Text.Json.Serialization;
 
 namespace RodelAgent.UI.ViewModels.Items;
 
@@ -168,6 +169,7 @@ public sealed class McpAgentConfig : McpServerDefinition
     /// <summary>
     /// 是否启用.
     /// </summary>
+    [JsonPropertyName("isEnabled")]
     public bool? IsEnabled { get; set; }
 }
 

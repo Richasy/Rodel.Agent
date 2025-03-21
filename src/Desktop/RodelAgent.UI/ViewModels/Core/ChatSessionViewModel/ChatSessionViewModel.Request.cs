@@ -172,7 +172,6 @@ public sealed partial class ChatSessionViewModel
         UserInput = string.Empty;
         var responseMessage = string.Empty;
 
-
         if (!string.IsNullOrEmpty(SystemInstruction))
         {
             messages.Insert(0, new RodelAgent.Models.Feature.ChatInteropMessage { Role = "system", Message = SystemInstruction, Id = "system" });
@@ -203,20 +202,19 @@ public sealed partial class ChatSessionViewModel
         {
             await foreach (var msg in client.GetStreamingResponseAsync(messages.ConvertAll(p => p.ToChatMessage(GetAgentName)), options, _cancellationTokenSource!.Token))
             {
-                responseMessage += msg.Text;
-#pragma warning disable CA1508 // 避免死条件代码
                 if (_cancellationTokenSource?.IsCancellationRequested != false)
                 {
                     return;
                 }
-#pragma warning restore CA1508 // 避免死条件代码
+
+                ParseStreamingMessage(msg, ref responseMessage);
                 SetTempResultCommand.Execute(responseMessage);
             }
         }
         else
         {
             var response = await client.GetResponseAsync(messages.ConvertAll(p => p.ToChatMessage(GetAgentName)), options, _cancellationTokenSource!.Token);
-            responseMessage = response.Text;
+            responseMessage = ParseCompleteMessage(response);
         }
 
         var responseMsg = new ChatMessage(ChatRole.Assistant, responseMessage?.Trim());
@@ -297,20 +295,19 @@ public sealed partial class ChatSessionViewModel
             {
                 await foreach (var msg in client.GetStreamingResponseAsync(history.ConvertAll(p => p.ToChatMessage(GetAgentName)), options, _cancellationTokenSource!.Token))
                 {
-                    responseMessage += msg.Text;
-#pragma warning disable CA1508 // 避免死条件代码
                     if (_cancellationTokenSource?.IsCancellationRequested != false)
                     {
                         return;
                     }
-#pragma warning restore CA1508 // 避免死条件代码
+
+                    ParseStreamingMessage(msg, ref responseMessage);
                     SetTempResultCommand.Execute(responseMessage);
                 }
             }
             else
             {
                 var response = await client.GetResponseAsync(history.ConvertAll(p => p.ToChatMessage(GetAgentName)), options, _cancellationTokenSource!.Token);
-                responseMessage = response.Text;
+                responseMessage = ParseCompleteMessage(response);
             }
 
             // 检查是否满足终止条件.
@@ -368,8 +365,53 @@ public sealed partial class ChatSessionViewModel
         }
 
         var regex = new Regex("[^a-zA-Z0-9_-]");
-        var actualName = new string(name.Where(c => regex.IsMatch(c.ToString())).ToArray());
-        return actualName;
+        return new string(name.Where(c => regex.IsMatch(c.ToString())).ToArray());
+    }
+
+    private static void ParseStreamingMessage(ChatResponseUpdate update, ref string responseText)
+    {
+        if (update.AdditionalProperties is { Count: > 0 })
+        {
+            var additionalProperties = update.AdditionalProperties;
+            if (additionalProperties.ContainsKey("reasoning_content"))
+            {
+                responseText += additionalProperties["reasoning_content"];
+                if (!responseText.StartsWith("<think", StringComparison.OrdinalIgnoreCase))
+                {
+                    responseText = "<think data-temp>\n" + responseText;
+                }
+            }
+        }
+
+        if (!string.IsNullOrEmpty(update.Text))
+        {
+            if (responseText.StartsWith("<think data-temp>", StringComparison.OrdinalIgnoreCase) && responseText.Contains("</think>", StringComparison.OrdinalIgnoreCase))
+            {
+                responseText += "\n</think>\n";
+            }
+
+            responseText += update.Text;
+        }
+    }
+
+    private static string ParseCompleteMessage(ChatResponse? response)
+    {
+        if (response is null)
+        {
+            return string.Empty;
+        }
+
+        var text = response.Text;
+        if (response.AdditionalProperties is { Count: > 0 })
+        {
+            var additionalProperties = response.AdditionalProperties;
+            if (additionalProperties.ContainsKey("reasoning_content"))
+            {
+                text = $"<think>\n{additionalProperties["reasoning_content"]}\n</think>\n{text}";
+            }
+        }
+
+        return text;
     }
 
     private static void AttachChatMessageProperties(ChatMessage msg)

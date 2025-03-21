@@ -64,6 +64,8 @@ internal static class GlobalDependencies
             .AddHunyuanDrawService()
             .AddOpenAIDrawService()
             .AddSparkDrawService()
+            .AddXAIDrawService()
+            .AddZhiPuDrawService()
 
             .AddOpenAIChatService()
             .AddAzureOpenAIChatService()
