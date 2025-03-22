@@ -58,5 +58,6 @@ public enum SettingNames
     IsChatAgentsCollapsed,
     IsChatGroupsCollapsed,
     AutoRunMcpServer,
+    AlwaysApproveMcpConsent,
 }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释

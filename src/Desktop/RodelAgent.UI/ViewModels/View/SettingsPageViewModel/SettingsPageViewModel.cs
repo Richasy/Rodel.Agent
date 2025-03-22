@@ -31,6 +31,7 @@ public sealed partial class SettingsPageViewModel : AISettingsViewModelBase
 
         HideWhenWindowClosing = SettingsToolkit.ReadLocalSetting(SettingNames.HideWhenCloseWindow, false);
         AutoRunMcp = SettingsToolkit.ReadLocalSetting(SettingNames.AutoRunMcpServer, true);
+        AutoConsentMcp = SettingsToolkit.ReadLocalSetting(SettingNames.AlwaysApproveMcpConsent, false);
 
         InitializeLinks();
         InitializeLibraries();
@@ -79,4 +80,7 @@ public sealed partial class SettingsPageViewModel : AISettingsViewModelBase
 
     partial void OnAutoRunMcpChanged(bool value)
         => SettingsToolkit.WriteLocalSetting(SettingNames.AutoRunMcpServer, value);
+
+    partial void OnAutoConsentMcpChanged(bool value)
+        => SettingsToolkit.WriteLocalSetting(SettingNames.AlwaysApproveMcpConsent, value);
 }

@@ -17,17 +17,31 @@ public static class ChatMessageInteropUtil
     {
         var role = message.Role.ToString().ToLowerInvariant();
         var text = message.Text ?? string.Empty;
-        var author = message.AdditionalProperties!.GetValueOrDefault("agentId", string.Empty)!.ToString() ?? string.Empty;
-        var time = Convert.ToInt64(message.AdditionalProperties!.GetValueOrDefault("time", DateTimeOffset.Now.ToUnixTimeSeconds()));
-        var id = message.AdditionalProperties!.GetValueOrDefault("id", Guid.NewGuid().ToString("N"))!.ToString();
-        return new ChatInteropMessage
+        var author = message.AdditionalProperties?.GetValueOrDefault("agentId", string.Empty)?.ToString() ?? string.Empty;
+        var time = Convert.ToInt64(message.AdditionalProperties?.GetValueOrDefault("time", DateTimeOffset.Now.ToUnixTimeSeconds()));
+        var id = message.AdditionalProperties?.GetValueOrDefault("id", Guid.NewGuid().ToString("N"))?.ToString();
+        var toolClientId = message.AdditionalProperties?.GetValueOrDefault("clientId", string.Empty)?.ToString() ?? "Unknown server";
+        var toolMethod = message.AdditionalProperties?.GetValueOrDefault("method", string.Empty)?.ToString() ?? "Unknown method";
+        var msg = new ChatInteropMessage
         {
             AgentId = author,
-            Message = text,
             Role = role,
             Time = time,
-            Id = id!,
+            Id = id ?? Guid.NewGuid().ToString("N"),
         };
+
+        if (role == "tool")
+        {
+            msg.ToolClientId = toolClientId;
+            msg.ToolMethod = toolMethod;
+            msg.ToolData = text;
+        }
+        else
+        {
+            msg.Message = text;
+        }
+
+        return msg;
     }
 
     /// <summary>
@@ -36,21 +50,35 @@ public static class ChatMessageInteropUtil
     public static ChatMessage ToChatMessage(this ChatInteropMessage message, Func<string, string>? getAuthorName = null)
     {
         var role = new ChatRole(message.Role);
-        var text = message.Message;
         var author = string.IsNullOrEmpty(message.AgentId) ? null : getAuthorName!(message.AgentId);
         var time = DateTimeOffset.FromUnixTimeSeconds(message.Time);
         var id = message.Id;
-        return new ChatMessage
+        var chatMsg = new ChatMessage
         {
             AuthorName = author,
-            Contents = [new TextContent(text)],
             Role = role,
             AdditionalProperties = new()
             {
-                ["agentId"] = message.AgentId,
                 ["time"] = time.ToUnixTimeSeconds(),
                 ["id"] = id,
             },
         };
+
+        if (role == ChatRole.Tool)
+        {
+            chatMsg.Contents = [new TextContent(message.ToolData)];
+            chatMsg.AdditionalProperties["clientId"] = message.ToolClientId;
+            chatMsg.AdditionalProperties["method"] = message.ToolMethod;
+        }
+        else
+        {
+            chatMsg.Contents = [new TextContent(message.Message)];
+            if (!string.IsNullOrEmpty(message.AgentId))
+            {
+                chatMsg.AdditionalProperties["agentId"] = message.AgentId;
+            }
+        }
+
+        return chatMsg;
     }
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Bubble } from "@ant-design/x";
-import { Button, Space, Input, Flex, Tooltip, Avatar } from "antd";
+import { Button, Space, Input, Flex, Tooltip, Avatar, Collapse } from "antd";
 import {
   CopyOutlined,
   EditOutlined,
@@ -56,6 +56,25 @@ const MessageItem = ({ item, sendMessage, renderMarkdown, removeMessage }) => {
     }
   };
 
+  if (item.role === "tool") {
+    let toolData = JSON.parse(item.tool_data);
+    if(toolData.content && toolData.content.length > 0 && toolData.content[0].text) {
+      toolData = JSON.parse(toolData.content[0].text);
+    }
+    return (
+      <Collapse
+        style={{ marginTop: "12px", marginBottom: "12px" }}
+        items={[
+          {
+            key: item.id,
+            label: `${item.tool_client_id}: ${item.tool_method}`,
+            children: renderMarkdown("<!>```json\n" + JSON.stringify(toolData, null, 2) + "\n```"),
+          },
+        ]}
+      />
+    );
+  }
+
   return (
     <div>
       {isEditing ? (
@@ -103,15 +122,19 @@ const MessageItem = ({ item, sendMessage, renderMarkdown, removeMessage }) => {
                 style={{
                   backgroundColor: "transparent",
                   fontFamily: "Segoe UI Emoji",
-                  fontSize: '48px',
-                  marginTop: '0.4em',
+                  fontSize: "48px",
+                  marginTop: "0.4em",
                 }}
               >
                 {item.emoji}
               </Avatar>
             ) : item.avatar && item.showLogo ? (
-              <Avatar size={36}
-              gap={0} src={<img src={item.avatar} alt={item.author} />} style={{marginTop: '1.2em'}} />
+              <Avatar
+                size={36}
+                gap={0}
+                src={<img src={item.avatar} alt={item.author} />}
+                style={{ marginTop: "1.2em" }}
+              />
             ) : null
           }
           header={

@@ -799,4 +799,25 @@
   <data name="RunMcpWhenStartupDescription" xml:space="preserve">
     <value>进入聊天界面自动启动所有默认可用的 MCP 服务</value>
   </data>
+  <data name="Approve" xml:space="preserve">
+    <value>批准</value>
+  </data>
+  <data name="CallDetail" xml:space="preserve">
+    <value>调用详情</value>
+  </data>
+  <data name="McpRequestHeaderTemplate" xml:space="preserve">
+    <value>模型申请调用 &lt;!{0}!&gt; 服务的 &lt;!{1}!&gt; 方法来获取相关信息，是否批准？</value>
+  </data>
+  <data name="RequestCall" xml:space="preserve">
+    <value>请求调用</value>
+  </data>
+  <data name="McpAutoConstent" xml:space="preserve">
+    <value>调用工具时自动同意</value>
+  </data>
+  <data name="McpAutoConstentDescription" xml:space="preserve">
+    <value>当模型需要调用MCP工具时不再人工审核（风险自行承担）</value>
+  </data>
+  <data name="McpServerSettingDescription" xml:space="preserve">
+    <value>可以调整MCP服务是否自启动、自动同意等行为</value>
+  </data>
 </root>

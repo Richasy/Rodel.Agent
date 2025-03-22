@@ -178,7 +178,7 @@ public sealed partial class ChatSessionViewModel
         }
 
         var client = new ChatClientBuilder(_chatService!.Client!)
-            .UseFunctionInvocation(configure: c => c.MaximumIterationsPerRequest = 2)
+            .UseFunctionInvocation(configure: c => c.MaximumIterationsPerRequest = 30)
             .Build();
 
         if (SelectedModel!.IsToolSupport && Servers.Any(p => p.IsSelected))
@@ -198,9 +198,10 @@ public sealed partial class ChatSessionViewModel
             options.Tools = [.. functions];
         }
 
+        var sendMessages = messages.ConvertAll(p => p.ToChatMessage(GetAgentName));
         if (useStream)
         {
-            await foreach (var msg in client.GetStreamingResponseAsync(messages.ConvertAll(p => p.ToChatMessage(GetAgentName)), options, _cancellationTokenSource!.Token))
+            await foreach (var msg in client.GetStreamingResponseAsync(sendMessages, options, _cancellationTokenSource!.Token))
             {
                 if (_cancellationTokenSource?.IsCancellationRequested != false)
                 {
@@ -213,7 +214,7 @@ public sealed partial class ChatSessionViewModel
         }
         else
         {
-            var response = await client.GetResponseAsync(messages.ConvertAll(p => p.ToChatMessage(GetAgentName)), options, _cancellationTokenSource!.Token);
+            var response = await client.GetResponseAsync(sendMessages, options, _cancellationTokenSource!.Token);
             responseMessage = ParseCompleteMessage(response);
         }
 
@@ -267,7 +268,7 @@ public sealed partial class ChatSessionViewModel
             chatService.Initialize(serviceConfig);
 
             var client = new ChatClientBuilder(_chatService!.Client!)
-                .UseFunctionInvocation(configure: c => c.MaximumIterationsPerRequest = 2)
+                .UseFunctionInvocation(configure: c => c.MaximumIterationsPerRequest = 30)
                 .Build();
 
             if (currentAgent.Data.Tools is { Count: > 0 })

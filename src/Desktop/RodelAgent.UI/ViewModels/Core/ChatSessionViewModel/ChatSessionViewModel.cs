@@ -1,11 +1,14 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
 using Microsoft.Extensions.AI;
+using Microsoft.UI.Dispatching;
 using Richasy.AgentKernel;
 using Richasy.AgentKernel.Chat;
+using Richasy.AgentKernel.Core.Mcp;
 using Richasy.WinUIKernel.AI.ViewModels;
 using Richasy.WinUIKernel.Share.Toolkits;
 using RodelAgent.Interfaces;
+using RodelAgent.Models;
 using RodelAgent.Models.Constants;
 using RodelAgent.Models.Feature;
 using RodelAgent.UI.Controls.Chat;
@@ -83,6 +86,7 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         await ReloadMcpServersAsync();
         CheckChatEmpty();
         CheckRegenerate();
+        AttachMcpResponseHandler();
         HistoryHeight = SettingsToolkit.ReadLocalSetting(SettingNames.ChatServicePageHistoryHeight, 300d);
         try
         {
@@ -105,6 +109,7 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
             _webView.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = false;
             _webView.CoreWebView2.Settings.IsPinchZoomEnabled = true;
             _webView.CoreWebView2.NavigationStarting += OnNavigationStarting;
+            _webView.CoreWebView2.OpenDevToolsWindow();
 
             var renderPath = Path.Combine(Package.Current.InstalledPath, "Web", "chat-render");
             var workPath = SettingsToolkit.ReadLocalSetting(SettingNames.WorkingDirectory, string.Empty);
@@ -385,6 +390,33 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
     {
         var pageVM = this.Get<ChatPageViewModel>();
         await pageVM.SaveMcpServersCommand.ExecuteAsync(default);
+    }
+
+    private void AttachMcpResponseHandler()
+    {
+        McpGlobalHandler.ResponseHandler = (clientId, method, responseJson) =>
+        {
+            var toolMessage = new ChatInteropMessage
+            {
+                Role = "tool",
+                Id = Guid.NewGuid().ToString("N"),
+                ToolData = responseJson,
+                Time = DateTimeOffset.Now.ToUnixTimeSeconds(),
+                ToolClientId = clientId,
+                ToolMethod = method,
+            };
+
+#pragma warning disable VSTHRD101 // Avoid unsupported async delegates
+            this.Get<DispatcherQueue>().TryEnqueue(async () =>
+            {
+                Messages.Add(toolMessage);
+                await AddInteropMessageAsync(toolMessage.ToChatMessage());
+                await SaveCurrentMessagesAsync();
+            });
+#pragma warning restore VSTHRD101 // Avoid unsupported async delegates
+
+            return Task.CompletedTask;
+        };
     }
 
     private async void OnRequestReloadChatServices(object? sender, EventArgs e)

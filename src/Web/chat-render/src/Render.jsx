@@ -6,7 +6,7 @@ import markdownit from "markdown-it";
 import highlight from "highlight.js";
 import katex from "markdown-it-katex";
 import "katex/dist/katex.min.css";
-import EditableBubble from "./MessageItem";
+import MessageItem from "./MessageItem";
 
 function Render() {
   const { token } = theme.useToken();
@@ -63,6 +63,12 @@ function Render() {
       content += `</think><p>${thinking}</p>`;
     }
 
+    // 判断文本是否以 <!> 开头.
+    const shouldShowHeader = !content.startsWith("<!>");
+    if(!shouldShowHeader){
+      content = content.replace("<!>", "");
+    }
+
     content = content.replace("<think>", '<div class="think">');
     content = content.replace("</think>", "</div>");
     md.renderer.rules.fence = (...args) => {
@@ -75,7 +81,11 @@ function Render() {
 
       // Generate a unique ID for the code block
       const codeId = `code-block-${codeIdx++}`;
-      const highlightedCode = md.options.highlight(token.content, lang || "plaintext", "");
+      const highlightedCode = md.options.highlight(
+        token.content,
+        lang || "plaintext",
+        ""
+      );
       // Create the header with language and copy button
       const header = `
         <div class="code-header">
@@ -90,9 +100,15 @@ function Render() {
       `;
 
       // Wrap the code block in a container with the header
-      const codeBlock = `
+      const codeBlock = shouldShowHeader
+        ? `
         <div class="code-container">
           ${header}
+          <pre><code id="${codeId}" class="hljs ${lang}">${highlightedCode}</code></pre>
+        </div>
+      `
+        : `
+        <div class="code-container">
           <pre><code id="${codeId}" class="hljs ${lang}">${highlightedCode}</code></pre>
         </div>
       `;
@@ -246,15 +262,17 @@ function Render() {
     };
     window.addMessage = (message) => {
       setHistory((prevHistory) => [...prevHistory, message]);
-      setTemporaryOutput(null); // 清除临时输出
-      setTemporaryLoading(false); // 清除临时加载状态
+      if (message.role != "tool") {
+        setTemporaryOutput(null); // 清除临时输出
+        setTemporaryLoading(false); // 清除临时加载状态
+      }
       window.delayToBottom();
     };
     window.deleteMessage = (id) => {
       setHistory((prevHistory) =>
         prevHistory.filter((item, idx) => item.id != id)
       );
-    }
+    };
     // 设置临时输出（用于 SSE 流式返回）
     window.setOutput = (output) => {
       setTemporaryLoading(false);
@@ -289,7 +307,7 @@ function Render() {
     <ThemeProvider appearance={currentTheme}>
       <Flex vertical gap={0} style={{ marginBottom: "12px" }}>
         {history.map((item) => (
-          <EditableBubble
+          <MessageItem
             key={item.id}
             item={item}
             sendMessage={sendMessage}

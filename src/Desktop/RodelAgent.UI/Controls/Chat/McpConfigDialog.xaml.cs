@@ -25,6 +25,7 @@ public sealed partial class McpConfigDialog : AppDialog
         EnableSwitch.IsOn = vm.IsEnabled;
         CommandBox.Text = vm.Data.Command + " " + string.Join(' ', vm.Data.Arguments ?? []);
         DirectoryBox.Text = vm.Data.WorkingDirectory;
+        CheckVariablesVisibility();
     }
 
     private void OnPrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)

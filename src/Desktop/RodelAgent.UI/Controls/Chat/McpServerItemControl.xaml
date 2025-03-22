@@ -97,7 +97,7 @@
                     HorizontalAlignment="Stretch"
                     Visibility="Collapsed">
                     <Button.Flyout>
-                        <Flyout>
+                        <Flyout ShouldConstrainToRootBounds="False">
                             <Flyout.FlyoutPresenterStyle>
                                 <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
                                     <Setter Property="Padding" Value="0" />
@@ -140,7 +140,10 @@
                         Style="{StaticResource CaptionTextBlockStyle}"
                         Text="{ext:Locale Name=Launching}" />
                 </StackPanel>
-                <Grid x:Name="ErrorContainer" Visibility="Collapsed">
+                <Grid
+                    x:Name="ErrorContainer"
+                    ColumnSpacing="8"
+                    Visibility="Collapsed">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition />

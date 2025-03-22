@@ -95,6 +95,7 @@ public sealed partial class McpServerItemViewModel(string id, McpAgentConfig dat
         var clientOptions = new McpClientOptions
         {
             ClientInfo = new() { Name = "RodelAgent", Version = this.Get<IAppToolkit>().GetPackageVersion() },
+            InitializationTimeout = TimeSpan.FromSeconds(30),
         };
 
         var loggerFactory = this.Get<ILoggerFactory>();
@@ -102,7 +103,8 @@ public sealed partial class McpServerItemViewModel(string id, McpAgentConfig dat
         {
             client = await McpClientFactory.CreateAsync(Id, TransportTypes.StdIo, Data, clientOptions, default, loggerFactory, _runCts.Token);
             await client.PingAsync(_runCts.Token);
-            var functions = await client.ListToolsAsync().ToListAsync();
+            var timeOutCts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+            var functions = await client.ListToolsAsync(cancellationToken: timeOutCts.Token).ToListAsync(timeOutCts.Token);
             IsFunctionEmpty = functions == null || functions.Count == 0;
             FunctionCount = functions?.Count ?? 0;
             Functions.Clear();

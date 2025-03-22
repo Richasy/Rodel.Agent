@@ -32,6 +32,9 @@ public sealed partial class SettingsPageViewModel
     [ObservableProperty]
     public partial bool AutoRunMcp { get; set; }
 
+    [ObservableProperty]
+    public partial bool AutoConsentMcp { get; set; }
+
     /// <summary>
     /// 链接项.
     /// </summary>

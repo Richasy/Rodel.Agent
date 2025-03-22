@@ -29,34 +29,31 @@
     <PackageVersion Include="NAudio.Core" Version="2.2.1" />
     <PackageVersion Include="NAudio.Wasapi" Version="2.2.1" />
     <PackageVersion Include="NAudio.WinMM" Version="2.2.1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Ali" Version="0.0.6-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Anthropic" Version="0.0.6-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Azure" Version="0.0.6-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Baidu" Version="0.0.6-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.DeepSeek" Version="0.0.6-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Google" Version="0.0.6-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Groq" Version="0.0.6-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.IFlyTek" Version="0.0.6-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.LingYi" Version="0.0.6-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Mistral" Version="0.0.6-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Moonshot" Version="0.0.6-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Ollama" Version="0.0.6-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Onnx" Version="0.0.4-preview6" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Onnx.Cuda" Version="0.0.4-preview7" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.OpenAI" Version="0.0.6-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.OpenRouter" Version="0.0.6-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Perplexity" Version="0.0.6-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.SiliconFlow" Version="0.0.6-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Tencent" Version="0.0.6-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.TogetherAI" Version="0.0.6-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Volcano" Version="0.0.6-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Windows" Version="0.0.6-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.XAI" Version="0.0.6-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.Youdao" Version="0.0.6-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Connectors.ZhiPu" Version="0.0.6-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Core" Version="0.0.3-preview3" />
-    <PackageVersion Include="Richasy.AgentKernel.Core.Mcp" Version="0.0.6-preview1" />
-    <PackageVersion Include="Richasy.AgentKernel.Definitions" Version="0.0.5-preview2" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Ali" Version="0.0.6-preview6" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Anthropic" Version="0.0.6-preview6" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Azure" Version="0.0.6-preview6" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Baidu" Version="0.0.6-preview6" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.DeepSeek" Version="0.0.6-preview6" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Google" Version="0.0.6-preview6" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Groq" Version="0.0.6-preview6" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.IFlyTek" Version="0.0.6-preview6" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.LingYi" Version="0.0.6-preview6" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Mistral" Version="0.0.6-preview6" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Moonshot" Version="0.0.6-preview6" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Ollama" Version="0.0.6-preview6" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.OpenAI" Version="0.0.6-preview6" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.OpenRouter" Version="0.0.6-preview6" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Perplexity" Version="0.0.6-preview6" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.SiliconFlow" Version="0.0.6-preview6" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Tencent" Version="0.0.6-preview6" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.TogetherAI" Version="0.0.6-preview6" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Volcano" Version="0.0.6-preview6" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Windows" Version="0.0.6-preview6" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.XAI" Version="0.0.6-preview6" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.Youdao" Version="0.0.6-preview6" />
+    <PackageVersion Include="Richasy.AgentKernel.Connectors.ZhiPu" Version="0.0.6-preview6" />
+    <PackageVersion Include="Richasy.AgentKernel.Core.Mcp" Version="0.0.6-preview6" />
+    <PackageVersion Include="Richasy.AgentKernel.Definitions" Version="0.0.6-preview6" />
     <PackageVersion Include="Richasy.WinUIKernel.AI" Version="0.0.6-preview1" />
     <PackageVersion Include="RichasyKernel.Abstractions" Version="0.0.1" />
     <PackageVersion Include="Serilog" Version="4.2.0" />

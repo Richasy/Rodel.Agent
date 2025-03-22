@@ -40,6 +40,24 @@ public class ChatInteropMessage
     public long Time { get; set; }
 
     /// <summary>
+    /// 工具服务ID.
+    /// </summary>
+    [JsonPropertyName("tool_client_id")]
+    public string? ToolClientId { get; set; }
+
+    /// <summary>
+    /// 工具方法名称.
+    /// </summary>
+    [JsonPropertyName("tool_method")]
+    public string? ToolMethod { get; set; }
+
+    /// <summary>
+    /// 工具数据.
+    /// </summary>
+    [JsonPropertyName("tool_data")]
+    public string? ToolData { get; set; }
+
+    /// <summary>
     /// Clone the message.
     /// </summary>
     /// <returns>Message with new id.</returns>
@@ -78,6 +96,9 @@ public sealed class ChatWebInteropMessage : ChatInteropMessage
         AgentId = source.AgentId;
         Role = source.Role;
         Time = source.Time;
+        ToolClientId = source.ToolClientId;
+        ToolMethod = source.ToolMethod;
+        ToolData = source.ToolData;
         Author = author;
     }
 

@@ -15,17 +15,16 @@
         CornerRadius="{StaticResource ControlCornerRadius}"
         Spacing="4">
         <Border
-            Padding="4,2"
+            Padding="8,4"
             HorizontalAlignment="Left"
-            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-            BorderBrush="{ThemeResource AccentFillColorDefaultBrush}"
+            BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
             BorderThickness="1"
             CornerRadius="{StaticResource ControlCornerRadius}">
-            <base:TrimTextBlock
-                FontSize="12"
-                MaxLines="1"
-                Text="{x:Bind ViewModel.Name, Mode=OneWay}" />
+            <base:TrimTextBlock MaxLines="1" Text="{x:Bind ViewModel.Name, Mode=OneWay}" />
         </Border>
-        <base:TrimTextBlock MaxLines="2" Text="{x:Bind ViewModel.Description, Mode=OneWay}" />
+        <base:TrimTextBlock
+            FontSize="12"
+            MaxLines="2"
+            Text="{x:Bind ViewModel.Description, Mode=OneWay}" />
     </StackPanel>
 </local:McpFunctionItemControlBase>

@@ -58,6 +58,7 @@
     <None Remove="Controls\Chat\GroupOptionsPanel.xaml" />
     <None Remove="Controls\Chat\GroupSessionSideHeader.xaml" />
     <None Remove="Controls\Chat\McpConfigDialog.xaml" />
+    <None Remove="Controls\Chat\McpConsentDialog.xaml" />
     <None Remove="Controls\Chat\McpFunctionItemControl.xaml" />
     <None Remove="Controls\Chat\McpServerItemControl.xaml" />
     <None Remove="Controls\CollapseHeader.xaml" />
@@ -135,6 +136,7 @@
     <PackageReference Include="NAudio.Core" />
     <PackageReference Include="NAudio.WinMM" />
     <PackageReference Include="Richasy.AgentKernel.Core.Mcp" />
+    <PackageReference Include="Richasy.AgentKernel.Definitions" />
     <PackageReference Include="Richasy.WinUIKernel.AI" />
     <PackageReference Include="Serilog" />
     <PackageReference Include="Serilog.Extensions.Logging" />
@@ -375,6 +377,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Web\chat-render\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Chat\McpConsentDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\Chat\McpFunctionItemControl.xaml">

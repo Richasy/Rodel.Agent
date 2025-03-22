@@ -11,10 +11,17 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <base:SettingsCard Description="{ext:Locale Name=RunMcpWhenStartupDescription}" Header="{ext:Locale Name=RunMcpWhenStartup}">
-        <ToggleSwitch IsOn="{x:Bind ViewModel.AutoRunMcp, Mode=TwoWay}" />
-        <base:SettingsCard.HeaderIcon>
-            <ic:SymbolIcon Symbol="Channel" />
-        </base:SettingsCard.HeaderIcon>
-    </base:SettingsCard>
+    <base:SettingsExpander Description="{ext:Locale Name=McpServerSettingDescription}" Header="{ext:Locale Name=McpServer}">
+        <base:SettingsExpander.HeaderIcon>
+            <ic:SymbolIcon Symbol="FlashSparkle" />
+        </base:SettingsExpander.HeaderIcon>
+        <base:SettingsExpander.Items>
+            <base:SettingsCard Description="{ext:Locale Name=RunMcpWhenStartupDescription}" Header="{ext:Locale Name=RunMcpWhenStartup}">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.AutoRunMcp, Mode=TwoWay}" />
+            </base:SettingsCard>
+            <base:SettingsCard Description="{ext:Locale Name=McpAutoConstentDescription}" Header="{ext:Locale Name=McpAutoConstent}">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.AutoConsentMcp, Mode=TwoWay}" />
+            </base:SettingsCard>
+        </base:SettingsExpander.Items>
+    </base:SettingsExpander>
 </local:SettingsPageControlBase>
