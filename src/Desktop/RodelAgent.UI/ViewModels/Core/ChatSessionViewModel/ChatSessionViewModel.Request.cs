@@ -69,7 +69,15 @@ public sealed partial class ChatSessionViewModel
             _currentAgentIndex = 0;
             SetTempLoadingCommand.Execute(false);
             _logger.LogError(ex, "Failed to generate chat content");
-            this.Get<AppViewModel>().ShowTipCommand.Execute((ex.Message, InfoType.Error));
+            var dialog = new ContentDialog
+            {
+                Title = ResourceToolkit.GetLocalizedString(UI.Models.Constants.StringNames.Error),
+                Content = ex.Message,
+                CloseButtonText = ResourceToolkit.GetLocalizedString(UI.Models.Constants.StringNames.Close),
+                XamlRoot = this.Get<AppViewModel>().ActivatedWindow.Content.XamlRoot,
+                DefaultButton = ContentDialogButton.Close,
+            };
+            await dialog.ShowAsync();
         }
         finally
         {

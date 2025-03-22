@@ -826,4 +826,7 @@
   <data name="McpServerSettingDescription" xml:space="preserve">
     <value>可以调整MCP服务是否自启动、自动同意等行为</value>
   </data>
+  <data name="Error" xml:space="preserve">
+    <value>发生错误！</value>
+  </data>
 </root>
