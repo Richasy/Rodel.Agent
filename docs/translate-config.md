@@ -20,8 +20,8 @@
 
 |||
 |-|-|
-|文档|https://ai.baidu.com/ai-doc/MT/2l317egif|
-|服务|https://cloud.baidu.com/product/mt/text_trans|
+|文档|https://api.fanyi.baidu.com/doc/11|
+|服务|https://fanyi-api.baidu.com/manage/developer|
 
 ## 腾讯云翻译
 

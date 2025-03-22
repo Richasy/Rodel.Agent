@@ -39,7 +39,7 @@ Open AI 的配置相对来说很简单，只要你将 API Key 填入设置中的
 |-|-| 
 |Azure 服务|https://azure.microsoft.com/en-us/products/ai-services/openai-service|
 
-Microsoft 与 Open AI 的关系较为特殊，有种 Open AI 特许经销商的感觉，所以你能够在 Azure 这个云服务平台创建 Open AI 资源，并按需部署 `GPT 3.5` , `GPT 4o` 等 Open AI 模型。
+Microsoft 与 Open AI 的关系较为特殊，有种 Open AI 特许经销商的感觉，所以你能够在 Azure 这个云服务平台创建 Open AI 资源，并按需部署 `GPT 4` , `GPT 4o` 等 Open AI 模型。
 
 虽然它们的模型一致，但是网络请求格式却不尽相同，所需要的配置项也不一样。
 
@@ -80,6 +80,26 @@ Azure Open AI 相较于 Open AI，最大的不同在于你需要手动部署需�
 ![自定义聊天模型](./assets/zh/chat-custom-model.png)
 
 </div>
+
+## Azure AI Foundry
+
+Azure 提供了完善的 AI 模型分发服务——Azure AI Foundry。
+
+假设你已经在 Azure AI Foundry 中创建了自己的项目，那么请在侧边栏中点击 `我的资产 / 模型 + 终结点`
+
+![管理模型和服务的部署](./assets/zh/azure-ai-assets.png)
+
+需要注意的是，Azure AI Foundry 中部署的模型是有分类的，你能在上图中看到两种类型。
+
+那么在填写应用内配置时，模型和分类一定要匹配才行。
+
+比如现在我们要在应用内添加 `Phi-4` 模型，那就按如下步骤操作：
+
+1. 点击上图中 `Phi-4` 所属分类的 `获取终结点` 按钮。  
+   ![模型终结点](./assets/zh/azure-ai-endpoint.png)
+2. 将终结点和密钥复制到应用对应的输入框中。
+3. 创建自定义模型，模型 ID 对应你的部署名称（第一列的 `名称`）  
+   <img src="./assets/zh/azure-ai-model.png" style="width:360px; border-radius:8px" />
 
 ## Gemini
 
@@ -139,13 +159,13 @@ ChatGLM 即出于此。
 
 ## 通义千问
 
-|文档|https://help.aliyun.com/zh/dashscope/developer-reference/activate-dashscope-and-create-an-api-key|
+|文档|https://help.aliyun.com/zh/model-studio/developer-reference/use-qwen-by-calling-api|
 |-|-| 
-|API 令牌|https://dashscope.console.aliyun.com/apiKey|
+|API 令牌|https://help.aliyun.com/zh/model-studio/developer-reference/get-api-key|
 
-通义千问是阿里公开的大语言模型，它托管在阿里云的灵积平台，所以这要求你注册并开通阿里灵积服务。
+通义千问是阿里公开的大语言模型，它托管在阿里云的大模型服务平台百炼，所以这要求你注册并开通阿里云百炼平台的模型服务。
 
-阿里灵积本身是有自己的 API 接口和数据结构的，但是比较好的一点是，阿里灵积同时提供了 Open AI 适配接口，小幻助理在这里直接使用了阿里灵积提供的适配接口，即：
+百炼平台本身是有自己的 API 接口和数据结构的，但是比较好的一点是，它同时提供了 Open AI 适配接口，小幻助理在这里直接使用了百炼提供的适配接口，即：
 
 `https://dashscope.aliyuncs.com/compatible-mode/v1`
 
@@ -153,48 +173,25 @@ ChatGLM 即出于此。
 
 ## 文心一言
 
-|文档|https://cloud.baidu.com/doc/WENXINWORKSHOP/s/flfmc9do2|
+|文档|https://cloud.baidu.com/doc/WENXINWORKSHOP/s/fm4tsw9nv|
 |-|-| 
-|API 令牌|https://console.bce.baidu.com/qianfan/ais/console/applicationConsole/application|
+|API 令牌|https://console.bce.baidu.com/iam/#/iam/accesslist|
 
 文心一言是百度提供的大语言模型，它托管在百度云的千帆大模型平台。它有着自己的托管步骤，甚至对于不同的模型需要单独开通服务，这一点请在其文档中查阅。
 
-在千帆大模型平台创建应用后，将 `API Key` 填入 `API 密钥（API Key）`，将 `Secret Key` 填入 `密文密钥（Secret Key）` 即可。
+我个人很难评价百度千帆的文档，只能说它是这20多个服务里最具误导性的，我在集成文心一言的过程中几度想要放弃。所以如果你想省点事儿，最好直接点击 [API 令牌](https://console.bce.baidu.com/iam/#/iam/accesslist) 链接，然后创建 Access Key，将 Access Key 和 Secret Key 分别填到应用的 `访问密钥` 和 `密文密钥` 中即可。
 
-### 自定义模型
-
-千帆大模型平台支持非常多常见的大语言模型，如果你打算使用的模型不在预定义模型列表中，请在千帆平台的模型列表内确认模型 ID，然后在应用内创建自定义模型。
-
-比如你想要使用 `Meta-Llama-3-8B` 这个模型，那么就可以按照以下步骤来操作：
-
-1. 在千帆模型平台控制台的 [在线服务](https://console.bce.baidu.com/qianfan/ais/console/onlineService) 板块中找到 `Meta-Llama-3-8B`，从提示显示的服务地址可知，其模型 ID 是 `llama_3_8b`。
-    <div style="max-width: 300px">
-
-    ![千帆 Meta-Llama-3-8B](./assets/zh/qianfan-model-hover.png)
-
-    </div>
-
-2. 根据模型 ID 创建自定义模型
-    <div style="max-width: 300px">
-
-    ![自定义聊天模型](./assets/zh/chat-custom-model-wenxin.png)
-
-    </div>
+不要去管 API 文档里的什么 `API Key`，`注册应用` 之类杂七杂八的鬼东西。
 
 ## 腾讯混元
 
 |文档|https://cloud.tencent.com/document/product/1729/105701|
 |-|-| 
-|API 令牌|https://console.cloud.tencent.com/cam/capi|
+|API 令牌|https://cloud.tencent.com/document/product/1729/111008|
 
-混元大模型托管在腾讯云上，你需要在 [API 密钥管理](https://console.cloud.tencent.com/cam/capi) 中创建一个密钥。
+混元大模型托管在腾讯云上，比较好的一点是它提供了 Open AI 的兼容接口，小幻阅读就可以直接集成了。
 
-需要注意的是，由于安全限制，密钥的 `Secret Key` 仅在创建密钥时可见。
-
-在应用中，设置项的对应关系是：
-
-- `Secret Key` -> `密文密钥（Secret Key）`
-- `Secret Id` -> `密文 ID（Secret ID）`
+你可以创建 [API Key](https://console.cloud.tencent.com/hunyuan/start)，然后将密钥填入小幻助理的访问密钥中即可。
 
 ## 讯飞星火
 
@@ -206,11 +203,9 @@ ChatGLM 即出于此。
 
 未开通的模型将无法使用。
 
-注册后，你能在 `星火认知大模型` 的模型页中找到 `服务接口认证信息`，这些是你需要填入应用中的设置项，具体对应关系如下：
+注册后，你能在 `星火认知大模型` 的模型页中找到 `服务接口认证信息`。
 
-- `APPID` -> `应用 ID`
-- `APISecret` -> `密文（Secret）`
-- `APIKey` -> `API 密钥（API Key）`
+小幻助理采用 http 服务，你只需要将对应模型的 `APIPassword` 填入到小幻助理的 `访问密钥` 中即可。
 
 ## 字节豆包
 
@@ -275,15 +270,19 @@ ChatGLM 即出于此。
 |文档|https://docs.mistral.ai/|
 |-|-| 
 |API 令牌|https://console.mistral.ai/api-keys/|
+|Costral 令牌|https://console.mistral.ai/codestral|
 
 和 [Open AI](#open-ai) 类似，获取访问密钥后，将其填入 `访问密钥` 中即可。
+
+Mistral 还提供了 `Codestral` 服务，这个服务是免费的（至少 2025/03/22 还是免费的），主要用于代码生成（当然也可以对话）。
+
+因为它们所使用的 API 不同，小幻助理单独为 Codestral 提供了一个密钥位置。如果你需要使用 Codestral，请在输入 Codestral 密钥后打开 `使用 Codestral` 的开关，然后在调用模型时选择 Codestral 即可。
 
 ## Ollama
 
 |文档|https://github.com/ollama/ollama/blob/main/README.md#quickstart|
 |-|-| 
 |服务地址|默认为 `http://localhost:11434/v1`|
-|API 令牌|默认为 `ollama`|
 
 Ollama 是一个热门的本地模型托管服务，它自身的使用已经足够写一篇万余字的文档，这里不再赘述，请自行学习。
 
@@ -316,3 +315,11 @@ Ollama 是一个热门的本地模型托管服务，它自身的使用已经足�
     ![自定义聊天模型](./assets/zh/chat-custom-model-ollama.png)
 
     </div>
+
+## xAI
+
+|文档|https://docs.x.ai/docs/overview|
+|-|-| 
+|API 令牌|https://console.x.ai/team/default/api-keys|
+
+和 [Open AI](#open-ai) 类似，获取访问密钥后，将其填入 `访问密钥` 中即可。

@@ -22,8 +22,6 @@ export const zh = defineConfig({
               { text: '安装应用', link: '/install' },
               { text: '支持的服务', link: '/services' },
               { text: '工作目录与数据同步', link: '/work-directory' },
-              { text: '常见问题', link: './faq' },
-              { text: 'V1 数据迁移', link: '/v1-migration' },
               { text: '隐私策略', link: '/privacy' }
             ]
           },
@@ -32,10 +30,9 @@ export const zh = defineConfig({
             items: [
               { text: '服务配置', link: '/chat-config' },
               { text: '简单对话', link: '/chat-simple' },
-              { text: '助理与预设', link: '/agent-preset' },
+              { text: 'AI助理', link: '/agent-preset' },
               { text: '群组聊天', link: '/group-chat'},
-              { text: '工具调用', link: '/chat-tools' },
-              { text: '插件开发', link: '/tool-dev' }
+              { text: 'MCP 集成与工具调用', link: '/mcp' }
             ]
           },
           {

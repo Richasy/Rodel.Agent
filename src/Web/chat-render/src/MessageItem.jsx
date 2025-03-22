@@ -57,18 +57,33 @@ const MessageItem = ({ item, sendMessage, renderMarkdown, removeMessage }) => {
   };
 
   if (item.role === "tool") {
-    let toolData = JSON.parse(item.tool_data);
-    if(toolData.content && toolData.content.length > 0 && toolData.content[0].text) {
-      toolData = JSON.parse(toolData.content[0].text);
+    let toolData = item.tool_data;
+    let isJson = false;
+    try {
+      toolData = JSON.parse(item.tool_data);
+      if (
+        toolData.content &&
+        toolData.content.length > 0 &&
+        toolData.content[0].text
+      ) {
+        toolData = JSON.parse(toolData.content[0].text);
+      }
+      isJson = true;
+    } catch {
+      // do nothing
     }
     return (
       <Collapse
-        style={{ marginTop: "12px", marginBottom: "12px" }}
+        style={{ margin: "12px" }}
         items={[
           {
             key: item.id,
             label: `${item.tool_client_id}: ${item.tool_method}`,
-            children: renderMarkdown("<!>```json\n" + JSON.stringify(toolData, null, 2) + "\n```"),
+            children: isJson
+              ? renderMarkdown(
+                  "<!>```json\n" + JSON.stringify(toolData, null, 2) + "\n```"
+                )
+              : JSON.stringify(toolData, null, 2),
           },
         ]}
       />

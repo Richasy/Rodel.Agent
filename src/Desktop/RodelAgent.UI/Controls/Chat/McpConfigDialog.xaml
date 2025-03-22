@@ -64,6 +64,7 @@
             x:Name="CommandBox"
             HorizontalAlignment="Stretch"
             Header="{ext:Locale Name=CommandAndArguments}"
+            IsSpellCheckEnabled="False"
             TextWrapping="Wrap" />
         <Grid>
             <Grid.ColumnDefinitions>
