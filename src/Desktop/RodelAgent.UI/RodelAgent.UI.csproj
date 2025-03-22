@@ -540,6 +540,6 @@
     <PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">False</PublishReadyToRun>
     <PublishAot Condition="'$(Configuration)' == 'Debug'">True</PublishAot>
     <PublishAot Condition="'$(Configuration)' != 'Debug'">True</PublishAot>
-    <DefaultLanguage>zh-Hans-CN</DefaultLanguage>
+    <DefaultLanguage>en-US</DefaultLanguage>
   </PropertyGroup>
 </Project>

@@ -14,6 +14,7 @@ using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels.Core;
 using RodelAgent.UI.ViewModels.View;
 using Serilog;
+using Serilog.Events;
 using SqlSugar;
 using System.Diagnostics.CodeAnalysis;
 using Windows.Storage;
@@ -137,10 +138,16 @@ internal static class GlobalDependencies
             Directory.CreateDirectory(loggerPath);
         }
 
+#if DEBUG
+        const LogEventLevel minLevel = LogEventLevel.Information;
+#else
+        const LogEventLevel minLevel = LogEventLevel.Warning;
+#endif
+
         // Create a logger with current date.
         Log.Logger = new LoggerConfiguration()
-            .WriteTo.File(Path.Combine(loggerPath, $"log-{DateTimeOffset.Now:yyyy-MM-dd}.txt"))
-            .CreateLogger(); 
+            .WriteTo.File(Path.Combine(loggerPath, $"log-{DateTimeOffset.Now:yyyy-MM-dd}.txt"), minLevel)
+            .CreateLogger();
 
         var factory = LoggerFactory.Create(builder => builder.AddSerilog(dispose: true));
         builder.Services.AddSingleton(factory);

@@ -1,0 +1,829 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AboutThisApp" xml:space="preserve">
+    <value>About this app</value>
+  </data>
+  <data name="AddAgent" xml:space="preserve">
+    <value>Add agent</value>
+  </data>
+  <data name="AddMcpServer" xml:space="preserve">
+    <value>Add MCP server</value>
+  </data>
+  <data name="AddText" xml:space="preserve">
+    <value>Add text</value>
+  </data>
+  <data name="AddToken" xml:space="preserve">
+    <value>Add token</value>
+  </data>
+  <data name="AddVariable" xml:space="preserve">
+    <value>Add variable</value>
+  </data>
+  <data name="AgentName" xml:space="preserve">
+    <value>Agent name</value>
+  </data>
+  <data name="AgentNamePlaceholder" xml:space="preserve">
+    <value>An easy-to-remember name</value>
+  </data>
+  <data name="Agents" xml:space="preserve">
+    <value>Agents</value>
+  </data>
+  <data name="AppName" xml:space="preserve">
+    <value>Rodel Agent</value>
+  </data>
+  <data name="Approve" xml:space="preserve">
+    <value>Approve</value>
+  </data>
+  <data name="AppSettings" xml:space="preserve">
+    <value>App settings</value>
+  </data>
+  <data name="AppTheme" xml:space="preserve">
+    <value>Application theme</value>
+  </data>
+  <data name="AppThemeDescription" xml:space="preserve">
+    <value>Select the app theme to display</value>
+  </data>
+  <data name="Audio" xml:space="preserve">
+    <value>Speech</value>
+  </data>
+  <data name="AudioCount" xml:space="preserve">
+    <value>Audio count</value>
+  </data>
+  <data name="AudioHistory" xml:space="preserve">
+    <value>Audio history</value>
+  </data>
+  <data name="AudioInputPlaceholder" xml:space="preserve">
+    <value>Please enter the text that needs to be converted to voice</value>
+  </data>
+  <data name="AudioLanguage" xml:space="preserve">
+    <value>Speech language</value>
+  </data>
+  <data name="AudioModel" xml:space="preserve">
+    <value>Speech model</value>
+  </data>
+  <data name="AudioService" xml:space="preserve">
+    <value>Speech service</value>
+  </data>
+  <data name="AudioVoice" xml:space="preserve">
+    <value>Speech voice</value>
+  </data>
+  <data name="AutoLanguage" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="Avatar" xml:space="preserve">
+    <value>Avatar</value>
+  </data>
+  <data name="AvatarDropTip" xml:space="preserve">
+    <value>Drag and drop here to set the avatar</value>
+  </data>
+  <data name="BiliHomePage" xml:space="preserve">
+    <value>BiliBili home page</value>
+  </data>
+  <data name="CallDetail" xml:space="preserve">
+    <value>Call details</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Chat" xml:space="preserve">
+    <value>Chat</value>
+  </data>
+  <data name="ChatInputPlaceholder" xml:space="preserve">
+    <value>Please enter the chat content...</value>
+  </data>
+  <data name="ChatService" xml:space="preserve">
+    <value>Chat service</value>
+  </data>
+  <data name="ChatSessionAutoRename" xml:space="preserve">
+    <value>Automatic chat rename</value>
+  </data>
+  <data name="ChatSessionAutoRenameDescription" xml:space="preserve">
+    <value>Automatically use the current model to name the session</value>
+  </data>
+  <data name="CleanChatMessagesWarning" xml:space="preserve">
+    <value>Do you want to clear the current chat history?</value>
+  </data>
+  <data name="CleanMessages" xml:space="preserve">
+    <value>Clear messages</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="CloseWorkingDirectory" xml:space="preserve">
+    <value>Close the working directory</value>
+  </data>
+  <data name="CommandAndArguments" xml:space="preserve">
+    <value>Commands &amp; Arguments</value>
+  </data>
+  <data name="Complete" xml:space="preserve">
+    <value>Finish</value>
+  </data>
+  <data name="ConfigName" xml:space="preserve">
+    <value>Configuration name</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Copied" xml:space="preserve">
+    <value>Copied</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="CopyFailed" xml:space="preserve">
+    <value>Copy failed, please try to copy manually</value>
+  </data>
+  <data name="CopyImage" xml:space="preserve">
+    <value>Copy the picture</value>
+  </data>
+  <data name="Copyright" xml:space="preserve">
+    <value>© {0} Richasy. All rights reserved.</value>
+  </data>
+  <data name="CopyTranslatedText" xml:space="preserve">
+    <value>Copy the translated text</value>
+  </data>
+  <data name="CreateDuplicate" xml:space="preserve">
+    <value>Create a copy</value>
+  </data>
+  <data name="CreateWorkingDirectory" xml:space="preserve">
+    <value>Create working directory</value>
+  </data>
+  <data name="CreateWorkingDirectoryDescription" xml:space="preserve">
+    <value>Select an empty folder and your chat history or other data will be archived in that directory</value>
+  </data>
+  <data name="DarkTheme" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="DefaultEnabled" xml:space="preserve">
+    <value>Enabled by default</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DeleteAgent" xml:space="preserve">
+    <value>Delete the agent</value>
+  </data>
+  <data name="DeleteGroup" xml:space="preserve">
+    <value>Delete the group</value>
+  </data>
+  <data name="DeleteRecord" xml:space="preserve">
+    <value>Delete records</value>
+  </data>
+  <data name="Discard" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="DoSample" xml:space="preserve">
+    <value>Do sample</value>
+  </data>
+  <data name="DoSampleDescription" xml:space="preserve">
+    <value>After sampling is turned off, parameters such as temperature and top p will not take effect, and the randomness of model output will be greatly reduced.</value>
+  </data>
+  <data name="Draw" xml:space="preserve">
+    <value>Draw</value>
+  </data>
+  <data name="DrawHistory" xml:space="preserve">
+    <value>Draw history</value>
+  </data>
+  <data name="DrawInputPlaceholder" xml:space="preserve">
+    <value>Please enter the drawing prompt</value>
+  </data>
+  <data name="DrawModel" xml:space="preserve">
+    <value>Draw model</value>
+  </data>
+  <data name="DrawService" xml:space="preserve">
+    <value>Draw service</value>
+  </data>
+  <data name="DrawSize" xml:space="preserve">
+    <value>Draw size</value>
+  </data>
+  <data name="DropPresetImageTip" xml:space="preserve">
+    <value>Click on the picture area to select a file or drag the picture into the box to create a preset picture</value>
+  </data>
+  <data name="Duplicate" xml:space="preserve">
+    <value>Duplicate</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="EmojiAvatar" xml:space="preserve">
+    <value>Emoji avatar</value>
+  </data>
+  <data name="EnvironmentVariables" xml:space="preserve">
+    <value>Environment variables</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>ERROR!</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="FileNotFound" xml:space="preserve">
+    <value>The file does not exist</value>
+  </data>
+  <data name="FilterCharactersDescription" xml:space="preserve">
+    <value>The model may generate unexpected characters, which you can add here, and the app will remove before displaying the content.</value>
+  </data>
+  <data name="FilterCharacters_Optional" xml:space="preserve">
+    <value>Filter characters (optional)</value>
+  </data>
+  <data name="FrequencyPenalty" xml:space="preserve">
+    <value>Frequency penalty</value>
+  </data>
+  <data name="FrequencyPenaltyDescription" xml:space="preserve">
+    <value>The larger the value of frequency penalty, the lower the possibility that the model will repeat the same statement verbatim.</value>
+  </data>
+  <data name="FunctionCountTemplate" xml:space="preserve">
+    <value>View {0} methods</value>
+  </data>
+  <data name="Generating" xml:space="preserve">
+    <value>Generating...</value>
+  </data>
+  <data name="Generic" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="GroupName" xml:space="preserve">
+    <value>Group name</value>
+  </data>
+  <data name="GroupNamePlaceholder" xml:space="preserve">
+    <value>An easy-to-understand name</value>
+  </data>
+  <data name="Groups" xml:space="preserve">
+    <value>Groups</value>
+  </data>
+  <data name="HasUpdate" xml:space="preserve">
+    <value>You have updated to a new version</value>
+  </data>
+  <data name="HasUpdateDescription" xml:space="preserve">
+    <value>Click the button below to view the updated content!</value>
+  </data>
+  <data name="Hide" xml:space="preserve">
+    <value>Hide</value>
+  </data>
+  <data name="HideWhenClose" xml:space="preserve">
+    <value>Hide when closed</value>
+  </data>
+  <data name="HideWhenCloseDescription" xml:space="preserve">
+    <value>Hide the app instead of exiting when closing the window</value>
+  </data>
+  <data name="History" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="HistoryToken" xml:space="preserve">
+    <value>History tokens</value>
+  </data>
+  <data name="ImageCount" xml:space="preserve">
+    <value>Image count</value>
+  </data>
+  <data name="ImportChatHistory" xml:space="preserve">
+    <value>Import chat history</value>
+  </data>
+  <data name="ImportMcpConfig" xml:space="preserve">
+    <value>Import MCP configuration (JSON)</value>
+  </data>
+  <data name="InputToken" xml:space="preserve">
+    <value>Input tokens</value>
+  </data>
+  <data name="InputWordCount" xml:space="preserve">
+    <value>Input character count</value>
+  </data>
+  <data name="InsertImage" xml:space="preserve">
+    <value>Insert image</value>
+  </data>
+  <data name="Instruction" xml:space="preserve">
+    <value>Instruction</value>
+  </data>
+  <data name="InstructionPlaceholder" xml:space="preserve">
+    <value>Please write the content of the guidance model's answers such as dialogue background/role description/psychological expectations, etc.</value>
+  </data>
+  <data name="InstructionToken" xml:space="preserve">
+    <value>Instruction tokens</value>
+  </data>
+  <data name="InvalidDirectoryPath" xml:space="preserve">
+    <value>Invalid working directory</value>
+  </data>
+  <data name="JoinQQGroup" xml:space="preserve">
+    <value>Join QQ group</value>
+  </data>
+  <data name="JsonObject" xml:space="preserve">
+    <value>Json object</value>
+  </data>
+  <data name="JustAddMessage" xml:space="preserve">
+    <value>Add messages only</value>
+  </data>
+  <data name="JustAddMessageDescription" xml:space="preserve">
+    <value>Only add the current content to the message list, and the model will not be requested to generate results.</value>
+  </data>
+  <data name="Launching" xml:space="preserve">
+    <value>Launching...</value>
+  </data>
+  <data name="LightTheme" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="Link" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Loading, please wait...</value>
+  </data>
+  <data name="LoggerModule" xml:space="preserve">
+    <value>Logging</value>
+  </data>
+  <data name="LoggerModuleDescription" xml:space="preserve">
+    <value>View application logs or clear logging</value>
+  </data>
+  <data name="MaxOutputToken" xml:space="preserve">
+    <value>Maximum output tokens</value>
+  </data>
+  <data name="MaxOutputTokenDescription" xml:space="preserve">
+    <value>The maximum number of tokens that are allowed to be output in a single time is used to limit the length of the model output content.</value>
+  </data>
+  <data name="MaxRounds" xml:space="preserve">
+    <value>Chat round</value>
+  </data>
+  <data name="MaxRoundsDescription" xml:space="preserve">
+    <value>One question and one answer is one round, and the default is 0, indicating that there is no limit on the rounds.
+You can manually adjust the limits, and the app will intercept the specified rounds in the current session as context to the model</value>
+  </data>
+  <data name="McpAutoConstent" xml:space="preserve">
+    <value>Automatically approve when calling the tool</value>
+  </data>
+  <data name="McpAutoConstentDescription" xml:space="preserve">
+    <value>When the model needs to call the MCP tool, no longer manual review will be performed (risk at your own risk)</value>
+  </data>
+  <data name="McpJsonInvalid" xml:space="preserve">
+    <value>It is not a parsable MCP configuration file, please check the document to correct the format and reimport it.</value>
+  </data>
+  <data name="McpRequestHeaderTemplate" xml:space="preserve">
+    <value>The model requests to call the &lt;!{0}!&gt; service's &lt;!{1}!&gt; method to obtain relevant information. Is it approved?</value>
+  </data>
+  <data name="McpServer" xml:space="preserve">
+    <value>MCP Server</value>
+  </data>
+  <data name="McpServerDisconnected" xml:space="preserve">
+    <value>The MPC server is disconnected and is trying again...</value>
+  </data>
+  <data name="McpServerNameExist" xml:space="preserve">
+    <value>The MCP server with the same name already exists</value>
+  </data>
+  <data name="McpServerSettingDescription" xml:space="preserve">
+    <value>It can adjust whether the MCP service is started automatically, automatically agree to other behaviors.</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="Methods" xml:space="preserve">
+    <value>Method list</value>
+  </data>
+  <data name="Migrating" xml:space="preserve">
+    <value>Data migration is underway...</value>
+  </data>
+  <data name="MigrationFailed" xml:space="preserve">
+    <value>Data migration failed, please try again</value>
+  </data>
+  <data name="Model" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="ModifyAgent" xml:space="preserve">
+    <value>Modify agent</value>
+  </data>
+  <data name="ModifyGroup" xml:space="preserve">
+    <value>Modify group</value>
+  </data>
+  <data name="MoreOptions" xml:space="preserve">
+    <value>More options</value>
+  </data>
+  <data name="MustFillRequireFields" xml:space="preserve">
+    <value>Please fill in the necessary configuration items</value>
+  </data>
+  <data name="MyChat" xml:space="preserve">
+    <value>My Chat</value>
+  </data>
+  <data name="NeedDrawImage" xml:space="preserve">
+    <value>Let's start drawing!</value>
+  </data>
+  <data name="NeedDrawImageDescription" xml:space="preserve">
+    <value>Describe what you want, and leave the rest to AI</value>
+  </data>
+  <data name="NeedGenerateAudio" xml:space="preserve">
+    <value>To speech</value>
+  </data>
+  <data name="NeedGenerateAudioDescription" xml:space="preserve">
+    <value>Enter content and let the AI ​​speak</value>
+  </data>
+  <data name="NeedSelectServiceAndModel" xml:space="preserve">
+    <value>You need to select services and models before text generation</value>
+  </data>
+  <data name="NewAgent" xml:space="preserve">
+    <value>New agent</value>
+  </data>
+  <data name="NewGroup" xml:space="preserve">
+    <value>New group</value>
+  </data>
+  <data name="NewSession" xml:space="preserve">
+    <value>New session</value>
+  </data>
+  <data name="NextStep" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="NoAgents" xml:space="preserve">
+    <value>No agents available</value>
+  </data>
+  <data name="NoAudioHistory" xml:space="preserve">
+    <value>No audio record yet</value>
+  </data>
+  <data name="NoAvailableService" xml:space="preserve">
+    <value>No services available</value>
+  </data>
+  <data name="NoAvailableServiceDescription" xml:space="preserve">
+    <value>Please add the corresponding service on the settings page</value>
+  </data>
+  <data name="NoChatHistory" xml:space="preserve">
+    <value>No historical records yet</value>
+  </data>
+  <data name="NoDrawHistory" xml:space="preserve">
+    <value>No drawing record yet</value>
+  </data>
+  <data name="NoFunction" xml:space="preserve">
+    <value>No available method</value>
+  </data>
+  <data name="NoMcpServer" xml:space="preserve">
+    <value>No MCP server available</value>
+  </data>
+  <data name="NoMcpServerDescription" xml:space="preserve">
+    <value>Add your favorite MCP servers!</value>
+  </data>
+  <data name="NoMessage" xml:space="preserve">
+    <value>Let's chat!</value>
+  </data>
+  <data name="NoMessageDescription" xml:space="preserve">
+    <value>Enter content in the text box below to send a message!</value>
+  </data>
+  <data name="NotRun" xml:space="preserve">
+    <value>Not started</value>
+  </data>
+  <data name="NoValidMessage" xml:space="preserve">
+    <value>No messages available</value>
+  </data>
+  <data name="NoVariables" xml:space="preserve">
+    <value>No environment variables</value>
+  </data>
+  <data name="OpenAudio" xml:space="preserve">
+    <value>Open audio</value>
+  </data>
+  <data name="OpenFolder" xml:space="preserve">
+    <value>Open folder</value>
+  </data>
+  <data name="OpenImage" xml:space="preserve">
+    <value>Open image</value>
+  </data>
+  <data name="OpenSourceRepo" xml:space="preserve">
+    <value>Open source library</value>
+  </data>
+  <data name="OpenUpdate" xml:space="preserve">
+    <value>View updates</value>
+  </data>
+  <data name="OpenWorkingDirectory" xml:space="preserve">
+    <value>Open working directory</value>
+  </data>
+  <data name="OpenWorkingDirectoryDescription" xml:space="preserve">
+    <value>Select an existing working directory containing the necessary Rodel Agent metadata files</value>
+  </data>
+  <data name="OpenWorkingDirectoryFailed" xml:space="preserve">
+    <value>This does not seem to be a valid working directory, please select the library folder created by Rodel Agent</value>
+  </data>
+  <data name="Options" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="OtherApp" xml:space="preserve">
+    <value>Other apps of developer</value>
+  </data>
+  <data name="PresencePenalty" xml:space="preserve">
+    <value>Presence penalty</value>
+  </data>
+  <data name="PresencePenaltyDescription" xml:space="preserve">
+    <value>Increase punishment for generated tokens to reduce the phenomenon of repeated generation. The greater the value, the greater the punishment</value>
+  </data>
+  <data name="PresetMessages" xml:space="preserve">
+    <value>Preset messages</value>
+  </data>
+  <data name="PressCtrlEnterSend" xml:space="preserve">
+    <value>Press Ctrl + Enter to send</value>
+  </data>
+  <data name="PressEnterToSend" xml:space="preserve">
+    <value>Press Enter to send</value>
+  </data>
+  <data name="PrevStep" xml:space="preserve">
+    <value>Previous</value>
+  </data>
+  <data name="ProjectHomePage" xml:space="preserve">
+    <value>Project page</value>
+  </data>
+  <data name="RandomChat" xml:space="preserve">
+    <value>Talk casually</value>
+  </data>
+  <data name="ReadDocument" xml:space="preserve">
+    <value>Read document</value>
+  </data>
+  <data name="Regenerate" xml:space="preserve">
+    <value>Regenerate</value>
+  </data>
+  <data name="RemoveAgent" xml:space="preserve">
+    <value>Remove the agent</value>
+  </data>
+  <data name="RemoveAllSessions" xml:space="preserve">
+    <value>Remove all sessions</value>
+  </data>
+  <data name="Rename" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="RenameHistoryPlaceholder" xml:space="preserve">
+    <value>Name this great conversation!</value>
+  </data>
+  <data name="ReplaceImage" xml:space="preserve">
+    <value>Replace the image</value>
+  </data>
+  <data name="RequestCall" xml:space="preserve">
+    <value>New call</value>
+  </data>
+  <data name="ResponseFormat" xml:space="preserve">
+    <value>Response format</value>
+  </data>
+  <data name="ResponseFormatDescription" xml:space="preserve">
+    <value>You can specify the form in which the model returns the generated result</value>
+  </data>
+  <data name="RunMcpWhenStartup" xml:space="preserve">
+    <value>MCP server starts automatically</value>
+  </data>
+  <data name="RunMcpWhenStartupDescription" xml:space="preserve">
+    <value>Enter the chat page to automatically start all enabled MCP services</value>
+  </data>
+  <data name="RunServer" xml:space="preserve">
+    <value>Run server</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="SaveAs" xml:space="preserve">
+    <value>Save as</value>
+  </data>
+  <data name="SaveAsAgent" xml:space="preserve">
+    <value>Save as agent</value>
+  </data>
+  <data name="SaveAsPreset" xml:space="preserve">
+    <value>Save as preset</value>
+  </data>
+  <data name="SeeDetail" xml:space="preserve">
+    <value>See detail</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="SendFeedback" xml:space="preserve">
+    <value>Send feedback</value>
+  </data>
+  <data name="Services" xml:space="preserve">
+    <value>Services</value>
+  </data>
+  <data name="ServiceSettingHeaderDescription" xml:space="preserve">
+    <value>There are detailed documents here, please click the button on the right to view</value>
+  </data>
+  <data name="ServiceSettingHeaderTitle" xml:space="preserve">
+    <value>How to configure the service?</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>Show</value>
+  </data>
+  <data name="SmartRename" xml:space="preserve">
+    <value>Intelligent renaming</value>
+  </data>
+  <data name="SourceLanguage" xml:space="preserve">
+    <value>Source language</value>
+  </data>
+  <data name="SourceTextPlaceholder" xml:space="preserve">
+    <value>Please enter the text to be translated</value>
+  </data>
+  <data name="StopSequencesDescription" xml:space="preserve">
+    <value>Add specific characters to help the model stop generating content</value>
+  </data>
+  <data name="StopSequences_Optional" xml:space="preserve">
+    <value>Stop sequences (optional)</value>
+  </data>
+  <data name="StreamOutput" xml:space="preserve">
+    <value>Streaming output</value>
+  </data>
+  <data name="StreamOutputDescription" xml:space="preserve">
+    <value>The model will generate a response word by word (typewriter mode)</value>
+  </data>
+  <data name="SupportTool" xml:space="preserve">
+    <value>Support tool calls</value>
+  </data>
+  <data name="SupportVision" xml:space="preserve">
+    <value>Support vision</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>Use system settings</value>
+  </data>
+  <data name="TargetLanguage" xml:space="preserve">
+    <value>Target language</value>
+  </data>
+  <data name="TargetTextPlaceholder" xml:space="preserve">
+    <value>The translated text will be displayed here</value>
+  </data>
+  <data name="Temperature" xml:space="preserve">
+    <value>Temperature</value>
+  </data>
+  <data name="TemperatureDescription" xml:space="preserve">
+    <value>Higher values ​​make the output more random, while lower values ​​make it more centralized and determined. It is not recommended to adjust it simultaneously with top p</value>
+  </data>
+  <data name="Thinking" xml:space="preserve">
+    <value>Thinking...</value>
+  </data>
+  <data name="ThoughtProcess" xml:space="preserve">
+    <value>Thinking process</value>
+  </data>
+  <data name="Tip" xml:space="preserve">
+    <value>TIP</value>
+  </data>
+  <data name="Token" xml:space="preserve">
+    <value>Token</value>
+  </data>
+  <data name="TokenUsage" xml:space="preserve">
+    <value>Token usage</value>
+  </data>
+  <data name="Tools" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="TopK" xml:space="preserve">
+    <value>Top K</value>
+  </data>
+  <data name="TopKDescription" xml:space="preserve">
+    <value>The model selects the top k elements from a set of data</value>
+  </data>
+  <data name="TopP" xml:space="preserve">
+    <value>Top P</value>
+  </data>
+  <data name="TopPDescription" xml:space="preserve">
+    <value>The model will consider the results of the token of the previous top p probability. If 0.1 means that only tokens included in the highest 10% probability will be considered, and it is not recommended to adjust the sampling temperature at the same time.</value>
+  </data>
+  <data name="TotalUsage" xml:space="preserve">
+    <value>Total usage</value>
+  </data>
+  <data name="Translate" xml:space="preserve">
+    <value>Translate</value>
+  </data>
+  <data name="TranslateService" xml:space="preserve">
+    <value>Translation services</value>
+  </data>
+  <data name="TryRunMcpServer" xml:space="preserve">
+    <value>Trying to run the {0} server</value>
+  </data>
+  <data name="VariableName" xml:space="preserve">
+    <value>Variable name</value>
+  </data>
+  <data name="VariableNameExist" xml:space="preserve">
+    <value>The variable with the same name already exists</value>
+  </data>
+  <data name="VariableValue" xml:space="preserve">
+    <value>Variable value</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="WelcomeDescription" xml:space="preserve">
+    <value>Play with AI as you wish. Choose a working directory and we'll start right away!</value>
+  </data>
+  <data name="WelcomeTitle" xml:space="preserve">
+    <value>Welcome to Rodel Agent</value>
+  </data>
+  <data name="WorkingDirectory" xml:space="preserve">
+    <value>Working directory</value>
+  </data>
+  <data name="WorkingDirectorySetting" xml:space="preserve">
+    <value>Working directory settings</value>
+  </data>
+  <data name="WorkingDirectoryShouldBeEmpty" xml:space="preserve">
+    <value>The newly created working directory should be an empty folder</value>
+  </data>
+  <data name="WrapLine" xml:space="preserve">
+    <value>Line break</value>
+  </data>
+</root>

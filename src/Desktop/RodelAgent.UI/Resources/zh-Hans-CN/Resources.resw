@@ -414,9 +414,6 @@
   <data name="Groups" xml:space="preserve">
     <value>群组</value>
   </data>
-  <data name="ImportTools" xml:space="preserve">
-    <value>导入工具</value>
-  </data>
   <data name="InsertImage" xml:space="preserve">
     <value>插入图片</value>
   </data>
