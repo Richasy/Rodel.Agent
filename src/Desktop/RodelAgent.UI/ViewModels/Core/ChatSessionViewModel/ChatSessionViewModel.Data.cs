@@ -125,7 +125,8 @@ public sealed partial class ChatSessionViewModel
             }
         }
 
-        History.Insert(0, new ChatHistoryItemViewModel(conversation, RemoveHistoryAsync));
+        var historyItem = new ChatHistoryItemViewModel(conversation, RemoveHistoryAsync);
+        History.Insert(0, historyItem);
         SetCurrentConversation(conversation);
     }
 

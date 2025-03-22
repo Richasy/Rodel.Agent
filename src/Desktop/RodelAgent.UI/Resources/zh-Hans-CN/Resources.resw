@@ -811,6 +811,12 @@
   <data name="RequestCall" xml:space="preserve">
     <value>请求调用</value>
   </data>
+  <data name="ChatSessionAutoRename" xml:space="preserve">
+    <value>对话自动重命名</value>
+  </data>
+  <data name="ChatSessionAutoRenameDescription" xml:space="preserve">
+    <value>发送消息后自动使用当前模型命名会话</value>
+  </data>
   <data name="McpAutoConstent" xml:space="preserve">
     <value>调用工具时自动同意</value>
   </data>

@@ -109,7 +109,6 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
             _webView.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = false;
             _webView.CoreWebView2.Settings.IsPinchZoomEnabled = true;
             _webView.CoreWebView2.NavigationStarting += OnNavigationStarting;
-            _webView.CoreWebView2.OpenDevToolsWindow();
 
             var renderPath = Path.Combine(Package.Current.InstalledPath, "Web", "chat-render");
             var workPath = SettingsToolkit.ReadLocalSetting(SettingNames.WorkingDirectory, string.Empty);

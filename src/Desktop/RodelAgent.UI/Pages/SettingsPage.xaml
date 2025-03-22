@@ -80,6 +80,12 @@
                 <settings:ThemeSettingControl />
                 <settings:HideWindowSettingControl x:Name="HideWindowSetting" />
                 <settings:LoggerSettingControl />
+
+                <TextBlock
+                    Margin="0,16,0,8"
+                    HorizontalAlignment="Left"
+                    Text="{ext:Locale Name=Services}" />
+                <settings:ChatSessionSettingControl />
                 <settings:McpSettingControl />
 
                 <TextBlock

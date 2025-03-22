@@ -29,6 +29,7 @@ public sealed partial class SettingsPageViewModel : AISettingsViewModelBase
         Copyright = string.Format(copyrightTemplate, 2025);
         PackageVersion = this.Get<IAppToolkit>().GetPackageVersion();
 
+        SessionAutoRename = SettingsToolkit.ReadLocalSetting(SettingNames.AutoRenameSession, false);
         HideWhenWindowClosing = SettingsToolkit.ReadLocalSetting(SettingNames.HideWhenCloseWindow, false);
         AutoRunMcp = SettingsToolkit.ReadLocalSetting(SettingNames.AutoRunMcpServer, true);
         AutoConsentMcp = SettingsToolkit.ReadLocalSetting(SettingNames.AlwaysApproveMcpConsent, false);
@@ -83,4 +84,7 @@ public sealed partial class SettingsPageViewModel : AISettingsViewModelBase
 
     partial void OnAutoConsentMcpChanged(bool value)
         => SettingsToolkit.WriteLocalSetting(SettingNames.AlwaysApproveMcpConsent, value);
+
+    partial void OnSessionAutoRenameChanged(bool value)
+        => SettingsToolkit.WriteLocalSetting(SettingNames.AutoRenameSession, value);
 }

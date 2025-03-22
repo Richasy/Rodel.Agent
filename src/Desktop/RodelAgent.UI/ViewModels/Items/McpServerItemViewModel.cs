@@ -95,7 +95,6 @@ public sealed partial class McpServerItemViewModel(string id, McpAgentConfig dat
         var clientOptions = new McpClientOptions
         {
             ClientInfo = new() { Name = "RodelAgent", Version = this.Get<IAppToolkit>().GetPackageVersion() },
-            InitializationTimeout = TimeSpan.FromSeconds(30),
         };
 
         var loggerFactory = this.Get<ILoggerFactory>();

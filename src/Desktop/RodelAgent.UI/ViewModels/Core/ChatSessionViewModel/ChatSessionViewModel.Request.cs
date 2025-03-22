@@ -126,6 +126,11 @@ public sealed partial class ChatSessionViewModel
             messages.Add(chatMessage.ToInteropMessage());
             AddInteropMessageCommand.Execute(chatMessage);
             await SaveCurrentMessagesAsync();
+            if (messages.Count == 1 && SettingsToolkit.ReadLocalSetting(UI.Models.Constants.SettingNames.AutoRenameSession, false))
+            {
+                var historyItem = History.FirstOrDefault(p => p.Id == _currentConversation!.Id);
+                historyItem?.SmartRenameCommand.Execute(default);
+            }
         }
 
         if (maxRounds > 0)

@@ -35,6 +35,9 @@ public sealed partial class SettingsPageViewModel
     [ObservableProperty]
     public partial bool AutoConsentMcp { get; set; }
 
+    [ObservableProperty]
+    public partial bool SessionAutoRename { get; set; }
+
     /// <summary>
     /// 链接项.
     /// </summary>
