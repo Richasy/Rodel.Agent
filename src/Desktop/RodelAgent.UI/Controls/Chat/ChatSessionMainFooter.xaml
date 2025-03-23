@@ -99,14 +99,14 @@
                                                     Padding="0"
                                                     HorizontalAlignment="Stretch"
                                                     HorizontalContentAlignment="Stretch"
-                                                    AutomationProperties.Name="{x:Bind Name, Mode=OneWay, Converter={StaticResource ChatTitleConverter}}"
+                                                    AutomationProperties.Name="{x:Bind Id, Mode=OneWay, Converter={StaticResource ChatTitleConverter}}"
                                                     BorderThickness="2"
                                                     Click="OnMcpServerItemClick"
                                                     DataContext="{x:Bind}"
                                                     IsChecked="{x:Bind IsSelected, Mode=OneWay}"
                                                     IsEnableCheck="False">
                                                     <Grid Padding="12,8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
-                                                        <base:TrimTextBlock MaxLines="1" Text="{x:Bind Name, Mode=OneWay}" />
+                                                        <base:TrimTextBlock MaxLines="1" Text="{x:Bind Id, Mode=OneWay}" />
                                                     </Grid>
                                                 </base:AppToggleCard>
                                             </DataTemplate>

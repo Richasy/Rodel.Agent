@@ -66,7 +66,7 @@ public sealed partial class McpConfigDialog : AppDialog
         if (_source != null)
         {
             _source.Data = config;
-            _source.Name = name;
+            _source.Id = name;
             _source.IsEnabled = config.IsEnabled ?? true;
             _source.SaveCommand.Execute(default);
             _source.DisconnectCommand.Execute(default);

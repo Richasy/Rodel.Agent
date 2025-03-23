@@ -23,13 +23,8 @@ public sealed partial class McpServerItemViewModel(string id, McpAgentConfig dat
     /// <summary>
     /// 标识符.
     /// </summary>
-    public string Id { get; } = id;
-
-    /// <summary>
-    /// 服务名称.
-    /// </summary>
     [ObservableProperty]
-    public partial string Name { get; set; } = id;
+    public partial string Id { get; set; } = id;
 
     /// <summary>
     /// 是否启用.
@@ -152,6 +147,13 @@ public sealed partial class McpServerItemViewModel(string id, McpAgentConfig dat
     private async Task DisconnectAsync()
     {
         var client = GetClient();
+        if (_runCts != null)
+        {
+            await _runCts.CancelAsync();
+            _runCts.Dispose();
+            _runCts = null;
+        }
+
         if (client != null)
         {
             await client.DisposeAsync();

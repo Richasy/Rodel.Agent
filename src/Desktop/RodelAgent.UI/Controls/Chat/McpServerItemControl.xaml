@@ -16,7 +16,7 @@
         Padding="0"
         HorizontalAlignment="Stretch"
         HorizontalContentAlignment="Stretch"
-        AutomationProperties.Name="{x:Bind ViewModel.Name, Mode=OneWay}"
+        AutomationProperties.Name="{x:Bind ViewModel.Id, Mode=OneWay}"
         BorderBrush="Transparent"
         BorderThickness="2"
         IsChecked="{x:Bind ViewModel.IsSelected, Mode=OneWay}"
@@ -65,7 +65,7 @@
                     Grid.Column="1"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Text="{x:Bind ViewModel.Name, Mode=OneWay}" />
+                    Text="{x:Bind ViewModel.Id, Mode=OneWay}" />
                 <ToggleSwitch
                     x:Name="EnableSwitch"
                     Grid.Column="2"
