@@ -202,7 +202,7 @@ public sealed partial class ChatSessionViewModel
             {
                 if (server.State != UI.Models.Constants.McpServerState.Running)
                 {
-                    this.Get<AppViewModel>().ShowTipCommand.Execute((string.Format(ResourceToolkit.GetLocalizedString(UI.Models.Constants.StringNames.TryRunMcpServer), server.Name), InfoType.Information));
+                    this.Get<AppViewModel>().ShowTipCommand.Execute((string.Format(ResourceToolkit.GetLocalizedString(UI.Models.Constants.StringNames.TryRunMcpServer), server.Id), InfoType.Information));
                     await server.TryConnectCommand.ExecuteAsync(default);
                 }
             }
@@ -295,7 +295,7 @@ public sealed partial class ChatSessionViewModel
                     {
                         if (server.State != UI.Models.Constants.McpServerState.Running)
                         {
-                            this.Get<AppViewModel>().ShowTipCommand.Execute((string.Format(ResourceToolkit.GetLocalizedString(UI.Models.Constants.StringNames.TryRunMcpServer), server.Name), InfoType.Information));
+                            this.Get<AppViewModel>().ShowTipCommand.Execute((string.Format(ResourceToolkit.GetLocalizedString(UI.Models.Constants.StringNames.TryRunMcpServer), server.Id), InfoType.Information));
                             await server.TryConnectCommand.ExecuteAsync(default);
                         }
                     }

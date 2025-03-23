@@ -11,7 +11,7 @@
     <PublishProfile>win-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
-	<NoWarn>$(NoWarn);NU1903;WMC1510;MVVMTK0045;MVVMTK0046;CS1591;IL2067;IL2059;IL3050;IL2075;IL2072;IL2055;IL2060;IL2077;IL2070;IL2058;IL2026;IL2065;IL3000;IL3002;IL2057;IL2093;IL2111;IL2080;IL2090;IL2091;IL2113</NoWarn>
+	<NoWarn>$(NoWarn);NU1903;WMC1510;MVVMTK0045;MVVMTK0046;CS1591;IL2067;IL2059;IL3050;IL2075;IL2072;IL2055;IL2060;IL2077;IL2070;IL2058;IL2026;IL2065;IL3000;IL3002;IL2057;IL2093;IL2111;IL2080;IL2090;IL2091;IL2113;IL2087;IL2062;IL2046;IL2122;IL2096</NoWarn>
 	<TrimmerSingleWarn>false</TrimmerSingleWarn>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -536,10 +536,8 @@
 
   <!-- Publish Properties -->
   <PropertyGroup>
-    <PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>
-    <PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">False</PublishReadyToRun>
-    <PublishAot Condition="'$(Configuration)' == 'Debug'">True</PublishAot>
-    <PublishAot Condition="'$(Configuration)' != 'Debug'">True</PublishAot>
+    <PublishReadyToRun>False</PublishReadyToRun>
+    <PublishAot>True</PublishAot>
     <DefaultLanguage>en-US</DefaultLanguage>
   </PropertyGroup>
 </Project>
