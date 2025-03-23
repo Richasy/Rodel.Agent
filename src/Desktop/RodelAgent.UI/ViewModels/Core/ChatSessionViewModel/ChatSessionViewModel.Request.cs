@@ -390,16 +390,16 @@ public sealed partial class ChatSessionViewModel
             if (additionalProperties.ContainsKey("reasoning_content"))
             {
                 responseText += additionalProperties["reasoning_content"];
-                if (!responseText.StartsWith("<think", StringComparison.OrdinalIgnoreCase))
+                if (!responseText.StartsWith("<!--think-->", StringComparison.OrdinalIgnoreCase))
                 {
-                    responseText = "<think data-temp>\n" + responseText;
+                    responseText = "<!--think-->\n<think>\n" + responseText;
                 }
             }
         }
 
         if (!string.IsNullOrEmpty(update.Text))
         {
-            if (responseText.StartsWith("<think data-temp>", StringComparison.OrdinalIgnoreCase) && responseText.Contains("</think>", StringComparison.OrdinalIgnoreCase))
+            if (responseText.StartsWith("<!--think-->", StringComparison.OrdinalIgnoreCase) && !responseText.Contains("</think>", StringComparison.OrdinalIgnoreCase))
             {
                 responseText += "\n</think>\n";
             }
