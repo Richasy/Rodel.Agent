@@ -78,6 +78,26 @@ It is recommended to use the same name as the model ID during deployment to avoi
 
 </div>
 
+## Azure AI Foundry
+
+Azure offers a comprehensive AI model distribution service—[Azure AI Foundry](https://ai.azure.com/).
+
+Assuming you have already created your project in Azure AI Foundry, click on `My assets / Models + endpoints` in the sidebar.
+
+![Manage model and service deployments](../assets/en/azure-ai-assets.png)
+
+It is important to note that the models deployed in Azure AI Foundry are categorized, and you can see two types in the image above.
+
+When filling in the application configuration, the model and category must match.
+
+For example, if we want to add the `Phi-4` model to the application, follow these steps:
+
+1. Click the `Get endpoint` button in the category to which `Phi-4` belongs in the image above.  
+   ![Model Endpoint](../assets/en/azure-ai-endpoint.png)
+2. Copy the endpoint and key to the corresponding input box in the application.
+3. Create a custom model, where the model ID corresponds to your deployment name (the `Name` in the first column).  
+   <img src="../assets/en/azure-ai-model.png" style="width:360px; border-radius:8px" />
+
 ## Gemini
 
 |Documentation|https://ai.google.dev/gemini-api/docs|  
@@ -129,70 +149,55 @@ Similar to [OpenAI](#open-ai), after obtaining the access key, fill it in the `A
 Similar to [OpenAI](#open-ai), after obtaining the access key, fill it in the `Access Key` field.
 
 ## Qwen
- 
-|Documentation|https://help.aliyun.com/en/dashscope/developer-reference/activate-dashscope-and-create-an-api-key|  
-|-|-| 
-|API Token|https://dashscope.console.aliyun.com/apiKey|  
 
-Tongyi Qianwen is Alibaba's public large language model, hosted on Alibaba Cloud's Dashscope platform, requiring you to register and activate the Aliyun Dashscope service.
+|Documentation|https://help.aliyun.com/zh/model-studio/developer-reference/use-qwen-by-calling-api|
+|-|-|
+|API Token|https://help.aliyun.com/zh/model-studio/developer-reference/get-api-key|
 
-Dashscope itself has its own API interface and data structure, but conveniently, it also provides an OpenAI-compatible interface, which is what Rodel Agent uses directly here:
+Qwen is a publicly available large language model by Alibaba, hosted on Alibaba Cloud's large model service platform, Bailian. Therefore, you need to register and activate the model service on the Alibaba Cloud Bailian platform.
+
+The Bailian platform has its own API interface and data structure. However, a notable feature is that it also provides an Open AI compatible interface. Rodel Agent utilizes the compatible interface provided by Bailian, specifically:
 
 `https://dashscope.aliyuncs.com/compatible-mode/v1`
 
-Therefore, it supports limited models. Refer to this document for specifics: [OpenAI Interface Compatibility](https://help.aliyun.com/en/dashscope/developer-reference/compatibility-of-openai-with-dashscope/)
+Thus, the supported models are limited. For specific information, refer to this documentation: [OpenAI Interface Compatibility](https://help.aliyun.com/zh/dashscope/developer-reference/compatibility-of-openai-with-dashscope/)
 
-## ERNIE (Yiyan)
+## ERNIE Bot
 
-|Documentation|https://cloud.baidu.com/doc/WENXINWORKSHOP/s/flfmc9do2|  
+|Document|https://cloud.baidu.com/doc/WENXINWORKSHOP/s/fm4tsw9nv|
 |-|-| 
-|API Token|https://console.bce.baidu.com/qianfan/ais/console/applicationConsole/application|  
+|API Token|https://console.bce.baidu.com/iam/#/iam/accesslist|
 
-Wenxin Yiyan is a large language model provided by Baidu, hosted on Baidu Cloud's Qianfan platform. It has its own hosting steps, and different models may require separate service activations, as detailed in its documentation.
+ERNIE Bot is a large language model provided by Baidu, hosted on Baidu Cloud's Qianfan Large Model Platform. It has its own hosting steps, and services need to be activated separately for different models. Please refer to its documentation for detailed steps.
 
-After creating an application on the Qianfan platform, fill in the `API Key` in the `API Key` field and the `Secret Key` in the `Secret Key` field.
+> [!TIP]
+> Personally, it's hard for me to evaluate Baidu Qianfan's documentation; I can only say it's the most misleading among these 20+ services. During the integration of ERNIE Bot, I often felt like giving up. So if you want to save some trouble, just click the [API Token](https://console.bce.baidu.com/iam/#/iam/accesslist) link and create an Access Key. Fill the Access Key and Secret Key into the application's `Access Key` and `Secret Key` fields respectively.
+>
+> Ignore the API documentation's mentions of `API Key`, `Register Application`, and other miscellaneous things.
 
-### Custom Models
+## Tencent Hunyuan
 
-Qianfan platform supports many common large language models. If the model you intend to use is not in the predefined list, confirm the model ID on the Qianfan platform's model list and create a custom model in the application.
+| Documentation | https://cloud.tencent.com/document/product/1729/105701 |
+|-|-|
+| API Token | https://cloud.tencent.com/document/product/1729/111008 |
 
-For example, if you want to use the `Meta-Llama-3-8B` model, follow these steps:
+The Hunyuan large model is hosted on Tencent Cloud. A notable advantage is that it provides Open AI compatible interfaces, allowing direct integration with Rodel Agent.
 
-1. On the Qianfan platform's [online services](https://console.bce.baidu.com/qianfan/ais/console/onlineService) console, find `Meta-Llama-3-8B`. The service address suggests the model ID is `llama_3_8b`.
-    <div style="max-width: 300px">
-
-    ![Qianfan Meta-Llama-3-8B](../assets/en/qianfan-model-hover.png)
-
-    </div>
-
-2. Create a custom model based on the model ID:
-    <div style="max-width: 300px">
-
-    ![Custom Chat Model](../assets/en/chat-custom-model-wenxin.png)
-    
-    </div>
-
-## Tencent HunYuan
-
-|Documentation|https://cloud.tencent.com/document/product/1729/105701|  
-|-|-| 
-|API Token|https://console.cloud.tencent.com/cam/capi|  
-
-HunYuan models are hosted on Tencent Cloud. You need to create a key in the [API Key Management](https://console.cloud.tencent.com/cam/capi).
-
-Note that due to security restrictions, the `Secret Key` is only visible when creating the key.
+You can create an [API Key](https://console.cloud.tencent.com/hunyuan/start), then fill in the key into the access credentials of the Rodel Agent.
 
 ## iFLYTEK Spark
 
-|Documentation|https://www.xfyun.cn/doc/spark/Web.html|  
+|Documentation|https://www.xfyun.cn/doc/spark/Web.html|
 |-|-| 
-|API Token|https://console.xfyun.cn/services/bm35|  
+|API Token|https://console.xfyun.cn/services/bm35|
 
-iFLYTEK Spark is a large language model launched by iFLYTEK. Before using this model family, you need to register an application on the [iFLYTEK Open Platform](https://www.xfyun.cn/) and activate the corresponding model services.
+The Spark large model is a large language model launched by iFLYTEK. Before using this model family, you need to register an application on the [iFLYTEK Open Platform](https://www.xfyun.cn/) and then activate the corresponding model service.
 
-Unactivated models cannot be used.
+Models that are not activated cannot be used.
 
-After registration, you can find the `Service Interface Authentication Information` on the model page of `iFLYTEK Spark`.
+After registration, you can find the `Service Interface Authentication Information` on the model page of `Spark Cognitive Large Model`.
+
+Rodel Agent uses the http service. You only need to fill in the `APIPassword` of the corresponding model into Rodel Agent's `Access Key`.
 
 ## ByteDance Doubao
 
@@ -254,11 +259,16 @@ Similar to [OpenAI](#open-ai), after obtaining the access key, fill it in the `A
 
 ## Mistral AI
 
-|Documentation|https://docs.mistral.ai/|  
+|Document|https://docs.mistral.ai/|
 |-|-| 
-|API Token|https://console.mistral.ai/api-keys/|  
+|API Token|https://console.mistral.ai/api-keys/|
+|Codestral Token|https://console.mistral.ai/codestral|
 
-Similar to [OpenAI](#open-ai), after obtaining the access key, fill it in the `Access Key` field.
+Similar to [Open AI](#open-ai), after obtaining the access key, enter it into the `Access Key` field.
+
+Mistral also offers the `Codestral` service, which is free (at least until 2025/03/22) and primarily used for code generation (though it can also handle conversations).
+
+Since they use different APIs, Rodel Agent provides a separate key location for Codestral. If you need to use Codestral, enter the Codestral key and then turn on the `Use Codestral` switch. When calling the model, choose Codestral.
 
 ## Ollama
 

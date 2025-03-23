@@ -1,48 +1,56 @@
-# Begin the Session
+# Start Conversation
 
-After completing the [Chat Service Configuration](./chat-config), you can now enter the chat interface from the sidebar.
+After completing the [Configuration of Chat Services](./chat-config), you can now access the chat interface from the sidebar.
 
 ![Chat Interface](../assets/en/chat-overview-clean.png)
 
 ## Quick Start
 
-***Select an available AI service on the left, then you can start typing in the chat box to begin a conversation with the AI.***
+***Select an available AI service on the left, then start typing in the chat box to initiate a conversation with the AI.***
 
-Next, we will briefly introduce the chat interface.
+Next, let's briefly introduce the chat interface.
 
-## "Contacts" Panel
+On the left side of the conversation interface, there are two main functional sections: `Agents` and `Tools`. Let's start with the Agent.
 
-On the left side of the chat interface, there are two main functional areas.
+## Agent Panel
 
-### Services and Agents
+### Services
 
-During the chat configuration, you might configure multiple AI services to meet different needs.
+During conversation configuration, you may configure multiple AI services to meet different needs.
 
-The application will display the configured AI chat services on the left side, allowing you to select a service and start chatting.
+The application will display the configured AI conversation services on the left, allowing you to select a service and start the conversation.
 
-This panel also shows `Agents`, which are specific handlers based on AI services.
+### Agent
 
-For example, the `Translation Expert` shown in the screenshot is an AI assistant specifically used for English-Chinese translation.
+Besides the services, you can also call the agent.
 
-If you want to learn more about agents, please read [Agents and Presets](./agent-preset).
+For example, the `RESW Translator` shown in the screenshot is an AI agent specifically used for translating resw files.
 
-### Plugin Management
+If you want to learn more about agents, please read [AI Agent](./agent-preset).
 
-As AI has developed, mainstream AI services and models generally support tool calling (Tool Call).
+### Groups
 
-Unlike AI services deployed in the cloud, Rodel Agent, as a native Windows application, can easily run local code.
+When you have two or more agents, you can gather them into a group, act as the leader, assign a goal, and brainstorm to make the models work collaboratively.
 
-Therefore, Rodel Agent supports users in creating local plugins to access AI tool calling based on [semantic-kernel](https://github.com/Microsoft/semantic-kernel). For more information, refer to [Tool Call](./chat-tools).
+## Tools Panel
 
-If you have a C# programming background, writing a plugin will be very easy. If you are interested, please refer to [Plugin Development](./tool-dev) to create your own plugin.
+As AI has developed to this point, mainstream AI services and models generally support tool calling (Tool Call).
+
+Unlike AI services deployed in the cloud, Rodel Agent, as a native Windows application, can conveniently run local code.
+
+Therefore, Rodel Agent integrates the recently popular [Model Context Protocol (MCP)](https://docs.mcpcn.org/introduction), seamlessly integrating numerous MCP tools.
+
+<img src="../assets/en/mcp-small.png" style="width:300px" />
+
+If you already have an MCP toolset, congratulations! You can directly import it into Rodel Agent for use.
 
 ## Chat Panel
 
-After selecting a `Service` / `Agent` / `Session Preset` from the left panel, the application will load the chat panel.
+When you select a `service` / `agent` / `group` from the left panel, the application will load the chat panel.
 
-This interface should be familiar to you as it resembles most chat tools we usually use.
+This interface should be familiar to you, as it resembles most chat tools we use daily.
 
-You can enter text in the bottom input box, press the `Enter` key to send it, and wait for the AI to respond.
+You can input text at the bottom, press `Enter` to send, and wait for the AI response.
 
 <div style="max-width:400px">
 
@@ -52,11 +60,11 @@ You can enter text in the bottom input box, press the `Enter` key to send it, an
 
 ### Switching Models
 
-AI services usually provide multiple models. If you want to switch between different models, click the brain-like icon on the left side of the chat toolbar, then you can switch between different models.
+AI services generally offer multiple models. If you wish to switch between different models, click the brain-like icon at the top left of the chat toolbar, and you can switch between different models.
 
 <div style="max-width:300px">
 
-![Switching Models](../assets/en/chat-switch-model.png)
+![Switch Models](../assets/en/chat-switch-model.png)
 
 </div>
 
@@ -64,7 +72,7 @@ AI services usually provide multiple models. If you want to switch between diffe
 
 Rodel Agent supports individual operations on each message in the chat history.
 
-Move your cursor over the message to see the message toolbar, where you can `Copy` / `Edit` / `Delete`.
+Move the cursor over the message to see the message toolbar, where you can `copy` / `edit` / `delete`.
 
 <div style="max-width:240px">
 
@@ -75,19 +83,19 @@ Move your cursor over the message to see the message toolbar, where you can `Cop
 This helps you fine-tune the AI's output.
 
 > [!DANGER]
-> Note that some AI services have strict requirements for message history, requiring alternating submission of user messages and AI messages (e.g., [Wenxin Yiyan](https://cloud.baidu.com/doc/WENXINWORKSHOP/s/clntwmv7t#body%E5%8F%82%E6%95%B0)). Deleting a message may cause the AI service to fail in generating a response.
+> Note that some AI services have strict requirements for message history, requiring alternating user messages and AI messages (e.g., [Wenxin Yiyan](https://cloud.baidu.com/doc/WENXINWORKSHOP/s/clntwmv7t#body%E5%8F%82%E6%95%B0)). Deleting a message may cause AI service generation failure.
 
 ## Management Panel
 
-The right side of the interface is the management panel.
+On the right side of the interface is the management panel.
 
-It is divided into two parts.
+It is divided into two sections.
 
 ### Control Panel
 
-The upper part is the control panel for the current session.
+The upper section is the control panel for the current session.
 
-Here, you can enter system prompts or switch to `Session Options` to adjust the AI's behavior from a numerical perspective.
+You can input system prompts here, or switch to `session options` to adjust AI behavior from a numerical perspective.
 
 <div style="max-width:300px">
 
@@ -96,36 +104,38 @@ Here, you can enter system prompts or switch to `Session Options` to adjust the 
 </div>
 
 > [!TIP]
-> Session options may vary depending on the current AI service. For "Open AI-like services," Open AI's parameter options will be uniformly applied, but this does not mean all parameters will be correctly processed. This depends on the capabilities of the specific service.
+> Session options vary according to the current AI service. For "Open AI-like services," Open AI's parameter options are applied uniformly, but this does not mean all parameters will be processed correctly, which depends on the specific service's capabilities.
 
-### Session List
+### Session History
 
-The lower part of the management panel is for managing the session list.
+The lower section of the management panel is the session list management.
 
-Note that the session list here is not the entire session list but dynamically displays grouped lists based on the currently selected `Service` / `Assistant` / `Session Preset`.
+Note that the session list here is not the entire session list but dynamically displays grouped lists based on the currently selected `service` / `agent` / `group`.
 
-This means that your chat sessions with Open AI will not be displayed in the Azure Open AI session list.
+This means your chat sessions with Open AI will not appear in the session list for Azure Open AI.
 
-This helps better categorize sessions and avoid confusion. However, it may also introduce a problem where indexing session records can be more difficult.
+This helps categorize sessions better and avoid confusion. However, it introduces a problem of indexing session records, which may be difficult.
 
-Therefore, a global session content search feature will be introduced later to solve this problem. (TBD)
+Thus, a global session content search feature will be launched to solve this issue (TBD).
 
-#### Session Renaming
+#### Rename Sessions
 
-For a new session, its name is `Casual Chat`, but sometimes we do not want the list full of casual chats.
+For a new session, its name is `Casual Chat`, but sometimes we don't want the list filled with Casual Chat.
 
-To better manage historical sessions, we need to rename the session title.
+To better manage historical sessions, we need to rename session titles.
 
-You can right-click on a session, and there are two renaming options in the menu:
+You can right-click on a session, and the menu will offer two renaming options:
 
 - Rename
 - Smart Rename
 
-Rename allows you to manually change the session title.
+Rename is self-explanatory; you can manually change the session title.
 
-Smart Rename lets the AI write the title based on the first message in the session.
+Smart Rename allows AI to write the title based on the first message in the session.
 
 > [!TIP]
-> When smart renaming, the AI service used is the current chat's AI service, so whether the name is appropriate depends on the model's capability.
+> During Smart Rename, the AI service used is the current chat AI service, so the accuracy of the title depends on the model's capabilities.
 >
-> Also, since session renaming itself is a call to the AI, consuming Tokens, it is manually triggered rather than automatic renaming.
+> Since session renaming itself is an AI call, it consumes tokens, hence it is manually triggered rather than automatically renamed.
+
+If you find manual renaming too cumbersome, you can enable `Auto Rename Conversations` in settings.

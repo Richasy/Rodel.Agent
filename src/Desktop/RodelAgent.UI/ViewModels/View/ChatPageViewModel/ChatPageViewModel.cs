@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
 using Richasy.AgentKernel;
-using Richasy.AgentKernel.Core.Mcp;
 using Richasy.WinUIKernel.AI.ViewModels;
 using Richasy.WinUIKernel.Share.Toolkits;
 using RodelAgent.Interfaces;
@@ -56,7 +55,6 @@ public sealed partial class ChatPageViewModel : LayoutPageViewModelBase
 
         if (!_isInitialized)
         {
-            AttachMcpConsentHandler();
             await ReloadAvailableAgentsCommand.ExecuteAsync(default);
             ReloadAvailableGroupsCommand.Execute(default);
 
@@ -355,22 +353,6 @@ public sealed partial class ChatPageViewModel : LayoutPageViewModelBase
     {
         var dialog = new McpConfigDialog();
         await dialog.ShowAsync();
-    }
-
-    private static void AttachMcpConsentHandler()
-    {
-        McpGlobalHandler.ConsentHandler = async (clientId, method, request) =>
-        {
-            var alwaysApprove = SettingsToolkit.ReadLocalSetting(SettingNames.AlwaysApproveMcpConsent, false);
-            if (alwaysApprove)
-            {
-                return true;
-            }
-
-            var dialog = new McpConsentDialog(clientId, method, request);
-            var result = await dialog.ShowAsync();
-            return result == ContentDialogResult.Primary;
-        };
     }
 
     private void CheckAgentsVisible()

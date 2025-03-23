@@ -15,6 +15,7 @@
 - Qwen (Alibaba Dash Scope)
 - Yiyan (Baidu Qianfan)
 - Tencent Hunyuan
+- Siliconflow
 - iFlytek Spark
 - Open Router
 - Together AI
@@ -22,6 +23,7 @@
 - Perplexity
 - Mistral AI
 - Ollama
+- xAI
 
 ## Text-to-Image Services
 
@@ -32,6 +34,8 @@
 - Yiyan (Baidu Qianfan)
 - Tencent Hunyuan
 - iFlytek Spark
+- xAI
+- ZhiPu
 
 ## Text-to-Speech Services
 
@@ -40,6 +44,8 @@
 - Open AI
 - Azure Open AI
 - Azure Text-to-Speech
+- Window TTS
+- Edge TTS
 
 ## Machine Translation Services
 

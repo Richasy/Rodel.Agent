@@ -1,30 +1,30 @@
-# Agent and Preset
+# AI Agent
 
-Since the launch of ChatGPT, people have been exploring how to make the best use of AI.
+Since the release of ChatGPT, people have been exploring how to effectively use AI.
 
-The most widely spread and easiest method is `role-playing`.
+The most widespread and easiest method to use is `Role-Playing`.
 
-The basic principle is to guide the AI model with `system prompts`, telling it the background of the session, its identity/duties/role, how it should respond to users, and so on, thus making the general-purpose AI perform specific tasks by playing a "role."
+The basic principle is to guide the AI model through `system prompts`, telling it the background of the conversation, its identity/responsibility/role, how it should respond to the user, etc., allowing the AI to play a "role" to make the general AI perform specific tasks.
 
-Rodel Agent provides two ways to help you create roles, which are `Agent` and `Preset`.
+You can create an `agent` in Rodel Agent to have AI engage in a specific job.
 
 ## Agent
 
 **Agent = Role**
 
-Click on the robot button at the top of the left panel to add a new Agent.
+Click the robot button at the top of the left panel, and you can add a new agent.
 
 <div style="max-width:500px">
 
-![Create Agent](../assets/en/new-agent.png)
+![Create agent](../assets/en/new-agent.png)
 
 </div>
 
-First, you need to select an AI service, which the Agent will be bound to.
+First, you need to choose an AI service with which the Agent will be associated.
 
-You can give it a name, then write system prompts to guide its behavior, and finally give it an avatar (optional).
+You can name it, write a system prompt to guide its behavior, and finally give it an avatar (optional).
 
-Next, let's create an Agent responsible for English-Chinese translation to help you understand this process.
+Next, we can create an Agent responsible for English-Chinese translation to help you understand this process.
 
 > [!TIP]
 > The prompt content is taken from [lobe-chat-agents](https://github.com/lobehub/lobe-chat-agents/blob/main/src/en-cn-translator.zh-CN.json)
@@ -33,59 +33,61 @@ Next, let's create an Agent responsible for English-Chinese translation to help 
 
 |||
 |-|-|
-|Preset Name|English-Chinese Translator Agent|
-|System Instructions|- Expertise: 双向翻译<br>- Language Pairs: 中文 <-> 英文<br>- Description: You are an expert in English-Chinese translation. You will translate Chinese input into English, or English input into Chinese. For non-Chinese content, you will provide the translation result in Chinese. Users can send you content that needs to be translated, and you will respond with the corresponding translation results, ensuring compliance with Chinese language habits. You can adjust the tone and style, considering the cultural connotations and regional differences of certain terms. As a translator, you need to ensure that the translated text meets the standards of "faithfulness, expressiveness, and elegance". "Faithfulness" means being faithful to the content and intent of the original text; "Expressiveness" means that the translation should be smooth and easy to understand, with clear expression; "Elegance" aims for cultural aesthetics and linguistic beauty in the translation. The goal is to create a translation that is both true to the original spirit and in line with the cultural and aesthetic preferences of the target language audience.|
+|Preset Name|English-Chinese Translation Agent|
+|System Command|- Expertise: Bidirectional translation<br>- Language Pairs: Chinese <-> English<br>- Description: You are an English-Chinese translation expert, translating the user's input from Chinese to English or from English to Chinese. For non-Chinese content, it will provide Chinese translation results. Users can send content to be translated to the Agent, and the Agent will provide the corresponding translation result, ensuring it meets Chinese language habits. You can adjust the tone and style, considering certain words' cultural connotations and regional differences. As a translator, the original text must be translated into a version that meets the standards of faithfulness, clarity, and elegance. "Faithfulness" means being true to the original content and intent; "Clarity" means the translation should be smooth, easy to understand, and clearly expressed; "Elegance" pursues the cultural aesthetic and linguistic beauty of the translation. The goal is to create translations that are true to the spirit of the original work and meet the cultural and aesthetic standards of the target language and its readers.|
 
-Copy the above content into the corresponding input boxes in the creation panel.
+Copy the above content into the corresponding input box on the creation panel.
 
-For the avatar, you can choose any image you like or skip it.
+Avatar...you can use the emoji provided by the app or skip it.
 
 ### Parameter Settings
 
 Click `Next`, and you will see a parameter settings panel.
 
-![Session Parameters Configuration](../assets/en/preset-parameters.png)
+![Conversation Parameter Configuration](../assets/en/preset-parameters.png)
 
-It looks quite complex, but it's actually not too complicated.
+It looks quite complicated, but it's actually not simple at all.
 
-Alright, you don't need to worry. You can hover over each parameter title to see the specific parameter description.
+Well, don't worry, you can hover your cursor over each parameter setting title to view the specific parameter description.
 
-To create a translator, we mainly need to modify the following two parameters:
+We want to create a translator and mainly modify the following two parameters:
 
-1. Temperature: We do not want the AI model to add any unnecessary flair in the translation, so set the temperature to `0` to make it as compliant as possible with our instructions.
-2. Session Rounds: Suppose the content we want to translate is independent, then we don't want each translation to include previous chat records. We can set the session rounds to `1`, so each request will only send the current user's input without including the previous context.
+1. Temperature: We don't want the AI model to add any flair while translating, so set the temperature to `0` to make it follow our instructions as closely as possible.
+2. Conversation Rounds: If the content we want to translate is independent, we don't want to include previous chat records in each translation. We can set the conversation rounds to `1`, so each request sent will only include the current user input, without the previous context.
 
-Click `Finish`, and you will find the `English-Chinese Translator Agent` you just created in the chat list.
+Click `Finish`, and then you can find the `English-Chinese Translation Agent` you just created in the chat list.
 
 Now, start translating content!
 
 <div style="max-width:450px">
 
-![Translator Agent](../assets/en/agent-translator.png)
+![Translation Agent](../assets/en/agent-translator.png)
 
 </div>
 
-## Session Presets
+### Preset Messages
 
-Agents are essentially session presets.
+In the parameter settings panel, there is a large `Preset Messages` section on the right. This section is used to configure examples in prompt engineering.
 
-However, they have different applications.
+You can create one or more sets of preset Q&A to guide the AI to answer your subsequent questions according to the same rules.
 
-- **Agent**: Creates a role, describing and guiding its behavior, with an emphasis on system prompts.
-- **Session Preset**: Saves a snapshot of a session, starting a new session based on this snapshot each time, with an emphasis on chat records and session parameters.
+Here, you need to create a separate XML file to write the conversation history.
 
-Sometimes, we test or interrogate a model to uncover some "special" content (such as jailbreaking).
+The basic content is as follows:
 
-In such cases, we frequently adjust parameters or modify chat records to fine-tune the model's output.
+```xml
+<message role="user">
+The weather is so good today.
+</message>
 
-Once these tasks have reached a certain stage, we may want to save the current session so that next time we can continue interacting with the AI model based on the current chat records and parameters.
+<message role="assistant">
+今天的天气真好。
+</message>
 
-Therefore, the entry point for creating session presets is at the top of the chat interface, where there is a save button.
+...
+```
 
-<div style="max-width:420px">
+As you can see, it consists of individual `message` tags, with only one attribute `role`, which can be `system`, `user`, or `assistant`, corresponding to `system prompt`, `user input`, and `model output`, respectively.
 
-![Save Session](../assets/en/save-session.png)
-
-</div>
-
-Click save, confirm the current session parameters, and the session will be saved as a snapshot, appearing in the `Session Presets` section of the left panel.
+> [!TIP]
+> Although this is an XML file, the content inside the `<message>` tags does not need XML escaping; just write it directly.

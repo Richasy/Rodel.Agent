@@ -17,9 +17,9 @@
 
 但是模型可以调用指定的工具去获取最新的天气信息，然后根据天气信息返回你需要的答案。
 
-## 导入工具插件
+## 接入 MCP
 
-在小幻助理的聊天界面，你可以在左侧面板顶部的溢出菜单中找到导入插件的功能入口。
+在小幻助理的聊天界面，你可以在左侧面板顶部的溢出菜单中找到导入MCP服务的功能入口。
 
 <div style="max-width:360px">
 
@@ -27,9 +27,73 @@
 
 </div>
 
-小幻助理的插件包实际上就是一个 zip 压缩包，具体如何创建，请参考 [插件开发](./tool-dev)
+这里有两种添加方式：
 
-导入后，在你的工作目录下会有一个 Plugins 文件夹，里面存放着解压后的插件文件。
+1. 手动添加 MCP 服务
+2. 导入现有的 MCP JSON 配置文件
+
+### 手动添加 MCP 服务
+
+点击 `添加 MCP 服务`，你能看到下面的这个对话框：
+
+<img src="./assets/zh/mcp-dialog.png" style="width:360px; border-radius: 8px" />
+
+这里我们以官方示例的 [Everything](https://github.com/modelcontextprotocol/servers/tree/main/src/everything) 服务举例。
+
+这个是官方提供的用于 Claude 的配置：
+
+```json
+{
+  "mcpServers": {
+    "everything": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-everything"
+      ]
+    }
+  }
+}
+```
+
+在小幻助理中就这样填写：
+
+<img src="./assets/zh/mcp-everything.png" style="width:360px; border-radius: 8px" />
+
+`工作目录` 和 `环境变量` 仅对个别服务有用，如果你的服务不需要，那就留空。
+
+### 导入 MCP 配置文件
+
+假如你已经在使用 Claude Desktop 或者其它支持 MCP 的应用，那么你应该已经有了一套自己的配置文件（JSON），你可以直接将其导入到小幻助理中，小幻助理会根据你的配置文件自动生成 MCP 服务列表。
+
+小幻助理支持以下两种配置格式：
+
+1. Claude Desktop 配置
+
+```json
+{
+    ... 其它配置
+    "mcpServers": {
+        "xxx": {
+            "command": "xxx",
+            ...
+        },
+        ...
+    }
+}
+```
+
+2. MCP 配置列表
+
+```json
+{
+    "xxx": {
+        "command": "xxx",
+        ...
+    },
+    ...
+}
+```
 
 ## 模型支持
 
@@ -47,23 +111,35 @@
 
 ## 使用工具
 
-在聊天界面中，你需要先切换到支持工具调用的模型，然后在工具栏中点击按钮，勾选需要使用的插件。
+在工具列表中，每一个工具都有一个开关，这个开关表示是否在会话中默认启用该工具。
 
-<div style="max-width:240px">
+<img src="./assets/zh/mcp-list.png" style="width:300px">
+
+如果默认启用，那么在询问模型时会默认带上这些工具的定义，以便模型判断是否要调用这些工具。
+
+同时，在聊天界面中，你也可以展开当前会话的工具面板，手动选择携带哪些工具。
+
+<div style="max-width:300px">
 
 ![工具调用弹窗](./assets/zh/tool-call-flyout.png)
 
 </div>
 
 > [!TIP]
-> 原则上不应勾选太多的插件，因为往往一个插件中包含多个方法，每个方法的说明也会占据上下文窗口长度。
+> 原则上不应勾选太多的插件，因为往往一个插件中包含多个方法，可能会影响模型的命中率。
 
 当插件勾选完成，且模型支持工具调用，那么你就可以提问了。
 
-假设你的工具支持查询天气信息，那么你就可以问 `今天 XXX 天气怎么样？` 之类的问题，模型会自动调用工具进行解答。
+假设你的工具支持查询天气信息，那么你就可以问 `今天 XXX 天气怎么样？` 之类的问题，如果模型判断需要工具辅助，那就会尝试调用工具，但这需要你的同意。
 
-<div style="max-width:500px">
+<img src="./assets/zh/mcp-consent.png" style="width:360px;border-radius:8px" />
 
-![天气问答](./assets/zh/chat-weatcher.png)
+这是一种保守的做法，当你对工具调用不熟悉的时候，你最好知道模型正在尝试做什么，以便在它跑偏的时候及时打断它。
 
-</div>
+如果你对模型的判断能力比较信任，那么你可以在设置里开启 `调用工具时自动同意`。
+
+![MCP设置](./assets/zh/mcp-settings.png)
+
+这样，模型就会按照它的节奏来进行工具调用了。
+
+![](./assets/zh/chat-overview.png)

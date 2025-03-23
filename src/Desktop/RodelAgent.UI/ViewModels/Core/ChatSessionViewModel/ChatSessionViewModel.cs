@@ -86,6 +86,7 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
         await ReloadMcpServersAsync();
         CheckChatEmpty();
         CheckRegenerate();
+        AttachMcpConsentHandler();
         AttachMcpResponseHandler();
         HistoryHeight = SettingsToolkit.ReadLocalSetting(SettingNames.ChatServicePageHistoryHeight, 300d);
         try
@@ -389,6 +390,27 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
     {
         var pageVM = this.Get<ChatPageViewModel>();
         await pageVM.SaveMcpServersCommand.ExecuteAsync(default);
+    }
+
+    private void AttachMcpConsentHandler()
+    {
+        McpGlobalHandler.ConsentHandler = async (clientId, method, request) =>
+        {
+            var alwaysApprove = SettingsToolkit.ReadLocalSetting(SettingNames.AlwaysApproveMcpConsent, false);
+            if (alwaysApprove)
+            {
+                return true;
+            }
+
+            var dialog = new McpConsentDialog(clientId, method, request);
+            var result = await dialog.ShowAsync();
+            if (result != ContentDialogResult.Primary)
+            {
+                CancelGenerateCommand.Execute(default);
+            }
+
+            return result == ContentDialogResult.Primary;
+        };
     }
 
     private void AttachMcpResponseHandler()

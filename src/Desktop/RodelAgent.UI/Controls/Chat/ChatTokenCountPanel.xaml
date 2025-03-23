@@ -32,7 +32,9 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                Style="{StaticResource CaptionTextBlockStyle}">
+                Style="{StaticResource CaptionTextBlockStyle}"
+                TextTrimming="CharacterEllipsis"
+                TextWrapping="NoWrap">
                 <Run Text="{ext:Locale Name=Token}" />
                 <Run Foreground="{ThemeResource AccentTextFillColorTertiaryBrush}" Text="{x:Bind ViewModel.TotalTokenUsage, Mode=OneWay}" />
             </TextBlock>

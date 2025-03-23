@@ -422,3 +422,4 @@ dotnet_diagnostic.NU1900.severity = none
 # VSTHRD111: Use ConfigureAwait(bool)
 dotnet_diagnostic.VSTHRD111.severity = none
 dotnet_diagnostic.VSTHRD100.severity = none
+dotnet_diagnostic.VSTHRD101.severity = none
