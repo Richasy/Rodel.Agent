@@ -1,31 +1,14 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+// Copyright (c) Richasy. All rights reserved.
 
 namespace RodelAgent.UI.Controls.Chat;
 
-/// <summary>
-/// 聊天群选项面板.
-/// </summary>
-public sealed partial class GroupOptionsPanel : ChatGroupControlBase
+public sealed partial class GroupOptionsPanel : LayoutUserControlBase
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="GroupOptionsPanel"/> class.
-    /// </summary>
-    public GroupOptionsPanel()
-    {
-        InitializeComponent();
-    }
+    public GroupOptionsPanel() => InitializeComponent();
 
-    private void OnMaxRoundsChanged(object sender, RangeBaseValueChangedEventArgs e)
-    {
-        if (e.NewValue < 1 || ViewModel is null)
-        {
-            return;
-        }
+    public void ReloadOptionsUI(int maxRounds)
+        => MaxRoundsSlider.Value = maxRounds;
 
-        ViewModel.MaxRounds = (int)e.NewValue;
-        ViewModel.CheckMaxRoundsCommand.Execute(default);
-    }
-
-    private void OnTerminateTextSubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-        => ViewModel.CheckMaxRoundsCommand.Execute(default);
+    public int GetMaxRounds()
+        => Convert.ToInt32(MaxRoundsSlider.Value);
 }

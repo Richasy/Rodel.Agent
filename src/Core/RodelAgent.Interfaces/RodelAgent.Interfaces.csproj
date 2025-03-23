@@ -1,16 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Richasy.AgentKernel.Definitions" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\RodelAgent.Models\RodelAgent.Models.csproj" />
-      <ProjectReference Include="..\RodelAudio.Models\RodelAudio.Models.csproj" />
-      <ProjectReference Include="..\RodelChat.Models\RodelChat.Models.csproj" />
-      <ProjectReference Include="..\RodelDraw.Models\RodelDraw.Models.csproj" />
-      <ProjectReference Include="..\RodelTranslate.Models\RodelTranslate.Models.csproj" />
     </ItemGroup>
 </Project>

@@ -1,7 +1,6 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System;
-using System.ComponentModel.DataAnnotations;
+using SqlSugar;
 
 namespace RodelAgent.Models.Common;
 
@@ -29,7 +28,7 @@ public class Metadata
     /// <summary>
     /// 键名.
     /// </summary>
-    [Key]
+    [SugarColumn(IsPrimaryKey = true)]
     public string Id { get; set; }
 
     /// <summary>

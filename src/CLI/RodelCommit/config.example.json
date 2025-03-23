@@ -1,0 +1,110 @@
+﻿{
+  "app": {
+    "default_service": "",
+    "diff_chunk_size": 7000,
+    "max_commit_length": 40,
+    "concurrent_limit": 5,
+    "locale": "en-US",
+    "use_gitmoji": true
+  },
+  "services": {
+    "openai": {
+      "organization": "",
+      "endpoint": "",
+      "key": "",
+      "model": ""
+    },
+    "azure_openai": {
+      "endpoint": "",
+      "key": "",
+      "model": ""
+    },
+    "azure_ai": {
+      "endpoint": "",
+      "key": "",
+      "model": ""
+    },
+    "zhipu": {
+      "key": "",
+      "model": ""
+    },
+    "lingyi": {
+      "key": "",
+      "model": ""
+    },
+    "moonshot": {
+      "key": "",
+      "model": ""
+    },
+    "qwen": {
+      "key": "",
+      "model": ""
+    },
+    "deepseek": {
+      "key": "",
+      "model": ""
+    },
+    "ernie": {
+      "secret": "",
+      "key": "",
+      "model": ""
+    },
+    "spark": {
+      "key": "",
+      "model": ""
+    },
+    "gemini": {
+      "endpoint": "",
+      "key": "",
+      "model": ""
+    },
+    "groq": {
+      "key": "",
+      "model": ""
+    },
+    "mistral": {
+      "codestral_key": "",
+      "use_codestral": false,
+      "key": "",
+      "model": ""
+    },
+    "perplexity": {
+      "key": "",
+      "model": ""
+    },
+    "together_ai": {
+      "key": "",
+      "model": ""
+    },
+    "open_router": {
+      "key": "",
+      "model": ""
+    },
+    "anthropic": {
+      "endpoint": "",
+      "key": "",
+      "model": ""
+    },
+    "ollama": {
+      "endpoint": "",
+      "key": "ollama",
+      "model": ""
+    },
+    "hunyuan": {
+      "key": "",
+      "model": ""
+    },
+    "siliconflow": {
+      "key": "",
+      "model": ""
+    },
+    "doubao": {
+      "key": "",
+      "model": ""
+    },
+    "xai": {
+      "key": "",
+      "model": ""
+    }
+  }
+}

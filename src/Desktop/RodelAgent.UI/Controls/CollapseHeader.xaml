@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<base:LayoutUserControlBase
+    x:Class="RodelAgent.UI.Controls.CollapseHeader"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:base="using:Richasy.WinUIKernel.Share.Base"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:Richasy.AgentKernel.Extensions.AI"
+    xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:local="using:RodelAgent.UI.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <StackPanel>
+        <Button
+            Padding="8,6"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Stretch"
+            Background="Transparent"
+            BorderThickness="0"
+            Click="OnCollapseButtonClick"
+            Foreground="{ThemeResource TextFillColorSecondaryBrush}">
+            <Grid ColumnSpacing="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <base:TrimTextBlock
+                    Margin="4,0,0,0"
+                    VerticalAlignment="Center"
+                    FontSize="12"
+                    MaxLines="1"
+                    Text="{x:Bind Title, Mode=OneWay}" />
+                <Grid Grid.Column="1" VerticalAlignment="Center">
+                    <ic:SymbolIcon
+                        FontSize="12"
+                        Symbol="ChevronCircleUp"
+                        Visibility="{x:Bind IsCollapsed, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
+                    <ic:SymbolIcon
+                        FontSize="12"
+                        Symbol="ChevronCircleDown"
+                        Visibility="{x:Bind IsCollapsed, Mode=OneWay}" />
+                </Grid>
+            </Grid>
+        </Button>
+
+        <ContentPresenter
+            Margin="0,4,0,0"
+            Content="{x:Bind Element, Mode=OneWay}"
+            Visibility="{x:Bind IsCollapsed, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
+    </StackPanel>
+</base:LayoutUserControlBase>

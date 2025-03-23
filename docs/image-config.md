@@ -81,14 +81,16 @@ Azure Open AI 相较于 Open AI，最大的不同在于你需要手动部署需�
 - 1792x1024
 - 1024x1792
 
-## 千帆模型平台 SD_XL（文心）
+## 文心生图
 
 |||
 |-|-|
-|文档|https://cloud.baidu.com/doc/WENXINWORKSHOP/s/Klkqubb9w|
-|API 令牌|https://console.bce.baidu.com/qianfan/ais/console/applicationConsole/application|
+|文档|https://ai.baidu.com/ai-doc/NLP/clxim3bfq|
+|API 令牌|https://console.bce.baidu.com/ai-engine/old/#/ai/ocr/app/list|
 
-千帆大模型平台由百度云构建，内部包含多个画图模型，我们目前使用 Stable-Diffusion-XL。
+> 他妈的也不知道百度抽什么风，文档这里放一坨那里放一坨，一个授权方式都整出来3种。
+
+和配置对话模型不同，这里你需要 [创建一个 AI 应用](https://ai.baidu.com/ai-doc/REFERENCE/Ck3dwjhhu#%E4%B8%80%E3%80%81access_token%E9%89%B4%E6%9D%83%E6%9C%BA%E5%88%B6)
 
 在千帆大模型平台创建应用后，将 `API Key` 填入 `访问密钥`，将 `Secret Key` 填入 `密文（Secret）` 即可。
 
@@ -102,11 +104,6 @@ Azure Open AI 相较于 Open AI，最大的不同在于你需要手动部署需�
 混元生图模型托管在腾讯云上，你需要在 [API 密钥管理](https://console.cloud.tencent.com/cam/capi) 中创建一个密钥。
 
 需要注意的是，由于安全限制，密钥的 `Secret Key` 仅在创建密钥时可见。
-
-在应用中，设置项的对应关系是：
-
-- `Secret Key` -> `访问密钥`
-- `Secret Id` -> `密文（Secret）`
 
 ## 讯飞星火
 
@@ -124,3 +121,20 @@ Azure Open AI 相较于 Open AI，最大的不同在于你需要手动部署需�
 - `APPID` -> `应用 ID`
 - `APISecret` -> `密文（Secret）`
 - `APIKey` -> `访问密钥`
+
+## 智谱
+
+|||
+|-|-|
+|文档|https://open.bigmodel.cn/dev/howuse/cogview|
+|API 令牌|https://open.bigmodel.cn/usercenter/proj-mgmt/apikeys|
+
+创建 API 密钥后填入小幻助理即可。
+
+## xAI
+
+|文档|https://docs.x.ai/docs/overview|
+|-|-| 
+|API 令牌|https://console.x.ai/team/default/api-keys|
+
+和 [Open AI](#open-ai) 类似，获取访问密钥后，将其填入 `访问密钥` 中即可。

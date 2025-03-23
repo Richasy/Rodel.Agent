@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:StartupPageControlBase
+    x:Class="RodelAgent.UI.Controls.Startup.StartupFooter"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:local="using:RodelAgent.UI.Controls.Startup"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid
+        Padding="28,16"
+        BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
+        BorderThickness="0,1,0,0"
+        ColumnSpacing="12">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <TextBlock
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+            Style="{StaticResource CaptionTextBlockStyle}">
+            <Run Text="{ext:Locale Name=Version}" />
+            <Run Text=":" />
+            <Run Text="{x:Bind ViewModel.Version, Mode=OneWay}" />
+        </TextBlock>
+        <StackPanel
+            Grid.Column="1"
+            Orientation="Horizontal"
+            Spacing="8"
+            Visibility="{x:Bind ViewModel.IsMigrating, Mode=OneWay}">
+            <ProgressRing
+                Width="16"
+                Height="16"
+                VerticalAlignment="Center"
+                IsActive="True" />
+            <TextBlock
+                VerticalAlignment="Center"
+                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                Style="{StaticResource CaptionTextBlockStyle}"
+                Text="{ext:Locale Name=Migrating}" />
+        </StackPanel>
+        <StackPanel
+            Grid.Column="2"
+            Orientation="Horizontal"
+            Spacing="12">
+            <HyperlinkButton VerticalAlignment="Center" Click="OnOpenLoggerClick">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <ic:SymbolIcon
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Symbol="FolderOpen" />
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontSize="12"
+                        Text="{ext:Locale Name=LoggerModule}" />
+                </StackPanel>
+            </HyperlinkButton>
+            <HyperlinkButton VerticalAlignment="Center" Click="OnDocumentButtonClick">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <ic:SymbolIcon
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Symbol="Book" />
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontSize="12"
+                        Text="{ext:Locale Name=ReadDocument}" />
+                </StackPanel>
+            </HyperlinkButton>
+        </StackPanel>
+    </Grid>
+</local:StartupPageControlBase>

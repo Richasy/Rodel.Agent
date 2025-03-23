@@ -81,16 +81,18 @@ When creating a custom model, you need to provide the image dimensions supported
 - 1792x1024  
 - 1024x1792  
 
-## Qianfan Model Platform SD_XL (Wenxin)
+## ERNIE
 
 |||  
 |-|-|  
-|Documentation|https://cloud.baidu.com/doc/WENXINWORKSHOP/s/Klkqubb9w|  
-|API Token|https://console.bce.baidu.com/qianfan/ais/console/applicationConsole/application|  
+|Documentation|https://ai.baidu.com/ai-doc/NLP/clxim3bfq|  
+|API Token|https://console.bce.baidu.com/ai-engine/old/#/ai/ocr/app/list|  
 
-Qianfan Model Platform is built by Baidu Cloud and includes multiple drawing models. We currently use Stable-Diffusion-XL.
+> Damn, I don't know what's going on with Baidu, but their documentation is all over the place, and they've come up with 3 different authorization methods.
 
-After creating an application on the Qianfan Model Platform, enter the `API Key` into the `Access Key` field and the `Secret Key` into the `Secret` field.
+Unlike configuring conversational models, here you need to [create an AI application](https://ai.baidu.com/ai-doc/REFERENCE/Ck3dwjhhu#%E4%B8%80%E3%80%81access_token%E9%89%B4%E6%9D%83%E6%9C%BA%E5%88%B6).
+
+After creating an application on the Qianfan Large Model Platform, fill in the `API Key` as the `Access Key`, and the `Secret Key` as the `Secret Key`.
 
 ## Tencent Hunyuan
 
@@ -102,11 +104,6 @@ After creating an application on the Qianfan Model Platform, enter the `API Key`
 The Hunyuan text-to-image model is hosted on Tencent Cloud. You need to create a key in the [API Key Management](https://console.cloud.tencent.com/cam/capi) section.
 
 Please note that due to security restrictions, the `Secret Key` is only visible when the key is created.
-
-In the application, the corresponding relationships for the settings are:
-
-- `Secret Key` -> `Access Key`  
-- `Secret Id` -> `Secret`  
 
 ## iFlytek Spark
 
@@ -123,4 +120,21 @@ After registration, you can find the `Service Interface Authentication Informati
 
 - `APPID` -> `Application ID`  
 - `APISecret` -> `Secret`  
-- `APIKey` -> `Access Key`  
+- `APIKey` -> `Access Key`
+
+## Zhipu
+
+|||
+|-|-|
+|Document|https://open.bigmodel.cn/dev/howuse/cogview|
+|API Token|https://open.bigmodel.cn/usercenter/proj-mgmt/apikeys|
+
+Fill in the API key in Rodel Agent after creating it.
+
+## xAI
+
+|Document|https://docs.x.ai/docs/overview|
+|-|-|
+|API Token|https://console.x.ai/team/default/api-keys|
+
+Similar to [Open AI](#open-ai), get the access key and fill it in the `access key` field.

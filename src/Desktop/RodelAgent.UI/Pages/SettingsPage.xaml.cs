@@ -1,113 +1,174 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+// Copyright (c) Richasy. All rights reserved.
 
-using Microsoft.UI.Xaml.Media.Animation;
-using RodelAgent.Interfaces;
-using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Toolkits;
-using RodelAgent.UI.ViewModels.Pages;
+using RodelAgent.UI.ViewModels.Core;
+using RodelAgent.UI.ViewModels.View;
+using System.Runtime.InteropServices;
 using Windows.System;
 
 namespace RodelAgent.UI.Pages;
 
 /// <summary>
-/// 设置页面.
+/// Settings page.
 /// </summary>
 public sealed partial class SettingsPage : SettingsPageBase
 {
-    private SettingSectionType? _previousSection;
-    private bool _isDatabaseVerified;
-
     /// <summary>
     /// Initializes a new instance of the <see cref="SettingsPage"/> class.
     /// </summary>
-    public SettingsPage()
-    {
-        InitializeComponent();
-        InitializeSections();
-    }
+    public SettingsPage() => InitializeComponent();
 
     /// <inheritdoc/>
-    protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
-        => SaveSettings();
-
-    /// <inheritdoc/>
-    protected override async void OnPageLoaded()
-        => await VerifyDatabaseAsync();
-
-    /// <inheritdoc/>
-    protected override void OnPageUnloaded()
-        => SaveSettings();
-
-    private void SaveSettings()
+    protected override void OnPageLoaded()
     {
-        ViewModel.SaveOnlineChatServicesCommand.Execute(default);
-        ViewModel.SaveOnlineTranslateServicesCommand.Execute(default);
-        ViewModel.SaveOnlineDrawServicesCommand.Execute(default);
-        ViewModel.SaveOnlineAudioServicesCommand.Execute(default);
-    }
-
-    private void InitializeSections()
-    {
-        var names = Enum.GetNames<SettingSectionType>();
-        var resToolkit = this.Get<IStringResourceToolkit>();
-        var values = names.Select(resToolkit.GetString);
-        for (var i = 0; i < values.Count(); i++)
+        ViewModel.InitializeCommand.Execute(default);
+        SectionSelector.SelectedItem = SectionSelector.Items[0];
+        if (RuntimeInformation.ProcessArchitecture == Architecture.Arm64 || !this.Get<AppViewModel>().IsTraySupport)
         {
-            var v = values.ElementAt(i);
-            SettingSectionSelector.Items.Add(new SelectorBarItem { Text = v, Tag = i });
-        }
-
-        SettingSectionSelector.SelectedItem = SettingSectionSelector.Items[0];
-    }
-
-    private void OnSettingSectionChanged(SelectorBar sender, SelectorBarSelectionChangedEventArgs args)
-    {
-        var sectionType = (SettingSectionType)Convert.ToInt32(sender.SelectedItem.Tag);
-        var animationType = _previousSection == null
-            ? SlideNavigationTransitionEffect.FromBottom
-            : sectionType - _previousSection > 0
-                ? SlideNavigationTransitionEffect.FromRight
-                : SlideNavigationTransitionEffect.FromLeft;
-        _previousSection = sectionType;
-        var pageType = GetType().Assembly.GetType($"{GetType().Namespace}.Settings.{sectionType}Page");
-        if (pageType is not null)
-        {
-            SectionFrame.Navigate(pageType, default, new SlideNavigationTransitionInfo { Effect = animationType });
+            HideWindowSetting.Visibility = Visibility.Collapsed;
         }
     }
 
-    private async Task VerifyDatabaseAsync()
-    {
-        if (_isDatabaseVerified)
-        {
-            return;
-        }
+    /// <inheritdoc/>
+    protected override async void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        => await ViewModel.CheckSaveServicesAsync();
 
-        var workDir = SettingsToolkit.ReadLocalSetting(SettingNames.WorkingDirectory, string.Empty);
-        _isDatabaseVerified = File.Exists(Path.Combine(workDir, "secret.db"));
-        if (!_isDatabaseVerified)
+    private void OnJoinGroupButtonClick(object sender, RoutedEventArgs e)
+        => FlyoutBase.ShowAttachedFlyout(sender as FrameworkElement);
+
+    private async void OnSectionSelectorChanged(SelectorBar sender, SelectorBarSelectionChangedEventArgs args)
+    {
+        var index = Convert.ToInt32(sender.SelectedItem.Tag);
+        if (index == 0)
         {
-            var dialog = new ContentDialog
+            GenericContainer.Visibility = Visibility.Visible;
+            TranslateContainer.Visibility = Visibility.Collapsed;
+            AudioContainer.Visibility = Visibility.Collapsed;
+            ChatContainer.Visibility = Visibility.Collapsed;
+            DrawContainer.Visibility = Visibility.Collapsed;
+        }
+        else if (index == 1)
+        {
+            GenericContainer.Visibility = Visibility.Collapsed;
+            TranslateContainer.Visibility = Visibility.Collapsed;
+            AudioContainer.Visibility = Visibility.Collapsed;
+            DrawContainer.Visibility = Visibility.Collapsed;
+            ChatContainer.Visibility = Visibility.Visible;
+            await ViewModel.InitializeChatServicesAsync();
+            if (ChatPanel.Children.Count <= 1)
             {
-                Title = ResourceToolkit.GetLocalizedString(StringNames.DatabaseMissed),
-                Content = ResourceToolkit.GetLocalizedString(StringNames.DatabaseMissedDescription),
-                PrimaryButtonText = ResourceToolkit.GetLocalizedString(StringNames.Solution),
-                CloseButtonText = ResourceToolkit.GetLocalizedString(StringNames.Cancel),
-                DefaultButton = ContentDialogButton.Primary,
-                XamlRoot = XamlRoot,
-            };
-
-            var result = await dialog.ShowAsync();
-            if (result == ContentDialogResult.Primary)
+                await LoadChatControlsAsync();
+            }
+        }
+        else if (index == 2)
+        {
+            GenericContainer.Visibility = Visibility.Collapsed;
+            TranslateContainer.Visibility = Visibility.Collapsed;
+            AudioContainer.Visibility = Visibility.Collapsed;
+            ChatContainer.Visibility = Visibility.Collapsed;
+            DrawContainer.Visibility = Visibility.Visible;
+            await ViewModel.InitializeDrawServicesAsync();
+            if (DrawPanel.Children.Count <= 1)
             {
-                await Launcher.LaunchUriAsync(new Uri("https://agent.richasy.net/faq"));
+                await LoadDrawControlsAsync();
+            }
+        }
+        else if (index == 3)
+        {
+            GenericContainer.Visibility = Visibility.Collapsed;
+            TranslateContainer.Visibility = Visibility.Collapsed;
+            AudioContainer.Visibility = Visibility.Visible;
+            DrawContainer.Visibility = Visibility.Collapsed;
+            ChatContainer.Visibility = Visibility.Collapsed;
+            await ViewModel.InitializeAudioServicesAsync();
+            if (AudioPanel.Children.Count <= 1)
+            {
+                await LoadAudioControlsAsync();
+            }
+        }
+        else
+        {
+            GenericContainer.Visibility = Visibility.Collapsed;
+            TranslateContainer.Visibility = Visibility.Visible;
+            AudioContainer.Visibility = Visibility.Collapsed;
+            DrawContainer.Visibility = Visibility.Collapsed;
+            ChatContainer.Visibility = Visibility.Collapsed;
+            await ViewModel.InitializeTranslateServicesAsync();
+            if (TranslatePanel.Children.Count <= 1)
+            {
+                await LoadTranslateControlsAsync();
+            }
+        }
+    }
+
+    private async void OnChatDetailButtonClick(object sender, RoutedEventArgs e)
+        => await Launcher.LaunchUriAsync(new(AppToolkit.GetDocumentLink("chat-config")));
+
+    private async void OnDrawDetailButtonClick(object sender, RoutedEventArgs e)
+        => await Launcher.LaunchUriAsync(new(AppToolkit.GetDocumentLink("image-config")));
+
+    private async void OnAudioDetailButtonClick(object sender, RoutedEventArgs e)
+        => await Launcher.LaunchUriAsync(new(AppToolkit.GetDocumentLink("tts-config")));
+
+    private async void OnTranslateDetailButtonClick(object sender, RoutedEventArgs e)
+        => await Launcher.LaunchUriAsync(new(AppToolkit.GetDocumentLink("translate-config")));
+
+    private async Task LoadChatControlsAsync()
+    {
+        foreach (var vm in ViewModel.ChatServices)
+        {
+            var control = vm.GetSettingControl();
+
+            if (control != null)
+            {
+                await vm.InitializeCommand.ExecuteAsync(default);
+                ChatPanel.Children.Add(control);
+            }
+        }
+    }
+
+    private async Task LoadDrawControlsAsync()
+    {
+        foreach (var vm in ViewModel.DrawServices)
+        {
+            var control = vm.GetSettingControl();
+            if (control != null)
+            {
+                await vm.InitializeCommand.ExecuteAsync(default);
+                DrawPanel.Children.Add(control);
+            }
+        }
+    }
+
+    private async Task LoadAudioControlsAsync()
+    {
+        foreach (var vm in ViewModel.AudioServices)
+        {
+            var control = vm.GetSettingControl();
+            if (control != null)
+            {
+                await vm.InitializeCommand.ExecuteAsync(default);
+                AudioPanel.Children.Add(control);
+            }
+        }
+    }
+
+    private async Task LoadTranslateControlsAsync()
+    {
+        foreach (var vm in ViewModel.TranslateServices)
+        {
+            var control = vm.GetSettingControl();
+            if (control != null)
+            {
+                await vm.InitializeCommand.ExecuteAsync(default);
+                TranslatePanel.Children.Add(control);
             }
         }
     }
 }
 
 /// <summary>
-/// 设置页面基类.
+/// Settings page base.
 /// </summary>
 public abstract class SettingsPageBase : LayoutPageBase<SettingsPageViewModel>
 {

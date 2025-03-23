@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:DrawPageControlBase
+    x:Class="RodelAgent.UI.Controls.Draw.DrawSideHeader"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:local="using:RodelAgent.UI.Controls.Draw"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Padding="16,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal" Spacing="8">
+            <TextBlock
+                VerticalAlignment="Center"
+                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                Text="{ext:Locale Name=DrawHistory}" />
+            <Border
+                Padding="4,2"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                CornerRadius="2"
+                ToolTipService.ToolTip="{ext:Locale Name=ImageCount}"
+                Visibility="{x:Bind ViewModel.IsHistoryEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+                <TextBlock
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    Style="{StaticResource CaptionTextBlockStyle}"
+                    Text="{x:Bind ViewModel.HistoryCount, Mode=OneWay}" />
+            </Border>
+        </StackPanel>
+        <Button
+            Grid.Column="1"
+            VerticalAlignment="Center"
+            AutomationProperties.Name="{ext:Locale Name=OpenFolder}"
+            Command="{x:Bind ViewModel.OpenDrawFolderCommand}"
+            Style="{StaticResource SmallIconButtonStyle}"
+            ToolTipService.ToolTip="{ext:Locale Name=OpenFolder}">
+            <ic:SymbolIcon FontSize="12" Symbol="FolderOpen" />
+        </Button>
+    </Grid>
+</local:DrawPageControlBase>

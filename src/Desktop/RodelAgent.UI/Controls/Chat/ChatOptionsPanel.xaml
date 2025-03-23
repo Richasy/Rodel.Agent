@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<base:LayoutUserControlBase
+    x:Class="RodelAgent.UI.Controls.Chat.ChatOptionsPanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:base="using:Richasy.WinUIKernel.Share.Base"
+    xmlns:controls="using:RodelAgent.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:local="using:RodelAgent.UI.Controls.Chat"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ScrollViewer Style="{StaticResource PageScrollViewerStyle}">
+        <StackPanel x:Name="RootContainer" Padding="20,0,20,8">
+            <controls:CombineRow Title="{ext:Locale Name=StreamOutput}" Tip="{ext:Locale Name=StreamOutputDescription}">
+                <controls:CombineRow.Element>
+                    <ToggleSwitch
+                        x:Name="StreamOutputSwitch"
+                        MinWidth="0"
+                        MinHeight="0"
+                        Margin="0,-4" />
+                </controls:CombineRow.Element>
+            </controls:CombineRow>
+            <controls:CombineRow Title="{ext:Locale Name=MaxRounds}" Tip="{ext:Locale Name=MaxRoundsDescription}">
+                <controls:CombineRow.Element>
+                    <Slider
+                        x:Name="MaxRoundsSlider"
+                        Width="160"
+                        IsEnabled="{x:Bind IsMaxRoundsEnabled, Mode=OneWay}"
+                        Maximum="10"
+                        Minimum="0" />
+                </controls:CombineRow.Element>
+            </controls:CombineRow>
+            <controls:CombineRow
+                x:Name="FrequencyPenaltyContainer"
+                Title="{ext:Locale Name=FrequencyPenalty}"
+                Tip="{ext:Locale Name=FrequencyPenaltyDescription}">
+                <controls:CombineRow.Element>
+                    <Slider
+                        x:Name="FrequencyPenaltySlider"
+                        Width="160"
+                        Maximum="2"
+                        Minimum="-2"
+                        StepFrequency="0.1"
+                        Value="0" />
+                </controls:CombineRow.Element>
+            </controls:CombineRow>
+            <controls:CombineRow
+                x:Name="PresencePenaltyContainer"
+                Title="{ext:Locale Name=PresencePenalty}"
+                Tip="{ext:Locale Name=PresencePenaltyDescription}">
+                <controls:CombineRow.Element>
+                    <Slider
+                        x:Name="PresencePenaltySlider"
+                        Width="160"
+                        Maximum="2"
+                        Minimum="-2"
+                        StepFrequency="0.1"
+                        Value="0" />
+                </controls:CombineRow.Element>
+            </controls:CombineRow>
+            <controls:CombineRow
+                x:Name="TemperatureContainer"
+                Title="{ext:Locale Name=Temperature}"
+                Tip="{ext:Locale Name=TemperatureDescription}">
+                <controls:CombineRow.Element>
+                    <Slider
+                        x:Name="TemperatureSlider"
+                        Width="160"
+                        Maximum="2"
+                        Minimum="0"
+                        StepFrequency="0.1"
+                        Value="1" />
+                </controls:CombineRow.Element>
+            </controls:CombineRow>
+            <controls:CombineRow
+                x:Name="TopPContainer"
+                Title="{ext:Locale Name=TopP}"
+                Tip="{ext:Locale Name=TopPDescription}">
+                <controls:CombineRow.Element>
+                    <Slider
+                        x:Name="TopPSlider"
+                        Width="160"
+                        Maximum="1"
+                        Minimum="0"
+                        StepFrequency="0.1"
+                        Value="1" />
+                </controls:CombineRow.Element>
+            </controls:CombineRow>
+            <controls:CombineRow
+                x:Name="TopKContainer"
+                Title="{ext:Locale Name=TopK}"
+                Tip="{ext:Locale Name=TopKDescription}">
+                <controls:CombineRow.Element>
+                    <Slider
+                        x:Name="TopKSlider"
+                        Width="160"
+                        Maximum="50"
+                        Minimum="0"
+                        StepFrequency="1"
+                        Value="0" />
+                </controls:CombineRow.Element>
+            </controls:CombineRow>
+            <controls:CombineRow
+                x:Name="MaxOutputTokenContainer"
+                Title="{ext:Locale Name=MaxOutputToken}"
+                Tip="{ext:Locale Name=MaxOutputTokenDescription}">
+                <controls:CombineRow.Element>
+                    <NumberBox
+                        x:Name="MaxOutputTokenBox"
+                        Width="160"
+                        LostFocus="OnMaxOutputTokenBoxLostFocus"
+                        Minimum="0"
+                        SpinButtonPlacementMode="Compact" />
+                </controls:CombineRow.Element>
+            </controls:CombineRow>
+            <controls:CombineRow
+                x:Name="ResponseFormatContainer"
+                Title="{ext:Locale Name=ResponseFormat}"
+                Tip="{ext:Locale Name=ResponseFormatDescription}">
+                <controls:CombineRow.Element>
+                    <ComboBox
+                        x:Name="ResponseFormatComboBox"
+                        Width="160"
+                        FontSize="12">
+                        <ComboBoxItem Content="{ext:Locale Name=Message}" Tag="message" />
+                        <ComboBoxItem Content="{ext:Locale Name=JsonObject}" Tag="json" />
+                    </ComboBox>
+                </controls:CombineRow.Element>
+            </controls:CombineRow>
+        </StackPanel>
+    </ScrollViewer>
+</base:LayoutUserControlBase>

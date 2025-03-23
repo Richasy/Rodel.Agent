@@ -11,15 +11,7 @@
 
 ### 桌面客户端
 
-<p align="left">
-  <a title="从 Microsoft 获取" href="https://www.microsoft.com/store/apps/9NB0NB3MLQTM?launch=true&mode=full" target="_blank">
-    <picture>
-      <source srcset="https://get.microsoft.com/images/zh-CN%20light.svg" media="(prefers-color-scheme: dark)" />
-      <source srcset="https://get.microsoft.com/images/zh-CN%20dark.svg" media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)" />
-      <img src="https://get.microsoft.com/images/zh-CN%20dark.svg" width=144 />
-    </picture>
-  </a>
-</p>
+<a href="https://apps.microsoft.com/detail/9NB0NB3MLQTM?launch=true&mode=full" target="_blank">从 Microsoft 获取</a>
 
 目前桌面客户端基于 Windows App SDK 构建，仅支持 Windows 桌面操作系统，目前只在 Microsoft Store 提供下载。
 

@@ -8,15 +8,15 @@
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="Richasy.RodelAgent"
+    Name="Richasy.RodelAgent.Dev"
     Publisher="CN=Richasy"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="8cae3536-b0e2-46da-a00e-38fc50150667" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="4e1ddf0b-abd2-4cad-a616-3544d566712e" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>ms-resource:AppName</DisplayName>
-    <PublisherDisplayName>Richasy</PublisherDisplayName>
+    <DisplayName>RodelAgent.UI</DisplayName>
+    <PublisherDisplayName>zrich</PublisherDisplayName>
     <Logo>Assets\Logo\StoreLogo.png</Logo>
   </Properties>
 
@@ -48,11 +48,6 @@
         </uap:DefaultTile >
         <uap:SplashScreen Image="Assets\Logo\SplashScreen.png"  BackgroundColor="#FFFFFF"/>
       </uap:VisualElements>
-      <Extensions>
-        <uap:Extension Category="windows.protocol">
-          <uap:Protocol Name="rodelagent" DesiredView="useLess" />
-        </uap:Extension>
-      </Extensions>
     </Application>
   </Applications>
 

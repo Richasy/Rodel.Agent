@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:AudioPageControlBase
+    x:Class="RodelAgent.UI.Controls.Audio.AudioMainFooter"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:animations="using:CommunityToolkit.WinUI.Animations"
+    xmlns:controls="using:RodelAgent.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:items="using:RodelAgent.UI.ViewModels.Items"
+    xmlns:local="using:RodelAgent.UI.Controls.Audio"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="using:Richasy.WinUIKernel.AI.ViewModels"
+    mc:Ignorable="d">
+
+    <Grid Padding="20,0,20,20">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <!--  输入框  -->
+        <TextBox
+            x:Name="InputBox"
+            MinHeight="60"
+            MaxHeight="400"
+            Padding="12,8,12,12"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            AcceptsReturn="True"
+            FontSize="14"
+            InputScope="Chat"
+            IsEnabled="{x:Bind ViewModel.IsGenerating, Mode=OneWay, Converter={StaticResource ObjectToBoolReverseConverter}}"
+            IsSpellCheckEnabled="False"
+            PlaceholderText="{ext:Locale Name=AudioInputPlaceholder}"
+            PreviewKeyDown="OnInputBoxPreviewKeyDown"
+            Style="{StaticResource SolidTextBoxStyle}"
+            Text="{x:Bind ViewModel.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            TextWrapping="Wrap" />
+
+        <!--  底部  -->
+        <Grid Grid.Row="1" Padding="0,12,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Orientation="Horizontal"
+                Spacing="8"
+                Visibility="{x:Bind ViewModel.IsGenerating, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+                <ComboBox
+                    x:Name="AudioModelComboBox"
+                    MinWidth="120"
+                    MaxWidth="140"
+                    VerticalAlignment="Center"
+                    AutomationProperties.Name="{ext:Locale Name=AudioModel}"
+                    FontSize="12"
+                    ItemsSource="{x:Bind ViewModel.Models}"
+                    SelectedItem="{x:Bind ViewModel.SelectedModel, Mode=OneWay}"
+                    SelectionChanged="OnAudioModelChanged"
+                    ToolTipService.ToolTip="{ext:Locale Name=AudioModel}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="viewmodels:AudioModelItemViewModel">
+                            <TextBlock Text="{x:Bind Name}" TextTrimming="CharacterEllipsis" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <ComboBox
+                    x:Name="AudioLanguageComboBox"
+                    MinWidth="120"
+                    MaxWidth="140"
+                    VerticalAlignment="Center"
+                    AutomationProperties.Name="{ext:Locale Name=AudioLanguage}"
+                    FontSize="12"
+                    ItemsSource="{x:Bind ViewModel.Languages}"
+                    SelectedItem="{x:Bind ViewModel.SelectedLanguage, Mode=OneWay}"
+                    SelectionChanged="OnAudioLanguageChanged"
+                    ToolTipService.ToolTip="{ext:Locale Name=AudioLanguage}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="items:LanguageItemViewModel">
+                            <TextBlock Text="{x:Bind Name}" TextTrimming="CharacterEllipsis" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <ComboBox
+                    MinWidth="120"
+                    MaxWidth="140"
+                    VerticalAlignment="Center"
+                    AutomationProperties.Name="{ext:Locale Name=AudioVoice}"
+                    FontSize="12"
+                    ItemsSource="{x:Bind ViewModel.Voices}"
+                    SelectedItem="{x:Bind ViewModel.SelectedVoice, Mode=TwoWay}"
+                    ToolTipService.ToolTip="{ext:Locale Name=AudioVoice}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="items:AudioVoiceItemViewModel">
+                            <TextBlock>
+                                <Run Text="{x:Bind Data.DisplayName}" />
+                                <Run Text="{x:Bind Gender}" />
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+            <StackPanel
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Orientation="Horizontal"
+                Spacing="8"
+                Visibility="{x:Bind ViewModel.IsGenerating, Mode=OneWay}">
+                <ProgressBar
+                    Width="16"
+                    VerticalAlignment="Center"
+                    IsIndeterminate="True" />
+                <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="{ext:Locale Name=Generating}" />
+                <animations:Implicit.ShowAnimations>
+                    <animations:OpacityAnimation
+                        From="0"
+                        To="1.0"
+                        Duration="0:0:0.5" />
+                </animations:Implicit.ShowAnimations>
+                <animations:Implicit.HideAnimations>
+                    <animations:OpacityAnimation
+                        From="1"
+                        To="0"
+                        Duration="0:0:0.5" />
+                </animations:Implicit.HideAnimations>
+            </StackPanel>
+            <StackPanel
+                Grid.Column="1"
+                Orientation="Horizontal"
+                Spacing="12">
+                <controls:EnterWrapTip IsEnterSend="{x:Bind ViewModel.IsEnterSend, Mode=OneWay}" />
+                <Grid>
+                    <SplitButton
+                        MinWidth="120"
+                        AutomationProperties.Name="{ext:Locale Name=Send}"
+                        Command="{x:Bind ViewModel.StartAudioCommand, Mode=OneWay}"
+                        Content="{ext:Locale Name=Send}"
+                        Style="{StaticResource AccentSplitButtonStyle}"
+                        ToolTipService.ToolTip="{ext:Locale Name=Send}"
+                        Visibility="{x:Bind ViewModel.IsGenerating, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+                        <SplitButton.Flyout>
+                            <MenuFlyout>
+                                <ToggleMenuFlyoutItem
+                                    x:Name="EnterSendItem"
+                                    MinWidth="140"
+                                    Click="OnEnterSendItemClick"
+                                    Text="{ext:Locale Name=PressEnterToSend}" />
+                                <ToggleMenuFlyoutItem
+                                    x:Name="CtrlEnterSendItem"
+                                    MinWidth="140"
+                                    Click="OnCtrlEnterSendItemClick"
+                                    Text="{ext:Locale Name=PressCtrlEnterSend}" />
+                            </MenuFlyout>
+                        </SplitButton.Flyout>
+                    </SplitButton>
+                    <Button
+                        MinWidth="120"
+                        AutomationProperties.Name="{ext:Locale Name=Cancel}"
+                        Command="{x:Bind ViewModel.CancelAudioCommand, Mode=OneWay}"
+                        Style="{StaticResource AccentButtonStyle}"
+                        Visibility="{x:Bind ViewModel.IsGenerating, Mode=OneWay}">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <ProgressRing
+                                Width="16"
+                                Height="16"
+                                VerticalAlignment="Center"
+                                Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}" />
+                            <TextBlock VerticalAlignment="Center" Text="{ext:Locale Name=Cancel}" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</local:AudioPageControlBase>

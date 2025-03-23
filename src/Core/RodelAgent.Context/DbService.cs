@@ -1,6 +1,5 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using Microsoft.EntityFrameworkCore;
 using RodelAgent.Models.Common;
 
 namespace RodelAgent.Context;
@@ -10,12 +9,12 @@ namespace RodelAgent.Context;
 /// </summary>
 public sealed class DbService
 {
-    private SecretDbContext? _secretDb;
-    private ChatDbContext? _chatDb;
-    private TranslateDbContext? _translateDb;
-    private DrawDbContext? _drawDb;
-    private AudioDbContext? _audioDb;
+    private SecretDataService? _secretService;
+    private DrawDataService? _drawService;
+    private AudioDataService? _audioService;
+    private ChatDataService? _chatService;
     private string _workingDirectory;
+    private string _packageDirectory;
 
     /// <summary>
     /// 设置工作目录.
@@ -25,14 +24,21 @@ public sealed class DbService
         => _workingDirectory = workingDirectory;
 
     /// <summary>
+    /// 设置包目录.
+    /// </summary>
+    /// <param name="packageDirectory">包目录.</param>
+    public void SetPackageDirectory(string packageDirectory)
+        => _packageDirectory = packageDirectory;
+
+    /// <summary>
     /// 获取机密配置.
     /// </summary>
     /// <param name="key">名称.</param>
     /// <returns>字符串.</returns>
     public async Task<string?> GetSecretAsync(string key)
     {
-        _secretDb ??= await MigrationUtils.GetSecretDbAsync(_workingDirectory);
-        var data = await _secretDb.Metadata.FirstOrDefaultAsync(x => x.Id == key);
+        await InitializeSecretServiceAsync().ConfigureAwait(false);
+        var data = await _secretService!.GetSecretAsync(key).ConfigureAwait(false);
         return data?.Value;
     }
 
@@ -42,39 +48,18 @@ public sealed class DbService
     /// <returns><see cref="Task"/>.</returns>
     public async Task SetSecretAsync(string key, string value)
     {
-        _secretDb ??= await MigrationUtils.GetSecretDbAsync(_workingDirectory);
-        var data = await _secretDb.Metadata.FirstOrDefaultAsync(x => x.Id == key);
-        if (data is null)
-        {
-            await _secretDb.Metadata.AddAsync(new Metadata { Id = key, Value = value });
-        }
-        else
-        {
-            data.Value = value;
-            _secretDb.Metadata.Update(data);
-        }
-
-        await _secretDb.SaveChangesAsync();
+        await InitializeSecretServiceAsync().ConfigureAwait(false);
+        await _secretService!.AddOrUpdateSecretAsync(new SecretMeta { Id = key, Value = value }).ConfigureAwait(false);
     }
 
     /// <summary>
     /// 获取所有聊天数据.
     /// </summary>
     /// <returns>JSON 列表.</returns>
-    public async Task<List<string>> GetAllChatSessionAsync()
+    public async Task<List<string>> GetAllChatConversationsAsync()
     {
-        _chatDb ??= await MigrationUtils.GetChatDbAsync(_workingDirectory);
-        return await _chatDb.Sessions.Select(p => p.Value).ToListAsync();
-    }
-
-    /// <summary>
-    /// 获取所有群组会话数据.
-    /// </summary>
-    /// <returns>JSON 列表.</returns>
-    public async Task<List<string>> GetAllChatGroupAsync()
-    {
-        _chatDb ??= await MigrationUtils.GetChatDbAsync(_workingDirectory);
-        return await _chatDb.Groups.Select(p => p.Value).ToListAsync();
+        await InitializeChatServiceAsync().ConfigureAwait(false);
+        return await _chatService!.GetAllConversationsAsync().ConfigureAwait(false);
     }
 
     /// <summary>
@@ -82,24 +67,11 @@ public sealed class DbService
     /// </summary>
     /// <param name="dataId">会话标识符.</param>
     /// <param name="value">会话 JSON 数据.</param>
-    /// <param name="isGroup">是否为群组数据.</param>
     /// <returns><see cref="Task"/>.</returns>
-    public async Task AddOrUpdateChatDataAsync(string dataId, string value, bool isGroup = false)
+    public async Task AddOrUpdateChatDataAsync(string dataId, string value)
     {
-        _chatDb ??= await MigrationUtils.GetChatDbAsync(_workingDirectory);
-        var dataset = isGroup ? _chatDb.Groups : _chatDb.Sessions;
-        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId);
-        if (data is null)
-        {
-            await dataset.AddAsync(new Metadata { Id = dataId, Value = value });
-        }
-        else
-        {
-            data.Value = value;
-            dataset.Update(data);
-        }
-
-        await _chatDb.SaveChangesAsync();
+        await InitializeChatServiceAsync().ConfigureAwait(false);
+        await _chatService!.AddOrUpdateConversationAsync(new ChatMeta { Id = dataId, Value = value }).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -110,75 +82,18 @@ public sealed class DbService
     /// <returns><see cref="Task"/>.</returns>
     public async Task RemoveChatDataAsync(string dataId, bool isGroup = false)
     {
-        _chatDb ??= await MigrationUtils.GetChatDbAsync(_workingDirectory);
-        var dataset = isGroup ? _chatDb.Groups : _chatDb.Sessions;
-        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId);
-        if (data is not null)
-        {
-            dataset.Remove(data);
-            await _chatDb.SaveChangesAsync();
-        }
-    }
-
-    /// <summary>
-    /// 获取所有翻译记录.
-    /// </summary>
-    /// <returns>JSON 列表.</returns>
-    public async Task<List<string>> GetAllTranslateSessionAsync()
-    {
-        _translateDb ??= await MigrationUtils.GetTranslateDbAsync(_workingDirectory);
-        return await _translateDb.Sessions.Select(p => p.Value).ToListAsync();
-    }
-
-    /// <summary>
-    /// 添加或更新翻译记录.
-    /// </summary>
-    /// <param name="dataId">翻译记录标识符.</param>
-    /// <param name="value">翻译记录 JSON 数据.</param>
-    /// <returns><see cref="Task"/>.</returns>
-    public async Task AddOrUpdateTranslateDataAsync(string dataId, string value)
-    {
-        _translateDb ??= await MigrationUtils.GetTranslateDbAsync(_workingDirectory);
-        var dataset = _translateDb.Sessions;
-        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId);
-        if (data is null)
-        {
-            await dataset.AddAsync(new Metadata { Id = dataId, Value = value });
-        }
-        else
-        {
-            data.Value = value;
-            dataset.Update(data);
-        }
-
-        await _translateDb.SaveChangesAsync();
-    }
-
-    /// <summary>
-    /// 移除翻译记录.
-    /// </summary>
-    /// <param name="dataId">数据标识符.</param>
-    /// <returns><see cref="Task"/>.</returns>
-    public async Task RemoveTranslateDataAsync(string dataId)
-    {
-        _translateDb ??= await MigrationUtils.GetTranslateDbAsync(_workingDirectory);
-        var dataset = _translateDb.Sessions;
-        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId);
-        if (data is not null)
-        {
-            dataset.Remove(data);
-            await _translateDb.SaveChangesAsync();
-        }
+        await InitializeChatServiceAsync().ConfigureAwait(false);
+        await _chatService!.RemoveConversationAsync(dataId).ConfigureAwait(false);
     }
 
     /// <summary>
     /// 获取所有绘图记录.
     /// </summary>
     /// <returns>JSON 列表.</returns>
-    public async Task<List<string>> GetAllDrawSessionAsync()
+    public async Task<List<string>> GetAllDrawSessionsAsync()
     {
-        _drawDb ??= await MigrationUtils.GetDrawDbAsync(_workingDirectory);
-        return await _drawDb.Sessions.Select(p => p.Value).ToListAsync();
+        await InitializeDrawServiceAsync().ConfigureAwait(false);
+        return await _drawService!.GetAllSessionsAsync().ConfigureAwait(false);
     }
 
     /// <summary>
@@ -189,20 +104,8 @@ public sealed class DbService
     /// <returns><see cref="Task"/>.</returns>
     public async Task AddOrUpdateDrawDataAsync(string dataId, string value)
     {
-        _drawDb ??= await MigrationUtils.GetDrawDbAsync(_workingDirectory);
-        var dataset = _drawDb.Sessions;
-        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId);
-        if (data is null)
-        {
-            await dataset.AddAsync(new Metadata { Id = dataId, Value = value });
-        }
-        else
-        {
-            data.Value = value;
-            dataset.Update(data);
-        }
-
-        await _drawDb.SaveChangesAsync();
+        await InitializeDrawServiceAsync().ConfigureAwait(false);
+        await _drawService!.AddOrUpdateSessionAsync(new DrawMeta { Id = dataId, Value = value }).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -212,24 +115,18 @@ public sealed class DbService
     /// <returns><see cref="Task"/>.</returns>
     public async Task RemoveDrawDataAsync(string dataId)
     {
-        _drawDb ??= await MigrationUtils.GetDrawDbAsync(_workingDirectory);
-        var dataset = _drawDb.Sessions;
-        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId);
-        if (data is not null)
-        {
-            dataset.Remove(data);
-            await _drawDb.SaveChangesAsync();
-        }
+        await InitializeDrawServiceAsync().ConfigureAwait(false);
+        await _drawService!.RemoveSessionAsync(dataId).ConfigureAwait(false);
     }
 
     /// <summary>
     /// 获取所有音频记录.
     /// </summary>
     /// <returns>JSON 列表.</returns>
-    public async Task<List<string>> GetAllAudioSessionAsync()
+    public async Task<List<string>> GetAllAudioSessionsAsync()
     {
-        _audioDb ??= await MigrationUtils.GetAudioDbAsync(_workingDirectory);
-        return await _audioDb.Sessions.Select(p => p.Value).ToListAsync();
+        await InitializeAudioServiceAsync().ConfigureAwait(false);
+        return await _audioService!.GetAllSessionsAsync().ConfigureAwait(false);
     }
 
     /// <summary>
@@ -240,20 +137,8 @@ public sealed class DbService
     /// <returns><see cref="Task"/>.</returns>
     public async Task AddOrUpdateAudioDataAsync(string dataId, string value)
     {
-        _audioDb ??= await MigrationUtils.GetAudioDbAsync(_workingDirectory);
-        var dataset = _audioDb.Sessions;
-        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId);
-        if (data is null)
-        {
-            await dataset.AddAsync(new Metadata { Id = dataId, Value = value });
-        }
-        else
-        {
-            data.Value = value;
-            dataset.Update(data);
-        }
-
-        await _audioDb.SaveChangesAsync();
+        await InitializeAudioServiceAsync().ConfigureAwait(false);
+        await _audioService!.AddOrUpdateSessionAsync(new AudioMeta { Id = dataId, Value = value }).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -263,31 +148,71 @@ public sealed class DbService
     /// <returns><see cref="Task"/>.</returns>
     public async Task RemoveAudioDataAsync(string dataId)
     {
-        _audioDb ??= await MigrationUtils.GetAudioDbAsync(_workingDirectory);
-        var dataset = _audioDb.Sessions;
-        var data = await dataset.FirstOrDefaultAsync(x => x.Id == dataId);
-        if (data is not null)
-        {
-            dataset.Remove(data);
-            await _audioDb.SaveChangesAsync();
-        }
+        await InitializeAudioServiceAsync().ConfigureAwait(false);
+        await _audioService!.RemoveSessionAsync(dataId).ConfigureAwait(false);
     }
 
-    /// <summary>
-    /// 重置所有数据库连接.
-    /// </summary>
-    public void ResetAllDbConnections()
+    private async Task InitializeSecretServiceAsync()
     {
-        _secretDb?.Dispose();
-        _chatDb?.Dispose();
-        _translateDb?.Dispose();
-        _drawDb?.Dispose();
-        _audioDb?.Dispose();
+        if (_secretService is not null)
+        {
+            return;
+        }
 
-        _secretDb = null;
-        _chatDb = null;
-        _translateDb = null;
-        _drawDb = null;
-        _audioDb = null;
+        if (string.IsNullOrEmpty(_workingDirectory) || string.IsNullOrEmpty(_packageDirectory))
+        {
+            throw new InvalidOperationException("Working directory or package directory is not set.");
+        }
+
+        _secretService = new SecretDataService(_workingDirectory, _packageDirectory);
+        await _secretService.InitializeAsync().ConfigureAwait(false);
+    }
+
+    private async Task InitializeDrawServiceAsync()
+    {
+        if (_drawService is not null)
+        {
+            return;
+        }
+
+        if (string.IsNullOrEmpty(_workingDirectory) || string.IsNullOrEmpty(_packageDirectory))
+        {
+            throw new InvalidOperationException("Working directory or package directory is not set.");
+        }
+
+        _drawService = new DrawDataService(_workingDirectory, _packageDirectory);
+        await _drawService.InitializeAsync().ConfigureAwait(false);
+    }
+
+    private async Task InitializeAudioServiceAsync()
+    {
+        if (_audioService is not null)
+        {
+            return;
+        }
+
+        if (string.IsNullOrEmpty(_workingDirectory) || string.IsNullOrEmpty(_packageDirectory))
+        {
+            throw new InvalidOperationException("Working directory or package directory is not set.");
+        }
+
+        _audioService = new AudioDataService(_workingDirectory, _packageDirectory);
+        await _audioService.InitializeAsync().ConfigureAwait(false);
+    }
+
+    private async Task InitializeChatServiceAsync()
+    {
+        if (_chatService is not null)
+        {
+            return;
+        }
+
+        if (string.IsNullOrEmpty(_workingDirectory) || string.IsNullOrEmpty(_packageDirectory))
+        {
+            throw new InvalidOperationException("Working directory or package directory is not set.");
+        }
+
+        _chatService = new ChatDataService(_workingDirectory, _packageDirectory);
+        await _chatService.InitializeAsync().ConfigureAwait(false);
     }
 }

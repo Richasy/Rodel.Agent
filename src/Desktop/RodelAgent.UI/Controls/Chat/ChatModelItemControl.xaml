@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:ChatModelItemControlBase
+    x:Class="RodelAgent.UI.Controls.Chat.ChatModelItemControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:base="using:Richasy.WinUIKernel.Share.Base"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:local="using:RodelAgent.UI.Controls.Chat"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <base:AppToggleCard
+        Padding="0"
+        HorizontalAlignment="Stretch"
+        HorizontalContentAlignment="Stretch"
+        AutomationProperties.Name="{x:Bind ViewModel.Name, Mode=OneWay}"
+        Background="Transparent"
+        BorderBrush="Transparent"
+        BorderThickness="2"
+        Click="OnModelClick"
+        IsChecked="{x:Bind ViewModel.IsSelected, Mode=OneWay}"
+        IsEnableCheck="False">
+        <Grid
+            Margin="12,8"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            ColumnSpacing="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <base:TrimTextBlock
+                VerticalAlignment="Center"
+                MaxLines="1"
+                Text="{x:Bind ViewModel.Name, Mode=OneWay}" />
+            <StackPanel
+                Grid.Column="1"
+                Margin="0,0,-8,0"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <Grid
+                    Width="24"
+                    Height="24"
+                    Margin="0,0,8,0"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    CornerRadius="{StaticResource ControlCornerRadius}"
+                    ToolTipService.ToolTip="{ext:Locale Name=SupportTool}"
+                    Visibility="{x:Bind ViewModel.IsToolSupport, Mode=OneWay}">
+                    <ic:SymbolIcon FontSize="12" Symbol="WrenchScrewdriver" />
+                </Grid>
+                <Grid
+                    Width="24"
+                    Height="24"
+                    Margin="0,0,8,0"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    CornerRadius="{StaticResource ControlCornerRadius}"
+                    ToolTipService.ToolTip="{ext:Locale Name=SupportVision}"
+                    Visibility="{x:Bind ViewModel.IsVisionSupport, Mode=OneWay}">
+                    <ic:SymbolIcon FontSize="12" Symbol="EyeTracking" />
+                </Grid>
+            </StackPanel>
+        </Grid>
+    </base:AppToggleCard>
+</local:ChatModelItemControlBase>

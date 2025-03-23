@@ -1,15 +1,9 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using RodelAudio.Models.Client;
-using RodelChat.Models.Client;
-using RodelDraw.Models.Client;
-using RodelTranslate.Models.Client;
-using audioConstants = RodelAudio.Models.Constants;
-using chatConstants = RodelChat.Models.Constants;
-using drawConstants = RodelDraw.Models.Constants;
-using translateConstants = RodelTranslate.Models.Constants;
+using Richasy.AgentKernel;
+using RodelAgent.Models.Common;
+using RodelAgent.Models.Feature;
+using System.Text.Json.Serialization.Metadata;
 
 namespace RodelAgent.Interfaces;
 
@@ -35,8 +29,9 @@ public interface IStorageService
     /// </summary>
     /// <typeparam name="T">供应商配置类型.</typeparam>
     /// <param name="type">供应商类型.</param>
+    /// <param name="typeInfo">类型信息.</param>
     /// <returns>配置.</returns>
-    Task<T> GetChatConfigAsync<T>(chatConstants.ProviderType type)
+    Task<T?> GetChatConfigAsync<T>(ChatProviderType type, JsonTypeInfo<T> typeInfo)
         where T : class;
 
     /// <summary>
@@ -45,8 +40,9 @@ public interface IStorageService
     /// <typeparam name="T">供应商配置类型.</typeparam>
     /// <param name="type">供应商类型.</param>
     /// <param name="config">配置.</param>
+    /// <param name="typeInfo">类型信息.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task SetChatConfigAsync<T>(chatConstants.ProviderType type, T config)
+    Task SetChatConfigAsync<T>(ChatProviderType type, T config, JsonTypeInfo<T> typeInfo)
         where T : class;
 
     /// <summary>
@@ -54,8 +50,9 @@ public interface IStorageService
     /// </summary>
     /// <typeparam name="T">供应商配置类型.</typeparam>
     /// <param name="type">供应商类型.</param>
+    /// <param name="typeInfo">类型信息.</param>
     /// <returns>配置.</returns>
-    Task<T> GetTranslateConfigAsync<T>(translateConstants.ProviderType type)
+    Task<T?> GetTranslateConfigAsync<T>(TranslateProviderType type, JsonTypeInfo<T> typeInfo)
         where T : class;
 
     /// <summary>
@@ -64,8 +61,9 @@ public interface IStorageService
     /// <typeparam name="T">供应商配置类型.</typeparam>
     /// <param name="type">供应商类型.</param>
     /// <param name="config">配置.</param>
+    /// <param name="typeInfo">类型信息.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task SetTranslateConfigAsync<T>(translateConstants.ProviderType type, T config)
+    Task SetTranslateConfigAsync<T>(TranslateProviderType type, T config, JsonTypeInfo<T> typeInfo)
         where T : class;
 
     /// <summary>
@@ -73,8 +71,9 @@ public interface IStorageService
     /// </summary>
     /// <typeparam name="T">供应商配置类型.</typeparam>
     /// <param name="type">供应商类型.</param>
+    /// <param name="typeInfo">类型信息.</param>
     /// <returns>配置.</returns>
-    Task<T> GetDrawConfigAsync<T>(drawConstants.ProviderType type)
+    Task<T?> GetDrawConfigAsync<T>(DrawProviderType type, JsonTypeInfo<T> typeInfo)
         where T : class;
 
     /// <summary>
@@ -83,8 +82,9 @@ public interface IStorageService
     /// <typeparam name="T">供应商配置类型.</typeparam>
     /// <param name="type">供应商类型.</param>
     /// <param name="config">配置.</param>
+    /// <param name="typeInfo">类型信息.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task SetDrawConfigAsync<T>(drawConstants.ProviderType type, T config)
+    Task SetDrawConfigAsync<T>(DrawProviderType type, T config, JsonTypeInfo<T> typeInfo)
         where T : class;
 
     /// <summary>
@@ -92,8 +92,9 @@ public interface IStorageService
     /// </summary>
     /// <typeparam name="T">供应商配置类型.</typeparam>
     /// <param name="type">供应商类型.</param>
+    /// <param name="typeInfo">类型信息.</param>
     /// <returns>配置.</returns>
-    Task<T> GetAudioConfigAsync<T>(audioConstants.ProviderType type)
+    Task<T?> GetAudioConfigAsync<T>(AudioProviderType type, JsonTypeInfo<T> typeInfo)
         where T : class;
 
     /// <summary>
@@ -102,8 +103,9 @@ public interface IStorageService
     /// <typeparam name="T">供应商配置类型.</typeparam>
     /// <param name="type">供应商类型.</param>
     /// <param name="config">配置.</param>
+    /// <param name="typeInfo">类型信息.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task SetAudioConfigAsync<T>(audioConstants.ProviderType type, T config)
+    Task SetAudioConfigAsync<T>(AudioProviderType type, T config, JsonTypeInfo<T> typeInfo)
         where T : class;
 
     /// <summary>
@@ -111,89 +113,48 @@ public interface IStorageService
     /// </summary>
     /// <param name="type">供应商类型.</param>
     /// <returns>会话列表.</returns>
-    Task<List<ChatSession>?> GetChatSessionsAsync(chatConstants.ProviderType type);
+    Task<List<ChatConversation>?> GetChatConversationsAsync(ChatProviderType type);
 
     /// <summary>
-    /// 获取指定预设的聊天会话.
+    /// 获取指定助理的聊天会话.
     /// </summary>
-    /// <param name="presetId">预设标识符.</param>
+    /// <param name="agentId">助理标识符.</param>
     /// <returns>会话列表.</returns>
-    Task<List<ChatSession>?> GetChatSessionsAsync(string presetId);
+    Task<List<ChatConversation>?> GetChatConversationsByAgentAsync(string agentId);
+
+    /// <summary>
+    /// 获取指定群组的聊天会话.
+    /// </summary>
+    /// <param name="groupId">群组标识符.</param>
+    /// <returns>会话列表.</returns>
+    Task<List<ChatConversation>?> GetChatConversationsByGroupAsync(string groupId);
 
     /// <summary>
     /// 添加或更新聊天会话.
     /// </summary>
-    /// <param name="session">会话.</param>
+    /// <param name="conversation">会话.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task AddOrUpdateChatSessionAsync(ChatSession session);
+    Task AddOrUpdateChatConversationAsync(ChatConversation conversation);
 
     /// <summary>
     /// 移除聊天会话.
     /// </summary>
-    /// <param name="sessionId">会话标识符.</param>
+    /// <param name="conversationId">会话标识符.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task RemoveChatSessionAsync(string sessionId);
-
-    /// <summary>
-    /// 获取指定预设的群组会话.
-    /// </summary>
-    /// <param name="presetId">预设标识符.</param>
-    /// <returns>会话列表.</returns>
-    Task<List<ChatGroup>?> GetChatGroupSessionsAsync(string presetId);
-
-    /// <summary>
-    /// 添加或更新群组会话.
-    /// </summary>
-    /// <param name="session">会话.</param>
-    /// <returns><see cref="Task"/>.</returns>
-    Task AddOrUpdateChatGroupSessionAsync(ChatGroup session);
-
-    /// <summary>
-    /// 移除聊天群组会话.
-    /// </summary>
-    /// <param name="sessionId">会话标识符.</param>
-    /// <returns><see cref="Task"/>.</returns>
-    Task RemoveChatGroupSessionAsync(string sessionId);
-
-    /// <summary>
-    /// 获取聊天会话预设.
-    /// </summary>
-    /// <returns>预设列表.</returns>
-    Task<List<ChatSessionPreset>> GetChatSessionPresetsAsync();
-
-    /// <summary>
-    /// 获取指定 ID 的聊天会话预设.
-    /// </summary>
-    /// <param name="presetId">预设 ID.</param>
-    /// <returns><see cref="ChatSessionPreset"/>.</returns>
-    Task<ChatSessionPreset> GetChatSessionPresetByIdAsync(string presetId);
-
-    /// <summary>
-    /// 添加或更新聊天会话预设.
-    /// </summary>
-    /// <param name="preset">预设.</param>
-    /// <returns><see cref="Task"/>.</returns>
-    Task AddOrUpdateChatSessionPresetAsync(ChatSessionPreset preset);
-
-    /// <summary>
-    /// 移除聊天会话预设.
-    /// </summary>
-    /// <param name="presetId">预设标识符.</param>
-    /// <returns><see cref="Task"/>.</returns>
-    Task RemoveChatSessionPresetAsync(string presetId);
+    Task RemoveChatConversationAsync(string conversationId);
 
     /// <summary>
     /// 获取本地助理列表.
     /// </summary>
     /// <returns>助理列表.</returns>
-    Task<List<ChatSessionPreset>> GetChatAgentsAsync();
+    Task<List<ChatAgent>> GetChatAgentsAsync();
 
     /// <summary>
     /// 添加或更新助理.
     /// </summary>
     /// <param name="agent">助理信息.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task AddOrUpdateChatAgentAsync(ChatSessionPreset agent);
+    Task AddOrUpdateChatAgentAsync(ChatAgent agent);
 
     /// <summary>
     /// 移除助理.
@@ -205,56 +166,35 @@ public interface IStorageService
     /// <summary>
     /// 移除群组.
     /// </summary>
-    /// <param name="presetId">群组标识符.</param>
+    /// <param name="groupId">群组标识符.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task RemoveChatGroupPresetAsync(string presetId);
+    Task RemoveChatGroupAsync(string groupId);
 
     /// <summary>
     /// 获取会话群组预设列表.
     /// </summary>
     /// <returns>助理列表.</returns>
-    Task<List<ChatGroupPreset>> GetChatGroupPresetsAsync();
+    Task<List<ChatGroup>> GetChatGroupsAsync();
 
     /// <summary>
     /// 获取指定 ID 的群组会话预设.
     /// </summary>
-    /// <param name="presetId">预设 ID.</param>
-    /// <returns><see cref="ChatGroupPreset"/>.</returns>
-    Task<ChatGroupPreset> GetChatGroupPresetByIdAsync(string presetId);
+    /// <param name="groupId">预设 ID.</param>
+    /// <returns><see cref="ChatGroup"/>.</returns>
+    Task<ChatGroup?> GetChatGroupByIdAsync(string groupId);
 
     /// <summary>
     /// 添加或更新群组预设.
     /// </summary>
-    /// <param name="preset">群组信息.</param>
+    /// <param name="group">群组信息.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task AddOrUpdateChatGroupPresetAsync(ChatGroupPreset preset);
-
-    /// <summary>
-    /// 获取指定供应商的翻译会话.
-    /// </summary>
-    /// <param name="type">供应商类型.</param>
-    /// <returns>会话列表.</returns>
-    Task<List<TranslateSession>?> GetTranslateSessionsAsync(translateConstants.ProviderType type);
-
-    /// <summary>
-    /// 添加或更新翻译会话.
-    /// </summary>
-    /// <param name="session">会话.</param>
-    /// <returns><see cref="Task"/>.</returns>
-    Task AddOrUpdateTranslateSessionAsync(TranslateSession session);
-
-    /// <summary>
-    /// 移除翻译会话.
-    /// </summary>
-    /// <param name="sessionId">会话标识符.</param>
-    /// <returns><see cref="Task"/>.</returns>
-    Task RemoveTranslateSessionAsync(string sessionId);
+    Task AddOrUpdateChatGroupAsync(ChatGroup group);
 
     /// <summary>
     /// 获取所有绘图会话.
     /// </summary>
     /// <returns>会话列表.</returns>
-    Task<List<DrawSession>?> GetDrawSessionsAsync();
+    Task<List<DrawRecord>?> GetDrawSessionsAsync();
 
     /// <summary>
     /// 添加或更新绘图会话.
@@ -262,7 +202,7 @@ public interface IStorageService
     /// <param name="session">会话.</param>
     /// <param name="imageData">图像数据.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task AddOrUpdateDrawSessionAsync(DrawSession session, byte[]? imageData);
+    Task AddOrUpdateDrawSessionAsync(DrawRecord session, byte[]? imageData);
 
     /// <summary>
     /// 移除绘图会话.
@@ -275,7 +215,7 @@ public interface IStorageService
     /// 获取所有音频会话.
     /// </summary>
     /// <returns>会话列表.</returns>
-    Task<List<AudioSession>?> GetAudioSessionsAsync();
+    Task<List<AudioRecord>?> GetAudioSessionsAsync();
 
     /// <summary>
     /// 添加或更新音频会话.
@@ -283,7 +223,7 @@ public interface IStorageService
     /// <param name="session">会话.</param>
     /// <param name="audioData">音频数据.</param>
     /// <returns><see cref="Task"/>.</returns>
-    Task AddOrUpdateAudioSessionAsync(AudioSession session, byte[]? audioData);
+    Task AddOrUpdateAudioSessionAsync(AudioRecord session, byte[]? audioData);
 
     /// <summary>
     /// 移除音频会话.
@@ -291,17 +231,4 @@ public interface IStorageService
     /// <param name="sessionId">会话标识符.</param>
     /// <returns><see cref="Task"/>.</returns>
     Task RemoveAudioSessionAsync(string sessionId);
-
-    /// <summary>
-    /// 获取 Azure 语音服务的语音列表（JSON）.
-    /// </summary>
-    /// <returns>Azure 语音服务 JSON 数据.</returns>
-    Task<string> RetrieveAzureSpeechVoicesAsync();
-
-    /// <summary>
-    /// 保存 Azure 语音服务的语音列表（JSON）.
-    /// </summary>
-    /// <param name="json">JSON 数据.</param>
-    /// <returns><see cref="Task"/>.</returns>
-    Task SaveAzureSpeechVoicesAsync(string json);
 }

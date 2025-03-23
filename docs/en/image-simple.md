@@ -10,7 +10,7 @@ The app simplifies the image generation configuration, and in the application, y
 
 1. Drawing prompts
 2. Image size
-3. Image model and negative prompts (optional)
+3. Image model
 
 ### Drawing Prompts
 
@@ -27,10 +27,6 @@ You can look for example prompts online to learn more about this.
 Different models support different drawing sizes, and they are usually not infinitely adjustable.
 
 Generally, the larger the size, the more resources it consumes. Please draw images according to your actual needs.
-
-### Model and Negative Prompts
-
-Next to the size selection box, you can find a button with a `wrench` icon. Expand it to select the model and set negative prompts (if the model supports it).
 
 ## Sessions and Image Management
 

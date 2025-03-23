@@ -1,10 +1,11 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
 using Microsoft.UI.Windowing;
-using RodelAgent.UI.Controls;
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Toolkits;
-using RodelAgent.UI.ViewModels;
+using RodelAgent.UI.ViewModels.Core;
+using RodelAgent.UI.ViewModels.View;
+using System.Runtime.InteropServices;
 using Windows.Graphics;
 
 namespace RodelAgent.UI.Forms;
@@ -14,7 +15,10 @@ namespace RodelAgent.UI.Forms;
 /// </summary>
 public sealed partial class MainWindow : WindowBase, ITipWindow
 {
+    private const int WindowMinWidth = 640;
+    private const int WindowMinHeight = 480;
     private bool _isFirstActivated = true;
+    private bool _shouldExit;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MainWindow"/> class.
@@ -26,15 +30,11 @@ public sealed partial class MainWindow : WindowBase, ITipWindow
         Title = ResourceToolkit.GetLocalizedString(StringNames.AppName);
         this.SetIcon("Assets/logo.ico");
         AppWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Tall;
-        MinWidth = 900;
-        MinHeight = 640;
-        AppWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Tall;
-        this.Get<AppViewModel>().DisplayWindows.Add(this);
-
-        Activated += OnWindowActivated;
-        Closed += OnWindowClosed;
-
-        MoveAndResize();
+        MinWidth = WindowMinWidth;
+        MinHeight = WindowMinHeight;
+        this.Get<AppViewModel>().Windows.Add(this);
+        Activated += OnActivated;
+        Closed += OnClosed;
     }
 
     /// <inheritdoc/>
@@ -55,7 +55,7 @@ public sealed partial class MainWindow : WindowBase, ITipWindow
         return new PointInt32(left, top);
     }
 
-    private void OnWindowActivated(object sender, WindowActivatedEventArgs args)
+    private void OnActivated(object sender, WindowActivatedEventArgs args)
     {
         if (args.WindowActivationState != WindowActivationState.Deactivated)
         {
@@ -67,35 +67,57 @@ public sealed partial class MainWindow : WindowBase, ITipWindow
             return;
         }
 
+        MoveAndResize();
         var isMaximized = SettingsToolkit.ReadLocalSetting(SettingNames.IsMainWindowMaximized, false);
         if (isMaximized)
         {
-            (AppWindow.Presenter as OverlappedPresenter).Maximize();
+            (AppWindow.Presenter as OverlappedPresenter)!.Maximize();
         }
 
         var localTheme = SettingsToolkit.ReadLocalSetting(SettingNames.AppTheme, ElementTheme.Default);
-        this.Get<AppViewModel>().ChangeTheme(localTheme);
+        this.Get<AppViewModel>().ChangeThemeCommand.Execute(localTheme);
         _isFirstActivated = false;
     }
 
-    private void OnWindowClosed(object sender, WindowEventArgs args)
+    private async void OnClosed(object sender, WindowEventArgs e)
     {
-        foreach (var item in this.Get<AppViewModel>().DisplayWindows.ToArray())
-        {
-            if (item is not MainWindow)
-            {
-                item.Close();
-            }
-        }
-
+        var appVM = this.Get<AppViewModel>();
+        var windows = appVM.Windows;
+        e.Handled = true;
         var hideWhenClose = SettingsToolkit.ReadLocalSetting(SettingNames.HideWhenCloseWindow, false);
-        if (!hideWhenClose)
+        if (hideWhenClose && appVM.IsTraySupport && RuntimeInformation.ProcessArchitecture != Architecture.Arm64 && !appVM.ExitFromTray)
         {
-            Activated -= OnWindowActivated;
-            Closed -= OnWindowClosed;
+            this.Get<AppViewModel>().HideAllWindowsCommand.Execute(default);
         }
+        else if (!_shouldExit)
+        {
+            RootLayout.ViewModel.Back();
 
-        SaveCurrentWindowStats();
+            while (windows.Count > 1)
+            {
+                var wnd = windows.Find(p => p is not MainWindow);
+                wnd?.Close();
+            }
+
+            Activated -= OnActivated;
+            Closed -= OnClosed;
+
+            this.Get<AppViewModel>().Windows.Remove(this);
+            SaveCurrentWindowStats();
+
+            _shouldExit = true;
+            this.Hide();
+            App.CloseTrayMenu();
+            foreach (var mcpServer in this.Get<ChatPageViewModel>().Servers)
+            {
+                mcpServer.DisconnectCommand.Execute(default);
+            }
+
+            this.Get<NavigationViewModel>().QuickUnloadIfInSettings();
+            await this.Get<SettingsPageViewModel>().CheckSaveServicesAsync();
+            App.Current?.Exit();
+            Environment.Exit(0);
+        }
     }
 
     private RectInt32 GetRenderRect(RectInt32 workArea)
@@ -144,8 +166,26 @@ public sealed partial class MainWindow : WindowBase, ITipWindow
         {
             SettingsToolkit.WriteLocalSetting(SettingNames.MainWindowPositionLeft, left);
             SettingsToolkit.WriteLocalSetting(SettingNames.MainWindowPositionTop, top);
-            SettingsToolkit.WriteLocalSetting(SettingNames.MainWindowHeight, Height < 640 ? 640d : Height);
-            SettingsToolkit.WriteLocalSetting(SettingNames.MainWindowWidth, Width);
+
+            if (Height >= WindowMinHeight && Width >= WindowMinWidth)
+            {
+                SettingsToolkit.WriteLocalSetting(SettingNames.MainWindowHeight, Height);
+                SettingsToolkit.WriteLocalSetting(SettingNames.MainWindowWidth, Width);
+            }
+        }
+    }
+
+    private void OnPointerPressed(object sender, PointerRoutedEventArgs e)
+    {
+        var point = e.GetCurrentPoint((UIElement)sender);
+        if (point.Properties.IsXButton1Pressed || point.Properties.IsXButton2Pressed)
+        {
+            e.Handled = true;
+
+            if (RootLayout.ViewModel.IsOverlayOpen)
+            {
+                RootLayout.ViewModel.Back();
+            }
         }
     }
 }

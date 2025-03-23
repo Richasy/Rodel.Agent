@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:ChatSessionControlBase
+    x:Class="RodelAgent.UI.Controls.Chat.ChatInstructionPanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:local="using:RodelAgent.UI.Controls.Chat"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid>
+        <TextBox
+            Padding="12,8"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            AcceptsReturn="True"
+            LostFocus="OnTextBoxLostFocus"
+            PlaceholderText="{ext:Locale Name=InstructionPlaceholder}"
+            Style="{StaticResource TransparentTextBoxStyle}"
+            Text="{x:Bind ViewModel.SystemInstruction, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            TextChanged="OnTextChanged"
+            TextWrapping="Wrap" />
+    </Grid>
+</local:ChatSessionControlBase>

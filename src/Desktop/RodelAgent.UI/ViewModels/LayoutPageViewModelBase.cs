@@ -1,6 +1,4 @@
-﻿// Copyright (c) Rodel. All rights reserved.
-
-using RodelAgent.UI.Toolkits;
+﻿using Richasy.WinUIKernel.Share.Toolkits;
 
 namespace RodelAgent.UI.ViewModels;
 
@@ -10,10 +8,10 @@ namespace RodelAgent.UI.ViewModels;
 public abstract partial class LayoutPageViewModelBase : ViewModelBase
 {
     [ObservableProperty]
-    private double _navColumnWidth;
+    public partial double NavColumnWidth { get; set; }
 
     [ObservableProperty]
-    private bool _isNavColumnManualHide;
+    public partial bool IsNavColumnManualHide { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="LayoutPageViewModelBase"/> class.
@@ -21,8 +19,8 @@ public abstract partial class LayoutPageViewModelBase : ViewModelBase
     protected LayoutPageViewModelBase()
     {
 #pragma warning disable CA2214
-        NavColumnWidth = SettingsToolkit.ReadLocalSetting($"{GetPageKey()}NavColumnWidth", GetDefaultNavColumnWidth());
-        IsNavColumnManualHide = SettingsToolkit.ReadLocalSetting($"Is{GetPageKey()}NavColumnManualHide", false);
+        NavColumnWidth = this.Get<ISettingsToolkit>().ReadLocalSetting($"{GetPageKey()}NavColumnWidth", GetDefaultNavColumnWidth());
+        IsNavColumnManualHide = this.Get<ISettingsToolkit>().ReadLocalSetting($"Is{GetPageKey()}NavColumnManualHide", false);
 #pragma warning restore CA2214
     }
 
@@ -36,25 +34,25 @@ public abstract partial class LayoutPageViewModelBase : ViewModelBase
     /// 获取默认导航栏宽度.
     /// </summary>
     /// <returns>宽度.</returns>
-    protected virtual double GetDefaultNavColumnWidth() => 280d;
+    protected virtual double GetDefaultNavColumnWidth() => 240d;
 
     /// <summary>
     /// 导航栏手动关闭时的行为.
     /// </summary>
     protected virtual void IsNavManualHideChanged(bool value)
-        => NavColumnWidth = value ? 0 : SettingsToolkit.ReadLocalSetting($"{GetPageKey()}NavColumnWidth", 240d);
+        => NavColumnWidth = value ? 0 : this.Get<ISettingsToolkit>().ReadLocalSetting($"{GetPageKey()}NavColumnWidth", 240d);
 
     partial void OnNavColumnWidthChanged(double value)
     {
         if (value > 0)
         {
-            SettingsToolkit.WriteLocalSetting($"{GetPageKey()}NavColumnWidth", value);
+            this.Get<ISettingsToolkit>().WriteLocalSetting($"{GetPageKey()}NavColumnWidth", value);
         }
     }
 
     partial void OnIsNavColumnManualHideChanged(bool value)
     {
-        SettingsToolkit.WriteLocalSetting($"Is{GetPageKey()}NavColumnManualHide", value);
+        this.Get<ISettingsToolkit>().WriteLocalSetting($"Is{GetPageKey()}NavColumnManualHide", value);
         IsNavManualHideChanged(value);
     }
 }

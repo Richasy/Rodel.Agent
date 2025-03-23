@@ -1,91 +1,89 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System.Text.Json;
+using Richasy.AgentKernel;
+using RodelAgent.Models.Common;
 using RodelAgent.UI.Toolkits;
-using RodelAudio.Models.Client;
+using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 
 namespace RodelAgent.UI.Extensions;
 
-/// <summary>
-/// 存储服务.
-/// </summary>
-public sealed partial class StorageService
+internal sealed partial class StorageService
 {
-    /// <inheritdoc/>
-    public async Task<List<AudioSession>?> GetAudioSessionsAsync()
+    public async Task<T?> GetAudioConfigAsync<T>(AudioProviderType type, JsonTypeInfo<T> typeInfo) where T : class
     {
-        await InitializeAudioSessionsAsync();
-        var sessions = _audioSessions.OrderByDescending(p => p.Time ?? DateTimeOffset.MinValue).ToList();
-        return sessions;
+        var json = await _dbService.GetSecretAsync("Audio_" + type.ToString());
+        return typeof(T).Equals(typeof(string))
+            ? json as T
+            : json is null
+                ? default
+                : JsonSerializer.Deserialize(json, typeInfo);
     }
 
-    /// <inheritdoc/>
-    public async Task AddOrUpdateAudioSessionAsync(AudioSession session, byte[]? imageData)
+    public async Task SetAudioConfigAsync<T>(AudioProviderType type, T config, JsonTypeInfo<T> typeInfo) where T : class
     {
-        await InitializeAudioSessionsAsync();
-        if (_audioSessions.Any(s => s.Id == session.Id))
+        var json = typeof(T).Equals(typeof(string)) ? config as string : JsonSerializer.Serialize(config, typeInfo);
+        await _dbService.SetSecretAsync("Audio_" + type.ToString(), json!);
+    }
+
+    public async Task<List<AudioRecord>?> GetAudioSessionsAsync()
+    {
+        var sessionJsonList = await _dbService.GetAllAudioSessionsAsync();
+        if (sessionJsonList is null || sessionJsonList.Count == 0)
         {
-            _audioSessions.Remove(_audioSessions.First(s => s.Id == session.Id));
+            return [];
         }
 
-        _audioSessions.Add(session);
-        var id = session.Id;
-        var v = JsonSerializer.Serialize(session);
-        await _dbService.AddOrUpdateAudioDataAsync(id, v);
+        var sessionList = new List<AudioRecord>();
+        foreach (var sessionJson in sessionJsonList)
+        {
+            if (string.IsNullOrEmpty(sessionJson))
+            {
+                continue;
+            }
 
-        if (imageData == null || imageData.Length == 0)
+            var session = JsonSerializer.Deserialize(sessionJson, JsonGenContext.Default.AudioRecord);
+            if (session != null)
+            {
+                sessionList.Add(session);
+            }
+        }
+
+        return sessionList;
+    }
+
+    public async Task AddOrUpdateAudioSessionAsync(AudioRecord session, byte[]? audioData)
+    {
+        var json = JsonSerializer.Serialize(session, JsonGenContext.Default.AudioRecord);
+        await _dbService.AddOrUpdateAudioDataAsync(session.Id, json);
+
+        if (audioData == null || audioData.Length == 0)
         {
             return;
         }
 
-        var imagePath = AppToolkit.GetSpeechPath(session.Id);
-        if (!Directory.Exists(Path.GetDirectoryName(imagePath)))
+        var audioPath = AppToolkit.GetAudioPath(session.Id, true);
+        if (!Directory.Exists(Path.GetDirectoryName(audioPath)))
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(imagePath));
+            Directory.CreateDirectory(Path.GetDirectoryName(audioPath)!);
         }
 
-        await File.WriteAllBytesAsync(imagePath, imageData);
+        if (session.Provider == AudioProviderType.Edge)
+        {
+            audioPath = audioPath.Replace(".wav", ".mp3", StringComparison.OrdinalIgnoreCase);
+        }
+
+        await File.WriteAllBytesAsync(audioPath, audioData);
     }
 
-    /// <inheritdoc/>
     public async Task RemoveAudioSessionAsync(string sessionId)
     {
-        _audioSessions.RemoveAll(p => p.Id == sessionId);
+        var audioPath = AppToolkit.GetAudioPath(sessionId);
+        if (File.Exists(audioPath))
+        {
+            await Task.Run(() => File.Delete(audioPath));
+        }
+
         await _dbService.RemoveAudioDataAsync(sessionId);
-        var imagePath = AppToolkit.GetSpeechPath(sessionId);
-        if (File.Exists(imagePath))
-        {
-            await Task.Run(() => File.Delete(imagePath));
-        }
-    }
-
-    private async Task InitializeAudioSessionsAsync()
-    {
-        if (_audioSessions == null)
-        {
-            var audioSessions = new List<AudioSession>();
-            var allSessions = await _dbService.GetAllAudioSessionAsync();
-            foreach (var session in allSessions)
-            {
-                try
-                {
-                    var sessionObj = JsonSerializer.Deserialize<AudioSession>(session);
-                    if (sessionObj.Parameters != null)
-                    {
-                        var parameters = _audioParametersFactory.CreateAudioParameters(sessionObj.Provider);
-                        parameters.SetDictionary(sessionObj.Parameters.ToDictionary());
-                        sessionObj.Parameters = parameters;
-                    }
-
-                    audioSessions.Add(sessionObj);
-                }
-                catch (Exception)
-                {
-                    continue;
-                }
-            }
-
-            _audioSessions = audioSessions.OrderByDescending(p => p.Time ?? DateTimeOffset.MinValue).ToList();
-        }
     }
 }

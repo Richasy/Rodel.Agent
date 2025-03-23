@@ -1,0 +1,10 @@
+﻿<Directives>
+	<Application>
+		<Assembly Name="RodelAgent.UI" Dynamic="Required All">
+		</Assembly>
+		<Assembly Name="FreeSql" Dynamic="Required All">
+		</Assembly>
+		<Assembly Name="FreeSql.Provider.Duckdb" Dynamic="Required All">
+		</Assembly>
+	</Application>
+</Directives>

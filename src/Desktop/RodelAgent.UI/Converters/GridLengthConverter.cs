@@ -1,8 +1,8 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
 namespace RodelAgent.UI.Converters;
 
-internal sealed class GridLengthConverter : IValueConverter
+internal sealed partial class GridLengthConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {

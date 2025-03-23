@@ -1,37 +1,35 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System.Globalization;
 using RodelAgent.UI.Toolkits;
-using RodelTranslate.Models.Client;
+using System.Globalization;
 
 namespace RodelAgent.UI.ViewModels.Items;
 
 /// <summary>
-/// 翻译语言视图模型.
+/// 语言项视图模型.
 /// </summary>
-public sealed partial class TranslateLanguageItemViewModel : ViewModelBase<Language>
+public sealed partial class LanguageItemViewModel : ViewModelBase
 {
     [ObservableProperty]
-    private string _displayName;
+    public partial string Name { get; set; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="TranslateLanguageItemViewModel"/> class.
+    /// 语言代码.
     /// </summary>
-    public TranslateLanguageItemViewModel(Language data)
-        : base(data)
+    public string Code { get; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LanguageItemViewModel"/> class.
+    /// </summary>
+    public LanguageItemViewModel(string code, CultureInfo? culture)
     {
-        if (data != null)
-        {
-            var culture = new CultureInfo(data.ISOCode);
-            DisplayName = culture.DisplayName;
-        }
-        else
-        {
-            DisplayName = ResourceToolkit.GetLocalizedString(Models.Constants.StringNames.AutoDetected);
-        }
+        Code = code;
+        Name = culture?.DisplayName ?? (culture != null ? code : ResourceToolkit.GetLocalizedString(Models.Constants.StringNames.AutoLanguage));
     }
 
     /// <inheritdoc/>
-    public override string ToString()
-        => DisplayName;
+    public override bool Equals(object? obj) => obj is LanguageItemViewModel model && Code == model.Code;
+
+    /// <inheritdoc/>
+    public override int GetHashCode() => HashCode.Combine(Code);
 }

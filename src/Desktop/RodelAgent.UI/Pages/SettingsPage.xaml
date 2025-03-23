@@ -5,35 +5,225 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
     xmlns:local="using:RodelAgent.UI.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:settings="using:RodelAgent.UI.Controls.Settings"
     mc:Ignorable="d">
+
+    <Page.Resources>
+        <Style x:Key="ServiceTipStyle" TargetType="InfoBar">
+            <Setter Property="IsOpen" Value="True" />
+            <Setter Property="IsClosable" Value="False" />
+            <Setter Property="Severity" Value="Informational" />
+            <Setter Property="Title" Value="{ext:Locale Name=ServiceSettingHeaderTitle}" />
+            <Setter Property="Message" Value="{ext:Locale Name=ServiceSettingHeaderDescription}" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+        </Style>
+    </Page.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="56" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Grid
-            Padding="20,0"
-            BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
-            BorderThickness="0,0,0,1"
-            ColumnSpacing="20">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <TextBlock
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Style="{StaticResource SubtitleTextBlockStyle}"
-                Text="{ext:Locale Name=Settings}" />
-            <SelectorBar
-                x:Name="SettingSectionSelector"
-                Grid.Column="1"
-                VerticalAlignment="Center"
-                SelectionChanged="OnSettingSectionChanged" />
-        </Grid>
-        <Frame x:Name="SectionFrame" Grid.Row="1" />
+        <TextBlock
+            Margin="16,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Style="{StaticResource BodyStrongTextBlockStyle}"
+            Text="{ext:Locale Name=Settings}" />
+        <SelectorBar
+            x:Name="SectionSelector"
+            HorizontalAlignment="Center"
+            SelectionChanged="OnSectionSelectorChanged">
+            <SelectorBarItem
+                AccessKey="A"
+                Tag="0"
+                Text="{ext:Locale Name=AppSettings}" />
+            <SelectorBarItem
+                AccessKey="C"
+                Tag="1"
+                Text="{ext:Locale Name=ChatService}" />
+            <SelectorBarItem
+                AccessKey="D"
+                Tag="2"
+                Text="{ext:Locale Name=DrawService}" />
+            <SelectorBarItem
+                AccessKey="S"
+                Tag="3"
+                Text="{ext:Locale Name=AudioService}" />
+            <SelectorBarItem
+                AccessKey="T"
+                Tag="4"
+                Text="{ext:Locale Name=TranslateService}" />
+        </SelectorBar>
+
+        <Border Grid.Row="1" Style="{StaticResource SplitLineStyle}" />
+
+        <ScrollViewer
+            x:Name="GenericContainer"
+            Grid.Row="2"
+            Padding="16,0"
+            Style="{StaticResource PageScrollViewerStyle}">
+            <StackPanel Margin="0,12" Spacing="4">
+                <StackPanel.ChildrenTransitions>
+                    <RepositionThemeTransition IsStaggeringEnabled="False" />
+                </StackPanel.ChildrenTransitions>
+
+                <TextBlock
+                    Margin="0,8,0,4"
+                    HorizontalAlignment="Left"
+                    Text="{ext:Locale Name=Generic}" />
+                <settings:WorkingDirectorySettingControl />
+                <settings:ThemeSettingControl />
+                <settings:HideWindowSettingControl x:Name="HideWindowSetting" />
+                <settings:LoggerSettingControl />
+
+                <TextBlock
+                    Margin="0,16,0,8"
+                    HorizontalAlignment="Left"
+                    Text="{ext:Locale Name=Services}" />
+                <settings:ChatSessionSettingControl />
+                <settings:McpSettingControl />
+
+                <TextBlock
+                    Margin="0,16,0,8"
+                    HorizontalAlignment="Left"
+                    Text="{ext:Locale Name=AboutThisApp}" />
+                <settings:AboutSettingControl />
+                <StackPanel
+                    Margin="0,12,0,0"
+                    Orientation="Horizontal"
+                    Spacing="4">
+                    <HyperlinkButton
+                        Padding="8,4"
+                        HorizontalAlignment="Left"
+                        AccessKey="Q"
+                        Click="OnJoinGroupButtonClick"
+                        Content="{ext:Locale Name=JoinQQGroup}">
+                        <FlyoutBase.AttachedFlyout>
+                            <Flyout>
+                                <Flyout.FlyoutPresenterStyle>
+                                    <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
+                                        <Setter Property="Padding" Value="0" />
+                                    </Style>
+                                </Flyout.FlyoutPresenterStyle>
+                                <Image
+                                    MaxWidth="240"
+                                    Source="{ThemeResource QQGroup}"
+                                    Stretch="Uniform" />
+                            </Flyout>
+                        </FlyoutBase.AttachedFlyout>
+                    </HyperlinkButton>
+                    <StackPanel
+                        Width="1"
+                        Height="16"
+                        Background="{ThemeResource ControlStrokeColorDefaultBrush}" />
+                    <HyperlinkButton
+                        Padding="8,4"
+                        AccessKey="F"
+                        Content="{ext:Locale Name=SendFeedback}"
+                        NavigateUri="https://github.com/Richasy/Rodel.Agent/issues/new/choose" />
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+        <ScrollViewer
+            x:Name="ChatContainer"
+            Grid.Row="2"
+            Padding="16,0"
+            Style="{StaticResource PageScrollViewerStyle}"
+            Visibility="Collapsed">
+            <StackPanel
+                x:Name="ChatPanel"
+                Margin="0,12"
+                Spacing="4">
+                <StackPanel.ChildrenTransitions>
+                    <RepositionThemeTransition IsStaggeringEnabled="False" />
+                </StackPanel.ChildrenTransitions>
+                <InfoBar Style="{StaticResource ServiceTipStyle}">
+                    <InfoBar.IconSource>
+                        <ic:SymbolIconSource Symbol="DocumentSparkle" />
+                    </InfoBar.IconSource>
+                    <InfoBar.ActionButton>
+                        <HyperlinkButton Click="OnChatDetailButtonClick" Content="{ext:Locale Name=SeeDetail}" />
+                    </InfoBar.ActionButton>
+                </InfoBar>
+            </StackPanel>
+        </ScrollViewer>
+
+        <ScrollViewer
+            x:Name="DrawContainer"
+            Grid.Row="2"
+            Padding="16,0"
+            Style="{StaticResource PageScrollViewerStyle}"
+            Visibility="Collapsed">
+            <StackPanel
+                x:Name="DrawPanel"
+                Margin="0,12"
+                Spacing="4">
+                <StackPanel.ChildrenTransitions>
+                    <RepositionThemeTransition IsStaggeringEnabled="False" />
+                </StackPanel.ChildrenTransitions>
+                <InfoBar Style="{StaticResource ServiceTipStyle}">
+                    <InfoBar.IconSource>
+                        <ic:SymbolIconSource Symbol="DocumentSparkle" />
+                    </InfoBar.IconSource>
+                    <InfoBar.ActionButton>
+                        <HyperlinkButton Click="OnDrawDetailButtonClick" Content="{ext:Locale Name=SeeDetail}" />
+                    </InfoBar.ActionButton>
+                </InfoBar>
+            </StackPanel>
+        </ScrollViewer>
+
+        <ScrollViewer
+            x:Name="AudioContainer"
+            Grid.Row="2"
+            Padding="16,0"
+            Style="{StaticResource PageScrollViewerStyle}"
+            Visibility="Collapsed">
+            <StackPanel
+                x:Name="AudioPanel"
+                Margin="0,12"
+                Spacing="4">
+                <StackPanel.ChildrenTransitions>
+                    <RepositionThemeTransition IsStaggeringEnabled="False" />
+                </StackPanel.ChildrenTransitions>
+                <InfoBar Style="{StaticResource ServiceTipStyle}">
+                    <InfoBar.IconSource>
+                        <ic:SymbolIconSource Symbol="DocumentSparkle" />
+                    </InfoBar.IconSource>
+                    <InfoBar.ActionButton>
+                        <HyperlinkButton Click="OnAudioDetailButtonClick" Content="{ext:Locale Name=SeeDetail}" />
+                    </InfoBar.ActionButton>
+                </InfoBar>
+            </StackPanel>
+        </ScrollViewer>
+
+        <ScrollViewer
+            x:Name="TranslateContainer"
+            Grid.Row="2"
+            Padding="16,0"
+            Style="{StaticResource PageScrollViewerStyle}"
+            Visibility="Collapsed">
+            <StackPanel
+                x:Name="TranslatePanel"
+                Margin="0,12"
+                Spacing="4">
+                <StackPanel.ChildrenTransitions>
+                    <RepositionThemeTransition IsStaggeringEnabled="False" />
+                </StackPanel.ChildrenTransitions>
+                <InfoBar Style="{StaticResource ServiceTipStyle}">
+                    <InfoBar.IconSource>
+                        <ic:SymbolIconSource Symbol="DocumentSparkle" />
+                    </InfoBar.IconSource>
+                    <InfoBar.ActionButton>
+                        <HyperlinkButton Click="OnTranslateDetailButtonClick" Content="{ext:Locale Name=SeeDetail}" />
+                    </InfoBar.ActionButton>
+                </InfoBar>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </local:SettingsPageBase>

@@ -11,15 +11,7 @@
 
 ### Desktop Client
 
-<p align="left">
-  <a title="Get from Microsoft" href="https://www.microsoft.com/store/apps/9NB0NB3MLQTM?launch=true&mode=full" target="_blank">
-    <picture>
-      <source srcset="https://get.microsoft.com/images/en-US%20light.svg" media="(prefers-color-scheme: dark)" />
-      <source srcset="https://get.microsoft.com/images/en-US%20dark.svg" media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)" />
-      <img src="https://get.microsoft.com/images/en-US%20dark.svg" width=144 />
-    </picture>
-  </a>
-</p>
+<a href="https://apps.microsoft.com/detail/9NB0NB3MLQTM?launch=true&mode=full" target="_blank">Get from Microsoft</a>
 
 Currently, the desktop client is built on the Windows App SDK and only supports the Windows desktop operating system. It is currently only available for download from the Microsoft Store.
 

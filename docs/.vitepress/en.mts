@@ -22,8 +22,6 @@ export const en = defineConfig({
             { text: 'Installation', link: '/en/install' },
             { text: 'Supported services', link: '/en/services' },
             { text: 'Work directory & Data sync', link: '/en/work-directory' },
-            { text: 'FAQ', link: './faq' },
-            { text: 'V1 data migration', link: '/en/v1-migration' },
             { text: 'Privacy Policy', link: '/en/privacy' }
           ]
         },
@@ -34,8 +32,7 @@ export const en = defineConfig({
             { text: 'Quick chat', link: '/en/chat-simple' },
             { text: 'Agents & Presets', link: '/en/agent-preset' },
             { text: 'Group chat', link: '/en/group-chat'},
-            { text: 'Tool invocation', link: '/en/chat-tools' },
-            { text: 'Tool development', link: '/en/tool-dev' }
+            { text: 'MCP support', link: '/en/mcp' }
           ]
         },
         {

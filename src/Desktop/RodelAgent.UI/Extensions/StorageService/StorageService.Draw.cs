@@ -1,37 +1,62 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System.Text.Json;
+using Richasy.AgentKernel;
+using RodelAgent.Models.Common;
 using RodelAgent.UI.Toolkits;
-using RodelDraw.Models.Client;
+using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 
 namespace RodelAgent.UI.Extensions;
 
-/// <summary>
-/// 存储服务.
-/// </summary>
-public sealed partial class StorageService
+internal sealed partial class StorageService
 {
-    /// <inheritdoc/>
-    public async Task<List<DrawSession>?> GetDrawSessionsAsync()
+    public async Task<T?> GetDrawConfigAsync<T>(DrawProviderType type, JsonTypeInfo<T> typeInfo) where T : class
     {
-        await InitializeDrawSessionsAsync();
-        var sessions = _drawSessions.OrderByDescending(p => p.Time ?? DateTimeOffset.MinValue).ToList();
-        return sessions;
+        var json = await _dbService.GetSecretAsync("Draw_" + type.ToString());
+
+        return typeof(T).Equals(typeof(string))
+            ? json as T
+            : json is null
+                ? default
+                : JsonSerializer.Deserialize(json, typeInfo);
     }
 
-    /// <inheritdoc/>
-    public async Task AddOrUpdateDrawSessionAsync(DrawSession session, byte[]? imageData)
+    public async Task SetDrawConfigAsync<T>(DrawProviderType type, T config, JsonTypeInfo<T> typeInfo) where T : class
     {
-        await InitializeDrawSessionsAsync();
-        if (_drawSessions.Any(s => s.Id == session.Id))
+        var json = typeof(T).Equals(typeof(string)) ? config as string : JsonSerializer.Serialize(config, typeInfo);
+        await _dbService.SetSecretAsync("Draw_" + type.ToString(), json!);
+    }
+
+    public async Task<List<DrawRecord>?> GetDrawSessionsAsync()
+    {
+        var sessionJsonList = await _dbService.GetAllDrawSessionsAsync();
+        if (sessionJsonList is null || sessionJsonList.Count == 0)
         {
-            _drawSessions.Remove(_drawSessions.First(s => s.Id == session.Id));
+            return [];
         }
 
-        _drawSessions.Add(session);
-        var id = session.Id;
-        var v = JsonSerializer.Serialize(session);
-        await _dbService.AddOrUpdateDrawDataAsync(id, v);
+        var sessionList = new List<DrawRecord>();
+        foreach (var sessionJson in sessionJsonList)
+        {
+            if (string.IsNullOrEmpty(sessionJson))
+            {
+                continue;
+            }
+
+            var session = JsonSerializer.Deserialize(sessionJson, JsonGenContext.Default.DrawRecord);
+            if (session != null)
+            {
+                sessionList.Add(session);
+            }
+        }
+
+        return sessionList;
+    }
+
+    public async Task AddOrUpdateDrawSessionAsync(DrawRecord session, byte[]? imageData)
+    {
+        var json = JsonSerializer.Serialize(session, JsonGenContext.Default.DrawRecord);
+        await _dbService.AddOrUpdateDrawDataAsync(session.Id, json);
 
         if (imageData == null || imageData.Length == 0)
         {
@@ -41,51 +66,20 @@ public sealed partial class StorageService
         var imagePath = AppToolkit.GetDrawPicturePath(session.Id);
         if (!Directory.Exists(Path.GetDirectoryName(imagePath)))
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(imagePath));
+            Directory.CreateDirectory(Path.GetDirectoryName(imagePath)!);
         }
 
         await File.WriteAllBytesAsync(imagePath, imageData);
     }
 
-    /// <inheritdoc/>
     public async Task RemoveDrawSessionAsync(string sessionId)
     {
-        _drawSessions.RemoveAll(p => p.Id == sessionId);
-        await _dbService.RemoveDrawDataAsync(sessionId);
         var imagePath = AppToolkit.GetDrawPicturePath(sessionId);
         if (File.Exists(imagePath))
         {
             await Task.Run(() => File.Delete(imagePath));
         }
-    }
 
-    private async Task InitializeDrawSessionsAsync()
-    {
-        if (_drawSessions == null)
-        {
-            var drawSessions = new List<DrawSession>();
-            var allSessions = await _dbService.GetAllDrawSessionAsync();
-            foreach (var session in allSessions)
-            {
-                try
-                {
-                    var sessionObj = JsonSerializer.Deserialize<DrawSession>(session);
-                    if (sessionObj.Parameters != null)
-                    {
-                        var parameters = _drawParametersFactory.CreateDrawParameters(sessionObj.Provider);
-                        parameters.SetDictionary(sessionObj.Parameters.ToDictionary());
-                        sessionObj.Parameters = parameters;
-                    }
-
-                    drawSessions.Add(sessionObj);
-                }
-                catch (Exception)
-                {
-                    continue;
-                }
-            }
-
-            _drawSessions = drawSessions.OrderByDescending(p => p.Time ?? DateTimeOffset.MinValue).ToList();
-        }
+        await _dbService.RemoveDrawDataAsync(sessionId);
     }
 }

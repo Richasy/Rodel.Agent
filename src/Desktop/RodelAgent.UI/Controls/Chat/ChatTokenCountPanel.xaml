@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:ChatSessionControlBase
+    x:Class="RodelAgent.UI.Controls.Chat.ChatTokenCountPanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="using:RodelAgent.UI.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:local="using:RodelAgent.UI.Controls.Chat"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <Style x:Key="LeftTipTextStyle" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Foreground" Value="{ThemeResource TextFillColorSecondaryBrush}" />
+        </Style>
+        <Style x:Key="RightValueTextStyle" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+        <converters:TokenCountConverter x:Key="TokenCountConverter" />
+    </UserControl.Resources>
+
+    <Grid>
+        <Button
+            Padding="8,4"
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            Background="Transparent"
+            BorderThickness="0">
+            <TextBlock
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                Style="{StaticResource CaptionTextBlockStyle}"
+                TextTrimming="CharacterEllipsis"
+                TextWrapping="NoWrap">
+                <Run Text="{ext:Locale Name=Token}" />
+                <Run Foreground="{ThemeResource AccentTextFillColorTertiaryBrush}" Text="{x:Bind ViewModel.TotalTokenUsage, Mode=OneWay}" />
+            </TextBlock>
+            <Button.Flyout>
+                <Flyout>
+                    <Flyout.FlyoutPresenterStyle>
+                        <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
+                            <Setter Property="Padding" Value="20,16" />
+                        </Style>
+                    </Flyout.FlyoutPresenterStyle>
+                    <Grid
+                        MinWidth="180"
+                        ColumnSpacing="12"
+                        RowSpacing="12">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            HorizontalAlignment="Left"
+                            Style="{StaticResource BodyStrongTextBlockStyle}"
+                            Text="{ext:Locale Name=TokenUsage}" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Style="{StaticResource LeftTipTextStyle}"
+                            Text="{ext:Locale Name=InstructionToken}" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Style="{StaticResource RightValueTextStyle}"
+                            Text="{x:Bind ViewModel.InstructionTokenCount, Mode=OneWay, Converter={StaticResource TokenCountConverter}}" />
+                        <TextBlock
+                            Grid.Row="2"
+                            Style="{StaticResource LeftTipTextStyle}"
+                            Text="{ext:Locale Name=HistoryToken}" />
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Style="{StaticResource RightValueTextStyle}"
+                            Text="{x:Bind ViewModel.HistoryTokenCount, Mode=OneWay, Converter={StaticResource TokenCountConverter}}" />
+                        <TextBlock
+                            Grid.Row="3"
+                            Style="{StaticResource LeftTipTextStyle}"
+                            Text="{ext:Locale Name=InputToken}" />
+                        <TextBlock
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Style="{StaticResource RightValueTextStyle}"
+                            Text="{x:Bind ViewModel.UserInputTokenCount, Mode=OneWay, Converter={StaticResource TokenCountConverter}}" />
+
+                        <TextBlock
+                            Grid.Row="4"
+                            Style="{StaticResource LeftTipTextStyle}"
+                            Text="{ext:Locale Name=InputWordCount}" />
+                        <TextBlock
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            Style="{StaticResource RightValueTextStyle}"
+                            Text="{x:Bind ViewModel.UserInputWordCount, Mode=OneWay, Converter={StaticResource TokenCountConverter}}" />
+
+                        <Border
+                            Grid.Row="5"
+                            Grid.ColumnSpan="2"
+                            Height="1"
+                            HorizontalAlignment="Stretch"
+                            Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
+
+                        <TextBlock
+                            Grid.Row="6"
+                            Style="{StaticResource LeftTipTextStyle}"
+                            Text="{ext:Locale Name=TotalUsage}" />
+                        <TextBlock
+                            Grid.Row="6"
+                            Grid.Column="1"
+                            Style="{StaticResource RightValueTextStyle}"
+                            Text="{x:Bind ViewModel.TotalTokenUsage, Mode=OneWay, Converter={StaticResource TokenCountConverter}}" />
+                    </Grid>
+                </Flyout>
+            </Button.Flyout>
+        </Button>
+    </Grid>
+</local:ChatSessionControlBase>

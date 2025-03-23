@@ -20,8 +20,8 @@ Rodel Agent supports a variety of machine translation services. Please refer to 
 
 |||  
 |-|-|  
-|Documentation|[https://ai.baidu.com/ai-doc/MT/2l317egif](https://ai.baidu.com/ai-doc/MT/2l317egif)|  
-|Service|[https://cloud.baidu.com/product/mt/text_trans](https://cloud.baidu.com/product/mt/text_trans)|
+|Documentation|https://api.fanyi.baidu.com/doc/11|  
+|Service|https://fanyi-api.baidu.com/manage/developer|
 
 ## Tencent Cloud Translation
 

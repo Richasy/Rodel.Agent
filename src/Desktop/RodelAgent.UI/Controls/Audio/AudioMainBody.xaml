@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:AudioPageControlBase
+    x:Class="RodelAgent.UI.Controls.Audio.AudioMainBody"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:base="using:Richasy.WinUIKernel.Share.Base"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:local="using:RodelAgent.UI.Controls.Audio"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid>
+        <base:EmptyHolder
+            Title="{ext:Locale Name=NeedGenerateAudio}"
+            Description="{ext:Locale Name=NeedGenerateAudioDescription}"
+            Emoji="&#x1F399;"
+            Visibility="{x:Bind ViewModel.AudioPath, Mode=OneWay, Converter={StaticResource ObjectToVisibilityReverseConverter}}" />
+        <local:WavePanel
+            OpenAudio="OnOpenAudioRequested"
+            SaveAudio="OnSaveAudioRequested"
+            Visibility="{x:Bind ViewModel.AudioPath, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}" />
+        <base:LoadingWidget
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Text="{ext:Locale Name=Generating}"
+            Visibility="{x:Bind ViewModel.IsGenerating, Mode=OneWay}" />
+    </Grid>
+</local:AudioPageControlBase>

@@ -1,9 +1,8 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System.Diagnostics;
-using System.Net.NetworkInformation;
+using Richasy.WinUIKernel.Share.Toolkits;
 using RodelAgent.UI.Models.Constants;
-using Windows.ApplicationModel;
+using Windows.Globalization;
 using Windows.Graphics;
 
 namespace RodelAgent.UI.Toolkits;
@@ -11,28 +10,16 @@ namespace RodelAgent.UI.Toolkits;
 /// <summary>
 /// 应用工具箱.
 /// </summary>
-public static class AppToolkit
+internal sealed class AppToolkit : SharedAppToolkit
 {
-    private static readonly string[] _supportImageExtensions = new[] { ".png", ".jpg", ".jpeg", ".bmp", ".gif", ".ico" };
+    private static readonly string[] _supportImageExtensions = [".png", ".jpg", ".jpeg", ".bmp", ".gif", ".ico"];
 
     /// <summary>
-    /// 获取应用包版本.
+    /// Initializes a new instance of the <see cref="AppToolkit"/> class.
     /// </summary>
-    /// <returns>包版本.</returns>
-    public static string GetPackageVersion()
+    public AppToolkit(ISettingsToolkit settings)
+        : base(settings)
     {
-        var appVersion = Package.Current.Id.Version;
-        return $"{appVersion.Major}.{appVersion.Minor}.{appVersion.Build}.{appVersion.Revision}";
-    }
-
-    /// <summary>
-    /// 重置控件主题.
-    /// </summary>
-    /// <param name="element">控件.</param>
-    public static void ResetControlTheme(FrameworkElement element)
-    {
-        var localTheme = SettingsToolkit.ReadLocalSetting(SettingNames.AppTheme, ElementTheme.Default);
-        element.RequestedTheme = localTheme;
     }
 
     /// <summary>
@@ -49,37 +36,6 @@ public static class AppToolkit
               Convert.ToInt32(rect.Height * scaleFactor));
 
     /// <summary>
-    /// 杀掉占用当前端口的进程.
-    /// </summary>
-    /// <param name="port">端口号.</param>
-    /// <returns><see cref="Task"/>.</returns>
-    public static async Task KillProcessIfUsingPortAsync(int port)
-    {
-        var ipGlobalProperties = IPGlobalProperties.GetIPGlobalProperties();
-        var listeners = ipGlobalProperties.GetActiveTcpListeners();
-        var hasProcess = listeners.Any(p => p.Port == port);
-        if (hasProcess)
-        {
-            await Task.Run(() =>
-            {
-                var process = new Process
-                {
-                    StartInfo = new ProcessStartInfo
-                    {
-                        FileName = "powershell.exe",
-                        Arguments = $"-Command \"Get-NetTCPConnection -LocalPort {port} | Select-Object -ExpandProperty OwningProcess | ForEach-Object {{ Stop-Process -Id $_ -Force }}\"",
-                        UseShellExecute = false,
-                        CreateNoWindow = true,
-                    },
-                };
-
-                _ = process.Start();
-                process.WaitForExit();
-            });
-        }
-    }
-
-    /// <summary>
     /// 获取预设头像路径.
     /// </summary>
     /// <param name="id">预设 Id.</param>
@@ -87,8 +43,7 @@ public static class AppToolkit
     public static string GetPresetAvatarPath(string id)
     {
         var workDir = SettingsToolkit.ReadLocalSetting(SettingNames.WorkingDirectory, string.Empty);
-        var avatarPath = Path.Combine(workDir, "Avatars", $"{id}.png");
-        return avatarPath;
+        return Path.Combine(workDir, "Avatars", $"{id}.png");
     }
 
     /// <summary>
@@ -106,7 +61,7 @@ public static class AppToolkit
     /// </summary>
     /// <param name="id">插件 ID.</param>
     /// <returns>插件路径.</returns>
-    public static string GetPluginAvatarPath(string id)
+    public static string? GetPluginAvatarPath(string id)
     {
         var actualId = id.Split("<|>").First();
         var pluginFolder = Path.Combine(GetChatPluginFolder(), actualId);
@@ -116,8 +71,7 @@ public static class AppToolkit
         }
 
         var files = Directory.GetFiles(pluginFolder);
-        var logoFile = files.FirstOrDefault(p => Path.GetFileName(p).StartsWith("favicon", StringComparison.InvariantCultureIgnoreCase) && _supportImageExtensions.Contains(Path.GetExtension(p)));
-        return logoFile;
+        return Array.Find(files, p => Path.GetFileName(p).StartsWith("favicon", StringComparison.InvariantCultureIgnoreCase) && _supportImageExtensions.Contains(Path.GetExtension(p)));
     }
 
     /// <summary>
@@ -134,7 +88,7 @@ public static class AppToolkit
     /// 获取语音文件夹.
     /// </summary>
     /// <returns>文件夹路径.</returns>
-    public static string GetSpeechFolderPath()
+    public static string GetAudioFolderPath()
     {
         var workDir = SettingsToolkit.ReadLocalSetting(SettingNames.WorkingDirectory, string.Empty);
         return Path.Combine(workDir, "Speech");
@@ -155,10 +109,27 @@ public static class AppToolkit
     /// 获取生成音频的路径.
     /// </summary>
     /// <param name="id">音频 Id.</param>
+    /// <param name="forceWav">是否强制为 wav 格式.</param>
     /// <returns>音频路径.</returns>
-    public static string GetSpeechPath(string id)
+    public static string GetAudioPath(string id, bool forceWav = false)
     {
-        var drawFolder = GetSpeechFolderPath();
-        return Path.Combine(drawFolder, $"{id}.wav");
+        var folder = GetAudioFolderPath();
+
+        if (forceWav)
+        {
+            return Path.Combine(folder, $"{id}.wav");
+        }
+
+        // 查找文件夹下包含此id的文件.
+        var files = Directory.GetFiles(folder);
+        var file = Array.Find(files, p => Path.GetFileName(p).StartsWith(id, StringComparison.InvariantCultureIgnoreCase));
+        return file ?? string.Empty;
+    }
+
+    public static string GetDocumentLink(string path)
+    {
+        var isEn = ApplicationLanguages.Languages[0].StartsWith("en", StringComparison.OrdinalIgnoreCase);
+        var baseUrl = isEn ? "https://agent.richasy.net/en" : "https://agent.richasy.net";
+        return $"{baseUrl}/{path.TrimStart('/')}";
     }
 }

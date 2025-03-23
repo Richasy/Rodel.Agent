@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<base:AppDialog
+    x:Class="RodelAgent.UI.Controls.Chat.McpConsentDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:base="using:Richasy.WinUIKernel.Share.Base"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:local="using:RodelAgent.UI.Controls.Chat"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="{ext:Locale Name=RequestCall}"
+    CloseButtonText="{ext:Locale Name=Cancel}"
+    DefaultButton="Primary"
+    PrimaryButtonText="{ext:Locale Name=Approve}"
+    Style="{StaticResource DefaultContentDialogStyle}"
+    mc:Ignorable="d">
+
+    <StackPanel Width="320">
+        <TextBlock x:Name="CallHeader" TextWrapping="Wrap" />
+        <StackPanel
+            x:Name="CallDetailContainer"
+            Margin="0,8,0,0"
+            Padding="12,8"
+            HorizontalAlignment="Stretch"
+            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+            Spacing="4">
+            <TextBlock
+                HorizontalAlignment="Left"
+                Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                Style="{StaticResource CaptionTextBlockStyle}"
+                Text="{ext:Locale Name=CallDetail}" />
+            <TextBlock
+                x:Name="CallDetail"
+                HorizontalAlignment="Left"
+                TextWrapping="Wrap" />
+        </StackPanel>
+    </StackPanel>
+</base:AppDialog>

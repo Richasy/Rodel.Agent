@@ -4,7 +4,7 @@
 
 Rodel Agent supports mainstream AI services available on the market, not limited to chat functionalities, and mainly supports the following features:
 
-- Chat (with tool invocation support)
+- Chat (with MCP support)
 - Text-to-image generation
 - Text-to-speech conversion
 - Machine translation

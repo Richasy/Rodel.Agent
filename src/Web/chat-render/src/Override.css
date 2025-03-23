@@ -1,0 +1,124 @@
+.ant-bubble-content article {
+  margin-bottom: -1em;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background-color: transparent;
+}
+
+html {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  padding: 0;
+  overflow-y: auto;
+  font-size: 14px;
+}
+
+.c-visible {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.c-hidden {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.ant-bubble-footer {
+  margin-top: 4px !important;
+  margin-bottom: -4px;
+}
+
+.code-header {
+  background-color: var(--codeblock-bg);
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  border-color: var(--codeblock-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 6px 6px 0 0;
+}
+
+.code-container pre {
+  border: unset;
+  border-width: 0 1px 1px 1px;
+  border-color: var(--codeblock-border);
+  border-radius: 0 0 6px 6px !important;
+}
+
+.code-lang {
+  font-weight: bold;
+  font-size: 13px;
+  margin-left: 8px;
+  color: var(--codeblock-fg);
+}
+
+.copy-button {
+  background-color: var(--codeblock-copy-bg);
+  color: var(--codeblock-fg);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  font-weight: 600;
+  pointer-events:all !important;
+  z-index:1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 0px 0px 1px var(--codeblock-border);
+  cursor: pointer;
+  transition-duration: 0.3s;
+  overflow: hidden;
+  position: relative;
+}
+
+.copy-button .svgIcon {
+  width: 12px;
+  transition-duration: 0.3s;
+}
+
+.copy-button .svgIcon path {
+  fill: var(--codeblock-fg);
+}
+
+.copy-button:hover {
+  width: 60px;
+  border-radius: 24px;
+  transition-duration: 0.3s;
+  align-items: center;
+}
+
+.copy-button:hover .svgIcon {
+  transition-duration: 0.3s;
+  transform: translateY(-200%);
+}
+
+.copy-button::before {
+  position: absolute;
+  bottom: -20px;
+  content: "Copy";
+  color: var(--codeblock-fg);
+  /* transition-duration: .3s; */
+  font-size: 0px;
+}
+
+.copy-button:hover::before {
+  font-size: 13px;
+  opacity: 1;
+  bottom: unset;
+  /* transform: translateY(-30px); */
+  transition-duration: 0.3s;
+}
+
+pre, code {
+  white-space: pre-wrap;
+}

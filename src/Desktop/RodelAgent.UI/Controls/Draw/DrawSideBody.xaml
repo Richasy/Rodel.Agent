@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:DrawPageControlBase
+    x:Class="RodelAgent.UI.Controls.Draw.DrawSideBody"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ai="using:Richasy.WinUIKernel.AI"
+    xmlns:base="using:Richasy.WinUIKernel.Share.Base"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:items="using:RodelAgent.UI.ViewModels.Items"
+    xmlns:local="using:RodelAgent.UI.Controls.Draw"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid>
+        <ScrollViewer
+            Padding="16,0"
+            Style="{StaticResource PageScrollViewerStyle}"
+            Visibility="{x:Bind ViewModel.IsHistoryEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+            <Grid Margin="0,12,0,20">
+                <ItemsRepeater ItemsSource="{x:Bind ViewModel.History}">
+                    <ItemsRepeater.ItemTemplate>
+                        <DataTemplate x:DataType="items:DrawRecordItemViewModel">
+                            <base:CardControl Command="{x:Bind DisplayCommand}">
+                                <base:CardControl.ContextFlyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem Command="{x:Bind CopyCommand}" Text="{ext:Locale Name=CopyImage}">
+                                            <MenuFlyoutItem.Icon>
+                                                <ic:SymbolIcon Symbol="Copy" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+                                        <MenuFlyoutItem Command="{x:Bind OpenCommand}" Text="{ext:Locale Name=OpenImage}">
+                                            <MenuFlyoutItem.Icon>
+                                                <ic:SymbolIcon Symbol="Image" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+                                        <MenuFlyoutSeparator />
+                                        <MenuFlyoutItem Command="{x:Bind DeleteCommand}" Text="{ext:Locale Name=DeleteRecord}">
+                                            <MenuFlyoutItem.Icon>
+                                                <ic:SymbolIcon Foreground="{ThemeResource SystemFillColorCriticalBrush}" Symbol="Delete" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+                                    </MenuFlyout>
+                                </base:CardControl.ContextFlyout>
+                                <Grid Margin="16,12" RowSpacing="8">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <base:TrimTextBlock
+                                        FontSize="12"
+                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                        MaxLines="3"
+                                        Text="{x:Bind Data.Prompt}" />
+                                    <local:DrawImage
+                                        Grid.Row="1"
+                                        CornerRadius="{StaticResource ControlCornerRadius}"
+                                        Proportion="{x:Bind Proportion}"
+                                        Source="{x:Bind Image}" />
+                                    <Grid Grid.Row="2" ColumnSpacing="8">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <ai:AILogo
+                                            Width="20"
+                                            Height="20"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Center"
+                                            AvatarPadding="4"
+                                            IsAvatar="True"
+                                            Provider="{x:Bind Data.Provider}" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            VerticalAlignment="Center"
+                                            Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                                            Style="{StaticResource CaptionTextBlockStyle}"
+                                            Text="{x:Bind Time}" />
+                                    </Grid>
+                                </Grid>
+                            </base:CardControl>
+                        </DataTemplate>
+                    </ItemsRepeater.ItemTemplate>
+                    <ItemsRepeater.Layout>
+                        <StackLayout Spacing="8" />
+                    </ItemsRepeater.Layout>
+                </ItemsRepeater>
+            </Grid>
+        </ScrollViewer>
+
+        <Border
+            Margin="12,8"
+            Padding="12,8"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+            CornerRadius="{StaticResource ControlCornerRadius}"
+            Visibility="{x:Bind ViewModel.IsHistoryEmpty, Mode=OneWay}">
+            <TextBlock
+                MaxWidth="200"
+                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                Style="{StaticResource CaptionTextBlockStyle}"
+                Text="{ext:Locale Name=NoDrawHistory}"
+                TextWrapping="Wrap" />
+        </Border>
+    </Grid>
+
+</local:DrawPageControlBase>

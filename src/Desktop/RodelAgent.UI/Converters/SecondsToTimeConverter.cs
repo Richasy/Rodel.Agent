@@ -1,8 +1,11 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
 namespace RodelAgent.UI.Converters;
 
-internal sealed class SecondsToTimeConverter : IValueConverter
+/// <summary>
+/// Converts seconds to time.
+/// </summary>
+internal sealed partial class SecondsToTimeConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {

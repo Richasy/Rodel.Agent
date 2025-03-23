@@ -1,6 +1,6 @@
-﻿// Copyright (c) Rodel. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
-using System;
+using RichasyKernel;
 
 namespace RodelAgent.Statics;
 
@@ -12,11 +12,11 @@ public static class GlobalStatics
     /// <summary>
     /// 服务提供程序.
     /// </summary>
-    public static IServiceProvider ServiceProvider { get; private set; }
+    public static Kernel Kernel { get; private set; }
 
     /// <summary>
     /// 设置服务提供程序.
     /// </summary>
-    public static void SetServiceProvider(IServiceProvider serviceProvider)
-        => ServiceProvider = serviceProvider;
+    public static void SetKernel(Kernel kernel)
+        => Kernel = kernel;
 }

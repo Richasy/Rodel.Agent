@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:ChatPageControlBase
+    x:Class="RodelAgent.UI.Controls.Chat.ChatSideHeader"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:base="using:Richasy.WinUIKernel.Share.Base"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:local="using:RodelAgent.UI.Controls.Chat"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:winui="using:CommunityToolkit.WinUI"
+    mc:Ignorable="d">
+
+    <StackPanel Padding="16,0">
+        <Grid Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                FontWeight="Bold"
+                Text="{ext:Locale Name=MyChat}" />
+            <StackPanel
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                Orientation="Horizontal"
+                Spacing="2">
+                <Button
+                    AutomationProperties.Name="{ext:Locale Name=NewAgent}"
+                    Command="{x:Bind ViewModel.CreateAgentCommand}"
+                    Style="{StaticResource IconButtonStyle}"
+                    ToolTipService.ToolTip="{ext:Locale Name=NewAgent}">
+                    <ic:SymbolIcon
+                        FontSize="14"
+                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                        IconVariant="Filled"
+                        Symbol="BotAdd" />
+                </Button>
+                <Button Style="{StaticResource IconButtonStyle}" ToolTipService.ToolTip="{ext:Locale Name=MoreOptions}">
+                    <ic:SymbolIcon FontSize="14" Symbol="MoreVertical" />
+                    <Button.Flyout>
+                        <MenuFlyout Placement="Bottom">
+                            <MenuFlyoutItem Command="{x:Bind ViewModel.CreateGroupCommand}" Text="{ext:Locale Name=NewGroup}">
+                                <MenuFlyoutItem.Icon>
+                                    <ic:SymbolIcon Symbol="ChatMultiple" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem Command="{x:Bind ViewModel.AddMcpConfigCommand}" Text="{ext:Locale Name=AddMcpServer}">
+                                <MenuFlyoutItem.Icon>
+                                    <ic:SymbolIcon Symbol="FlashAdd" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem Command="{x:Bind ViewModel.ImportMcpConfigCommand}" Text="{ext:Locale Name=ImportMcpConfig}">
+                                <MenuFlyoutItem.Icon>
+                                    <ic:SymbolIcon Symbol="ClipboardCode" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyout>
+                    </Button.Flyout>
+                </Button>
+            </StackPanel>
+        </Grid>
+        <Grid
+            x:Name="SectionTypeContainer"
+            Height="46"
+            Margin="-8,10"
+            Padding="4"
+            HorizontalAlignment="Stretch"
+            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+            ColumnSpacing="4"
+            CornerRadius="{StaticResource ControlCornerRadius}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <base:AppToggleCard
+                x:Name="AgentButton"
+                HorizontalAlignment="Stretch"
+                AutomationProperties.Name="{ext:Locale Name=Agents}"
+                Click="OnAgentButtonClick"
+                IsChecked="{x:Bind ViewModel.IsAgentSectionVisible, Mode=OneWay}"
+                Style="{StaticResource SelectorCardStyle}">
+                <Grid Margin="12,8">
+                    <StackPanel
+                        x:Name="AgentContainer"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="8">
+                        <ic:SymbolIcon
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            IconVariant="{x:Bind ViewModel.IsAgentSectionVisible, Mode=OneWay, Converter={StaticResource IconVariantConverter}}"
+                            Symbol="BotSparkle" />
+                        <TextBlock
+                            x:Name="AgentBlock"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource CaptionTextBlockStyle}"
+                            Text="{ext:Locale Name=Agents}" />
+                    </StackPanel>
+                </Grid>
+            </base:AppToggleCard>
+            <base:AppToggleCard
+                x:Name="ToolButton"
+                Grid.Column="1"
+                HorizontalAlignment="Stretch"
+                AutomationProperties.Name="{ext:Locale Name=Tools}"
+                Click="OnToolButtonClick"
+                IsChecked="{x:Bind ViewModel.IsToolSectionVisible, Mode=OneWay}"
+                Style="{StaticResource SelectorCardStyle}">
+                <Grid Margin="12,8">
+                    <StackPanel
+                        x:Name="ToolContainer"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="8">
+                        <ic:SymbolIcon
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            IconVariant="{x:Bind ViewModel.IsToolSectionVisible, Mode=OneWay, Converter={StaticResource IconVariantConverter}}"
+                            Symbol="FlashSparkle" />
+                        <TextBlock
+                            x:Name="ToolBlock"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource CaptionTextBlockStyle}"
+                            Text="{ext:Locale Name=Tools}" />
+                    </StackPanel>
+                </Grid>
+            </base:AppToggleCard>
+        </Grid>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="DefaultState">
+                    <VisualState.StateTriggers>
+                        <winui:ControlSizeTrigger MinWidth="240" TargetElement="{x:Bind SectionTypeContainer}" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="CompactState">
+                    <VisualState.StateTriggers>
+                        <winui:ControlSizeTrigger MinWidth="0" TargetElement="{x:Bind SectionTypeContainer}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="AgentContainer.Spacing" Value="0" />
+                        <Setter Target="AgentBlock.Visibility" Value="Collapsed" />
+                        <Setter Target="ToolContainer.Spacing" Value="0" />
+                        <Setter Target="ToolBlock.Visibility" Value="Collapsed" />
+                        <Setter Target="AgentButton.(ToolTipService.ToolTip)" Value="{ext:Locale Name=Agents}" />
+                        <Setter Target="ToolButton.(ToolTipService.ToolTip)" Value="{ext:Locale Name=Tools}" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </StackPanel>
+</local:ChatPageControlBase>

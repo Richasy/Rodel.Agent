@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:ChatPageControlBase
+    x:Class="RodelAgent.UI.Controls.Chat.ChatSideBody"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:base="using:Richasy.WinUIKernel.Share.Base"
+    xmlns:controls="using:RodelAgent.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:RodelAgent.UI.Extensions"
+    xmlns:ic="using:FluentIcons.WinUI"
+    xmlns:items="using:RodelAgent.UI.ViewModels.Items"
+    xmlns:local="using:RodelAgent.UI.Controls.Chat"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="using:Richasy.WinUIKernel.AI.ViewModels"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <StackLayout x:Key="BasicLayout" Spacing="4" />
+    </UserControl.Resources>
+
+    <Grid>
+        <ScrollViewer
+            Padding="8,0"
+            Style="{StaticResource PageScrollViewerStyle}"
+            Visibility="{x:Bind ViewModel.IsAgentSectionVisible, Mode=OneWay}">
+            <StackPanel Margin="0,0,0,20">
+                <StackPanel.ChildrenTransitions>
+                    <RepositionThemeTransition IsStaggeringEnabled="False" />
+                </StackPanel.ChildrenTransitions>
+                <controls:CollapseHeader Title="{ext:Locale Name=Services}" IsCollapsed="{x:Bind ViewModel.IsServicesCollapsed, Mode=TwoWay}">
+                    <controls:CollapseHeader.Element>
+                        <ItemsRepeater ItemsSource="{x:Bind ViewModel.Services, Mode=OneWay}" Layout="{StaticResource BasicLayout}">
+                            <ItemsRepeater.ItemTemplate>
+                                <DataTemplate x:DataType="viewmodels:ChatServiceItemViewModel">
+                                    <local:ChatServiceItemControl ViewModel="{x:Bind}" />
+                                </DataTemplate>
+                            </ItemsRepeater.ItemTemplate>
+                        </ItemsRepeater>
+                    </controls:CollapseHeader.Element>
+                </controls:CollapseHeader>
+
+                <StackPanel Margin="0,12,0,0" Visibility="{x:Bind ViewModel.IsAgentListVisible, Mode=OneWay}">
+                    <controls:CollapseHeader Title="{ext:Locale Name=Agents}" IsCollapsed="{x:Bind ViewModel.IsAgentsCollapsed, Mode=TwoWay}">
+                        <controls:CollapseHeader.Element>
+                            <ItemsRepeater ItemsSource="{x:Bind ViewModel.Agents}" Layout="{StaticResource BasicLayout}">
+                                <ItemsRepeater.ItemTemplate>
+                                    <DataTemplate x:DataType="items:ChatAgentItemViewModel">
+                                        <local:ChatAgentItemControl Click="OnAgentItemClick" ViewModel="{x:Bind}">
+                                            <local:ChatAgentItemControl.ContextFlyout>
+                                                <MenuFlyout>
+                                                    <MenuFlyoutItem Command="{x:Bind ModifyCommand}" Text="{ext:Locale Name=ModifyAgent}">
+                                                        <MenuFlyoutItem.Icon>
+                                                            <ic:SymbolIcon Symbol="Edit" />
+                                                        </MenuFlyoutItem.Icon>
+                                                    </MenuFlyoutItem>
+                                                    <MenuFlyoutItem Command="{x:Bind CreateDuplicateCommand}" Text="{ext:Locale Name=CreateDuplicate}">
+                                                        <MenuFlyoutItem.Icon>
+                                                            <ic:SymbolIcon Symbol="SaveCopy" />
+                                                        </MenuFlyoutItem.Icon>
+                                                    </MenuFlyoutItem>
+                                                    <MenuFlyoutSeparator />
+                                                    <MenuFlyoutItem Command="{x:Bind DeleteCommand}" Text="{ext:Locale Name=DeleteAgent}">
+                                                        <MenuFlyoutItem.Icon>
+                                                            <ic:SymbolIcon Foreground="{ThemeResource SystemFillColorCriticalBrush}" Symbol="Delete" />
+                                                        </MenuFlyoutItem.Icon>
+                                                    </MenuFlyoutItem>
+                                                </MenuFlyout>
+                                            </local:ChatAgentItemControl.ContextFlyout>
+                                        </local:ChatAgentItemControl>
+                                    </DataTemplate>
+                                </ItemsRepeater.ItemTemplate>
+                            </ItemsRepeater>
+                        </controls:CollapseHeader.Element>
+                    </controls:CollapseHeader>
+                </StackPanel>
+                <StackPanel Margin="0,12,0,0" Visibility="{x:Bind ViewModel.IsGroupListVisible, Mode=OneWay}">
+                    <controls:CollapseHeader Title="{ext:Locale Name=Groups}" IsCollapsed="{x:Bind ViewModel.IsGroupsCollapsed, Mode=TwoWay}">
+                        <controls:CollapseHeader.Element>
+                            <ItemsRepeater ItemsSource="{x:Bind ViewModel.Groups}" Layout="{StaticResource BasicLayout}">
+                                <ItemsRepeater.ItemTemplate>
+                                    <DataTemplate x:DataType="items:ChatGroupItemViewModel">
+                                        <local:ChatGroupItemControl ViewModel="{x:Bind}" />
+                                    </DataTemplate>
+                                </ItemsRepeater.ItemTemplate>
+                            </ItemsRepeater>
+                        </controls:CollapseHeader.Element>
+                    </controls:CollapseHeader>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Grid Visibility="{x:Bind ViewModel.IsToolSectionVisible, Mode=OneWay}">
+            <ScrollViewer
+                Padding="8,0"
+                Style="{StaticResource PageScrollViewerStyle}"
+                Visibility="{x:Bind ViewModel.IsServerEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
+                <StackPanel Margin="0,0,0,20">
+                    <ItemsRepeater ItemsSource="{x:Bind ViewModel.Servers}" Layout="{StaticResource BasicLayout}">
+                        <ItemsRepeater.ItemTemplate>
+                            <DataTemplate x:DataType="items:McpServerItemViewModel">
+                                <local:McpServerItemControl ViewModel="{x:Bind}" />
+                            </DataTemplate>
+                        </ItemsRepeater.ItemTemplate>
+                    </ItemsRepeater>
+                </StackPanel>
+            </ScrollViewer>
+            <base:EmptyHolder
+                Title="{ext:Locale Name=NoMcpServer}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Description="{ext:Locale Name=NoMcpServerDescription}"
+                Emoji="&#x1F9F0;"
+                Visibility="{x:Bind ViewModel.IsServerEmpty, Mode=OneWay}" />
+        </Grid>
+
+        <ProgressRing IsActive="{x:Bind ViewModel.IsInitializing, Mode=OneWay}" Style="{StaticResource PageProgressRingStyle}" />
+    </Grid>
+
+</local:ChatPageControlBase>
