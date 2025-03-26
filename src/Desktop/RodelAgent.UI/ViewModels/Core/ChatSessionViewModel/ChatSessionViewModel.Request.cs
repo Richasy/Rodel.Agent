@@ -357,13 +357,17 @@ public sealed partial class ChatSessionViewModel
     private string GetAgentName(string agentId)
     {
         var name = string.Empty;
+        var provider = ChatProviderType.OpenAI;
         if (CurrentAgent?.Id == agentId)
         {
             name = CurrentAgent.Name;
+            provider = CurrentAgent.Provider!.Value;
         }
         else if (Agents.Any(p => p.Data.Id == agentId))
         {
-            name = Agents.First(p => p.Data.Id == agentId).Data.Name;
+            var agent = Agents.First(p => p.Data.Id == agentId);
+            name = agent.Data.Name;
+            provider = agent.Data.Provider!.Value;
         }
         else
         {
@@ -371,6 +375,7 @@ public sealed partial class ChatSessionViewModel
             if (agent != null)
             {
                 name = agent.Data.Name;
+                provider = agent.Data.Provider!.Value;
             }
             else
             {
@@ -378,8 +383,22 @@ public sealed partial class ChatSessionViewModel
             }
         }
 
-        var regex = new Regex("[^a-zA-Z0-9_-]");
-        return new string(name.Where(c => regex.IsMatch(c.ToString())).ToArray());
+        var actualName = name;
+
+        // OpenAI 的模型不支持 author name 包含非数字字母字符.
+        if (provider is ChatProviderType.OpenAI
+            or ChatProviderType.AzureOpenAI
+            or ChatProviderType.AzureAI)
+        {
+            actualName = string.Empty;
+            var regex = new Regex("[a-zA-Z0-9_-]+");
+            foreach (Match match in regex.Matches(name))
+            {
+                actualName += match.Value;
+            }
+        }
+
+        return actualName;
     }
 
     private static void ParseStreamingMessage(ChatResponseUpdate update, ref string responseText)
