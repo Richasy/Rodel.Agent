@@ -274,6 +274,8 @@ public sealed partial class ChatSessionViewModel
                 {
                     Messages.Remove(source);
                 }
+
+                await SaveCurrentMessagesAsync();
             }
             else if (data.Type == "copyText")
             {
