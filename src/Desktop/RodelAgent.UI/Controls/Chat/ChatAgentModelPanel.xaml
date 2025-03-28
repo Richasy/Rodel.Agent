@@ -136,11 +136,14 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <ComboBox
+                x:Name="ServiceComboBox"
                 Margin="0,0,0,12"
                 HorizontalAlignment="Stretch"
                 Header="{ext:Locale Name=Services}"
                 ItemsSource="{x:Bind ViewModel.AvailableServices}"
-                SelectedItem="{x:Bind ViewModel.SelectedService, Mode=TwoWay}">
+                SelectedItem="{x:Bind ViewModel.SelectedService, Mode=OneWay}"
+                SelectionChanged="OnServiceSelectionChanged"
+                SelectionChangedTrigger="Committed">
                 <ComboBox.ItemTemplate>
                     <DataTemplate x:DataType="vm:ChatServiceItemViewModel">
                         <Grid Padding="4" ColumnSpacing="8">
