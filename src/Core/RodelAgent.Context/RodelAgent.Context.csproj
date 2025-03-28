@@ -16,4 +16,8 @@
     <ProjectReference Include="..\RodelAgent.Models\RodelAgent.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+  	<InternalsVisibleTo Include="RodelAgent.UI"/>
+  </ItemGroup>
+
 </Project>

@@ -115,6 +115,20 @@ internal static class GlobalDependencies
         Kernel.InitializeAIKernel();
         GlobalStatics.SetKernel(Kernel);
         WinUIKernelAIExtensions.EnableModelFeature = true;
+        DbTool.CustomCopyMethod = async (defaultDb, targetDb) =>
+        {
+            var defaultDbFile = await StorageFile.GetFileFromPathAsync(defaultDb).AsTask();
+            var targetDbFolder = await StorageFolder.GetFolderFromPathAsync(Path.GetDirectoryName(targetDb)).AsTask();
+            await defaultDbFile.CopyAsync(targetDbFolder, Path.GetFileName(targetDb), NameCollisionOption.ReplaceExisting).AsTask();
+        };
+
+        DbTool.CustomErrorMethod = (ex) =>
+        {
+            var logger = Kernel.Get<ILogger<App>>();
+            logger.LogError(ex, "Database initialization failed.");
+            Kernel.Get<AppViewModel>().ShowTipCommand.Execute((ex.Message, InfoType.Error));
+            return Task.CompletedTask;
+        };
     }
 
     public static IKernelBuilder AddSingleton<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(this IKernelBuilder builder)
