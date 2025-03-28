@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
+using Richasy.WinUIKernel.AI.ViewModels;
 using Richasy.WinUIKernel.Share.Toolkits;
 using RodelAgent.Statics;
 using RodelAgent.UI.Toolkits;
@@ -144,4 +145,7 @@ public sealed partial class ChatAgentModelPanel : ChatAgentConfigControlBase
 
     private void OnEmojiAvatarButtonClick(object sender, RoutedEventArgs e)
         => FlyoutBase.ShowAttachedFlyout(sender as FrameworkElement);
+
+    private void OnServiceSelectionChanged(object sender, SelectionChangedEventArgs e)
+        => ViewModel.SelectServiceCommand.Execute(ServiceComboBox.SelectedItem as ChatServiceItemViewModel);
 }
