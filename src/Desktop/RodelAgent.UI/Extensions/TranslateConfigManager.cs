@@ -115,7 +115,7 @@ internal static partial class ConfigExtensions
     {
         return config is null || string.IsNullOrWhiteSpace(config.Key) || string.IsNullOrWhiteSpace(config.AppId)
             ? default
-            : new BaiduTranslateServiceConfig(config.AppId, config.Key);
+            : new BaiduTranslateServiceConfig(config.Key, config.AppId);
     }
 
     public static TranslateServiceConfig? ToTranslateServiceConfig(this AliTranslateConfig? config)
@@ -129,20 +129,20 @@ internal static partial class ConfigExtensions
     {
         return config is null || string.IsNullOrWhiteSpace(config.Key) || string.IsNullOrEmpty(config.SecretId)
             ? default
-            : new TencentTranslateServiceConfig(config.SecretId, config.Key);
+            : new TencentTranslateServiceConfig(config.Key, config.SecretId);
     }
 
     public static TranslateServiceConfig? ToTranslateServiceConfig(this YoudaoTranslateConfig? config)
     {
         return config is null || string.IsNullOrWhiteSpace(config.Key) || string.IsNullOrWhiteSpace(config.AppId)
             ? default
-            : new YoudaoTranslateServiceConfig(config.AppId, config.Key);
+            : new YoudaoTranslateServiceConfig(config.Key, config.AppId);
     }
 
     public static TranslateServiceConfig? ToTranslateServiceConfig(this VolcanoTranslateConfig? config)
     {
         return config is null || string.IsNullOrWhiteSpace(config.Key) || string.IsNullOrEmpty(config.KeyId)
             ? default
-            : new VolcanoTranslateServiceConfig(config.KeyId, config.Key);
+            : new VolcanoTranslateServiceConfig(config.Key, config.KeyId);
     }
 }
