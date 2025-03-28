@@ -56,3 +56,33 @@ I recommend using the same deployment name as the model ID to reduce ambiguity w
 Azure's speech service inherently includes text-to-speech capabilities, which we can deploy ourselves according to the documentation.
 
 Then, simply fill in the `Access Key` and `Region` of the corresponding resource into the application settings.
+
+## Volcano Engine Speech Technology
+
+|||
+|-|-|
+|Documentation|https://www.volcengine.com/docs/6561/1257543|
+|Console|https://console.volcengine.com/speech/service/10007|
+
+Please refer to the official documentation for specific service billing rules. New registrations have a certain amount of free quota.
+
+Rodel Agent has selected a few representative tones from the `Large Speech Synthesis Model`. If the tone you need is not in the list of tones provided by Rodel Agent, please raise an issue.
+
+## Tencent Cloud Speech Synthesis
+
+|||
+|-|-|
+|Documentation|https://cloud.tencent.com/document/product/1073/37995|
+|API Key|https://console.cloud.tencent.com/cam/capi|
+
+Please refer to the official documentation for specific service billing rules. New registrations have a certain amount of free quota.
+
+Rodel Agent has selected a few representative tones from the `Large Model Tones` and `Premium Tones`. If the tone you need is not in the list of tones provided by Rodel Agent, please raise an issue.
+
+## Edge TTS
+
+Modified from [edge-tts](https://github.com/rany2/edge-tts), free to use, but may be blocked by some service providers in certain regions.
+
+## Windows Speech
+
+Uses the Windows native speech synthesis functionality called via the [Windows.Media.SpeechSynthesis](https://learn.microsoft.com/uwp/api/windows.media.speechsynthesis?view=winrt-26100) API. Completely free, very fast, but the quality is not up to par.

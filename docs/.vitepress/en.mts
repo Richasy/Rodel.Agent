@@ -58,7 +58,7 @@ export const en = defineConfig({
         }
       ],
         editLink: {
-            pattern: 'https://github.com/Richasy/Rodel.Agent/edit/master/docs/:path',
+            pattern: 'https://github.com/Richasy/Rodel.Agent/edit/main/docs/:path',
             text: 'Edit this page on GitHub'
           },
       

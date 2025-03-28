@@ -60,3 +60,33 @@ Azure Open AI 相较于 Open AI，最大的不同在于你需要手动部署需�
 Azure 的语音服务本身包含了语音合成的能力，我们可以根据文档自行部署。
 
 然后将对应资源的 `访问密钥` 和 `区域` 填写进应用设置即可。
+
+## 火山引擎语音技术
+
+|||
+|-|-|
+|文档|https://www.volcengine.com/docs/6561/1257543|
+|控制台|https://console.volcengine.com/speech/service/10007|
+
+具体的服务付费规则请查看官方文档，新人注册有一定的免费额度。
+
+小幻助理仅选取了 `语音合成大模型` 中的几个有代表性的音色，如果你需要的音色不在小幻助理的音色列表内，请提 issue。
+
+## 腾讯云语音合成
+
+|||
+|-|-|
+|文档|https://cloud.tencent.com/document/product/1073/37995|
+|API密钥|https://console.cloud.tencent.com/cam/capi|
+
+具体的服务付费规则请查看官方文档，新人注册有一定的免费额度。
+
+小幻助理选取了 `大模型音色`，`精品音色` 中的几个有代表性的音色，如果你需要的音色不在小幻助理的音色列表内，请提 issue。
+
+## Edge TTS
+
+改自 [edge-tts](https://github.com/rany2/edge-tts)，免费使用，但可能会被部分地区的部分服务供应商阻止。
+
+## Windows 语音
+
+通过 [Windows.Media.SpeechSynthesis](https://learn.microsoft.com/uwp/api/windows.media.speechsynthesis?view=winrt-26100) API 调用的 Windows 本机语音合成功能，完全免费，速度很快，就是质量不太够看。
