@@ -3,6 +3,8 @@
 using Richasy.AgentKernel;
 using Richasy.AgentKernel.Connectors.Azure.Models;
 using Richasy.AgentKernel.Connectors.OpenAI.Models;
+using Richasy.AgentKernel.Connectors.Tencent.Models;
+using Richasy.AgentKernel.Connectors.Volcano.Models;
 using Richasy.AgentKernel.Models;
 using RodelAgent.Interfaces;
 
@@ -21,6 +23,8 @@ public sealed class AudioConfigManager : AudioConfigManagerBase
             OpenAIAudioConfig openAIConfig => openAIConfig.ToAIServiceConfig(),
             AzureOpenAIAudioConfig azureOaiConfig => azureOaiConfig.ToAIServiceConfig(),
             AzureAudioConfig azureConfig => azureConfig.ToAIServiceConfig(),
+            VolcanoAudioConfig volcanoConfig => volcanoConfig.ToAIServiceConfig(),
+            TencentAudioConfig tencentConfig => tencentConfig.ToAIServiceConfig(),
             _ => null,
         };
     }
@@ -43,6 +47,12 @@ public sealed class AudioConfigManager : AudioConfigManagerBase
                     break;
                 case AudioProviderType.Azure:
                     config.AzureSpeech = await storageService.GetAudioConfigAsync(provider, JsonGenContext.Default.AzureAudioConfig);
+                    break;
+                case AudioProviderType.Volcano:
+                    config.Volcano = await storageService.GetAudioConfigAsync(provider, JsonGenContext.Default.VolcanoAudioConfig);
+                    break;
+                case AudioProviderType.Tencent:
+                    config.Tencent = await storageService.GetAudioConfigAsync(provider, JsonGenContext.Default.TencentAudioConfig);
                     break;
                 default:
                     break;
@@ -69,6 +79,12 @@ public sealed class AudioConfigManager : AudioConfigManagerBase
                     break;
                 case AudioProviderType.Azure:
                     await storageService.SetAudioConfigAsync(provider, configuration.AzureSpeech ?? new(), JsonGenContext.Default.AzureAudioConfig);
+                    break;
+                case AudioProviderType.Volcano:
+                    await storageService.SetAudioConfigAsync(provider, configuration.Volcano ?? new(), JsonGenContext.Default.VolcanoAudioConfig);
+                    break;
+                case AudioProviderType.Tencent:
+                    await storageService.SetAudioConfigAsync(provider, configuration.Tencent ?? new(), JsonGenContext.Default.TencentAudioConfig);
                     break;
                 default:
                     break;
@@ -99,5 +115,19 @@ internal static partial class ConfigExtensions
         return config is null || string.IsNullOrWhiteSpace(config.Key) || string.IsNullOrEmpty(config.Region)
             ? default
             : new AzureAudioServiceConfig(config.Key, config.Region);
+    }
+
+    public static AIServiceConfig? ToAIServiceConfig(this VolcanoAudioConfig? config)
+    {
+        return config is null || string.IsNullOrWhiteSpace(config.Key) || string.IsNullOrEmpty(config.AppId)
+            ? default
+            : new VolcanoAudioServiceConfig(config.Key, config.AppId, string.Empty);
+    }
+
+    public static AIServiceConfig? ToAIServiceConfig(this TencentAudioConfig? config)
+    {
+        return config is null || string.IsNullOrWhiteSpace(config.Key) || string.IsNullOrEmpty(config.SecretId)
+            ? default
+            : new TencentAudioServiceConfig(config.Key, config.SecretId, string.Empty);
     }
 }
