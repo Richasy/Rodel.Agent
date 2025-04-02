@@ -27,6 +27,17 @@
             <RepositionThemeTransition IsStaggeringEnabled="False" />
         </Grid.ChildrenTransitions>
         <local:ChatSessionMainHeader Margin="0,0,-6,0" />
+        <!--  右侧分栏大小控制器  -->
+        <base:ColumnSplitter
+            x:Name="VerticalSplitter"
+            Grid.RowSpan="4"
+            Grid.Column="1"
+            AlwaysShowButtonWhenCollapsed="True"
+            ColumnWidth="{x:Bind ViewModel.NavColumnWidth, Mode=TwoWay}"
+            HideTip="{ext:Locale Name=Show}"
+            IsHide="{x:Bind ViewModel.IsNavColumnManualHide, Mode=TwoWay}"
+            IsInvertDirection="True"
+            ShowTip="{ext:Locale Name=Hide}" />
         <local:ChatSessionMainBody Grid.Row="2" Margin="0,0,-6,0" />
         <Border
             Grid.Row="1"
@@ -81,16 +92,5 @@
                 Minimum="200"
                 Orientation="Horizontal" />
         </Grid>
-
-        <!--  右侧分栏大小控制器  -->
-        <base:ColumnSplitter
-            Grid.RowSpan="4"
-            Grid.Column="1"
-            AlwaysShowButtonWhenCollapsed="True"
-            ColumnWidth="{x:Bind ViewModel.NavColumnWidth, Mode=TwoWay}"
-            HideTip="{ext:Locale Name=Show}"
-            IsHide="{x:Bind ViewModel.IsNavColumnManualHide, Mode=TwoWay}"
-            IsInvertDirection="True"
-            ShowTip="{ext:Locale Name=Hide}" />
     </Grid>
 </local:ChatSessionControlBase>
