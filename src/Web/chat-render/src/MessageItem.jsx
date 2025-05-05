@@ -9,7 +9,7 @@ import {
   CheckOutlined,
 } from "@ant-design/icons";
 
-const MessageItem = ({ item, sendMessage, renderMarkdown, removeMessage }) => {
+const MessageItem = React.memo(({ item, sendMessage, renderMarkdown, removeMessage }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(item.message);
   const [isHovered, setIsHovered] = useState(false); // 鼠标悬停状态
@@ -222,6 +222,11 @@ const MessageItem = ({ item, sendMessage, renderMarkdown, removeMessage }) => {
       )}
     </div>
   );
-};
+}, (prevProps, nextProps) => {
+  // 只有当 item 内容真正变化时才重新渲染
+  return prevProps.item.id === nextProps.item.id && 
+         prevProps.item.message === nextProps.item.message &&
+         prevProps.item.time === nextProps.item.time;
+});
 
 export default MessageItem;

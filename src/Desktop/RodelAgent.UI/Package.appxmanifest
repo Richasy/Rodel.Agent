@@ -15,8 +15,8 @@
   <mp:PhoneIdentity PhoneProductId="4e1ddf0b-abd2-4cad-a616-3544d566712e" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>RodelAgent.UI</DisplayName>
-    <PublisherDisplayName>zrich</PublisherDisplayName>
+    <DisplayName>ms-resource:AppName</DisplayName>
+    <PublisherDisplayName>Richasy</PublisherDisplayName>
     <Logo>Assets\Logo\StoreLogo.png</Logo>
   </Properties>
 
