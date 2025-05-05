@@ -9,6 +9,7 @@ using SimpleTrayIcon;
 using System.Runtime.InteropServices;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Globalization;
 
 namespace RodelAgent.UI;
 
@@ -49,6 +50,8 @@ public partial class App : Application
         {
             instance.Activated += OnInstanceActivated;
             GlobalDependencies.Initialize();
+            var currentLanguage = SettingsToolkit.ReadLocalSetting(SettingNames.AppLanguage, string.Empty);
+            ApplicationLanguages.PrimaryLanguageOverride = currentLanguage;
 
             if (RuntimeInformation.ProcessArchitecture != Architecture.Arm64)
             {

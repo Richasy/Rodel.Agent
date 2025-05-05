@@ -826,4 +826,19 @@
   <data name="Error" xml:space="preserve">
     <value>发生错误！</value>
   </data>
+  <data name="AppLanguage" xml:space="preserve">
+    <value>应用语言</value>
+  </data>
+  <data name="AppLanguageDescription" xml:space="preserve">
+    <value>选择用户界面显示的语言</value>
+  </data>
+  <data name="NeedRestart" xml:space="preserve">
+    <value>需要重启应用</value>
+  </data>
+  <data name="NeedRestartDescription" xml:space="preserve">
+    <value>您更改了静态设置，需要重启应用以生效</value>
+  </data>
+  <data name="Restart" xml:space="preserve">
+    <value>重新启动</value>
+  </data>
 </root>

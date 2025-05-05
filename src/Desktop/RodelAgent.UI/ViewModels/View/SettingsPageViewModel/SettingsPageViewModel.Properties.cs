@@ -10,12 +10,22 @@ namespace RodelAgent.UI.ViewModels.View;
 public sealed partial class SettingsPageViewModel
 {
     private bool _isInitialized;
+    private string? _initialLanguage;
 
     [ObservableProperty]
     public partial ElementTheme AppTheme { get; set; }
 
     [ObservableProperty]
     public partial string AppThemeText { get; set; }
+
+    [ObservableProperty]
+    public partial string? AppLanguage { get; set; }
+
+    [ObservableProperty]
+    public partial string? AppLanguageText { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsRestartTipShown { get; set; }
 
     [ObservableProperty]
     public partial string PackageVersion { get; set; }

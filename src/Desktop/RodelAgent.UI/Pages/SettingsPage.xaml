@@ -71,12 +71,25 @@
                 <StackPanel.ChildrenTransitions>
                     <RepositionThemeTransition IsStaggeringEnabled="False" />
                 </StackPanel.ChildrenTransitions>
-
+                <InfoBar
+                    Title="{ext:Locale Name=NeedRestart}"
+                    Margin="0,4,0,0"
+                    HorizontalAlignment="Stretch"
+                    IsClosable="False"
+                    IsIconVisible="True"
+                    IsOpen="{x:Bind ViewModel.IsRestartTipShown, Mode=OneWay}"
+                    Message="{ext:Locale Name=NeedRestartDescription}"
+                    Severity="Warning">
+                    <InfoBar.ActionButton>
+                        <HyperlinkButton Command="{x:Bind ViewModel.RestartCommand}" Content="{ext:Locale Name=Restart}" />
+                    </InfoBar.ActionButton>
+                </InfoBar>
                 <TextBlock
-                    Margin="0,8,0,4"
+                    Margin="0,4,0,4"
                     HorizontalAlignment="Left"
                     Text="{ext:Locale Name=Generic}" />
                 <settings:WorkingDirectorySettingControl />
+                <settings:LanguageSettingControl />
                 <settings:ThemeSettingControl />
                 <settings:HideWindowSettingControl x:Name="HideWindowSetting" />
                 <settings:LoggerSettingControl />

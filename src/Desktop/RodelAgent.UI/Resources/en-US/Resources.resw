@@ -144,6 +144,12 @@
   <data name="Agents" xml:space="preserve">
     <value>Agents</value>
   </data>
+  <data name="AppLanguage" xml:space="preserve">
+    <value>Application language</value>
+  </data>
+  <data name="AppLanguageDescription" xml:space="preserve">
+    <value>Select the language in which the user interface is displayed</value>
+  </data>
   <data name="AppName" xml:space="preserve">
     <value>Rodel Agent</value>
   </data>
@@ -526,6 +532,12 @@ You can manually adjust the limits, and the app will intercept the specified rou
   <data name="NeedGenerateAudioDescription" xml:space="preserve">
     <value>Enter content and let the AI ​​speak</value>
   </data>
+  <data name="NeedRestart" xml:space="preserve">
+    <value>Need to restart the app</value>
+  </data>
+  <data name="NeedRestartDescription" xml:space="preserve">
+    <value>You have changed the static settings and need to restart the app to take effect.</value>
+  </data>
   <data name="NeedSelectServiceAndModel" xml:space="preserve">
     <value>You need to select services and models before text generation</value>
   </data>
@@ -666,6 +678,9 @@ You can manually adjust the limits, and the app will intercept the specified rou
   </data>
   <data name="ResponseFormatDescription" xml:space="preserve">
     <value>You can specify the form in which the model returns the generated result</value>
+  </data>
+  <data name="Restart" xml:space="preserve">
+    <value>Restart</value>
   </data>
   <data name="RunMcpWhenStartup" xml:space="preserve">
     <value>MCP server starts automatically</value>

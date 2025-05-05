@@ -25,6 +25,10 @@ public sealed partial class SettingsPageViewModel : AISettingsViewModelBase
         WorkingDirectory = SettingsToolkit.ReadLocalSetting(SettingNames.WorkingDirectory, string.Empty);
         CheckTheme();
 
+        _initialLanguage = SettingsToolkit.ReadLocalSetting(SettingNames.AppLanguage, string.Empty);
+        AppLanguage = _initialLanguage;
+        CheckLanguage();
+
         var copyrightTemplate = ResourceToolkit.GetLocalizedString(StringNames.Copyright);
         Copyright = string.Format(copyrightTemplate, 2025);
         PackageVersion = this.Get<IAppToolkit>().GetPackageVersion();
@@ -59,6 +63,10 @@ public sealed partial class SettingsPageViewModel : AISettingsViewModelBase
         this.Get<Core.AppViewModel>().RestartCommand.Execute(default);
     }
 
+    [RelayCommand]
+    private void Restart()
+        => this.Get<Core.AppViewModel>().RestartCommand.Execute(default);
+
     private void CheckTheme()
     {
         AppThemeText = AppTheme switch
@@ -69,11 +77,31 @@ public sealed partial class SettingsPageViewModel : AISettingsViewModelBase
         };
     }
 
+    private void CheckLanguage()
+    {
+        AppLanguageText = AppLanguage switch
+        {
+            "zh-Hans-CN" => "简体中文",
+            "en-US" => "English",
+            _ => ResourceToolkit.GetLocalizedString(StringNames.SystemDefault),
+        };
+    }
+
+    private void CheckRestartTip()
+        => IsRestartTipShown = AppLanguage != _initialLanguage;
+
     partial void OnAppThemeChanged(ElementTheme value)
     {
         SettingsToolkit.WriteLocalSetting(SettingNames.AppTheme, value);
         CheckTheme();
         this.Get<Core.AppViewModel>().ChangeThemeCommand.Execute(value);
+    }
+
+    partial void OnAppLanguageChanged(string? value)
+    {
+        SettingsToolkit.WriteLocalSetting(SettingNames.AppLanguage, value);
+        CheckLanguage();
+        CheckRestartTip();
     }
 
     partial void OnHideWhenWindowClosingChanged(bool value)
