@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Bubble } from "@ant-design/x";
 import { Space, Spin, Flex, theme, Typography, Collapse, Button } from "antd";
 import { ThemeProvider } from "antd-style";
@@ -8,6 +8,19 @@ import katex from "markdown-it-katex";
 import "katex/dist/katex.min.css";
 import MessageItem from "./MessageItem";
 
+const md = markdownit({
+  html: true,
+  breaks: true,
+  highlight: (str, lang) => {
+    if (lang && highlight.getLanguage(lang)) {
+      try {
+        return highlight.highlight(str, { language: lang }).value;
+      } catch (__) {}
+    }
+    return ""; // use external default escaping
+  },
+}).use(katex);
+
 function Render() {
   const { token } = theme.useToken();
   const [currentTheme, setCurrentTheme] = useState("light"); // 默认主题为 auto
@@ -15,19 +28,7 @@ function Render() {
   const [temporaryLoading, setTemporaryLoading] = useState(false); // 临时加载状态
   const [temporaryOutput, setTemporaryOutput] = useState(null); // 存储临时输出
   let codeIdx = 0;
-  const md = markdownit({
-    html: true,
-    breaks: true,
-    highlight: (str, lang) => {
-      if (lang && highlight.getLanguage(lang)) {
-        try {
-          return highlight.highlight(str, { language: lang }).value;
-        } catch (__) {}
-      }
-      return ""; // use external default escaping
-    },
-  }).use(katex);
-
+  
   const extractLang = (info) => {
     return info
       .trim()
@@ -54,7 +55,7 @@ function Render() {
     }
   };
 
-  const renderMarkdown = (content) => {
+  const renderMarkdown = useCallback((content) => {
     // 如果content有<think>，但是没有</think>，则在结尾添加一个 </think>并追加一个p标签
     if (content.includes("<think>") && !content.includes("</think>")) {
       const thinking = window.resources?.thinking
@@ -176,7 +177,7 @@ function Render() {
         />
       </Typography>
     );
-  };
+  },[]);
 
   const originalConsoleError = console.error;
   console.error = function (msg, ...optionalArguments) {
@@ -297,6 +298,22 @@ function Render() {
     };
 
     sendMessage("loaded", true);
+
+    return () => {
+      // 清理全局引用
+      delete window.delayToBottom;
+      delete window.handleCopyClick;
+      delete window.changeTheme;
+      delete window.setHistory;
+      delete window.addMessage;
+      delete window.deleteMessage;
+      delete window.setOutput;
+      delete window.setLoading;
+      delete window.setCancel;
+      delete window.setResources;
+      delete window.clearMessages;
+    };
+
   }, []);
 
   useEffect(() => {
