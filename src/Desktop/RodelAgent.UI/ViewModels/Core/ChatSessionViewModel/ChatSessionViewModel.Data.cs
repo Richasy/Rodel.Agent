@@ -328,12 +328,14 @@ public sealed partial class ChatSessionViewModel
 
         await Task.Run(() =>
         {
-            var encoder = ModelToEncoder.For("gpt-4o");
+            var encoder = ModelToEncoder.For("gpt-3.5-turbo");
             var messages = string.Join("\n\n", Messages.Select(p => p.Message));
+            var historyCount = encoder.CountTokens(messages);
+            var instructionCount = !string.IsNullOrEmpty(SystemInstruction) ? encoder.CountTokens(SystemInstruction) : 0;
             this.Get<DispatcherQueue>().TryEnqueue(() =>
             {
-                InstructionTokenCount = !string.IsNullOrEmpty(SystemInstruction) ? encoder.CountTokens(SystemInstruction) : 0;
-                HistoryTokenCount = encoder.CountTokens(messages);
+                InstructionTokenCount = instructionCount;
+                HistoryTokenCount = historyCount;
             });
         });
     }
@@ -345,8 +347,9 @@ public sealed partial class ChatSessionViewModel
         {
             if (!string.IsNullOrEmpty(UserInput))
             {
-                var encoder = ModelToEncoder.For("gpt-4o");
-                this.Get<DispatcherQueue>().TryEnqueue(() => UserInputTokenCount = encoder.CountTokens(UserInput));
+                var encoder = ModelToEncoder.For("gpt-3.5-turbo");
+                var count = encoder.CountTokens(UserInput);
+                this.Get<DispatcherQueue>().TryEnqueue(() => UserInputTokenCount = count);
             }
             else
             {
