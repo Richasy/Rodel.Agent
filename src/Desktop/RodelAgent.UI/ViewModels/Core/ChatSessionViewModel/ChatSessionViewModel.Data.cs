@@ -226,6 +226,7 @@ public sealed partial class ChatSessionViewModel
 
     private void SetCurrentConversation(ChatConversation? data)
     {
+        _tokenTimer?.Stop();
         _currentConversation = data;
         if (_currentConversation != null)
         {
@@ -315,6 +316,10 @@ public sealed partial class ChatSessionViewModel
 
         CalcTotalTokenCountCommand.Execute(default);
         RequestReloadOptionsUI?.Invoke(this, EventArgs.Empty);
+        if (_tokenTimer?.IsEnabled == false)
+        {
+            _tokenTimer.Start();
+        }
     }
 
     private async Task CalcBaseTokenCountAsync()
@@ -326,29 +331,38 @@ public sealed partial class ChatSessionViewModel
             return;
         }
 
-        await Task.Run(() =>
+        var tasks = new List<Task>();
+        var historyCount = 0;
+        var instructionCount = 0;
+        _encoder ??= ModelToEncoder.For("gpt-3.5-turbo");
+        foreach (var msg in Messages)
         {
-            var encoder = ModelToEncoder.For("gpt-3.5-turbo");
-            var messages = string.Join("\n\n", Messages.Select(p => p.Message));
-            var historyCount = encoder.CountTokens(messages);
-            var instructionCount = !string.IsNullOrEmpty(SystemInstruction) ? encoder.CountTokens(SystemInstruction) : 0;
-            this.Get<DispatcherQueue>().TryEnqueue(() =>
+            tasks.Add(Task.Run(() =>
             {
-                InstructionTokenCount = instructionCount;
-                HistoryTokenCount = historyCount;
-            });
-        });
+                var count = _encoder.CountTokens(msg?.Message ?? string.Empty);
+                historyCount += count;
+            }));
+        }
+
+        if (!string.IsNullOrEmpty(SystemInstruction))
+        {
+            tasks.Add(Task.Run(() => instructionCount = _encoder.CountTokens(SystemInstruction)));
+        }
+
+        await Task.WhenAll(tasks);
+        InstructionTokenCount = instructionCount;
+        HistoryTokenCount = historyCount;
     }
 
     private async Task CalcUserInputTokenCountAsync()
     {
         UserInputWordCount = UserInput?.Length ?? 0;
+        _encoder ??= ModelToEncoder.For("gpt-3.5-turbo");
         await Task.Run(() =>
         {
             if (!string.IsNullOrEmpty(UserInput))
             {
-                var encoder = ModelToEncoder.For("gpt-3.5-turbo");
-                var count = encoder.CountTokens(UserInput);
+                var count = _encoder.CountTokens(UserInput);
                 this.Get<DispatcherQueue>().TryEnqueue(() => UserInputTokenCount = count);
             }
             else
@@ -357,16 +371,17 @@ public sealed partial class ChatSessionViewModel
             }
 
             this.Get<DispatcherQueue>().TryEnqueue(() => TotalTokenUsage = HistoryTokenCount + InstructionTokenCount + UserInputTokenCount);
-        });
+        }).ConfigureAwait(false);
     }
 
     [RelayCommand]
-    private void TryAutoCalcUserInputToken()
+    private async Task TryAutoCalcUserInputTokenAsync()
     {
-        if (_lastInputTime is not null && DateTimeOffset.Now - _lastInputTime >= TimeSpan.FromSeconds(1))
+        if (_lastInputTime is not null && DateTimeOffset.Now - _lastInputTime >= TimeSpan.FromSeconds(2) && _userInputChanged)
         {
             _lastInputTime = default;
-            CalcTotalTokenCountCommand.Execute(default);
+            _userInputChanged = false;
+            await CalcUserInputTokenCountAsync();
         }
     }
 

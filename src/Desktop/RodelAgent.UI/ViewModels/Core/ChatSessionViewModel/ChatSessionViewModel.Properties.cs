@@ -8,6 +8,7 @@ using RodelAgent.Interfaces;
 using RodelAgent.Models.Constants;
 using RodelAgent.Models.Feature;
 using RodelAgent.UI.ViewModels.Items;
+using Tiktoken;
 
 namespace RodelAgent.UI.ViewModels.Core;
 
@@ -16,6 +17,7 @@ namespace RodelAgent.UI.ViewModels.Core;
 /// </summary>
 public sealed partial class ChatSessionViewModel
 {
+    private static Encoder? _encoder;
     private readonly ILogger<ChatSessionViewModel> _logger;
     private readonly IStorageService _storageService;
     private DispatcherTimer? _tokenTimer;
@@ -29,6 +31,7 @@ public sealed partial class ChatSessionViewModel
     private Func<int>? _getGroupMaxRounds;
     private int _currentAgentIndex;
     private DateTimeOffset? _lastInputTime;
+    private bool _userInputChanged;
 
     public event EventHandler RequestFocusInput;
 

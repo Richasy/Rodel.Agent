@@ -77,7 +77,6 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
                 Interval = TimeSpan.FromMilliseconds(400)
             };
             _tokenTimer.Tick += OnTokenTimerTick;
-            _tokenTimer.Start();
         }
 
         _webView = view;
@@ -547,6 +546,7 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
     partial void OnUserInputChanged(string? value)
     {
         UserInputWordCount = value?.Length ?? 0;
+        _userInputChanged = true;
         _lastInputTime = DateTimeOffset.Now;
     }
 }
