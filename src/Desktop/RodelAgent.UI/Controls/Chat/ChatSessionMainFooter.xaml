@@ -46,7 +46,10 @@
                                     MaxHeight="400"
                                     Padding="12,8"
                                     Style="{StaticResource PageScrollViewerStyle}">
-                                    <ItemsRepeater MinWidth="220" ItemsSource="{x:Bind ViewModel.Models}">
+                                    <ItemsRepeater
+                                        x:Name="ModelRepeater"
+                                        MinWidth="220"
+                                        ItemsSource="{x:Bind ViewModel.Models}">
                                         <ItemsRepeater.ItemTemplate>
                                             <DataTemplate x:DataType="viewmodels:ChatModelItemViewModel">
                                                 <local:ChatModelItemControl ViewModel="{x:Bind}" />
@@ -89,7 +92,10 @@
                                     Padding="12,0"
                                     Style="{StaticResource PageScrollViewerStyle}"
                                     Visibility="{x:Bind ViewModel.IsServerEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
-                                    <ItemsRepeater Margin="0,12" ItemsSource="{x:Bind ViewModel.Servers}">
+                                    <ItemsRepeater
+                                        x:Name="ServerRepeater"
+                                        Margin="0,12"
+                                        ItemsSource="{x:Bind ViewModel.Servers}">
                                         <ItemsRepeater.Layout>
                                             <StackLayout Spacing="4" />
                                         </ItemsRepeater.Layout>

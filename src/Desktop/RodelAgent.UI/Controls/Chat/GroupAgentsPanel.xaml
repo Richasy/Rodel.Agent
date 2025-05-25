@@ -11,7 +11,10 @@
 
     <Grid>
         <ScrollViewer Padding="8,0" Style="{StaticResource PageScrollViewerStyle}">
-            <ItemsRepeater Margin="0,8" ItemsSource="{x:Bind ViewModel.Agents}">
+            <ItemsRepeater
+                x:Name="AgentRepeater"
+                Margin="0,8"
+                ItemsSource="{x:Bind ViewModel.Agents}">
                 <ItemsRepeater.ItemTemplate>
                     <DataTemplate x:DataType="items:ChatAgentItemViewModel">
                         <local:ChatAgentItemControl ViewModel="{x:Bind}" />

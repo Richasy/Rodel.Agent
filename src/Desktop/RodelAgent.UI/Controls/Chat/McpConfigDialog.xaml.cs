@@ -14,7 +14,11 @@ public sealed partial class McpConfigDialog : AppDialog
     private readonly McpServerItemViewModel? _source;
     internal ObservableCollection<VariableItemViewModel> Variables { get; } = [];
 
-    public McpConfigDialog() => InitializeComponent();
+    public McpConfigDialog()
+    {
+        InitializeComponent();
+        Unloaded += OnUnloaded;
+    }
 
     public McpConfigDialog(McpServerItemViewModel vm)
         : this()
@@ -26,6 +30,12 @@ public sealed partial class McpConfigDialog : AppDialog
         CommandBox.Text = vm.Data.Command + " " + string.Join(' ', vm.Data.Arguments ?? []);
         DirectoryBox.Text = vm.Data.WorkingDirectory;
         CheckVariablesVisibility();
+    }
+
+    private void OnUnloaded(object sender, RoutedEventArgs e)
+    {
+        VariableRepeater.ItemsSource = null;
+        Unloaded -= OnUnloaded;
     }
 
     private void OnPrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)

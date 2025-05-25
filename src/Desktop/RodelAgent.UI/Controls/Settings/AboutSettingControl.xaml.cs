@@ -11,4 +11,10 @@ public sealed partial class AboutSettingControl : SettingsPageControlBase
     /// Initializes a new instance of the <see cref="AboutSettingControl"/> class.
     /// </summary>
     public AboutSettingControl() => InitializeComponent();
+
+    protected override void OnControlUnloaded()
+    {
+        LinkRepeater.ItemsSource = null;
+        LibraryRepeater.ItemsSource = null;
+    }
 }

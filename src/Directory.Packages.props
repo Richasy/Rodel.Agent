@@ -55,15 +55,15 @@
     <PackageVersion Include="Richasy.AgentKernel.Connectors.ZhiPu" Version="0.0.7-preview6" />
     <PackageVersion Include="Richasy.AgentKernel.Core.Mcp" Version="0.0.7-preview6" />
     <PackageVersion Include="Richasy.AgentKernel.Definitions" Version="0.0.7-preview6" />
-    <PackageVersion Include="Richasy.WinUIKernel.AI" Version="0.0.7-preview6" />
+    <PackageVersion Include="Richasy.WinUIKernel.AI" Version="0.0.8-preview2" />
     <PackageVersion Include="RichasyKernel.Abstractions" Version="0.0.1" />
     <PackageVersion Include="Serilog" Version="4.2.0" />
     <PackageVersion Include="Serilog.Extensions.Logging" Version="9.0.1" />
     <PackageVersion Include="Serilog.Sinks.File" Version="7.0.0" />
     <PackageVersion Include="SimpleTrayIcon" Version="3.0.2" />
     <PackageVersion Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.10" />
-    <PackageVersion Include="SqlSugarCore" Version="5.1.4.192-preview01" />
-    <PackageVersion Include="System.Linq.AsyncEnumerable" Version="10.0.0-preview.3.25171.5" />
+    <PackageVersion Include="SqlSugarCore" Version="5.1.4.194-preview24" />
+    <PackageVersion Include="System.Linq.AsyncEnumerable" Version="10.0.0-preview.4.25258.110" />
     <PackageVersion Include="System.Private.Uri" Version="4.3.2" />
     <PackageVersion Include="Tiktoken" Version="2.2.0" />
     <PackageVersion Include="Microsoft.Bcl.HashCode" Version="6.0.0" />
@@ -86,8 +86,8 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Abstractions" Version="9.0.0" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.2" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.2" />
-    <PackageVersion Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
-    <PackageVersion Include="Microsoft.WindowsAppSDK" Version="1.7.250401001" />
+    <PackageVersion Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.4188" />
+    <PackageVersion Include="Microsoft.WindowsAppSDK" Version="1.7.250513003" />
     <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="9.0.0" />
     <PackageVersion Include="System.Drawing.Common" Version="9.0.0" />
     <PackageVersion Include="System.Linq.Async" Version="6.0.1" />

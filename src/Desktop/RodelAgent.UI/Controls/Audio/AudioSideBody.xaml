@@ -19,7 +19,7 @@
             Style="{StaticResource PageScrollViewerStyle}"
             Visibility="{x:Bind ViewModel.IsHistoryEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
             <Grid Margin="0,12,0,20">
-                <ItemsRepeater ItemsSource="{x:Bind ViewModel.History}">
+                <ItemsRepeater x:Name="HistoryRepeater" ItemsSource="{x:Bind ViewModel.History}">
                     <ItemsRepeater.ItemTemplate>
                         <DataTemplate x:DataType="items:AudioRecordItemViewModel">
                             <base:CardControl Command="{x:Bind DisplayCommand}">

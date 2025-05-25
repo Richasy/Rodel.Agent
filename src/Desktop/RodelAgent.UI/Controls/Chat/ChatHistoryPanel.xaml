@@ -49,7 +49,10 @@
             Grid.Row="1"
             Padding="8,0"
             Style="{StaticResource PageScrollViewerStyle}">
-            <ItemsRepeater Margin="0,0,0,12" ItemsSource="{x:Bind ViewModel.History}">
+            <ItemsRepeater
+                x:Name="HistoryRepeater"
+                Margin="0,0,0,12"
+                ItemsSource="{x:Bind ViewModel.History}">
                 <ItemsRepeater.Layout>
                     <StackLayout Spacing="4" />
                 </ItemsRepeater.Layout>

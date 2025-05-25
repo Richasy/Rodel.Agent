@@ -23,6 +23,8 @@ public sealed partial class McpServerItemControl : McpServerItemControlBase
         {
             ViewModel.PropertyChanged += OnViewModelPropertyChanged;
         }
+
+        FunctionRepeater.ItemsSource = null;
     }
 
     private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)

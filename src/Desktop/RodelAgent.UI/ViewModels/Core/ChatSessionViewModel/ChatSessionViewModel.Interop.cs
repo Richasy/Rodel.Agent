@@ -239,6 +239,11 @@ public sealed partial class ChatSessionViewModel
 
                 ReloadWebThemeCommand.Execute(default);
                 SetInteropResourcesCommand.Execute(default);
+                if (_currentConversation != null)
+                {
+                    SetCurrentConversation(_currentConversation);
+                    SetInitialInteropHistoryCommand.Execute(_currentConversation?.History ?? []);
+                }
             }
         }
         else if (msg.StartsWith("data:", StringComparison.OrdinalIgnoreCase))

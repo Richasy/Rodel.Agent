@@ -121,7 +121,7 @@
                 Style="{StaticResource PageScrollViewerStyle}"
                 VerticalScrollBarVisibility="Hidden"
                 Visibility="Collapsed">
-                <ItemsRepeater ItemsSource="{x:Bind Variables}">
+                <ItemsRepeater x:Name="VariableRepeater" ItemsSource="{x:Bind Variables}">
                     <ItemsRepeater.Layout>
                         <StackLayout Spacing="4" />
                     </ItemsRepeater.Layout>
