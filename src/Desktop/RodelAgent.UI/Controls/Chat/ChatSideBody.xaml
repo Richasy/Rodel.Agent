@@ -29,7 +29,10 @@
                 </StackPanel.ChildrenTransitions>
                 <controls:CollapseHeader Title="{ext:Locale Name=Services}" IsCollapsed="{x:Bind ViewModel.IsServicesCollapsed, Mode=TwoWay}">
                     <controls:CollapseHeader.Element>
-                        <ItemsRepeater ItemsSource="{x:Bind ViewModel.Services, Mode=OneWay}" Layout="{StaticResource BasicLayout}">
+                        <ItemsRepeater
+                            x:Name="ServiceRepeater"
+                            ItemsSource="{x:Bind ViewModel.Services, Mode=OneWay}"
+                            Layout="{StaticResource BasicLayout}">
                             <ItemsRepeater.ItemTemplate>
                                 <DataTemplate x:DataType="viewmodels:ChatServiceItemViewModel">
                                     <local:ChatServiceItemControl ViewModel="{x:Bind}" />
@@ -42,7 +45,10 @@
                 <StackPanel Margin="0,12,0,0" Visibility="{x:Bind ViewModel.IsAgentListVisible, Mode=OneWay}">
                     <controls:CollapseHeader Title="{ext:Locale Name=Agents}" IsCollapsed="{x:Bind ViewModel.IsAgentsCollapsed, Mode=TwoWay}">
                         <controls:CollapseHeader.Element>
-                            <ItemsRepeater ItemsSource="{x:Bind ViewModel.Agents}" Layout="{StaticResource BasicLayout}">
+                            <ItemsRepeater
+                                x:Name="AgentRepeater"
+                                ItemsSource="{x:Bind ViewModel.Agents}"
+                                Layout="{StaticResource BasicLayout}">
                                 <ItemsRepeater.ItemTemplate>
                                     <DataTemplate x:DataType="items:ChatAgentItemViewModel">
                                         <local:ChatAgentItemControl Click="OnAgentItemClick" ViewModel="{x:Bind}">
@@ -76,7 +82,10 @@
                 <StackPanel Margin="0,12,0,0" Visibility="{x:Bind ViewModel.IsGroupListVisible, Mode=OneWay}">
                     <controls:CollapseHeader Title="{ext:Locale Name=Groups}" IsCollapsed="{x:Bind ViewModel.IsGroupsCollapsed, Mode=TwoWay}">
                         <controls:CollapseHeader.Element>
-                            <ItemsRepeater ItemsSource="{x:Bind ViewModel.Groups}" Layout="{StaticResource BasicLayout}">
+                            <ItemsRepeater
+                                x:Name="GroupRepeater"
+                                ItemsSource="{x:Bind ViewModel.Groups}"
+                                Layout="{StaticResource BasicLayout}">
                                 <ItemsRepeater.ItemTemplate>
                                     <DataTemplate x:DataType="items:ChatGroupItemViewModel">
                                         <local:ChatGroupItemControl ViewModel="{x:Bind}" />
@@ -95,7 +104,10 @@
                 Style="{StaticResource PageScrollViewerStyle}"
                 Visibility="{x:Bind ViewModel.IsServerEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}">
                 <StackPanel Margin="0,0,0,20">
-                    <ItemsRepeater ItemsSource="{x:Bind ViewModel.Servers}" Layout="{StaticResource BasicLayout}">
+                    <ItemsRepeater
+                        x:Name="ServerRepeater"
+                        ItemsSource="{x:Bind ViewModel.Servers}"
+                        Layout="{StaticResource BasicLayout}">
                         <ItemsRepeater.ItemTemplate>
                             <DataTemplate x:DataType="items:McpServerItemViewModel">
                                 <local:McpServerItemControl ViewModel="{x:Bind}" />

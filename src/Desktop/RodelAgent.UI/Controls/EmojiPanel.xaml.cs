@@ -9,7 +9,7 @@ namespace RodelAgent.UI.Controls;
 /// </summary>
 public sealed partial class EmojiPanel : LayoutUserControlBase
 {
-    private readonly ObservableCollection<EmojiItem> _items = new();
+    private readonly ObservableCollection<EmojiItem> _items = [];
 
     /// <summary>
     /// Initializes a new instance of the <see cref="EmojiPanel"/> class.
@@ -28,12 +28,17 @@ public sealed partial class EmojiPanel : LayoutUserControlBase
     {
         if (_items.Count == 0)
         {
-            var emojis = EmojiStatics.GetEmojis().OrderBy(p => p.Group).ThenBy(p => p.Unicode);
-            foreach (var emoji in emojis)
+            foreach (var emoji in EmojiStatics.GetEmojis().OrderBy(p => p.Group).ThenBy(p => p.Unicode))
             {
                 _items.Add(emoji);
             }
         }
+    }
+
+    protected override void OnControlUnloaded()
+    {
+        EmojiRepeater.ItemsSource = null;
+        _items.Clear();
     }
 
     private void OnEmojiButtonClick(object sender, RoutedEventArgs e)

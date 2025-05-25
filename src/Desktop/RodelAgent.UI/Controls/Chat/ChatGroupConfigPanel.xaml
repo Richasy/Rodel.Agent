@@ -210,7 +210,7 @@
                                     </Style>
                                 </Flyout.FlyoutPresenterStyle>
                                 <Grid Width="240">
-                                    <ItemsRepeater ItemsSource="{x:Bind ViewModel.TotalAgents}">
+                                    <ItemsRepeater x:Name="AgentRepeater" ItemsSource="{x:Bind ViewModel.TotalAgents}">
                                         <ItemsRepeater.ItemTemplate>
                                             <DataTemplate x:DataType="items:ChatAgentItemViewModel">
                                                 <local:ChatAgentItemControl

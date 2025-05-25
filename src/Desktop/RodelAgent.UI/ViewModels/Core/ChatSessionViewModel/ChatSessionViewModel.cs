@@ -65,11 +65,6 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
 
     public async Task InitializeAsync(WebView2 view)
     {
-        if (_webView is not null)
-        {
-            return;
-        }
-
         if (_tokenTimer is null)
         {
             _tokenTimer = new DispatcherTimer
@@ -79,6 +74,7 @@ public sealed partial class ChatSessionViewModel : LayoutPageViewModelBase
             _tokenTimer.Tick += OnTokenTimerTick;
         }
 
+        _webView?.Close();
         _webView = view;
         IsWebInitializing = true;
         IsWebInitialized = false;

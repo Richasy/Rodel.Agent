@@ -37,6 +37,7 @@
                 <StackPanel Spacing="8">
                     <TextBlock HorizontalAlignment="Left" Text="{ext:Locale Name=Link}" />
                     <ItemsRepeater
+                        x:Name="LinkRepeater"
                         Margin="-12,0,0,0"
                         ItemTemplate="{StaticResource LinkItemTemplate}"
                         ItemsSource="{x:Bind ViewModel.Links}">
@@ -55,6 +56,7 @@
                 <StackPanel Spacing="8">
                     <TextBlock HorizontalAlignment="Left" Text="{ext:Locale Name=OpenSourceRepo}" />
                     <ItemsRepeater
+                        x:Name="LibraryRepeater"
                         Margin="-12,0,0,0"
                         ItemTemplate="{StaticResource LinkItemTemplate}"
                         ItemsSource="{x:Bind ViewModel.Libraries}">

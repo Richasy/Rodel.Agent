@@ -11,4 +11,7 @@ public sealed partial class GroupAgentsPanel : ChatSessionControlBase
     /// Initializes a new instance of the <see cref="GroupAgentsPanel"/> class.
     /// </summary>
     public GroupAgentsPanel() => InitializeComponent();
+
+    protected override void OnControlUnloaded()
+        => AgentRepeater.ItemsSource = null;
 }

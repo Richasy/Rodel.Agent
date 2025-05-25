@@ -11,4 +11,7 @@ public sealed partial class ChatHistoryPanel : ChatSessionControlBase
     /// Initializes a new instance of the <see cref="ChatHistoryPanel"/> class.
     /// </summary>
     public ChatHistoryPanel() => InitializeComponent();
+
+    protected override void OnControlUnloaded()
+        => HistoryRepeater.ItemsSource = null;
 }

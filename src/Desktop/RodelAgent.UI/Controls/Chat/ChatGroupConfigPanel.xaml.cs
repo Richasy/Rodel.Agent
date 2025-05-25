@@ -68,6 +68,9 @@ public sealed partial class ChatGroupConfigPanel : ChatGroupConfigPanelBase
         }
     }
 
+    protected override void OnControlUnloaded()
+        => AgentRepeater.ItemsSource = null;
+
     private string GetEmoji()
         => _selectedEmoji?.Unicode ?? string.Empty;
 

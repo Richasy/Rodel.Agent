@@ -11,4 +11,7 @@ public sealed partial class DrawSideBody : DrawPageControlBase
     /// Initializes a new instance of the <see cref="DrawSideBody"/> class.
     /// </summary>
     public DrawSideBody() => InitializeComponent();
+
+    protected override void OnControlUnloaded()
+        => HistoryRepeater.ItemsSource = null;
 }

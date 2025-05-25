@@ -32,6 +32,8 @@ public sealed partial class ChatSessionMainFooter : ChatSessionControlBase
     /// <inheritdoc/>
     protected override void OnControlUnloaded()
     {
+        ModelRepeater.ItemsSource = null;
+        ServerRepeater.ItemsSource = null;
         ViewModel.RequestFocusInput -= OnRequestFocusInput;
         ViewModel.RequestCloseFlyout -= OnRequestCloseFlyout;
     }
