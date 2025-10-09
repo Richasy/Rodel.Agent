@@ -35,6 +35,7 @@ public sealed partial class AudioPageViewModel
                 ModelId = SelectedModel?.Id,
                 LanguageCode = SelectedLanguage?.Code,
                 VoiceId = SelectedVoice?.Data.Id,
+                Speed = 1.0,
             };
             var result = await _audioService!.Client!.TextToSpeechAsync(Text, options, _audioCts.Token);
             var record = new AudioRecord
