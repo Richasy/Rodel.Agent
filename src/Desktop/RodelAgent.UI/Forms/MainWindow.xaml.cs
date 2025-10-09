@@ -91,8 +91,6 @@ public sealed partial class MainWindow : WindowBase, ITipWindow
         }
         else if (!_shouldExit)
         {
-            RootLayout.ViewModel.Back();
-
             while (windows.Count > 1)
             {
                 var wnd = windows.Find(p => p is not MainWindow);
@@ -113,7 +111,6 @@ public sealed partial class MainWindow : WindowBase, ITipWindow
                 mcpServer.DisconnectCommand.Execute(default);
             }
 
-            this.Get<NavigationViewModel>().QuickUnloadIfInSettings();
             await this.Get<SettingsPageViewModel>().CheckSaveServicesAsync();
             App.Current?.Exit();
             Environment.Exit(0);
@@ -171,20 +168,6 @@ public sealed partial class MainWindow : WindowBase, ITipWindow
             {
                 SettingsToolkit.WriteLocalSetting(SettingNames.MainWindowHeight, Height);
                 SettingsToolkit.WriteLocalSetting(SettingNames.MainWindowWidth, Width);
-            }
-        }
-    }
-
-    private void OnPointerPressed(object sender, PointerRoutedEventArgs e)
-    {
-        var point = e.GetCurrentPoint((UIElement)sender);
-        if (point.Properties.IsXButton1Pressed || point.Properties.IsXButton2Pressed)
-        {
-            e.Handled = true;
-
-            if (RootLayout.ViewModel.IsOverlayOpen)
-            {
-                RootLayout.ViewModel.Back();
             }
         }
     }

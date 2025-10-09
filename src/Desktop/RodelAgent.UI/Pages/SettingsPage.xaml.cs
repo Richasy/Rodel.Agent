@@ -1,4 +1,4 @@
-// Copyright (c) Richasy. All rights reserved.
+﻿// Copyright (c) Richasy. All rights reserved.
 
 using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels.Core;
@@ -11,7 +11,7 @@ namespace RodelAgent.UI.Pages;
 /// <summary>
 /// Settings page.
 /// </summary>
-public sealed partial class SettingsPage : SettingsPageBase
+public sealed partial class SettingsPage : SettingsPageBase, IInitializePage
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="SettingsPage"/> class.
@@ -21,17 +21,13 @@ public sealed partial class SettingsPage : SettingsPageBase
     /// <inheritdoc/>
     protected override void OnPageLoaded()
     {
-        ViewModel.InitializeCommand.Execute(default);
+        Initialize();
         SectionSelector.SelectedItem = SectionSelector.Items[0];
         if (RuntimeInformation.ProcessArchitecture == Architecture.Arm64 || !this.Get<AppViewModel>().IsTraySupport)
         {
             HideWindowSetting.Visibility = Visibility.Collapsed;
         }
     }
-
-    /// <inheritdoc/>
-    protected override async void OnNavigatingFrom(NavigatingCancelEventArgs e)
-        => await ViewModel.CheckSaveServicesAsync();
 
     private void OnJoinGroupButtonClick(object sender, RoutedEventArgs e)
         => FlyoutBase.ShowAttachedFlyout(sender as FrameworkElement);
@@ -165,6 +161,8 @@ public sealed partial class SettingsPage : SettingsPageBase
             }
         }
     }
+
+    public void Initialize() => ViewModel.InitializeCommand.Execute(default);
 }
 
 /// <summary>

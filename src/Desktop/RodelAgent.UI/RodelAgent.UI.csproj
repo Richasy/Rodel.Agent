@@ -71,6 +71,7 @@
     <None Remove="Controls\Draw\DrawSideHeader.xaml" />
     <None Remove="Controls\EmojiPanel.xaml" />
     <None Remove="Controls\EnterWrapTip.xaml" />
+    <None Remove="Controls\MainFrame.xaml" />
     <None Remove="Controls\RootLayout.xaml" />
     <None Remove="Controls\Settings\AboutSettingControl.xaml" />
     <None Remove="Controls\Settings\ChatSessionSettingControl.xaml" />
@@ -379,6 +380,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Web\chat-render\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\MainFrame.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\Settings\LanguageSettingControl.xaml">

@@ -47,7 +47,7 @@ public sealed partial class RootLayout : RootLayoutBase
             return;
         }
 
-        ViewModel.Initialize(MainFrame, OverlayFrame);
+        ViewModel.Initialize(MainFrame);
         var selectedItem = ViewModel.MenuItems.FirstOrDefault(p => p.IsSelected);
         if (selectedItem is not null)
         {
@@ -60,9 +60,6 @@ public sealed partial class RootLayout : RootLayoutBase
 #endif
     }
 
-    private void OnNavViewBackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
-        => OnBackRequested(default, default);
-
     private void OnNavViewItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
     {
         _ = this;
@@ -70,9 +67,6 @@ public sealed partial class RootLayout : RootLayoutBase
         var context = item?.Tag as AppNavigationItemViewModel;
         context?.NavigateCommand.Execute(default);
     }
-
-    private void OnBackRequested(object? sender, EventArgs? e)
-        => ViewModel.Back();
 
     private void OnUpdateActionButtonClick(TeachingTip sender, object args)
         => AppViewModel.ShowUpdateCommand.Execute(default);

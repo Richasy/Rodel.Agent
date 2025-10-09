@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <local:RootLayoutBase
     x:Class="RodelAgent.UI.Controls.RootLayout"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -33,12 +33,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <base:AppTitleBar
-            x:Name="MainTitleBar"
-            Title="{ext:Locale Name=AppName}"
-            BackRequested="OnBackRequested"
-            IsBackButtonVisible="{x:Bind ViewModel.IsOverlayOpen, Mode=OneWay}"
-            IsBackEnabled="True">
+        <base:AppTitleBar x:Name="MainTitleBar" Title="{ext:Locale Name=AppName}">
             <base:AppTitleBar.IconElement>
                 <BitmapIcon ShowAsMonochrome="False" UriSource="Assets/small-logo.png" />
             </base:AppTitleBar.IconElement>
@@ -56,7 +51,6 @@
         <NavigationView
             x:Name="NavView"
             Grid.Row="1"
-            BackRequested="OnNavViewBackRequested"
             FooterMenuItemsSource="{x:Bind ViewModel.FooterItems, Mode=OneWay}"
             ItemInvoked="OnNavViewItemInvoked"
             MenuItemTemplate="{StaticResource AppNavItemTemplate}"
@@ -64,10 +58,7 @@
             SelectionFollowsFocus="Disabled"
             Style="{StaticResource MainNavigationViewStyle}">
             <Grid x:Name="MainGrid">
-                <Frame x:Name="MainFrame" Visibility="{x:Bind ViewModel.IsOverlayOpen, Mode=OneWay, Converter={StaticResource BoolToVisibilityReverseConverter}}" />
-                <Grid x:Name="OverlayGrid" Visibility="{x:Bind ViewModel.IsOverlayOpen, Mode=OneWay}">
-                    <Frame x:Name="OverlayFrame" />
-                </Grid>
+                <local:MainFrame x:Name="MainFrame" />
             </Grid>
         </NavigationView>
 
