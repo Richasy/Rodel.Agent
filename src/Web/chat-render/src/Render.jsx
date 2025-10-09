@@ -17,7 +17,8 @@ const md = markdownit({
         return highlight.highlight(str, { language: lang }).value;
       } catch (__) {}
     }
-    return ""; // use external default escaping
+    // 如果语言不支持，返回 HTML 转义后的原始文本
+    return md.utils.escapeHtml(str);
   },
 }).use(katex);
 
