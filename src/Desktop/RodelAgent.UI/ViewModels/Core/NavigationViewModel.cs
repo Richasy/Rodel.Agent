@@ -1,10 +1,11 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
+using RodelAgent.UI.Controls;
+using RodelAgent.UI.Forms;
 using RodelAgent.UI.Models.Constants;
 using RodelAgent.UI.Pages;
 using RodelAgent.UI.Toolkits;
-using RodelAgent.UI.Forms;
-using RodelAgent.UI.Controls;
+using RodelAgent.UI.ViewModels.View;
 
 namespace RodelAgent.UI.ViewModels.Core;
 
@@ -27,7 +28,7 @@ public sealed partial class NavigationViewModel : ViewModelBase, INavServiceView
     public ObservableCollection<AppNavigationItemViewModel> FooterItems { get; } = [];
 
     /// <inheritdoc/>
-    public void NavigateTo(Type pageType, object? parameter = null)
+    public async void NavigateTo(Type pageType, object? parameter = null)
     {
         if (_navFrame is null)
         {
@@ -42,6 +43,11 @@ public sealed partial class NavigationViewModel : ViewModelBase, INavServiceView
         }
 
         SettingsToolkit.WriteLocalSetting(SettingNames.LastSelectedFeaturePage, pageType.FullName);
+        if (_navFrame.GetCurrentContent() is SettingsPage settingsPage)
+        {
+            await this.Get<SettingsPageViewModel>().CheckSaveServicesAsync();
+        }
+
         _navFrame.NavigateTo(pageType, parameter);
     }
 
