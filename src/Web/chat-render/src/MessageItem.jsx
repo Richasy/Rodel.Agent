@@ -101,7 +101,10 @@ const MessageItem = React.memo(({ item, sendMessage, renderMarkdown, removeMessa
             autoSize={{ minRows: 4, maxRows: 18 }}
             onChange={(e) => setEditedContent(e.target.value)}
             onKeyUp={handleKeyUp}
-            onBlur={handleSave}
+            onBlur={(e) => {
+              if (e.relatedTarget?.closest("[data-discard-button]")) return;
+              handleSave();
+            }}
           />
           {/* 按钮容器 */}
           <Flex
@@ -117,7 +120,7 @@ const MessageItem = React.memo(({ item, sendMessage, renderMarkdown, removeMessa
             >
               {window.resources?.save ? window.resources.save : "Save"}
             </Button>
-            <Button onClick={handleCancel} icon={<CloseOutlined />}>
+            <Button data-discard-button onClick={handleCancel} icon={<CloseOutlined />}>
               {window.resources?.discard ? window.resources.discard : "Discard"}
             </Button>
           </Flex>
