@@ -47,6 +47,7 @@ public sealed partial class ChatAgentConfigViewModel : ViewModelBase
     {
         IsManualClose = false;
         Agent = data.Data;
+        CurrentOptions = Agent.Options;
         Name = data.Name;
         SystemInstruction = Agent.SystemInstruction;
         StopSequences.Clear();
@@ -247,10 +248,7 @@ public sealed partial class ChatAgentConfigViewModel : ViewModelBase
 
         Agent.Options = options;
 
-        if (FilterCharacters.Count > 0)
-        {
-            Agent.FilterCharacters = [.. FilterCharacters];
-        }
+        Agent.FilterCharacters = [.. FilterCharacters];
     }
 
     private void CheckStep()
