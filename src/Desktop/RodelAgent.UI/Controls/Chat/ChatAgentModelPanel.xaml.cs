@@ -100,7 +100,7 @@ public sealed partial class ChatAgentModelPanel : ChatAgentConfigControlBase
     {
         e.DragUIOverride.Caption = ResourceToolkit.GetLocalizedString(Models.Constants.StringNames.AvatarDropTip);
         e.DragUIOverride.IsCaptionVisible = true;
-        e.AcceptedOperation = DataPackageOperation.Move;
+        e.AcceptedOperation = DataPackageOperation.Copy;
     }
 
     private async Task PickImageFileAsync()

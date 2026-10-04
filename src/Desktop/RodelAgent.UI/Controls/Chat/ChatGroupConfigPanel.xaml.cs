@@ -100,7 +100,7 @@ public sealed partial class ChatGroupConfigPanel : ChatGroupConfigPanelBase
     {
         e.DragUIOverride.Caption = ResourceToolkit.GetLocalizedString(Models.Constants.StringNames.AvatarDropTip);
         e.DragUIOverride.IsCaptionVisible = true;
-        e.AcceptedOperation = DataPackageOperation.Move;
+        e.AcceptedOperation = DataPackageOperation.Copy;
     }
 
     private async Task PickImageFileAsync()
