@@ -280,7 +280,7 @@ public sealed partial class ChatSessionViewModel
             var serviceConfig = await this.Get<IChatConfigManager>().GetServiceConfigAsync(currentAgent.Data.Provider!.Value, new(options.ModelId!, string.Empty));
             chatService.Initialize(serviceConfig);
 
-            var client = new ChatClientBuilder(_chatService!.Client!)
+            var client = new ChatClientBuilder(chatService.Client!)
                 .UseFunctionInvocation(configure: c => c.MaximumIterationsPerRequest = 30)
                 .Build();
 
