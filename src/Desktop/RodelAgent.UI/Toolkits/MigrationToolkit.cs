@@ -22,14 +22,14 @@ public static class MigrationToolkit
     internal static bool ShouldMigrate()
     {
         var libPath = SettingsToolkit.ReadLocalSetting(SettingNames.WorkingDirectory, string.Empty);
-        var dbFiles = Directory.EnumerateFiles(libPath, "*.db", SearchOption.TopDirectoryOnly).Where(p => !p.Contains(".old", StringComparison.Ordinal));
+        var dbFiles = Directory.EnumerateFiles(libPath, "*.db", SearchOption.TopDirectoryOnly).Where(p => !Path.GetFileName(p).Contains(".old", StringComparison.Ordinal));
         return dbFiles.Any();
     }
 
     internal static async Task TryMigrateAsync()
     {
         var libPath = SettingsToolkit.ReadLocalSetting(SettingNames.WorkingDirectory, string.Empty);
-        var dbFiles = Directory.EnumerateFiles(libPath, "*.db", SearchOption.TopDirectoryOnly).Where(p => !p.Contains(".old", StringComparison.Ordinal));
+        var dbFiles = Directory.EnumerateFiles(libPath, "*.db", SearchOption.TopDirectoryOnly).Where(p => !Path.GetFileName(p).Contains(".old", StringComparison.Ordinal));
 
         SettingsToolkit.WriteLocalSetting(SettingNames.MigrationFailed, false);
 
