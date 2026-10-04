@@ -452,7 +452,9 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
             return default;
         }
 
-        var currentDirectory = Environment.CurrentDirectory;
+        var currentDirectory = Path.GetFullPath(Environment.CurrentDirectory);
+        (string? name, string? desc) bestMatch = default;
+        var bestMatchLength = -1;
         foreach (var file in files)
         {
             var lines = await File.ReadAllLinesAsync(file);
@@ -462,14 +464,22 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
                 continue;
             }
 
-            if (currentDirectory.Contains(firstLine!) || firstLine!.Contains(currentDirectory))
+            var descriptorDirectory = Path.GetFullPath(firstLine);
+            var relativePath = Path.GetRelativePath(descriptorDirectory, currentDirectory);
+            var isSameOrChildDirectory = relativePath == "."
+                || (!Path.IsPathRooted(relativePath)
+                    && relativePath != ".."
+                    && !relativePath.StartsWith($"..{Path.DirectorySeparatorChar}", StringComparison.Ordinal)
+                    && !relativePath.StartsWith($"..{Path.AltDirectorySeparatorChar}", StringComparison.Ordinal));
+            if (isSameOrChildDirectory && descriptorDirectory.Length > bestMatchLength)
             {
                 var otherContent = string.Join('\n', lines.Skip(1).Where(p => !string.IsNullOrWhiteSpace(p)).ToList());
-                return (Path.GetFileNameWithoutExtension(file), otherContent.Trim());
+                bestMatch = (Path.GetFileNameWithoutExtension(file), otherContent.Trim());
+                bestMatchLength = descriptorDirectory.Length;
             }
         }
 
-        return default;
+        return bestMatch;
     }
 
     private static async Task<string> GetDiffAsync()
