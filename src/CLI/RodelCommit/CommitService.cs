@@ -226,18 +226,18 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
 
     private async Task<List<string>> GenerateSummaryWithDocumentsAsync(IChatService chatService, string model, CommitTypeItem commitType, List<string> documents, string? repoDesc)
     {
-        var result = new List<string>();
         var index = 0;
         var limit = ChatConfigManager.AppConfiguration.App.ConcurrentLimit;
         var concurrentLimit = limit > 0 ? limit : 5;
-        var semaphore = new SemaphoreSlim(limit);
+        var semaphore = new SemaphoreSlim(concurrentLimit);
         var useSegments = documents.Count > 1;
+        var summaries = new string[documents.Count];
         await AnsiConsole.Status()
             .StartAsync("Generating summaries...", ctx =>
             {
                 ctx.Spinner(Spinner.Known.Dots2);
                 ctx.SpinnerStyle(Style.Parse("yellow"));
-                var tasks = documents.Select(async doc =>
+                var tasks = documents.Select(async (doc, documentIndex) =>
                 {
                     await semaphore.WaitAsync();
                     try
@@ -257,8 +257,8 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
                             Temperature = 0.5f,
                         };
                         var summary = await chatService.Client!.GetResponseAsync([chatMsg], options, cancellationToken: _stopCts.Token);
-                        var text = summary.Message.Text!;
-                        result.Add(text);
+                        var text = summary.Text!;
+                        summaries[documentIndex] = text;
                         index++;
                         ctx.Status($"Generating summaries...({index}/{documents.Count})");
                     }
@@ -271,7 +271,7 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
                 return Task.WhenAll(tasks);
             });
 
-        return result;
+        return summaries.ToList();
     }
 
     private async Task<string> GenerateSummaryWithSegmentsAsync(IChatService chatService, string model, CommitTypeItem commitType, List<string> segments, string? repoDesc)
@@ -285,7 +285,7 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
         };
 
         var summary = await chatService.Client!.GetResponseAsync([chatMsg], options, cancellationToken: _stopCts.Token);
-        return summary.Message.Text!;
+        return summary.Text!;
     }
 
     private static ChatProviderType AskProvider(List<ChatProviderType> availableServices)
