@@ -521,6 +521,11 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
         _ = await commitProcess.StandardOutput.ReadToEndAsync().ConfigureAwait(false);
         var commitError = await commitProcess.StandardError.ReadToEndAsync().ConfigureAwait(false);
         await commitProcess.WaitForExitAsync();
+        if (commitProcess.ExitCode != 0)
+        {
+            throw new InvalidOperationException($"git commit failed with exit code {commitProcess.ExitCode}: {commitError}");
+        }
+
         AnsiConsole.MarkupLine("[green]Commit successfully.[/]");
         if (!string.IsNullOrEmpty(commitError))
         {
@@ -550,6 +555,11 @@ internal sealed class CommitService(Kernel kernel, IChatConfigManager configMana
         _ = await pushProcess.StandardOutput.ReadToEndAsync().ConfigureAwait(false);
         var pushError = await pushProcess.StandardError.ReadToEndAsync().ConfigureAwait(false);
         await pushProcess.WaitForExitAsync();
+        if (pushProcess.ExitCode != 0)
+        {
+            throw new InvalidOperationException($"git push failed with exit code {pushProcess.ExitCode}: {pushError}");
+        }
+
         AnsiConsole.MarkupLine("[green]Push successfully.[/]");
         if (!string.IsNullOrEmpty(pushError))
         {
