@@ -82,6 +82,7 @@ public sealed partial class McpServerItemViewModel(string id, McpAgentConfig dat
         {
             await client.DisposeAsync();
             McpServers.Remove(Id);
+            client = null;
         }
 
         _runCts = new CancellationTokenSource();
@@ -109,6 +110,18 @@ public sealed partial class McpServerItemViewModel(string id, McpAgentConfig dat
         }
         catch (Exception ex)
         {
+            if (client != null)
+            {
+                try
+                {
+                    await client.DisposeAsync();
+                }
+                catch (Exception disposeException)
+                {
+                    this.Get<ILogger<McpServerItemViewModel>>().LogWarning(disposeException, "Failed to dispose MCP client after connection failure.");
+                }
+            }
+
             State = McpServerState.Error;
             FunctionCount = 0;
             Functions.Clear();
