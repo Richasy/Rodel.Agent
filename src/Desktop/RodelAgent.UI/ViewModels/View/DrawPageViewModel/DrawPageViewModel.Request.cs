@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Modified 2026-10-21 by Codex: complete the existing PR correction.
 
 using Richasy.AgentKernel.Models;
 using RodelAgent.Interfaces;
@@ -30,21 +31,25 @@ public sealed partial class DrawPageViewModel
         try
         {
             _drawCts = new CancellationTokenSource();
+            var provider = SelectedService!.ProviderType;
+            var prompt = Prompt;
+            var model = SelectedModel?.Data.Id;
+            var size = SelectedSize?.Data;
             var options = new DrawOptions
             {
                 ModelId = SelectedModel?.Id,
-                Width = SelectedSize?.Data.Width,
-                Height = SelectedSize?.Data.Height,
+                Width = size?.Width,
+                Height = size?.Height,
             };
-            var result = await _drawService!.Client!.DrawAsync(Prompt, options, _drawCts.Token);
+            var result = await _drawService!.Client!.DrawAsync(prompt, options, _drawCts.Token);
             var record = new DrawRecord
             {
                 Id = Guid.NewGuid().ToString("N"),
-                Prompt = Prompt,
-                Size = SelectedSize?.Data,
-                Model = SelectedModel?.Data.Id,
+                Prompt = prompt,
+                Size = size,
+                Model = model,
                 Time = DateTimeOffset.Now,
-                Provider = SelectedService!.ProviderType,
+                Provider = provider,
             };
 
             await this.Get<IStorageService>().AddOrUpdateDrawSessionAsync(record, result.ToArray());

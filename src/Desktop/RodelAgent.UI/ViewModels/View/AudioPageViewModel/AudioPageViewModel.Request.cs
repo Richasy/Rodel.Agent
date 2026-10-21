@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Modified 2026-10-21 by Codex: complete the existing PR correction.
 
 using Richasy.AgentKernel.Models;
 using RodelAgent.Interfaces;
@@ -30,6 +31,9 @@ public sealed partial class AudioPageViewModel
         try
         {
             _audioCts = new CancellationTokenSource();
+            var provider = SelectedService!.ProviderType;
+            var text = Text;
+            var model = SelectedModel?.Data.Id;
             var options = new AudioOptions
             {
                 ModelId = SelectedModel?.Id,
@@ -37,16 +41,16 @@ public sealed partial class AudioPageViewModel
                 VoiceId = SelectedVoice?.Data.Id,
                 Speed = 1.0,
             };
-            var result = await _audioService!.Client!.TextToSpeechAsync(Text, options, _audioCts.Token);
+            var result = await _audioService!.Client!.TextToSpeechAsync(text, options, _audioCts.Token);
             var record = new AudioRecord
             {
                 Id = Guid.NewGuid().ToString("N"),
-                Text = Text,
+                Text = text,
                 Speed = options.Speed,
-                Voice = SelectedVoice?.Data.Id,
-                Model = SelectedModel?.Data.Id,
+                Voice = options.VoiceId,
+                Model = model,
                 Time = DateTimeOffset.Now,
-                Provider = SelectedService!.ProviderType,
+                Provider = provider,
             };
 
             await this.Get<IStorageService>().AddOrUpdateAudioSessionAsync(record, result.ToArray());
