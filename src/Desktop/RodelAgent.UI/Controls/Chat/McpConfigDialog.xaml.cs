@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Modified 2026-10-21 by Codex: complete the existing PR correction.
 
 using Richasy.WinUIKernel.Share.Toolkits;
 using RodelAgent.UI.Models.Constants;
@@ -38,7 +39,7 @@ public sealed partial class McpConfigDialog : AppDialog
         Unloaded -= OnUnloaded;
     }
 
-    private void OnPrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+    private async void OnPrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
     {
         var name = NameBox.Text;
         var commandStr = CommandBox.Text.Trim();
@@ -75,11 +76,11 @@ public sealed partial class McpConfigDialog : AppDialog
 
         if (_source != null)
         {
+            await _source.DisconnectCommand.ExecuteAsync(default);
             _source.Data = config;
             _source.Id = name;
             _source.IsEnabled = config.IsEnabled ?? true;
-            _source.SaveCommand.Execute(default);
-            _source.DisconnectCommand.Execute(default);
+            await _source.SaveCommand.ExecuteAsync(default);
         }
         else
         {
