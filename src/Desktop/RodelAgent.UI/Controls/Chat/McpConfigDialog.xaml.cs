@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
+// Modified 2026-10-21 by Codex: complete the existing PR correction.
 
 using Richasy.WinUIKernel.Share.Toolkits;
 using RodelAgent.UI.Models.Constants;
@@ -6,6 +7,7 @@ using RodelAgent.UI.Toolkits;
 using RodelAgent.UI.ViewModels.Core;
 using RodelAgent.UI.ViewModels.Items;
 using RodelAgent.UI.ViewModels.View;
+using System.Text.Json;
 
 namespace RodelAgent.UI.Controls.Chat;
 
@@ -17,6 +19,7 @@ public sealed partial class McpConfigDialog : AppDialog
     public McpConfigDialog()
     {
         InitializeComponent();
+        ArgumentsBox.Text = "[]";
         Unloaded += OnUnloaded;
     }
 
@@ -27,7 +30,8 @@ public sealed partial class McpConfigDialog : AppDialog
         NameBox.Text = vm.Id;
         vm.Data.Environments?.Select(p => new VariableItemViewModel { Name = p.Key, Value = p.Value }).ToList().ForEach(Variables.Add);
         EnableSwitch.IsOn = vm.IsEnabled;
-        CommandBox.Text = vm.Data.Command + " " + string.Join(' ', vm.Data.Arguments ?? []);
+        CommandBox.Text = vm.Data.Command;
+        ArgumentsBox.Text = JsonSerializer.Serialize(vm.Data.Arguments ?? []);
         DirectoryBox.Text = vm.Data.WorkingDirectory;
         CheckVariablesVisibility();
     }
@@ -38,20 +42,32 @@ public sealed partial class McpConfigDialog : AppDialog
         Unloaded -= OnUnloaded;
     }
 
-    private void OnPrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+    private async void OnPrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
     {
         var name = NameBox.Text;
-        var commandStr = CommandBox.Text.Trim();
+        var command = CommandBox.Text.Trim();
         args.Cancel = true;
-        if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(commandStr))
+        if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(command))
         {
             this.Get<AppViewModel>().ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.MustFillRequireFields), InfoType.Warning));
             return;
         }
 
-        var commandSplit = commandStr.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-        var command = commandSplit[0];
-        var arguments = commandSplit.Skip(1).ToArray();
+        string[] arguments;
+        try
+        {
+            arguments = JsonSerializer.Deserialize<string[]>(ArgumentsBox.Text)
+                ?? throw new JsonException();
+            if (arguments.Any(argument => argument is null))
+            {
+                throw new JsonException();
+            }
+        }
+        catch (JsonException)
+        {
+            this.Get<AppViewModel>().ShowTipCommand.Execute((ResourceToolkit.GetLocalizedString(StringNames.InvalidMcpArguments), InfoType.Warning));
+            return;
+        }
 
         var variables = Variables.ToDictionary(p => p.Name, p => p.Value);
         var config = new McpAgentConfig

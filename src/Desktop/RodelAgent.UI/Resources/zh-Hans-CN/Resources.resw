@@ -757,6 +757,15 @@
   <data name="CommandAndArguments" xml:space="preserve">
     <value>命令及参数</value>
   </data>
+  <data name="McpCommand" xml:space="preserve">
+    <value>命令</value>
+  </data>
+  <data name="McpArgumentsJson" xml:space="preserve">
+    <value>参数（JSON 数组）</value>
+  </data>
+  <data name="InvalidMcpArguments" xml:space="preserve">
+    <value>参数必须是由字符串组成的 JSON 数组。</value>
+  </data>
   <data name="ConfigName" xml:space="preserve">
     <value>配置名称</value>
   </data>

@@ -63,7 +63,15 @@
         <TextBox
             x:Name="CommandBox"
             HorizontalAlignment="Stretch"
-            Header="{ext:Locale Name=CommandAndArguments}"
+            Header="{ext:Locale Name=McpCommand}"
+            IsSpellCheckEnabled="False"
+            TextWrapping="Wrap" />
+        <TextBox
+            x:Name="ArgumentsBox"
+            Height="96"
+            AcceptsReturn="True"
+            HorizontalAlignment="Stretch"
+            Header="{ext:Locale Name=McpArgumentsJson}"
             IsSpellCheckEnabled="False"
             TextWrapping="Wrap" />
         <Grid>

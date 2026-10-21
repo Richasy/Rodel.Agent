@@ -237,6 +237,15 @@
   <data name="CommandAndArguments" xml:space="preserve">
     <value>Commands &amp; Arguments</value>
   </data>
+  <data name="McpCommand" xml:space="preserve">
+    <value>Command</value>
+  </data>
+  <data name="McpArgumentsJson" xml:space="preserve">
+    <value>Arguments (JSON array)</value>
+  </data>
+  <data name="InvalidMcpArguments" xml:space="preserve">
+    <value>Arguments must be a JSON array of strings.</value>
+  </data>
   <data name="Complete" xml:space="preserve">
     <value>Finish</value>
   </data>
